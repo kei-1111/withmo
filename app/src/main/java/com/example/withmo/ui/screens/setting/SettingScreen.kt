@@ -50,7 +50,7 @@ fun SettingScreen(
         TextButton(
             onClick = {
                 hideSetting()
-                settingViewModel.setUserSetting()
+                settingViewModel.saveUserSetting()
             },
             modifier = Modifier
                 .align(Alignment.End),
@@ -163,7 +163,7 @@ fun SettingScreen(
                         modelFileList = uiState.currentUserSetting.modelFileList,
                         toHome = {
                             hideSetting()
-                            settingViewModel.setUserSetting()
+                            settingViewModel.saveUserSetting()
                         }
                     )
                 } else {

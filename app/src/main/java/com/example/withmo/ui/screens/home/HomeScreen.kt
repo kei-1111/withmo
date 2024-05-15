@@ -35,6 +35,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -81,6 +82,7 @@ fun HomeScreen(
     val context = LocalContext.current
 
     val uiState = homeViewModel.uiState
+    val userSetting by homeViewModel.userSetting.collectAsState()
 
     // swipe
     val height = LocalConfiguration.current.screenHeightDp + 100
@@ -93,7 +95,7 @@ fun HomeScreen(
     val paddingValues = WindowInsets.safeGestures.asPaddingValues()
 
     LaunchedEffect(appList) {
-        homeAppList = when (homeViewModel.getUserSetting().sortMode) {
+        homeAppList = when (userSetting.sortMode) {
             SortMode.USE_COUNT -> appList.sortedByDescending { it.useCount }
 
             SortMode.ALPHABETICAL -> appList.sortedBy { it.label }
@@ -128,7 +130,7 @@ fun HomeScreen(
         )
 
         if (uiState.finishSprashScreen) {
-            if (homeViewModel.getUserSetting().showClock) {
+            if (userSetting.showClock) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -138,7 +140,7 @@ fun HomeScreen(
                         )
                 ) {
                     Clock(
-                        clockMode = homeViewModel.getUserSetting().clockMode,
+                        clockMode = userSetting.clockMode,
                         year = homeViewModel.getTime()[0],
                         month = homeViewModel.getTime()[1],
                         day = homeViewModel.getTime()[2],
@@ -161,7 +163,7 @@ fun HomeScreen(
                         .padding(dimensionResource(id = R.dimen.large_padding)),
                     verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.large_padding))
                 ) {
-                    if(homeViewModel.getUserSetting().showScaleSliderButton) {
+                    if(userSetting.showScaleSliderButton) {
                         IconButton(
                             onClick = {
                                 if (uiState.showScaleSlider) {
@@ -186,7 +188,7 @@ fun HomeScreen(
                             )
                         }
                     }
-                    if(homeViewModel.getUserSetting().showSortButton) {
+                    if(userSetting.showSortButton) {
                         IconButton(
                             onClick = {
                                 if (uiState.popupExpanded) {
@@ -213,9 +215,9 @@ fun HomeScreen(
                 RowAppList(
                     context = context,
                     appList = homeAppList,
-                    appIconSize = homeViewModel.getUserSetting().appIconSize,
-                    appIconPadding = homeViewModel.getUserSetting().appIconPadding,
-                    showAppName = homeViewModel.getUserSetting().showAppName,
+                    appIconSize = userSetting.appIconSize,
+                    appIconPadding = userSetting.appIconPadding,
+                    showAppName = userSetting.showAppName,
                     showSetting = showSetting,
                 )
             }
@@ -249,10 +251,8 @@ fun HomeScreen(
                                     homeViewModel.setPopupExpanded(false)
                                     homeAppList = homeAppList
                                         .sortedByDescending { it.useCount }
-                                    homeViewModel.setUserSetting(
-                                        homeViewModel
-                                            .getUserSetting()
-                                            .copy(sortMode = SortMode.USE_COUNT)
+                                    homeViewModel.saveUserSetting(
+                                        userSetting.copy(sortMode = SortMode.USE_COUNT)
                                     )
                                 },
                             verticalAlignment = Alignment.CenterVertically
@@ -264,14 +264,13 @@ fun HomeScreen(
                             )
                             RadioButton(
                                 modifier = Modifier.size(10.dp),
-                                selected = homeViewModel.getUserSetting().sortMode == SortMode.USE_COUNT,
+                                selected = userSetting.sortMode == SortMode.USE_COUNT,
                                 onClick = {
                                     homeViewModel.setPopupExpanded(false)
                                     homeAppList = homeAppList
                                         .sortedByDescending { it.useCount }
-                                    homeViewModel.setUserSetting(
-                                        homeViewModel.getUserSetting()
-                                            .copy(sortMode = SortMode.USE_COUNT)
+                                    homeViewModel.saveUserSetting(
+                                        userSetting.copy(sortMode = SortMode.USE_COUNT)
                                     )
                                 },
                                 colors = RadioButtonDefaults.colors(
@@ -285,10 +284,8 @@ fun HomeScreen(
                                 .clickable {
                                     homeViewModel.setPopupExpanded(false)
                                     homeAppList = homeAppList.sortedBy { it.label }
-                                    homeViewModel.setUserSetting(
-                                        homeViewModel
-                                            .getUserSetting()
-                                            .copy(sortMode = SortMode.ALPHABETICAL)
+                                    homeViewModel.saveUserSetting(
+                                        userSetting.copy(sortMode = SortMode.ALPHABETICAL)
                                     )
                                 },
                             verticalAlignment = Alignment.CenterVertically
@@ -300,13 +297,12 @@ fun HomeScreen(
                             )
                             RadioButton(
                                 modifier = Modifier.size(10.dp),
-                                selected = homeViewModel.getUserSetting().sortMode == SortMode.ALPHABETICAL,
+                                selected = userSetting.sortMode == SortMode.ALPHABETICAL,
                                 onClick = {
                                     homeViewModel.setPopupExpanded(false)
                                     homeAppList = homeAppList.sortedBy { it.label }
-                                    homeViewModel.setUserSetting(
-                                        homeViewModel.getUserSetting()
-                                            .copy(sortMode = SortMode.ALPHABETICAL)
+                                    homeViewModel.saveUserSetting(
+                                        userSetting.copy(sortMode = SortMode.ALPHABETICAL)
                                     )
                                 },
                                 colors = RadioButtonDefaults.colors(

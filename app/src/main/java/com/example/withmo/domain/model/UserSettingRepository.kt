@@ -1,10 +1,9 @@
 package com.example.withmo.domain.model
 
 import com.example.withmo.domain.model.UserSetting
+import kotlinx.coroutines.flow.Flow
 
 interface UserSettingRepository {
-    val userSetting: UserSetting
-
-    fun getUserSettingData(): UserSetting
-    fun setUserSettingData(newUserSetting: UserSetting)
+    val userSetting: Flow<UserSetting>
+    suspend fun saveUserSetting(userSetting: UserSetting)
 }
