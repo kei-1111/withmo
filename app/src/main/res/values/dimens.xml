@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!--    padding-->
+    <dimen name="small_padding">5.dp</dimen>
+    <dimen name="medium_padding">10.dp</dimen>
+    <dimen name="large_padding">20.dp</dimen>
+
+<!--    shadow-->
+    <dimen name="shadow">5.dp</dimen>
+
+
+</resources>
