@@ -11,6 +11,9 @@ import com.example.withmo.domain.model.UserSetting
 import com.example.withmo.domain.model.UserSettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import java.time.format.TextStyle
@@ -24,6 +27,13 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     var uiState by mutableStateOf(HomeScreenUiState())
     private set
+
+    val userSetting: StateFlow<UserSetting> = userSettingRepository.userSetting
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = UserSetting()
+        )
 
     init {
         splashScreen()
@@ -58,12 +68,10 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun getUserSetting(): UserSetting {
-        return userSettingRepository.getUserSettingData()
-    }
-
-    fun setUserSetting(userSetting: UserSetting) {
-        userSettingRepository.setUserSettingData(userSetting)
+    fun saveUserSetting(userSetting: UserSetting) {
+        viewModelScope.launch {
+            userSettingRepository.saveUserSetting(userSetting)
+        }
     }
 
     fun setShowScaleSlider(show: Boolean) {
