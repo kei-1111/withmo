@@ -1,10 +1,18 @@
-plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.internal.impldep.com.google.api.client.util.store.DataStore
 
-    // Hilt
-    kotlin("kapt")
-    id("com.google.dagger.hilt.android")
+plugins {
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
+//    detekt
+    alias(libs.plugins.detekt)
+
+//    KSP
+    alias(libs.plugins.ksp)
+
+//    Hilt
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -49,9 +57,6 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
-    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -61,52 +66,67 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Unity
+//    Immutable
+    implementation(libs.kotlinx.collections.immutable)
+
+//    Material Icon Extended
+    implementation(libs.androidx.material.icons.extended)
+
+//    Accompanist Permissions
+    implementation(libs.accompanist.permissions)
+
+//    Accompanist DrawablePainter
+    implementation(libs.accompanist.drawablepainter)
+
+//    Hilt
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    implementation(libs.hilt.navigation.compose)
+
+//    Material
+    implementation(libs.androidx.material)
+
+//    DataStore
+    implementation(libs.androidx.datastore.preferences)
+
+//    Unity
     implementation(project(":unityLibrary"))
     implementation(fileTree(mapOf("dir" to "C:/Users/Kei1111/AndroidStudioProjects/Work/Withmo/unityLibrary/libs", "include" to listOf("*.jar"))))
 
-    // Accompanist for permissions
-    implementation("com.google.accompanist:accompanist-permissions:0.27.1")
 
-    // Accompanist for drawable painter
-    implementation("com.google.accompanist:accompanist-drawablepainter:0.30.1")
-
-    // Hilt
-    implementation("com.google.dagger:hilt-android:2.48")
-    kapt("com.google.dagger:hilt-android-compiler:2.48")
-    // Hilt for compose
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
-
-    // Navigation
-    implementation("androidx.navigation:navigation-compose:2.4.1")
-
-    // Material
-    implementation("androidx.compose.material:material:1.4.3")
-
-    // Preferences DataStore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
-
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.08.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+//    detekt
+    detektPlugins(libs.detekt.compose)
+    detektPlugins(libs.detekt.formatting)
 }
 
-kapt {
-    arguments {
-        arg("argumentIncremental", "true")
+detekt {
+    config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
+    buildUponDefaultConfig = true
+
+    source = files("src/main/java")
+
+    tasks {
+        withType<Detekt> {
+            reports {
+            }
+        }
     }
-    correctErrorTypes = true
+
+    autoCorrect = true
 }
