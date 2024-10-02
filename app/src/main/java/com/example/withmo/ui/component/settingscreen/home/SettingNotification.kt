@@ -15,7 +15,8 @@ fun SettingNotification(
     showNotificationCheckDialog: Boolean,
     setShowNotificationCheckDialog: (Boolean) -> Unit,
     showNotificationAnimation: Boolean,
-    setNotificationState: (Boolean) -> Unit
+    setNotificationState: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -30,12 +31,11 @@ fun SettingNotification(
                 } else {
                     setNotificationState(true)
                 }
-            }
+            },
         )
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         UserSettingWithSwitch(
             title = "通知アニメーションを見る",
@@ -47,7 +47,7 @@ fun SettingNotification(
                     setShowNotificationCheckDialog(true)
                 }
                 setNotificationState(!showNotificationAnimation)
-            }
+            },
         )
     }
 
@@ -64,7 +64,7 @@ fun SettingNotification(
             onDismiss = {
                 setNotificationState(false)
                 setShowNotificationCheckDialog(false)
-            }
+            },
         )
     }
 }

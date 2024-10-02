@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
-import com.unity3d.player.s
+import com.example.withmo.ui.theme.UiConfig
 
 @Stable
 data class AppInfo(
@@ -14,7 +14,7 @@ data class AppInfo(
     val label: String,
     val packageName: String,
     var notification: Boolean = false,
-    var useCount: Int = 0
+    var useCount: Int = UiConfig.AppInfoDefaultUseCount,
 ) {
     fun launch(context: Context) {
         try {
@@ -23,7 +23,7 @@ data class AppInfo(
             if (intent != null) {
                 if (notification) notification = false
                 useCount++
-                Log.d("launchApp: $packageName", "useCount: $useCount" )
+                Log.d("launchApp: $packageName", "useCount: $useCount")
                 val startActivityIntent = Intent("start_activity")
                 startActivityIntent.putExtra("package_name", packageName)
                 context.sendBroadcast(startActivityIntent)

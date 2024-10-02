@@ -21,62 +21,64 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.withmo.R
 import com.example.withmo.ui.theme.Typography
+import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun ExampleAppIcon(
     appIconSize: Float,
     appIconPadding: Float,
     showAppName: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .height(100.dp),
+            .height(UiConfig.ExampleAppIconSpaceHeight),
         verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.Center,
     ) {
         Column(
             modifier = Modifier
-                .size((appIconSize + 22f).dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .size((appIconSize + UiConfig.AppIconTextHeight).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.withmo_icon_wide),
                 contentDescription = null,
                 modifier = Modifier
                     .size(appIconSize.dp)
-                    .shadow(5.dp, CircleShape)
-                    .clip(CircleShape)
+                    .shadow(UiConfig.ShadowElevation, CircleShape)
+                    .clip(CircleShape),
             )
             if (showAppName) {
                 Text(
-                    text = "Withmo",
-                    maxLines = 1,
+                    text = "withmo",
+                    maxLines = UiConfig.AppIconTextMaxLines,
                     overflow = TextOverflow.Ellipsis,
-                    style = Typography.bodyMedium
+                    style = Typography.bodyMedium,
                 )
             }
         }
         Spacer(modifier = Modifier.width(appIconPadding.dp))
         Column(
             modifier = Modifier
-                .size((appIconSize + 22f).dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .size((appIconSize + UiConfig.AppIconTextHeight).dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.withmo_icon_wide),
                 contentDescription = null,
                 modifier = Modifier
                     .size(appIconSize.dp)
-                    .shadow(5.dp, CircleShape)
-                    .clip(CircleShape)
+                    .shadow(UiConfig.ShadowElevation, CircleShape)
+                    .clip(CircleShape),
             )
             if (showAppName) {
                 Text(
-                    text = "Withmo",
-                    maxLines = 1,
+                    text = "withmo",
+                    maxLines = UiConfig.AppIconTextMaxLines,
                     overflow = TextOverflow.Ellipsis,
-                    style = Typography.bodyMedium
+                    style = Typography.bodyMedium,
                 )
             }
         }

@@ -4,8 +4,8 @@ import android.content.Intent
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
-import android.util.Log
 import androidx.annotation.RequiresApi
+import com.example.withmo.domain.repository.UserSettingRepository
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class NotificationListener() : NotificationListenerService() {
+class NotificationListener : NotificationListenerService() {
     @Inject
     lateinit var userSettingRepository: UserSettingRepository
 

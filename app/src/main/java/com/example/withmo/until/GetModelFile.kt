@@ -4,52 +4,55 @@ import android.content.Context
 import android.database.Cursor
 import android.os.Build
 import android.provider.MediaStore
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.withmo.domain.model.ModelFile
 
+@Suppress("NestedBlockDepth")
 @RequiresApi(Build.VERSION_CODES.Q)
 fun getModelFile(context: Context): MutableList<ModelFile> {
     val contentResolver = context.contentResolver
-    var cursor: Cursor? = null
     val modelFileList = mutableListOf<ModelFile>()
 
-    // 例外を受け取る
-    try {
-        cursor = contentResolver.query(
+    val cursor = try {
+        contentResolver.query(
             MediaStore.Downloads.EXTERNAL_CONTENT_URI,
-            null, null, null, null
+            null,
+            null,
+            null,
+            null,
         )
-        if (cursor != null && cursor.moveToFirst()) {
-            do {
-                val fileNameIndex = cursor.getColumnIndex(MediaStore.Downloads.DISPLAY_NAME)
-                val filePathIndex = cursor.getColumnIndex(MediaStore.Downloads.DATA)
-                val filePath = if (fileNameIndex != -1) {
-                    cursor.getString(fileNameIndex)
-                } else {
-                    ""
-                }
-                if (filePath.endsWith(".vrm")) {
-                    modelFileList.add(
-                        ModelFile(
-                            fileName = filePath,
-                            filePath = if (fileNameIndex != -1) {
-                                cursor.getString(filePathIndex)
-                            } else {
-                                ""
-                            }
-                        )
-                    )
-                }
-            } while (cursor.moveToNext())
-            cursor.close()
-        }
     } catch (e: Exception) {
-        e.printStackTrace()
-    } finally {
-        if (cursor != null) {
-            cursor.close()
+        Log.e("getModelFile", "Failed to query", e)
+        null
+    }
+
+    cursor?.use {
+        if (it.moveToFirst()) {
+            do {
+                val modelFile = extractModelFileFromCursor(it)
+                if (modelFile != null) {
+                    modelFileList.add(modelFile)
+                }
+            } while (it.moveToNext())
         }
     }
 
     return modelFileList
+}
+
+private fun extractModelFileFromCursor(cursor: Cursor): ModelFile? {
+    val fileNameIndex = cursor.getColumnIndex(MediaStore.Downloads.DISPLAY_NAME)
+    val filePathIndex = cursor.getColumnIndex(MediaStore.Downloads.DATA)
+
+    if (fileNameIndex == -1 || filePathIndex == -1) return null
+
+    val fileName = cursor.getString(fileNameIndex)
+    val filePath = cursor.getString(filePathIndex)
+
+    return if (filePath.endsWith(".vrm")) {
+        ModelFile(fileName = fileName, filePath = filePath)
+    } else {
+        null
+    }
 }

@@ -10,25 +10,25 @@ fun SettingHomeLayout(
     showScaleSliderButton: Boolean,
     setScaleSliderButton: (Boolean) -> Unit,
     showSortButton: Boolean,
-    setSortButton: (Boolean) -> Unit
-){
+    setSortButton: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-    ){
+        modifier = modifier.fillMaxWidth(),
+    ) {
         UserSettingWithSwitch(
             title = "サイズ変更ボタンを表示させる",
             checked = showScaleSliderButton,
             onCheckedChange = {
                 setScaleSliderButton(it)
-            }
+            },
         )
         UserSettingWithSwitch(
             title = "アプリ並び替えボタンを表示させる",
             checked = showSortButton,
             onCheckedChange = {
                 setSortButton(it)
-            }
+            },
         )
     }
 }

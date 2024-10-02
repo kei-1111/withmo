@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeScreenUiState(
     val currentTime: ZonedDateTime = ZonedDateTime.now(),
-    val finishSprashScreen: Boolean = false,
+    val finishSplashScreen: Boolean = false,
     val showScaleSlider: Boolean = false,
     val currentUserSetting: UserSetting = UserSetting(),
     val popupExpanded: Boolean = false,

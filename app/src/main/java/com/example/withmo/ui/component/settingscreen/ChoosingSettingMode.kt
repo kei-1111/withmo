@@ -5,54 +5,49 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-
+import com.example.withmo.ui.theme.UiConfig
 
 @Composable
-fun ChoosingHome() {
+fun ChoosingHome(
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ){
+        modifier = modifier.fillMaxWidth(),
+    ) {
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(50.dp))
-                .weight(1f)
-                .clip(RoundedCornerShape(50.dp))
-                .height(3.dp)
+                .background(MaterialTheme.colorScheme.primary)
+                .weight(UiConfig.DefaultWeight)
+                .height(UiConfig.DividerHeight),
         )
         Divider(
             modifier = Modifier
-                .weight(1f),
-            color = MaterialTheme.colorScheme.surface
+                .weight(UiConfig.DefaultWeight),
+            color = MaterialTheme.colorScheme.surface,
         )
     }
 }
 
 @Composable
-fun ChoosingModel() {
+fun ChoosingModel(
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ){
+        modifier = modifier.fillMaxWidth(),
+    ) {
         Divider(
-            modifier = Modifier
-                .weight(1f),
-            color = MaterialTheme.colorScheme.surface
+            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            color = MaterialTheme.colorScheme.surface,
         )
         Box(
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary, shape = RoundedCornerShape(50.dp))
-                .weight(1f)
-                .clip(RoundedCornerShape(50.dp))
-                .height(3.dp)
+                .background(MaterialTheme.colorScheme.primary)
+                .weight(UiConfig.DefaultWeight)
+                .height(UiConfig.DividerHeight),
         )
     }
 }

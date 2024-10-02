@@ -9,28 +9,28 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import com.example.withmo.ui.theme.Typography
+import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun UserSettingWithSwitch(
     title: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
             text = title,
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.headlineMedium
+            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            style = MaterialTheme.typography.headlineMedium,
         )
         Switch(
             checked = checked,
-            modifier = Modifier.scale(0.75f),
-            onCheckedChange = onCheckedChange
+            modifier = Modifier.scale(UiConfig.SwitchScale),
+            onCheckedChange = onCheckedChange,
         )
     }
 }

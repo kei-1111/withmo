@@ -9,7 +9,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -19,7 +18,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.withmo.domain.model.ModelFile
 import com.example.withmo.domain.model.SettingMode
 import com.example.withmo.ui.component.settingscreen.home.FileAccessCheckDialog
-import com.example.withmo.ui.theme.Typography
+import com.example.withmo.ui.theme.UiConfig
 import com.example.withmo.until.getModelFile
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -28,7 +27,8 @@ fun ChooseSettingMode(
     changeSettingMode: (SettingMode) -> Unit,
     showFileAccessCheckDialog: Boolean,
     setShowFileAccessCheckDialog: (Boolean) -> Unit,
-    setModelFileList: (MutableList<ModelFile>) -> Unit
+    setModelFileList: (MutableList<ModelFile>) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -39,24 +39,22 @@ fun ChooseSettingMode(
                 if (Environment.isExternalStorageManager()) {
                     setModelFileList(getModelFile(context))
                 }
-            }
+            },
         )
 
     Row(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         TextButton(
             onClick = {
                 changeSettingMode(SettingMode.HOME)
             },
             modifier = Modifier
-                .weight(1f),
-            shape = RoundedCornerShape(0)
+                .weight(UiConfig.DefaultWeight),
         ) {
             Text(
                 text = "ホーム",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
         }
         TextButton(
@@ -69,12 +67,11 @@ fun ChooseSettingMode(
                 }
             },
             modifier = Modifier
-                .weight(1f),
-            shape = RoundedCornerShape(0)
+                .weight(UiConfig.DefaultWeight),
         ) {
             Text(
                 text = "モデル",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
         }
     }
@@ -90,7 +87,7 @@ fun ChooseSettingMode(
             },
             onDismiss = {
                 setShowFileAccessCheckDialog(false)
-            }
+            },
         )
     }
 }

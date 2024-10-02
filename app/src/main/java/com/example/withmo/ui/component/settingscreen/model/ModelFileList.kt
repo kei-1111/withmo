@@ -8,27 +8,27 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.ModelFile
-import com.example.withmo.until.CONTENT_PADDING
+import com.example.withmo.ui.theme.UiConfig
+import kotlinx.collections.immutable.ImmutableList
 
 @Composable
 fun ModelFileList(
-    modelFileList: MutableList<ModelFile>,
-    toHome: () -> Unit
+    modelFileList: ImmutableList<ModelFile>,
+    toHome: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     LazyVerticalGrid(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         columns = GridCells.Fixed(2),
-        horizontalArrangement = Arrangement.spacedBy(CONTENT_PADDING),
-        verticalArrangement = Arrangement.spacedBy(CONTENT_PADDING),
-        contentPadding = PaddingValues(CONTENT_PADDING)
+        horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        contentPadding = PaddingValues(UiConfig.LargePadding),
     ) {
         items(modelFileList.size) { index ->
             ModelFile(
                 modelFile = modelFileList[index],
-                toHome = toHome
+                toHome = toHome,
             )
         }
     }
 }
-

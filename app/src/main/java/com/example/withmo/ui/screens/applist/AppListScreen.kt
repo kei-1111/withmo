@@ -1,20 +1,19 @@
 package com.example.withmo.ui.screens.applist
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,21 +22,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.dimensionResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.LayoutDirection
-import com.example.withmo.R
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.homescreen.AppInfoItem
 import com.example.withmo.ui.component.until.WithmoTextField
 import com.example.withmo.ui.theme.Typography
-import com.example.withmo.until.CONTENT_PADDING
+import com.example.withmo.ui.theme.UiConfig
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
-
+@Suppress("ModifierMissing")
 @Composable
 fun AppListScreen(
     context: Context,
-    appList: List<AppInfo>,
+    appList: ImmutableList<AppInfo>,
     showSetting: () -> Unit,
 ) {
     var searchApp by remember { mutableStateOf("") }
@@ -48,7 +47,7 @@ fun AppListScreen(
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
             appInfo.label.contains(searchApp)
-        }
+        }.toPersistentList()
     }
 
     Column(
@@ -56,30 +55,29 @@ fun AppListScreen(
             .fillMaxSize()
             .padding(
                 top = paddingValues.calculateTopPadding(),
-                start = dimensionResource(id = R.dimen.large_padding),
-                end = dimensionResource(id = R.dimen.large_padding)
+                start = UiConfig.MediumPadding,
+                end = UiConfig.MediumPadding,
             ),
-        verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.large_padding))
+        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
-        WithmoTextField(
+        WithmoSearchTextField(
             modifier = Modifier.fillMaxWidth(),
             value = searchApp,
             onValueChange = { searchApp = it },
-            label = "アプリを検索",
-            search = {
+            action = {
                 resultAppList = appList.filter { appInfo ->
                     appInfo.label.contains(searchApp)
-                }
-            }
+                }.toPersistentList()
+            },
         )
 
         if (resultAppList.isNotEmpty()) {
             LazyVerticalGrid(
                 modifier = Modifier.fillMaxSize(),
-                columns = GridCells.Fixed(4),
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.large_padding)),
-                horizontalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.large_padding)),
-                contentPadding = PaddingValues(bottom = dimensionResource(id = R.dimen.large_padding))
+                columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
+                verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+                horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+                contentPadding = PaddingValues(bottom = UiConfig.LargePadding),
             ) {
                 items(resultAppList.size) { index ->
                     AppInfoItem(
@@ -101,4 +99,20 @@ fun AppListScreen(
     }
 }
 
-
+@Composable
+private fun WithmoSearchTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    action: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    WithmoTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = "アプリを検索",
+        action = action,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { action() }),
+    )
+}
