@@ -1,28 +1,26 @@
 package com.example.withmo.data.repositories
 
 import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.SortMode
 import com.example.withmo.domain.model.UserSetting
-import com.example.withmo.domain.model.UserSettingRepository
+import com.example.withmo.domain.repository.UserSettingRepository
+import com.example.withmo.ui.theme.UiConfig
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
-
 import javax.inject.Inject
 
 class UserSettingRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>
+    private val dataStore: DataStore<Preferences>,
 ) : UserSettingRepository {
     private companion object {
         val SHOW_CLOCK = booleanPreferencesKey("show_clock")
@@ -39,6 +37,30 @@ class UserSettingRepositoryImpl @Inject constructor(
         const val TAG = "UserPreferencesRepo"
     }
 
+    override val userSetting: Flow<UserSetting> = dataStore.data
+        .catch {
+            if (it is IOException) {
+                Log.e(TAG, "Error reading preferences", it)
+                emit(emptyPreferences())
+            } else {
+                throw it
+            }
+        }
+        .map { preferences ->
+            UserSetting(
+                showClock = preferences[SHOW_CLOCK] ?: true,
+                clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) } ?: ClockMode.TOP_DATE,
+                showNotificationAnimation = preferences[SHOW_NOTIFICATION_ANIMATION] ?: false,
+                modelFileList = mutableListOf(),
+                appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
+                appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
+                showAppName = preferences[SHOW_APP_NAME] ?: true,
+                sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) } ?: SortMode.ALPHABETICAL,
+                showScaleSliderButton = preferences[SHOW_SCALE_SLIDER_BUTTON] ?: true,
+                showSortButton = preferences[SHOW_SORT_BUTTON] ?: true,
+            )
+        }
+
     override suspend fun saveUserSetting(userSetting: UserSetting) {
         dataStore.edit { preferences ->
             preferences[SHOW_CLOCK] = userSetting.showClock
@@ -52,27 +74,4 @@ class UserSettingRepositoryImpl @Inject constructor(
             preferences[SHOW_SORT_BUTTON] = userSetting.showSortButton
         }
     }
-
-    override val userSetting: Flow<UserSetting> = dataStore.data
-        .catch {
-            if(it is IOException) {
-                Log.e(TAG, "Error reading preferences", it)
-            } else {
-                throw it
-            }
-        }
-        .map { preferences ->
-            UserSetting(
-                showClock = preferences[SHOW_CLOCK] ?: true,
-                clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) } ?: ClockMode.TOP_DATE,
-                showNotificationAnimation = preferences[SHOW_NOTIFICATION_ANIMATION] ?: false,
-                modelFileList = mutableListOf(),
-                appIconSize = preferences[APP_ICON_SIZE] ?: 48f,
-                appIconPadding = preferences[APP_ICON_PADDING] ?: 10f,
-                showAppName = preferences[SHOW_APP_NAME] ?: true,
-                sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) } ?: SortMode.ALPHABETICAL,
-                showScaleSliderButton = preferences[SHOW_SCALE_SLIDER_BUTTON] ?: true,
-                showSortButton = preferences[SHOW_SORT_BUTTON] ?: true
-            )
-        }
 }

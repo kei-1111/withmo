@@ -7,8 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.UserSetting
-import com.example.withmo.domain.model.UserSettingRepository
+import com.example.withmo.domain.repository.UserSettingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,16 +24,16 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val userSettingRepository: UserSettingRepository
+    private val userSettingRepository: UserSettingRepository,
 ) : ViewModel() {
     var uiState by mutableStateOf(HomeScreenUiState())
-    private set
+        private set
 
     val userSetting: StateFlow<UserSetting> = userSettingRepository.userSetting
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = UserSetting()
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = UserSetting(),
         )
 
     init {
@@ -44,27 +45,29 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             while (true) {
                 uiState = uiState.copy(currentTime = ZonedDateTime.now())
-                delay(1000)
+                delay(ClockUpdateInterval)
             }
         }
     }
 
     private fun splashScreen() {
         viewModelScope.launch {
-            delay(5000)
-            uiState = uiState.copy(finishSprashScreen = !uiState.finishSprashScreen)
+            delay(SplashScreenDuration)
+            uiState = uiState.copy(finishSplashScreen = !uiState.finishSplashScreen)
         }
     }
 
-    fun getTime(): List<String> {
-        return listOf(
-            uiState.currentTime.year.toString(),
-            String.format("%02d", uiState.currentTime.monthValue),
-            String.format("%02d", uiState.currentTime.dayOfMonth),
-            String.format("%02d", uiState.currentTime.hour),
-            String.format("%02d", uiState.currentTime.minute),
-            uiState.currentTime.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.ENGLISH)
-                .uppercase()
+    fun getTime(): DateTimeInfo {
+        return DateTimeInfo(
+            year = uiState.currentTime.year.toString(),
+            month = String.format(Locale.JAPAN, "%02d", uiState.currentTime.monthValue),
+            day = String.format(Locale.JAPAN, "%02d", uiState.currentTime.dayOfMonth),
+            hour = String.format(Locale.JAPAN, "%02d", uiState.currentTime.hour),
+            minute = String.format(Locale.JAPAN, "%02d", uiState.currentTime.minute),
+            dayOfWeek = uiState.currentTime.dayOfWeek.getDisplayName(
+                TextStyle.SHORT,
+                Locale.ENGLISH,
+            ).uppercase(),
         )
     }
 
@@ -80,5 +83,11 @@ class HomeViewModel @Inject constructor(
 
     fun setPopupExpanded(expanded: Boolean) {
         uiState = uiState.copy(popupExpanded = expanded)
+    }
+
+    @Suppress("MagicNumber")
+    companion object {
+        private const val SplashScreenDuration = 5000L
+        private const val ClockUpdateInterval = 1000L
     }
 }

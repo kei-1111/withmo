@@ -1,164 +1,141 @@
 package com.example.withmo.ui.component.homescreen
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.style.LineHeightStyle
-import androidx.compose.ui.unit.sp
-import com.example.withmo.R
 import com.example.withmo.domain.model.ClockMode
-import com.example.withmo.until.CONTENT_PADDING
-import com.example.withmo.until.MEDIUM_SPACE
-import com.example.withmo.until.SMALL_SPACE
+import com.example.withmo.domain.model.DateTimeInfo
+import com.example.withmo.ui.theme.UiConfig
+import com.example.withmo.ui.theme.clockTextExtraSmallSize
+import com.example.withmo.ui.theme.clockTextLargeSize
+import com.example.withmo.ui.theme.clockTextMediumSize
+import com.example.withmo.ui.theme.clockTextSmallSize
 
 @Composable
 fun Clock(
     clockMode: ClockMode,
-    year: String,
-    month: String,
-    day: String,
-    dayOfWeek: String,
-    hour: String,
-    minute: String,
+    dateTimeInfo: DateTimeInfo,
+    modifier: Modifier = Modifier,
 ) {
-    val clockTextSmallestSize = TextStyle(
-        fontFamily = FontFamily(Font(R.font.biz_ud_gothic_bold)),
-        fontSize = 10.sp,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both
-        )
-    )
-
-    val clockTextSmallSize = TextStyle(
-        fontFamily = FontFamily(Font(R.font.biz_ud_gothic_bold)),
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both
-        )
-    )
-
-    val clockTextMediumSize = TextStyle(
-        fontFamily = FontFamily(Font(R.font.biz_ud_gothic_bold)),
-        fontSize = 22.8.sp,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both
-        )
-    )
-
-    val clockTextLargeSize = TextStyle(
-        fontFamily = FontFamily(Font(R.font.biz_ud_gothic_bold)),
-        fontSize = 37.sp,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both
-        )
-    )
-
     when (clockMode) {
         ClockMode.TOP_DATE -> {
-            Column(
-                modifier = Modifier
-                    .background(Color.Transparent),
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(SMALL_SPACE)
-                ) {
-                    Text(
-                        text = year,
-                        style = clockTextSmallSize
-                    )
-                    Text(
-                        text = month,
-                        style = clockTextSmallSize
-                    )
-                    Text(
-                        text = day,
-                        style = clockTextSmallSize
-                    )
-                    Text(
-                        text = dayOfWeek,
-                        style = clockTextSmallSize
-                    )
-                }
-                Spacer(modifier = Modifier.height(SMALL_SPACE))
-                Row {
-                    Text(
-                        text = "$hour:",
-                        style = clockTextLargeSize
-                    )
-                    Text(
-                        text = minute,
-                        style = clockTextLargeSize
-                    )
-                }
-            }
+            ClockTopDate(
+                dateTimeInfo = dateTimeInfo,
+                modifier = modifier,
+            )
         }
 
         ClockMode.HORIZONTAL_DATE -> {
+            ClockHorizontalDate(
+                dateTimeInfo = dateTimeInfo,
+                modifier = modifier,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ClockTopDate(
+    dateTimeInfo: DateTimeInfo,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+        ) {
+            Text(
+                text = dateTimeInfo.year,
+                style = clockTextSmallSize,
+                color = textColor,
+            )
+            Text(
+                text = dateTimeInfo.month,
+                style = clockTextSmallSize,
+                color = textColor,
+            )
+            Text(
+                text = dateTimeInfo.day,
+                style = clockTextSmallSize,
+                color = textColor,
+            )
+            Text(
+                text = dateTimeInfo.dayOfWeek,
+                style = clockTextSmallSize,
+                color = textColor,
+            )
+        }
+        Spacer(modifier = Modifier.height(UiConfig.ExtraSmallPadding))
+        Row {
+            Text(
+                text = "${dateTimeInfo.hour}:",
+                style = clockTextLargeSize,
+                color = textColor,
+            )
+            Text(
+                text = dateTimeInfo.minute,
+                style = clockTextLargeSize,
+                color = textColor,
+            )
+        }
+    }
+}
+
+@Composable
+private fun ClockHorizontalDate(
+    dateTimeInfo: DateTimeInfo,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Row {
             Column {
-                Row(
-                    modifier = Modifier
-                        .background(Color.Transparent),
-                ) {
-                    Column {
-                        Text(
-                            text = year,
-                            style = clockTextSmallestSize
-                        )
-                        Text(
-                            text = month,
-                            style = clockTextMediumSize
-                        )
-                        Text(
-                            text = day,
-                            style = clockTextMediumSize
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(MEDIUM_SPACE))
-                    Column {
-                        Text(
-                            text = dayOfWeek,
-                            style = clockTextSmallSize
-                        )
-                        Spacer(modifier = Modifier.height(SMALL_SPACE))
-                        Row {
-                            Text(
-                                text = "$hour:",
-                                style = clockTextLargeSize
-                            )
-                            Text(
-                                text = minute,
-                                style = clockTextLargeSize
-                            )
-                        }
-                    }
+                Text(
+                    text = dateTimeInfo.year,
+                    style = clockTextExtraSmallSize,
+                    color = textColor,
+                )
+                Text(
+                    text = dateTimeInfo.month,
+                    style = clockTextMediumSize,
+                    color = textColor,
+                )
+                Text(
+                    text = dateTimeInfo.day,
+                    style = clockTextMediumSize,
+                    color = textColor,
+                )
+            }
+            Spacer(modifier = Modifier.width(UiConfig.SmallPadding))
+            Column {
+                Text(
+                    text = dateTimeInfo.dayOfWeek,
+                    style = clockTextSmallSize,
+                    color = textColor,
+                )
+                Spacer(modifier = Modifier.height(UiConfig.ExtraSmallPadding))
+                Row {
+                    Text(
+                        text = "${dateTimeInfo.hour}:",
+                        style = clockTextLargeSize,
+                        color = textColor,
+                    )
+                    Text(
+                        text = dateTimeInfo.minute,
+                        style = clockTextLargeSize,
+                        color = textColor,
+                    )
                 }
             }
         }

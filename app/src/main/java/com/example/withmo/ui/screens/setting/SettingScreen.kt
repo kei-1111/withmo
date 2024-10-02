@@ -16,7 +16,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -30,14 +29,15 @@ import com.example.withmo.ui.component.settingscreen.home.SettingHomeLayout
 import com.example.withmo.ui.component.settingscreen.home.SettingNotification
 import com.example.withmo.ui.component.settingscreen.model.ModelFileList
 import com.example.withmo.ui.theme.Typography
-import com.example.withmo.until.CONTENT_PADDING
-import com.example.withmo.until.MEDIUM_SPACE
+import com.example.withmo.ui.theme.UiConfig
+import kotlinx.collections.immutable.toPersistentList
 
+@Suppress("ModifierMissing", "LongMethod")
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun SettingScreen(
-    settingViewModel: SettingViewModel = hiltViewModel(),
     hideSetting: () -> Unit,
+    settingViewModel: SettingViewModel = hiltViewModel(),
 ) {
     val uiState = settingViewModel.uiState
 
@@ -45,7 +45,7 @@ fun SettingScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .pointerInput(Unit) {}
+            .pointerInput(Unit) {},
     ) {
         TextButton(
             onClick = {
@@ -57,7 +57,7 @@ fun SettingScreen(
         ) {
             Text(
                 text = "閉じる",
-                style = Typography.headlineMedium
+                style = Typography.headlineMedium,
             )
         }
         ChooseSettingMode(
@@ -71,9 +71,9 @@ fun SettingScreen(
             setModelFileList = {
                 settingViewModel.setCurrentUserSetting(
                     currentUserSetting = uiState.currentUserSetting
-                        .copy(modelFileList = it)
+                        .copy(modelFileList = it),
                 )
-            }
+            },
         )
         when (uiState.settingMode) {
             SettingMode.HOME -> {
@@ -82,8 +82,8 @@ fun SettingScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(CONTENT_PADDING),
-                    verticalArrangement = Arrangement.spacedBy(CONTENT_PADDING)
+                        .padding(UiConfig.MediumPadding),
+                    verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
                 ) {
                     SettingNotification(
                         showNotificationCheckDialog = uiState.showNotificationCheckDialog,
@@ -94,64 +94,64 @@ fun SettingScreen(
                         setNotificationState = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(showNotificationAnimation = it)
+                                    .copy(showNotificationAnimation = it),
                             )
-                        }
+                        },
                     )
                     SettingClock(
                         showClock = uiState.currentUserSetting.showClock,
                         setShowClock = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(showClock = it)
+                                    .copy(showClock = it),
                             )
                         },
                         clockMode = uiState.currentUserSetting.clockMode,
                         setClockMode = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(clockMode = it)
+                                    .copy(clockMode = it),
                             )
-                        }
+                        },
                     )
                     SettingAppIcon(
                         appIconSize = uiState.currentUserSetting.appIconSize,
                         setAppIconSize = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(appIconSize = it)
+                                    .copy(appIconSize = it),
                             )
                         },
                         appIconPadding = uiState.currentUserSetting.appIconPadding,
                         setAppIconPadding = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(appIconPadding = it)
+                                    .copy(appIconPadding = it),
                             )
                         },
                         showAppName = uiState.currentUserSetting.showAppName,
                         setShowAppName = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(showAppName = it)
+                                    .copy(showAppName = it),
                             )
-                        }
+                        },
                     )
                     SettingHomeLayout(
                         showScaleSliderButton = uiState.currentUserSetting.showScaleSliderButton,
                         setScaleSliderButton = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(showScaleSliderButton = it)
+                                    .copy(showScaleSliderButton = it),
                             )
                         },
                         showSortButton = uiState.currentUserSetting.showSortButton,
                         setSortButton = {
                             settingViewModel.setCurrentUserSetting(
                                 currentUserSetting = uiState.currentUserSetting
-                                    .copy(showSortButton = it)
+                                    .copy(showSortButton = it),
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -160,21 +160,21 @@ fun SettingScreen(
                 ChoosingModel()
                 if (uiState.currentUserSetting.modelFileList.isNotEmpty()) {
                     ModelFileList(
-                        modelFileList = uiState.currentUserSetting.modelFileList,
+                        modelFileList = uiState.currentUserSetting.modelFileList.toPersistentList(),
                         toHome = {
                             hideSetting()
                             settingViewModel.saveUserSetting()
-                        }
+                        },
                     )
                 } else {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(CONTENT_PADDING + MEDIUM_SPACE),
+                            .padding(UiConfig.LargePadding),
                         text = "モデルが見つかりませんでした\nモデルをダウンロードしてください",
                         style = Typography.headlineMedium.copy(
-                            textAlign = TextAlign.Center
-                        )
+                            textAlign = TextAlign.Center,
+                        ),
                     )
                 }
             }

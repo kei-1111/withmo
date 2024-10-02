@@ -9,38 +9,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.ui.theme.Typography
-import com.example.withmo.until.MEDIUM_SPACE
+import com.example.withmo.ui.theme.UiConfig
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun SettingClock(
     showClock: Boolean,
     setShowClock: (Boolean) -> Unit,
     clockMode: ClockMode,
-    setClockMode: (ClockMode) -> Unit
+    setClockMode: (ClockMode) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         UserSettingWithSwitch(
             title = "ホームに時計を表示させる",
             checked = showClock,
             onCheckedChange = {
                 setShowClock(it)
-            }
+            },
         )
-        Spacer(modifier = Modifier.height(MEDIUM_SPACE))
+        Spacer(modifier = Modifier.height(UiConfig.SmallPadding))
         Text(
             text = "時計の表示形式",
-            style = Typography.headlineMedium
+            style = Typography.headlineMedium,
         )
         ExampleClockMode(
-            clockModeList = listOf(
+            clockModeList = persistentListOf(
                 ClockMode.TOP_DATE,
-                ClockMode.HORIZONTAL_DATE
+                ClockMode.HORIZONTAL_DATE,
             ),
             clockMode = clockMode,
             setClockMode = setClockMode,
-            showClock = showClock
+            showClock = showClock,
         )
     }
 }

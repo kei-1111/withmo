@@ -8,8 +8,7 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.withmo.ui.theme.Typography
-import com.example.withmo.until.SMALL_SPACE
+import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun SettingAppIcon(
@@ -19,16 +18,14 @@ fun SettingAppIcon(
     setAppIconPadding: (Float) -> Unit,
     showAppName: Boolean,
     setShowAppName: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
-//        UserSettingHeader(
-//            category = "アプリアイコン",
-//        )
         Column(
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
         ) {
             ExampleAppIcon(
                 appIconSize = appIconSize,
@@ -37,32 +34,32 @@ fun SettingAppIcon(
             )
             Text(
                 text = "アイコンサイズ",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
             Slider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = SMALL_SPACE),
+                    .padding(horizontal = UiConfig.ExtraSmallPadding),
                 value = appIconSize,
                 onValueChange = { setAppIconSize(it) },
-                valueRange = 36f..72f
+                valueRange = UiConfig.MinAppIconSize..UiConfig.MaxAppIconSize,
             )
             Text(
                 text = "アイコン間隔",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
             Slider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = SMALL_SPACE),
+                    .padding(horizontal = UiConfig.ExtraSmallPadding),
                 value = appIconPadding,
                 onValueChange = { setAppIconPadding(it) },
-                valueRange = 0f..20f
+                valueRange = UiConfig.MinAppIconPadding..UiConfig.MaxAppIconPadding,
             )
             UserSettingWithSwitch(
                 title = "アプリ名を表示",
                 checked = showAppName,
-                onCheckedChange = { setShowAppName(it) }
+                onCheckedChange = { setShowAppName(it) },
             )
         }
     }

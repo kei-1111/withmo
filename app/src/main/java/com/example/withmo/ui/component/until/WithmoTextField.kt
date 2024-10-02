@@ -1,99 +1,87 @@
 package com.example.withmo.ui.component.until
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextLayoutResult
-import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.unit.dp
-import com.example.withmo.R
-import com.example.withmo.ui.theme.Typography
+import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun WithmoTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-    readOnly: Boolean = false,
+    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     singleLine: Boolean = true,
-    maxLines: Int = 1,
+    showIcon: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
-    visualTransformation: VisualTransformation = VisualTransformation.None,
-    onTextLayout: (TextLayoutResult) -> Unit = {},
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    cursorBrush: Brush = SolidColor(Color.Black),
+    icon: ImageVector = Icons.Default.Search,
     label: String = "",
-    search: () -> Unit,
+    action: () -> Unit = {},
 ) {
-    BasicTextField(
-        value = value,
-        onValueChange = onValueChange,
-        modifier = modifier
-            .background(
-                color = Color.LightGray.copy(alpha = 0.5f),
-                shape = if (maxLines == 1) CircleShape else RoundedCornerShape(10)
-            ),
-        enabled = enabled,
-        readOnly = readOnly,
-        textStyle = Typography.bodyMedium,
-        keyboardOptions = keyboardOptions,
-        keyboardActions = keyboardActions,
-        visualTransformation = visualTransformation,
-        onTextLayout = onTextLayout,
-        interactionSource = interactionSource,
-        cursorBrush = cursorBrush,
-        singleLine = singleLine,
-        minLines = maxLines,
-        maxLines = maxLines,
-        decorationBox = { innerTextField ->
+    Surface(
+        modifier = modifier,
+        color = backgroundColor,
+        shape = MaterialTheme.shapes.large,
+    ) {
+        Box(
+            modifier = Modifier
+                .height(UiConfig.TextFieldHeight)
+                .padding(
+                    horizontal = UiConfig.MediumPadding,
+                ),
+            contentAlignment = Alignment.CenterStart,
+        ) {
+            if (value.isEmpty()) {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
+                )
+            }
             Row(
-                modifier = Modifier.padding(horizontal = 14.dp, vertical = 8.dp),
+                modifier = Modifier.fillMaxSize(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Box(Modifier.weight(1f)) {
-                    innerTextField()
-                    if (value.isEmpty()) {
-                        Text(
-                            text = label,
-                            style = Typography.bodyMedium.copy(
-                                color = Color.Gray
-                            ),
-                        )
-                    }
-                }
-                IconButton(
-                    modifier = Modifier.size(24.dp),
-                    onClick = search
-                ) {
+                BasicTextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                    modifier = Modifier.weight(UiConfig.DefaultWeight),
+                    singleLine = singleLine,
+                    textStyle = MaterialTheme.typography.bodyMedium.copy(
+                        color = MaterialTheme.colorScheme.onSurface,
+                    ),
+                    keyboardOptions = keyboardOptions,
+                    keyboardActions = keyboardActions,
+                )
+                if (showIcon) {
                     Icon(
-                        modifier = Modifier.size(18.dp),
-                        painter = painterResource(id = R.drawable.ic_search),
+                        modifier = Modifier.clickable(
+                            onClick = action,
+                        ),
+                        imageVector = icon,
                         contentDescription = "Search",
-                        tint = Color.DarkGray
+                        tint = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
         }
-    )
+    }
 }
