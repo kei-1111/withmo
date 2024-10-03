@@ -1,10 +1,11 @@
 package com.example.withmo.ui.component.settingscreen.home
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.TitleLargeText
 
 @Composable
 fun NotificationCheckDialog(
@@ -21,7 +22,7 @@ fun NotificationCheckDialog(
                     onConfirm()
                 },
             ) {
-                Text("設定へ")
+                BodyMediumText("設定へ")
             }
         },
         modifier = modifier,
@@ -31,14 +32,14 @@ fun NotificationCheckDialog(
                     onDismiss()
                 },
             ) {
-                Text("キャンセル")
+                BodyMediumText("キャンセル")
             }
         },
         title = {
-            Text("通知の設定")
+            TitleLargeText("通知の設定")
         },
         text = {
-            Text("通知の設定を変更すると、通知が来たときにアニメーションをみることが出来ます。")
+            BodyMediumText("通知の設定を変更すると、通知が来たときにアニメーションをみることが出来ます。")
         },
     )
 }

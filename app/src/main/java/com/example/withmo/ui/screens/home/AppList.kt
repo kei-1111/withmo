@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.applist
+package com.example.withmo.ui.screens.home
 
 import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
@@ -14,7 +14,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -23,78 +23,77 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.style.TextAlign
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.ui.component.homescreen.AppInfoItem
-import com.example.withmo.ui.component.until.WithmoTextField
-import com.example.withmo.ui.theme.Typography
+import com.example.withmo.ui.component.AppItem
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
-@Suppress("ModifierMissing")
 @Composable
-fun AppListScreen(
+fun AppList(
     context: Context,
     appList: ImmutableList<AppInfo>,
-    showSetting: () -> Unit,
+    appSearchQuery: String,
+    onEvent: (HomeUiEvent) -> Unit,
+    navigateToSettingScreen: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    var searchApp by remember { mutableStateOf("") }
     var resultAppList by remember { mutableStateOf(appList) }
 
     val paddingValues = WindowInsets.safeGestures.asPaddingValues()
+    val topPaddingValue = paddingValues.calculateTopPadding()
+    val bottomPaddingValue = paddingValues.calculateBottomPadding()
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
-            appInfo.label.contains(searchApp)
+            appInfo.label.contains(appSearchQuery)
         }.toPersistentList()
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
+    Surface(
+        modifier = modifier
             .padding(
-                top = paddingValues.calculateTopPadding(),
+                top = topPaddingValue,
                 start = UiConfig.MediumPadding,
                 end = UiConfig.MediumPadding,
             ),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
-        WithmoSearchTextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = searchApp,
-            onValueChange = { searchApp = it },
-            action = {
-                resultAppList = appList.filter { appInfo ->
-                    appInfo.label.contains(searchApp)
-                }.toPersistentList()
-            },
-        )
-
-        if (resultAppList.isNotEmpty()) {
-            LazyVerticalGrid(
-                modifier = Modifier.fillMaxSize(),
-                columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
-                verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                contentPadding = PaddingValues(bottom = UiConfig.LargePadding),
-            ) {
-                items(resultAppList.size) { index ->
-                    AppInfoItem(
-                        context = context,
-                        appInfo = resultAppList[index],
-                        showSetting = showSetting,
-                    )
-                }
-            }
-        } else {
-            Text(
+        Column(
+            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+        ) {
+            WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
-                text = "アプリが見つかりませんでした",
-                style = Typography.bodyMedium.copy(
-                    textAlign = TextAlign.Center,
-                ),
+                value = appSearchQuery,
+                onValueChange = {
+                    onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it))
+                },
+                action = {
+                    resultAppList = appList.filter { appInfo ->
+                        appInfo.label.contains(appSearchQuery)
+                    }.toPersistentList()
+                },
             )
+            if (resultAppList.isNotEmpty()) {
+                LazyVerticalGrid(
+                    modifier = Modifier.fillMaxSize(),
+                    columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
+                    verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+                    horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+                    contentPadding = PaddingValues(bottom = bottomPaddingValue),
+                ) {
+                    items(resultAppList.size) { index ->
+                        AppItem(
+                            context = context,
+                            appInfo = resultAppList[index],
+                            navigateToSettingScreen = navigateToSettingScreen,
+                        )
+                    }
+                }
+            } else {
+                BodyMediumText(text = "アプリが見つかりませんでした")
+            }
         }
     }
 }

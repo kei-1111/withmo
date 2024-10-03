@@ -36,10 +36,10 @@ import kotlinx.collections.immutable.toPersistentList
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 fun SettingScreen(
-    hideSetting: () -> Unit,
-    settingViewModel: SettingViewModel = hiltViewModel(),
+    navigateToHomeScreen: () -> Unit,
+    viewModel: SettingViewModel = hiltViewModel(),
 ) {
-    val uiState = settingViewModel.uiState
+    val uiState = viewModel.uiState
 
     Column(
         modifier = Modifier
@@ -49,8 +49,8 @@ fun SettingScreen(
     ) {
         TextButton(
             onClick = {
-                hideSetting()
-                settingViewModel.saveUserSetting()
+                navigateToHomeScreen()
+                viewModel.saveUserSetting()
             },
             modifier = Modifier
                 .align(Alignment.End),
@@ -62,15 +62,15 @@ fun SettingScreen(
         }
         ChooseSettingMode(
             changeSettingMode = {
-                settingViewModel.setSettingMode(it)
+                viewModel.setSettingMode(it)
             },
             showFileAccessCheckDialog = uiState.showFileAccessCheckDialog,
             setShowFileAccessCheckDialog = {
-                settingViewModel.setShowFileAccessCheckDialog(it)
+                viewModel.setShowFileAccessCheckDialog(it)
             },
             setModelFileList = {
-                settingViewModel.setCurrentUserSetting(
-                    currentUserSetting = uiState.currentUserSetting
+                viewModel.setCurrentUserSetting(
+                    currentUserSettings = uiState.currentUserSettings
                         .copy(modelFileList = it),
                 )
             },
@@ -88,67 +88,67 @@ fun SettingScreen(
                     SettingNotification(
                         showNotificationCheckDialog = uiState.showNotificationCheckDialog,
                         setShowNotificationCheckDialog = {
-                            settingViewModel.setShowNotificationCheckDialog(it)
+                            viewModel.setShowNotificationCheckDialog(it)
                         },
-                        showNotificationAnimation = uiState.currentUserSetting.showNotificationAnimation,
+                        showNotificationAnimation = uiState.currentUserSettings.showNotificationAnimation,
                         setNotificationState = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(showNotificationAnimation = it),
                             )
                         },
                     )
                     SettingClock(
-                        showClock = uiState.currentUserSetting.showClock,
+                        showClock = uiState.currentUserSettings.showClock,
                         setShowClock = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(showClock = it),
                             )
                         },
-                        clockMode = uiState.currentUserSetting.clockMode,
+                        clockMode = uiState.currentUserSettings.clockMode,
                         setClockMode = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(clockMode = it),
                             )
                         },
                     )
                     SettingAppIcon(
-                        appIconSize = uiState.currentUserSetting.appIconSize,
+                        appIconSize = uiState.currentUserSettings.appIconSize,
                         setAppIconSize = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(appIconSize = it),
                             )
                         },
-                        appIconPadding = uiState.currentUserSetting.appIconPadding,
+                        appIconPadding = uiState.currentUserSettings.appIconPadding,
                         setAppIconPadding = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(appIconPadding = it),
                             )
                         },
-                        showAppName = uiState.currentUserSetting.showAppName,
+                        showAppName = uiState.currentUserSettings.showAppName,
                         setShowAppName = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(showAppName = it),
                             )
                         },
                     )
                     SettingHomeLayout(
-                        showScaleSliderButton = uiState.currentUserSetting.showScaleSliderButton,
+                        showScaleSliderButton = uiState.currentUserSettings.showScaleSliderButton,
                         setScaleSliderButton = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(showScaleSliderButton = it),
                             )
                         },
-                        showSortButton = uiState.currentUserSetting.showSortButton,
+                        showSortButton = uiState.currentUserSettings.showSortButton,
                         setSortButton = {
-                            settingViewModel.setCurrentUserSetting(
-                                currentUserSetting = uiState.currentUserSetting
+                            viewModel.setCurrentUserSetting(
+                                currentUserSettings = uiState.currentUserSettings
                                     .copy(showSortButton = it),
                             )
                         },
@@ -158,12 +158,12 @@ fun SettingScreen(
 
             SettingMode.MODEL -> {
                 ChoosingModel()
-                if (uiState.currentUserSetting.modelFileList.isNotEmpty()) {
+                if (uiState.currentUserSettings.modelFileList.isNotEmpty()) {
                     ModelFileList(
-                        modelFileList = uiState.currentUserSetting.modelFileList.toPersistentList(),
+                        modelFileList = uiState.currentUserSettings.modelFileList.toPersistentList(),
                         toHome = {
-                            hideSetting()
-                            settingViewModel.saveUserSetting()
+                            navigateToHomeScreen()
+                            viewModel.saveUserSetting()
                         },
                     )
                 } else {

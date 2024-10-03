@@ -2,19 +2,19 @@ package com.example.withmo.ui.screens.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.DateTimeInfo
-import com.example.withmo.domain.model.UserSetting
-import com.example.withmo.domain.repository.UserSettingRepository
+import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.usecase.GetUserSettingsUseCase
+import com.example.withmo.domain.usecase.SaveSortModeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
 import java.time.format.TextStyle
@@ -24,65 +24,89 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val userSettingRepository: UserSettingRepository,
+    private val getUserSettingsUseCase: GetUserSettingsUseCase,
+    private val saveSortModeUseCase: SaveSortModeUseCase,
 ) : ViewModel() {
-    var uiState by mutableStateOf(HomeScreenUiState())
-        private set
+    private val _uiState = MutableStateFlow(HomeUiState())
+    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
 
-    val userSetting: StateFlow<UserSetting> = userSettingRepository.userSetting
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(),
-            initialValue = UserSetting(),
-        )
+    private val _uiEvent = MutableSharedFlow<HomeUiEvent>()
+    val uiEvent: MutableSharedFlow<HomeUiEvent> = _uiEvent
 
     init {
-        splashScreen()
+        viewModelScope.launch {
+            getUserSettingsUseCase().collect { userSettings ->
+                _uiState.update {
+                    it.copy(currentUserSettings = userSettings)
+                }
+            }
+        }
+        splashScreenDuration()
         startClock()
+    }
+
+    fun onEvent(event: HomeUiEvent) {
+        viewModelScope.launch {
+            _uiEvent.emit(event)
+        }
     }
 
     private fun startClock() {
         viewModelScope.launch {
             while (true) {
-                uiState = uiState.copy(currentTime = ZonedDateTime.now())
+                _uiState.update {
+                    it.copy(currentTime = ZonedDateTime.now())
+                }
                 delay(ClockUpdateInterval)
             }
         }
     }
 
-    private fun splashScreen() {
+    private fun splashScreenDuration() {
         viewModelScope.launch {
             delay(SplashScreenDuration)
-            uiState = uiState.copy(finishSplashScreen = !uiState.finishSplashScreen)
+            _uiState.update {
+                it.copy(isFinishSplashScreen = true)
+            }
         }
     }
 
     fun getTime(): DateTimeInfo {
         return DateTimeInfo(
-            year = uiState.currentTime.year.toString(),
-            month = String.format(Locale.JAPAN, "%02d", uiState.currentTime.monthValue),
-            day = String.format(Locale.JAPAN, "%02d", uiState.currentTime.dayOfMonth),
-            hour = String.format(Locale.JAPAN, "%02d", uiState.currentTime.hour),
-            minute = String.format(Locale.JAPAN, "%02d", uiState.currentTime.minute),
-            dayOfWeek = uiState.currentTime.dayOfWeek.getDisplayName(
+            year = _uiState.value.currentTime.year.toString(),
+            month = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.monthValue),
+            day = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.dayOfMonth),
+            hour = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.hour),
+            minute = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.minute),
+            dayOfWeek = _uiState.value.currentTime.dayOfWeek.getDisplayName(
                 TextStyle.SHORT,
                 Locale.ENGLISH,
             ).uppercase(),
         )
     }
 
-    fun saveUserSetting(userSetting: UserSetting) {
+    fun saveSortMode(sortMode: SortMode) {
         viewModelScope.launch {
-            userSettingRepository.saveUserSetting(userSetting)
+            saveSortModeUseCase(sortMode)
         }
     }
 
     fun setShowScaleSlider(show: Boolean) {
-        uiState = uiState.copy(showScaleSlider = show)
+        _uiState.update {
+            it.copy(isShowScaleSlider = show)
+        }
     }
 
     fun setPopupExpanded(expanded: Boolean) {
-        uiState = uiState.copy(popupExpanded = expanded)
+        _uiState.update {
+            it.copy(isExpandPopup = expanded)
+        }
+    }
+
+    fun setAppSearchQuery(query: String) {
+        _uiState.update {
+            it.copy(appSearchQuery = query)
+        }
     }
 
     @Suppress("MagicNumber")

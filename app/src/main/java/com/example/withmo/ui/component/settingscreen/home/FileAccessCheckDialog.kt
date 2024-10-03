@@ -1,10 +1,11 @@
 package com.example.withmo.ui.component.settingscreen.home
 
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.TitleLargeText
 
 @Composable
 fun FileAccessCheckDialog(
@@ -21,7 +22,7 @@ fun FileAccessCheckDialog(
                     onConfirm()
                 },
             ) {
-                Text("設定へ")
+                BodyMediumText("設定へ")
             }
         },
         modifier = modifier,
@@ -31,14 +32,14 @@ fun FileAccessCheckDialog(
                     onDismiss()
                 },
             ) {
-                Text("キャンセル")
+                BodyMediumText("キャンセル")
             }
         },
         title = {
-            Text("ファイルの設定")
+            TitleLargeText("ファイルアクセス権限")
         },
         text = {
-            Text("モデルを変更させるためには、ファイルアクセス権が必要です。")
+            BodyMediumText("モデルを変更させるためには、ファイルアクセス権が必要です。")
         },
     )
 }

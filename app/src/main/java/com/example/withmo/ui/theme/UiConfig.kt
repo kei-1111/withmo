@@ -43,7 +43,9 @@ data object UiConfig {
 //    Tonal
     val TonalElevation = 5.dp
 
-    val PopupWidth = 200.dp
+    val PopupWidth = 400.dp
+
+    val BadgeSize = 15.dp
 
     val DividerHeight = 3.dp
 

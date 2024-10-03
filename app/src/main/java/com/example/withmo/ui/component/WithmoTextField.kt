@@ -1,4 +1,4 @@
-package com.example.withmo.ui.component.until
+package com.example.withmo.ui.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box

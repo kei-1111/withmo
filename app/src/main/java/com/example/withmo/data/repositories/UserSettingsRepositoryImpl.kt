@@ -8,20 +8,24 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import com.example.withmo.di.IoDispatcher
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.SortMode
-import com.example.withmo.domain.model.UserSetting
-import com.example.withmo.domain.repository.UserSettingRepository
+import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.ui.theme.UiConfig
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
-class UserSettingRepositoryImpl @Inject constructor(
+class UserSettingsRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
-) : UserSettingRepository {
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+) : UserSettingsRepository {
     private companion object {
         val SHOW_CLOCK = booleanPreferencesKey("show_clock")
         val CLOCK_MODE = stringPreferencesKey("clock_mode")
@@ -37,7 +41,7 @@ class UserSettingRepositoryImpl @Inject constructor(
         const val TAG = "UserPreferencesRepo"
     }
 
-    override val userSetting: Flow<UserSetting> = dataStore.data
+    override val userSettings: Flow<UserSettings> = dataStore.data
         .catch {
             if (it is IOException) {
                 Log.e(TAG, "Error reading preferences", it)
@@ -47,31 +51,43 @@ class UserSettingRepositoryImpl @Inject constructor(
             }
         }
         .map { preferences ->
-            UserSetting(
+            UserSettings(
                 showClock = preferences[SHOW_CLOCK] ?: true,
-                clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) } ?: ClockMode.TOP_DATE,
+                clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
+                    ?: ClockMode.TOP_DATE,
                 showNotificationAnimation = preferences[SHOW_NOTIFICATION_ANIMATION] ?: false,
                 modelFileList = mutableListOf(),
                 appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
                 appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
                 showAppName = preferences[SHOW_APP_NAME] ?: true,
-                sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) } ?: SortMode.ALPHABETICAL,
+                sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) }
+                    ?: SortMode.ALPHABETICAL,
                 showScaleSliderButton = preferences[SHOW_SCALE_SLIDER_BUTTON] ?: true,
                 showSortButton = preferences[SHOW_SORT_BUTTON] ?: true,
             )
         }
 
-    override suspend fun saveUserSetting(userSetting: UserSetting) {
-        dataStore.edit { preferences ->
-            preferences[SHOW_CLOCK] = userSetting.showClock
-            preferences[CLOCK_MODE] = userSetting.clockMode.name
-            preferences[SHOW_NOTIFICATION_ANIMATION] = userSetting.showNotificationAnimation
-            preferences[APP_ICON_SIZE] = userSetting.appIconSize
-            preferences[APP_ICON_PADDING] = userSetting.appIconPadding
-            preferences[SHOW_APP_NAME] = userSetting.showAppName
-            preferences[SORT_MODE] = userSetting.sortMode.name
-            preferences[SHOW_SCALE_SLIDER_BUTTON] = userSetting.showScaleSliderButton
-            preferences[SHOW_SORT_BUTTON] = userSetting.showSortButton
+    override suspend fun saveSortMode(sortMode: SortMode) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[SORT_MODE] = sortMode.name
+            }
+        }
+    }
+
+    override suspend fun saveUserSetting(userSettings: UserSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[SHOW_CLOCK] = userSettings.showClock
+                preferences[CLOCK_MODE] = userSettings.clockMode.name
+                preferences[SHOW_NOTIFICATION_ANIMATION] = userSettings.showNotificationAnimation
+                preferences[APP_ICON_SIZE] = userSettings.appIconSize
+                preferences[APP_ICON_PADDING] = userSettings.appIconPadding
+                preferences[SHOW_APP_NAME] = userSettings.showAppName
+                preferences[SORT_MODE] = userSettings.sortMode.name
+                preferences[SHOW_SCALE_SLIDER_BUTTON] = userSettings.showScaleSliderButton
+                preferences[SHOW_SORT_BUTTON] = userSettings.showSortButton
+            }
         }
     }
 }

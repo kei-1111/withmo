@@ -1,4 +1,4 @@
-package com.example.withmo
+package com.example.withmo.ui
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -8,14 +8,15 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor() : ViewModel() {
-    private var uiState by mutableStateOf(false)
+class AppViewModel @Inject constructor() : ViewModel() {
+    var uiState by mutableStateOf(false)
+        private set
 
-    fun getSettingState(): Boolean {
-        return uiState
+    fun navigateToSettingScreen() {
+        uiState = true
     }
 
-    fun setSettingState(state: Boolean) {
-        uiState = state
+    fun navigateToHomeScreen() {
+        uiState = false
     }
 }

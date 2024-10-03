@@ -10,17 +10,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.withmo.R
-import com.example.withmo.ui.theme.Typography
+import com.example.withmo.ui.component.LabelMediumText
 import com.example.withmo.ui.theme.UiConfig
 
 @Composable
@@ -51,11 +49,8 @@ fun ExampleAppIcon(
                     .clip(CircleShape),
             )
             if (showAppName) {
-                Text(
+                LabelMediumText(
                     text = "withmo",
-                    maxLines = UiConfig.AppIconTextMaxLines,
-                    overflow = TextOverflow.Ellipsis,
-                    style = Typography.bodyMedium,
                 )
             }
         }
@@ -74,11 +69,8 @@ fun ExampleAppIcon(
                     .clip(CircleShape),
             )
             if (showAppName) {
-                Text(
+                LabelMediumText(
                     text = "withmo",
-                    maxLines = UiConfig.AppIconTextMaxLines,
-                    overflow = TextOverflow.Ellipsis,
-                    style = Typography.bodyMedium,
                 )
             }
         }

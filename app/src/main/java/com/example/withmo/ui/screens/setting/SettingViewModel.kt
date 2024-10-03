@@ -6,8 +6,8 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.SettingMode
-import com.example.withmo.domain.model.UserSetting
-import com.example.withmo.domain.repository.UserSettingRepository
+import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.repository.UserSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SettingViewModel @Inject constructor(
-    private val userSettingRepository: UserSettingRepository,
+    private val userSettingsRepository: UserSettingsRepository,
 ) : ViewModel() {
     var uiState by mutableStateOf(SettingScreenUiState())
         private set
@@ -23,19 +23,19 @@ class SettingViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             uiState = uiState.copy(
-                currentUserSetting = userSettingRepository.userSetting.first(),
+                currentUserSettings = userSettingsRepository.userSettings.first(),
             )
         }
     }
 
     fun saveUserSetting() {
         viewModelScope.launch {
-            userSettingRepository.saveUserSetting(uiState.currentUserSetting)
+            userSettingsRepository.saveUserSetting(uiState.currentUserSettings)
         }
     }
 
-    fun setCurrentUserSetting(currentUserSetting: UserSetting) {
-        uiState = uiState.copy(currentUserSetting = currentUserSetting)
+    fun setCurrentUserSetting(currentUserSettings: UserSettings) {
+        uiState = uiState.copy(currentUserSettings = currentUserSettings)
     }
 
     fun setSettingMode(settingMode: SettingMode) {

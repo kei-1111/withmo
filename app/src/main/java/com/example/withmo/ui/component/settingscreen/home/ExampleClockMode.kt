@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.DateTimeInfo
-import com.example.withmo.ui.component.homescreen.Clock
+import com.example.withmo.ui.component.WithmoClock
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 
@@ -37,7 +37,7 @@ fun ExampleClockMode(
                     selected = clockMode == it,
                     onClick = { setClockMode(it) },
                 )
-                Clock(
+                WithmoClock(
                     clockMode = it,
                     dateTimeInfo = DateTimeInfo(),
                 )

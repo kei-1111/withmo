@@ -1,5 +1,4 @@
 import io.gitlab.arturbosch.detekt.Detekt
-import org.gradle.internal.impldep.com.google.api.client.util.store.DataStore
 
 plugins {
     alias(libs.plugins.android.application)
