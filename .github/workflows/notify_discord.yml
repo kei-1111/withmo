@@ -1,0 +1,14 @@
+name: Notify Discord
+
+on:
+  pull_request:
+
+jobs:
+  notify-discord:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send message to Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -d "{\"content\": \"A new Pull Request has been created by ${{ github.actor }}: ${{ github.event.pull_request.html_url }}\"}" \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
