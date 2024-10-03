@@ -1,31 +1,38 @@
 package com.example.withmo.until
 
 import android.content.Context
+import android.content.Intent
 import android.content.pm.PackageManager
 import com.example.withmo.R
 import com.example.withmo.domain.model.AppInfo
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
-fun getAppList(context: Context): List<AppInfo> {
+fun getAppList(context: Context): ImmutableList<AppInfo> {
     val pm = context.packageManager
-    val flags = PackageManager.MATCH_UNINSTALLED_PACKAGES
-    return pm.getInstalledApplications(flags)
+
+    val intent = Intent(Intent.ACTION_MAIN, null).apply {
+        addCategory(Intent.CATEGORY_LAUNCHER)
+    }
+
+    val launchableApps = pm.queryIntentActivities(intent, 0)
+
+    return launchableApps
         .filter {
-            it.packageName != context.packageName
-            pm.getLaunchIntentForPackage(it.packageName) != null
+            it.activityInfo.packageName != context.packageName
+            pm.getLaunchIntentForPackage(it.activityInfo.packageName) != null
         }
         .map {
             AppInfo(
                 icon = it.loadIcon(pm) ?: context.resources.getDrawable(R.mipmap.ic_launcher, null),
-                label = if (it.packageName == context.packageName) {
+                label = if (it.activityInfo.packageName == context.packageName) {
                     "withmoの設定"
                 } else {
-                    it.loadLabel(
-                        pm,
-                    ).toString()
+                    it.loadLabel(pm).toString()
                 },
-                packageName = it.packageName,
+                packageName = it.activityInfo.packageName,
             )
         }
         .sortedBy { it.label }
-        .toList()
+        .toPersistentList()
 }
