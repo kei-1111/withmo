@@ -23,52 +23,26 @@ val BizUdGothic = FontFamily(
 )
 
 val Typography = Typography(
-    headlineMedium = TextStyle(
-        fontFamily = NotoSansJp,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.Medium,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false,
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both,
-        ),
-    ),
     titleLarge = TextStyle(
         fontFamily = NotoSansJp,
-        fontSize = 48.sp,
-        fontWeight = FontWeight.Black,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false,
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both,
-        ),
-    ),
-    titleMedium = TextStyle(
-        fontFamily = NotoSansJp,
-        fontSize = 24.sp,
         fontWeight = FontWeight.SemiBold,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false,
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both,
-        ),
+        fontSize = 22.sp,
+        lineHeight = 28.sp,
     ),
+
     bodyMedium = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.Medium,
-        platformStyle = PlatformTextStyle(
-            includeFontPadding = false,
-        ),
-        lineHeightStyle = LineHeightStyle(
-            alignment = LineHeightStyle.Alignment.Center,
-            trim = LineHeightStyle.Trim.Both,
-        ),
+        fontSize = 16.sp,
+        lineHeight = 24.sp,
+    ),
+
+    labelMedium = TextStyle(
+        fontFamily = NotoSansJp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 12.sp,
+        letterSpacing = 0.5.sp,
+        lineHeight = 16.sp,
     ),
 )
 

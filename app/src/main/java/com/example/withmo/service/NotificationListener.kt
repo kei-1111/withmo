@@ -1,11 +1,11 @@
-package com.example.withmo.domain.model
+package com.example.withmo.service
 
 import android.content.Intent
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
-import com.example.withmo.domain.repository.UserSettingRepository
+import com.example.withmo.domain.repository.UserSettingsRepository
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NotificationListener : NotificationListenerService() {
     @Inject
-    lateinit var userSettingRepository: UserSettingRepository
+    lateinit var userSettingsRepository: UserSettingsRepository
 
     private val serviceScope = CoroutineScope(Dispatchers.Default)
 
@@ -26,7 +26,7 @@ class NotificationListener : NotificationListenerService() {
         super.onNotificationPosted(sbn)
         if (sbn == null) return
         serviceScope.launch {
-            val userSetting = userSettingRepository.userSetting.first()
+            val userSetting = userSettingsRepository.userSettings.first()
 
             if (userSetting.showNotificationAnimation) {
                 val intent = Intent("notification_received")

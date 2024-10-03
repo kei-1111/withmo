@@ -11,14 +11,11 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.ui.screens.home.HomeScreen
-import com.example.withmo.ui.screens.setting.SettingScreen
+import com.example.withmo.ui.App
 import com.example.withmo.ui.theme.WithmoTheme
 import com.example.withmo.until.getAppList
 import com.unity3d.player.UnityPlayer
@@ -88,20 +85,11 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            val mainViewModel: MainViewModel = hiltViewModel()
-
             WithmoTheme {
-                HomeScreen(
+                App(
                     unityPlayer = unityPlayer,
-                    showSetting = { mainViewModel.setSettingState(true) },
                     appList = appList.toPersistentList(),
                 )
-
-                if (mainViewModel.getSettingState()) {
-                    SettingScreen(
-                        hideSetting = { mainViewModel.setSettingState(false) },
-                    )
-                }
             }
         }
     }

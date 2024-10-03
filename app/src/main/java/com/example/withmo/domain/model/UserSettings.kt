@@ -2,7 +2,7 @@ package com.example.withmo.domain.model
 
 import com.example.withmo.ui.theme.UiConfig
 
-data class UserSetting(
+data class UserSettings(
     val showClock: Boolean = true,
     val clockMode: ClockMode = ClockMode.TOP_DATE,
     val showNotificationAnimation: Boolean = false,
