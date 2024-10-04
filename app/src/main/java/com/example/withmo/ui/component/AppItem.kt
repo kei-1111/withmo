@@ -40,6 +40,7 @@ fun AppItem(
 ) {
     Box(
         modifier = modifier,
+        contentAlignment = Alignment.Center,
     ) {
         Column(
             modifier = Modifier
