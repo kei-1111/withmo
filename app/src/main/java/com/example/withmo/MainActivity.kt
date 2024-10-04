@@ -117,5 +117,6 @@ class MainActivity : ComponentActivity() {
     }
 
     @Suppress("EmptyFunctionBlock")
-    override fun finish() {}
+    override fun finish() {
+    }
 }
