@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.screens.home.HomeScreen
-import com.example.withmo.ui.screens.setting.SettingScreen
+import com.example.withmo.ui.screens.setting.SettingsScreen
 import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
 
@@ -55,7 +55,7 @@ fun AppContent(
                 targetOffsetY = { it },
             ),
         ) {
-            SettingScreen(
+            SettingsScreen(
                 navigateToHomeScreen = navigateToHomeScreen,
             )
         }
