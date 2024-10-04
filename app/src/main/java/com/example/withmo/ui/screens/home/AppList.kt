@@ -88,6 +88,7 @@ fun AppList(
                             context = context,
                             appInfo = resultAppList[index],
                             navigateToSettingScreen = navigateToSettingScreen,
+                            modifier = Modifier.fillMaxWidth(),
                         )
                     }
                 }
