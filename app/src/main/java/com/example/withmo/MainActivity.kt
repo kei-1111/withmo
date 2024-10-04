@@ -29,6 +29,7 @@ class MainActivity : ComponentActivity() {
     private var appList: List<AppInfo> by mutableStateOf(emptyList())
 
     private val packageReceiver = object : BroadcastReceiver() {
+        @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
             if (intent.action == "notification_received") {
                 val packageName = intent.getStringExtra("notification_data")

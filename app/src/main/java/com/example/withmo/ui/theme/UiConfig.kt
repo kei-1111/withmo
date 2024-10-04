@@ -28,6 +28,8 @@ data object UiConfig {
 
     const val DisabledContentAlpha = 0.38f
 
+    const val AdaptiveIconScale = 1.5f
+
 //    App Icon Settings
     val ExampleAppIconSpaceHeight = 100.dp
 
