@@ -10,5 +10,5 @@ jobs:
       - name: Send message to Discord
         run: |
           curl -H "Content-Type: application/json" \
-          -d "{\"content\": \"A new Pull Request has been created by ${{ github.actor }}: ${{ github.event.pull_request.html_url }}\"}" \
+          -d "{\"content\": \"${{ github.actor }}により、Pull Request '${{ github.event.pull_request.title }}' が作成されました。\n ${{ github.event.pull_request.html_url }}\"}" \
           ${{ secrets.DISCORD_WEBHOOK_URL }}
