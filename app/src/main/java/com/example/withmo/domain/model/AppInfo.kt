@@ -9,8 +9,8 @@ import androidx.compose.runtime.Stable
 import com.example.withmo.ui.theme.UiConfig
 
 @Stable
-data class AppInfo(
-    val icon: Drawable,
+class AppInfo(
+    val appIcon: AppIcon,
     val label: String,
     val packageName: String,
     var notification: Boolean = false,
@@ -46,3 +46,8 @@ data class AppInfo(
         context.startActivity(intent)
     }
 }
+
+data class AppIcon(
+    val foregroundIcon: Drawable,
+    val backgroundIcon: Drawable?,
+)
