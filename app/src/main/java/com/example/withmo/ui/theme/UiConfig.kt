@@ -30,6 +30,10 @@ data object UiConfig {
 
     const val AdaptiveIconScale = 1.5f
 
+    const val BottomSheetShowDragHeight = -50f
+    const val BottomSheetWindowInsets = 0
+    val BottomSheetTonalElevation = 0.dp
+
 //    App Icon Settings
     val ExampleAppIconSpaceHeight = 100.dp
 

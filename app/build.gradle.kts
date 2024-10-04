@@ -98,9 +98,6 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.hilt.navigation.compose)
 
-//    Material
-    implementation(libs.androidx.material)
-
 //    DataStore
     implementation(libs.androidx.datastore.preferences)
 
