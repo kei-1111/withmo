@@ -3,46 +3,45 @@ package com.example.withmo.ui.screens.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.rememberSwipeableState
-import androidx.compose.material.swipeable
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLifecycleOwner
-import androidx.compose.ui.unit.IntOffset
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.ui.theme.BottomSheetShape
+import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlin.math.roundToInt
+import kotlinx.coroutines.launch
 
 @Suppress("ModifierMissing", "LongMethod")
-@OptIn(ExperimentalMaterialApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
@@ -54,11 +53,9 @@ fun HomeScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    // swipe
-    val height = context.resources.displayMetrics.heightPixels
-    val swipeableState = rememberSwipeableState(0)
-    val sizePx = with(LocalDensity.current) { height.dp.toPx() }
-    val anchors = mapOf(sizePx to 0, 0f to 1)
+    val scope = rememberCoroutineScope()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    var openBottomSheet by remember { mutableStateOf(false) }
 
     var homeAppList by remember { mutableStateOf(appList) }
 
@@ -104,31 +101,70 @@ fun HomeScreen(
         }.launchIn(this)
     }
 
-    val boxModifier = if (!uiState.isShowScaleSlider) {
-        Modifier
-            .fillMaxSize()
-            .swipeable(
-                state = swipeableState,
-                anchors = anchors,
-                orientation = Orientation.Vertical,
-            )
-            .padding(
-                top = topPaddingValue,
-                bottom = bottomPaddingValue,
-            )
-    } else {
-        Modifier
-            .fillMaxSize()
-            .padding(
-                top = topPaddingValue,
-                bottom = bottomPaddingValue,
-            )
-    }
-
     AnimatedVisibility(uiState.isFinishSplashScreen) {
+        if (openBottomSheet) {
+            ModalBottomSheet(
+                windowInsets = WindowInsets(UiConfig.BottomSheetWindowInsets),
+                onDismissRequest = {
+                    scope.launch {
+                        sheetState.hide()
+                    }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            openBottomSheet = false
+                        }
+                    }
+                },
+                shape = BottomSheetShape,
+                sheetState = sheetState,
+                dragHandle = {},
+                tonalElevation = UiConfig.BottomSheetTonalElevation,
+                content = {
+                    AppList(
+                        context = context,
+                        appList = homeAppList,
+                        appSearchQuery = uiState.appSearchQuery,
+                        onEvent = viewModel::onEvent,
+                        navigateToSettingScreen = navigateToSettingScreen,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                },
+            )
+        }
+
         Box(
-            modifier = boxModifier,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = topPaddingValue,
+                    bottom = bottomPaddingValue,
+                ),
         ) {
+            if (!uiState.isShowScaleSlider) {
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Spacer(
+                        modifier = Modifier.weight(UiConfig.DefaultWeight),
+                    )
+                    Box(
+                        modifier = Modifier
+                            .weight(UiConfig.DefaultWeight)
+                            .fillMaxWidth()
+                            .pointerInput(Unit) {
+                                detectVerticalDragGestures(
+                                    onVerticalDrag = { change, dragAmount ->
+                                        if (dragAmount < UiConfig.BottomSheetShowDragHeight) {
+                                            scope.launch {
+                                                openBottomSheet = true
+                                                sheetState.show()
+                                            }
+                                        }
+                                    },
+                                )
+                            },
+                    ) {}
+                }
+            }
             HomeScreenContent(
                 uiState = uiState,
                 onEvent = viewModel::onEvent,
@@ -136,30 +172,6 @@ fun HomeScreen(
                 appList = homeAppList,
                 navigateToSettingScreen = navigateToSettingScreen,
                 getCurrentTime = viewModel::getTime,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
-        Box(
-            modifier = Modifier
-                .offset {
-                    IntOffset(
-                        0,
-                        swipeableState.offset.value.roundToInt(),
-                    )
-                }
-                .fillMaxSize()
-                .background(
-                    MaterialTheme.colorScheme.surface,
-                    RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
-                )
-                .clip(shape = RoundedCornerShape(topStart = 15.dp, topEnd = 15.dp)),
-        ) {
-            AppList(
-                context = context,
-                appList = homeAppList,
-                appSearchQuery = uiState.appSearchQuery,
-                onEvent = viewModel::onEvent,
-                navigateToSettingScreen = navigateToSettingScreen,
                 modifier = Modifier.fillMaxSize(),
             )
         }
