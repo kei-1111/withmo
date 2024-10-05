@@ -59,6 +59,7 @@ data object UiConfig {
     val TopAppBarHeight = 64.dp
 
 //    SettingsScreen
-    val SettingsScreenItemHeight = 56.dp
     val SettingsScreenItemIconSize = 24.dp
+
+    val SettingItemHeight = 56.dp
 }

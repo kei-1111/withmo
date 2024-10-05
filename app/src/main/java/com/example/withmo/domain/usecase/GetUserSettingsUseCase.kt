@@ -1,6 +1,6 @@
 package com.example.withmo.domain.usecase
 
-import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.model.user_settings.UserSettings
 import kotlinx.coroutines.flow.Flow
 
 interface GetUserSettingsUseCase {

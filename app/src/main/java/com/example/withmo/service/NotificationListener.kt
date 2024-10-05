@@ -5,7 +5,7 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
-import com.example.withmo.domain.repository.UserSettingsRepository
+import com.example.withmo.domain.usecase.notification_usecase.GetNotificationSettingsUseCase
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class NotificationListener : NotificationListenerService() {
     @Inject
-    lateinit var userSettingsRepository: UserSettingsRepository
+    lateinit var getNotificationSettingsUseCase: GetNotificationSettingsUseCase
 
     private val serviceScope = CoroutineScope(Dispatchers.Default)
 
@@ -26,9 +26,9 @@ class NotificationListener : NotificationListenerService() {
         super.onNotificationPosted(sbn)
         if (sbn == null) return
         serviceScope.launch {
-            val userSetting = userSettingsRepository.userSettings.first()
+            val notificationSettings = getNotificationSettingsUseCase().first()
 
-            if (userSetting.showNotificationAnimation) {
+            if (notificationSettings.isNotificationAnimationEnabled) {
                 val intent = Intent("notification_received")
                 intent.putExtra("notification_data", sbn.packageName)
                 sendBroadcast(intent)

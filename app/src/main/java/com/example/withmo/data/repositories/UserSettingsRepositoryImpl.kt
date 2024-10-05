@@ -11,7 +11,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.withmo.di.IoDispatcher
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.SortMode
-import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.model.user_settings.NotificationSettings
+import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,9 +28,9 @@ class UserSettingsRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
     private companion object {
+        val IS_NOTIFICATION_ANIMATION_ENABLED = booleanPreferencesKey("is_notification_animation_enabled")
         val SHOW_CLOCK = booleanPreferencesKey("show_clock")
         val CLOCK_MODE = stringPreferencesKey("clock_mode")
-        val SHOW_NOTIFICATION_ANIMATION = booleanPreferencesKey("show_notification_animation")
         val MODEL_FILE_LIST = stringPreferencesKey("model_file_list")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
         val APP_ICON_PADDING = floatPreferencesKey("app_icon_padding")
@@ -52,10 +53,12 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
         .map { preferences ->
             UserSettings(
+                notificationSettings = NotificationSettings(
+                    isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED] ?: false,
+                ),
                 showClock = preferences[SHOW_CLOCK] ?: true,
                 clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
                     ?: ClockMode.TOP_DATE,
-                showNotificationAnimation = preferences[SHOW_NOTIFICATION_ANIMATION] ?: false,
                 modelFileList = mutableListOf(),
                 appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
                 appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
@@ -66,6 +69,14 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 showSortButton = preferences[SHOW_SORT_BUTTON] ?: true,
             )
         }
+
+    override suspend fun saveNotificationSettings(notificationSettings: NotificationSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[IS_NOTIFICATION_ANIMATION_ENABLED] = notificationSettings.isNotificationAnimationEnabled
+            }
+        }
+    }
 
     override suspend fun saveSortMode(sortMode: SortMode) {
         withContext(ioDispatcher) {
@@ -80,7 +91,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[SHOW_CLOCK] = userSettings.showClock
                 preferences[CLOCK_MODE] = userSettings.clockMode.name
-                preferences[SHOW_NOTIFICATION_ANIMATION] = userSettings.showNotificationAnimation
                 preferences[APP_ICON_SIZE] = userSettings.appIconSize
                 preferences[APP_ICON_PADDING] = userSettings.appIconPadding
                 preferences[SHOW_APP_NAME] = userSettings.showAppName

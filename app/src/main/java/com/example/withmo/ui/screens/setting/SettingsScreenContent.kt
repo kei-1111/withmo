@@ -155,7 +155,7 @@ private fun SettingItem(
 ) {
     Row(
         modifier = modifier
-            .height(UiConfig.SettingsScreenItemHeight)
+            .height(UiConfig.SettingItemHeight)
             .clickable(onClick = onClick)
             .padding(horizontal = UiConfig.MediumPadding),
         verticalAlignment = Alignment.CenterVertically,
