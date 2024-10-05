@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.SettingMode
-import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.domain.repository.UserSettingsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first

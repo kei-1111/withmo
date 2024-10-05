@@ -16,6 +16,7 @@ import com.example.withmo.ui.component.WithmoTopAppBar
 @Composable
 fun SettingsScreen(
     navigateToHomeScreen: () -> Unit,
+    navigateToNotificationSettingsScreen: () -> Unit,
     viewModel: SettingViewModel = hiltViewModel(),
 ) {
     val uiState = viewModel.uiState
@@ -33,7 +34,7 @@ fun SettingsScreen(
             )
             SettingsScreenContent(
                 modifier = Modifier.fillMaxSize(),
-                navigateToNotificationSettingScreen = {},
+                navigateToNotificationSettingScreen = navigateToNotificationSettingsScreen,
                 navigateToClockSettingsScreen = {},
                 navigateToAppIconSettingsScreen = {},
                 navigateToHomeScreenContentSettingsScreen = {},

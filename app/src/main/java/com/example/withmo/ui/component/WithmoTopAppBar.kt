@@ -85,23 +85,31 @@ private fun WithmoTopAppBarContent(
             }
         }
 
-        when (currentScreen) {
-            Screen.Settings -> {
-                Row(
-                    modifier = Modifier.align(Alignment.Center),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.withmo_logo),
-                        contentDescription = "withmo Logo",
-                        contentScale = ContentScale.FillHeight,
-                        modifier = Modifier.padding(UiConfig.ExtraSmallPadding),
-                    )
-                    TitleLargeText(text = "の設定")
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            when (currentScreen) {
+                Screen.Settings -> {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.withmo_logo),
+                            contentDescription = "withmo Logo",
+                            contentScale = ContentScale.FillHeight,
+                            modifier = Modifier.padding(UiConfig.ExtraSmallPadding),
+                        )
+                        TitleLargeText(text = "の設定")
+                    }
                 }
-            }
 
-            else -> {}
+                Screen.NotificationSettings -> {
+                    TitleLargeText(text = "通知")
+                }
+
+                else -> {}
+            }
         }
     }
 }

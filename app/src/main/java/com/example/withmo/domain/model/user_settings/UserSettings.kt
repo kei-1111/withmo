@@ -1,11 +1,14 @@
-package com.example.withmo.domain.model
+package com.example.withmo.domain.model.user_settings
 
+import com.example.withmo.domain.model.ClockMode
+import com.example.withmo.domain.model.ModelFile
+import com.example.withmo.domain.model.SortMode
 import com.example.withmo.ui.theme.UiConfig
 
 data class UserSettings(
+    val notificationSettings: NotificationSettings = NotificationSettings(),
     val showClock: Boolean = true,
     val clockMode: ClockMode = ClockMode.TOP_DATE,
-    val showNotificationAnimation: Boolean = false,
     val modelFileList: MutableList<ModelFile> = mutableListOf(),
     val appIconSize: Float = UiConfig.DefaultAppIconSize,
     val appIconPadding: Float = UiConfig.DefaultAppIconPadding,

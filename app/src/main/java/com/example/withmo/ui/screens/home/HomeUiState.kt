@@ -2,7 +2,7 @@ package com.example.withmo.ui.screens.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.example.withmo.domain.model.UserSettings
+import com.example.withmo.domain.model.user_settings.UserSettings
 import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)

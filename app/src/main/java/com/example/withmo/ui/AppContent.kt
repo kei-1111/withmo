@@ -4,9 +4,11 @@ import android.os.Build
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,6 +23,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.screens.home.HomeScreen
+import com.example.withmo.ui.screens.notification_setting.NotificationSettingsScreen
 import com.example.withmo.ui.screens.setting.SettingsScreen
 import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
@@ -47,21 +50,31 @@ fun AppContent(
         AnimatedContent(
             targetState = currentScreen,
             transitionSpec = {
-                when (currentScreen) {
-                    is Screen.Home -> {
+                when {
+                    initialState !in listOf(Screen.Home, Screen.Settings) && targetState is Screen.Settings -> {
+                        slideInHorizontally { -it }.togetherWith(slideOutHorizontally { it })
+                    }
+
+                    targetState is Screen.Home -> {
                         fadeIn().togetherWith(slideOutVertically { it })
                     }
 
-                    is Screen.Settings -> {
-                        slideInVertically { it }.togetherWith(fadeOut())
+                    targetState is Screen.Settings -> {
+                        slideInVertically { it }.togetherWith(ExitTransition.None)
+                    }
+
+                    else -> {
+                        slideInHorizontally { it }.togetherWith(ExitTransition.KeepUntilTransitionsFinished)
                     }
                 }
             },
         ) { targetState ->
+            val navigateToSettingScreen = { currentScreen = Screen.Settings }
+
             when (targetState) {
                 is Screen.Home -> {
                     HomeScreen(
-                        navigateToSettingScreen = { currentScreen = Screen.Settings },
+                        navigateToSettingScreen = navigateToSettingScreen,
                         appList = appList,
                     )
                 }
@@ -69,6 +82,13 @@ fun AppContent(
                 is Screen.Settings -> {
                     SettingsScreen(
                         navigateToHomeScreen = { currentScreen = Screen.Home },
+                        navigateToNotificationSettingsScreen = { currentScreen = Screen.NotificationSettings },
+                    )
+                }
+
+                is Screen.NotificationSettings -> {
+                    NotificationSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
                     )
                 }
             }
