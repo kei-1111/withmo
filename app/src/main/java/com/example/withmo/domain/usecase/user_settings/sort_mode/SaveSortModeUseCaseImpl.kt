@@ -1,4 +1,4 @@
-package com.example.withmo.domain.usecase
+package com.example.withmo.domain.usecase.user_settings.sort_mode
 
 import com.example.withmo.domain.model.SortMode
 import com.example.withmo.domain.repository.UserSettingsRepository

@@ -5,7 +5,7 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
-import com.example.withmo.domain.usecase.notification_usecase.GetNotificationSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope

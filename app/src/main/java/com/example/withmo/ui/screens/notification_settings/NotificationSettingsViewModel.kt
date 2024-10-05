@@ -1,10 +1,10 @@
-package com.example.withmo.ui.screens.notification_setting
+package com.example.withmo.ui.screens.notification_settings
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.withmo.domain.usecase.notification_usecase.GetNotificationSettingsUseCase
-import com.example.withmo.domain.usecase.notification_usecase.SaveNotificationSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

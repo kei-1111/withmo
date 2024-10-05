@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.notification_setting
+package com.example.withmo.ui.screens.notification_settings
 
 sealed interface NotificationSettingsUiEvent {
     data class ChangeIsNotificationAnimationEnabled(

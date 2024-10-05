@@ -1,14 +1,14 @@
 package com.example.withmo.di
 
 import com.example.withmo.domain.repository.UserSettingsRepository
-import com.example.withmo.domain.usecase.GetUserSettingsUseCase
-import com.example.withmo.domain.usecase.GetUserSettingsUseCaseImpl
-import com.example.withmo.domain.usecase.SaveSortModeUseCase
-import com.example.withmo.domain.usecase.SaveSortModeUseCaseImpl
-import com.example.withmo.domain.usecase.notification_usecase.GetNotificationSettingsUseCase
-import com.example.withmo.domain.usecase.notification_usecase.GetNotificationSettingsUseCaseImpl
-import com.example.withmo.domain.usecase.notification_usecase.SaveNotificationSettingsUseCase
-import com.example.withmo.domain.usecase.notification_usecase.SaveNotificationSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -19,12 +19,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
+//    UserSettings
     @Provides
     @Singleton
     fun provideGetUserSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): GetUserSettingsUseCase = GetUserSettingsUseCaseImpl(userSettingsRepository)
 
+//    SortMode
     @Provides
     @Singleton
     fun provideSaveSortModeUseCase(

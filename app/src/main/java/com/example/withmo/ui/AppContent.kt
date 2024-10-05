@@ -23,8 +23,8 @@ import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.screens.home.HomeScreen
-import com.example.withmo.ui.screens.notification_setting.NotificationSettingsScreen
-import com.example.withmo.ui.screens.setting.SettingsScreen
+import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
+import com.example.withmo.ui.screens.settings.SettingsScreen
 import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
 
@@ -105,7 +105,7 @@ private fun UnityScreen(
         modifier = modifier,
         factory = { context ->
             FrameLayout(context).apply {
-                unityPlayer?.let { addView(it.rootView) }
+                addView(unityPlayer.rootView)
             }
         },
     )

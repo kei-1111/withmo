@@ -31,7 +31,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_NOTIFICATION_ANIMATION_ENABLED = booleanPreferencesKey("is_notification_animation_enabled")
         val SHOW_CLOCK = booleanPreferencesKey("show_clock")
         val CLOCK_MODE = stringPreferencesKey("clock_mode")
-        val MODEL_FILE_LIST = stringPreferencesKey("model_file_list")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
         val APP_ICON_PADDING = floatPreferencesKey("app_icon_padding")
         val SHOW_APP_NAME = booleanPreferencesKey("show_app_name")
@@ -59,7 +58,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 showClock = preferences[SHOW_CLOCK] ?: true,
                 clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
                     ?: ClockMode.TOP_DATE,
-                modelFileList = mutableListOf(),
                 appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
                 appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
                 showAppName = preferences[SHOW_APP_NAME] ?: true,
@@ -70,18 +68,18 @@ class UserSettingsRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun saveNotificationSettings(notificationSettings: NotificationSettings) {
-        withContext(ioDispatcher) {
-            dataStore.edit { preferences ->
-                preferences[IS_NOTIFICATION_ANIMATION_ENABLED] = notificationSettings.isNotificationAnimationEnabled
-            }
-        }
-    }
-
     override suspend fun saveSortMode(sortMode: SortMode) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[SORT_MODE] = sortMode.name
+            }
+        }
+    }
+
+    override suspend fun saveNotificationSettings(notificationSettings: NotificationSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[IS_NOTIFICATION_ANIMATION_ENABLED] = notificationSettings.isNotificationAnimationEnabled
             }
         }
     }

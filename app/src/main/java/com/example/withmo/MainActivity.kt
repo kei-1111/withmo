@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -37,16 +36,14 @@ class MainActivity : ComponentActivity() {
                     if (app.packageName == packageName) app.receiveNotification()
                 }
             } else {
-                Log.d("", "onReceive: ${intent.action}")
                 val newAppList = getAppList(this@MainActivity)
-                Log.d("", "newAppListSize: ${newAppList.size}")
+
                 newAppList.forEach { newApp ->
                     appList.find { it.packageName == newApp.packageName }?.let {
                         newApp.notification = it.notification
                         newApp.useCount = it.useCount
                     }
                 }
-                Log.d("", "newAppListSize: ${newAppList.size}")
                 appList = newAppList
             }
         }
