@@ -6,8 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.SortMode
-import com.example.withmo.domain.usecase.GetUserSettingsUseCase
-import com.example.withmo.domain.usecase.SaveSortModeUseCase
+import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow

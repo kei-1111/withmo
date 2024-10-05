@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.notification_setting
+package com.example.withmo.ui.screens.notification_settings
 
 import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult

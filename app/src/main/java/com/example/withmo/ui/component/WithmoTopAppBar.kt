@@ -50,6 +50,7 @@ fun WithmoTopAppBar(
     }
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun WithmoTopAppBarContent(
     currentScreen: Screen,
@@ -98,7 +99,13 @@ private fun WithmoTopAppBarContent(
                             painter = painterResource(id = R.drawable.withmo_logo),
                             contentDescription = "withmo Logo",
                             contentScale = ContentScale.FillHeight,
-                            modifier = Modifier.padding(UiConfig.ExtraSmallPadding),
+                            modifier = Modifier
+                                .padding(
+                                    start = UiConfig.ExtraSmallPadding,
+                                    end = UiConfig.ExtraSmallPadding,
+                                    top = UiConfig.SmallPadding,
+                                    bottom = UiConfig.ExtraSmallPadding,
+                                ),
                         )
                         TitleLargeText(text = "の設定")
                     }

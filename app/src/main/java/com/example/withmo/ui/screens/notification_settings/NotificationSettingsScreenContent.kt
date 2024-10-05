@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.notification_setting
+package com.example.withmo.ui.screens.notification_settings
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.setting
+package com.example.withmo.ui.screens.settings
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,11 +30,11 @@ import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun SettingsScreenContent(
-    navigateToNotificationSettingScreen: () -> Unit,
+    navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToHomeScreenContentSettingsScreen: () -> Unit,
-    navigateToModelSettingScreen: () -> Unit,
+    navigateToModelSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -44,14 +44,14 @@ fun SettingsScreenContent(
     ) {
         HomeScreenSettings(
             title = "ホーム画面の設定",
-            navigateToNotificationSettingScreen = navigateToNotificationSettingScreen,
+            navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
             navigateToClockSettingsScreen = navigateToClockSettingsScreen,
             navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
             navigateToHomeScreenContentSettingsScreen = navigateToHomeScreenContentSettingsScreen,
         )
         ModelSettings(
             title = "モデルの設定",
-            navigateToModelSettingScreen = navigateToModelSettingScreen,
+            navigateToModelSettingsScreen = navigateToModelSettingsScreen,
         )
     }
 }
@@ -59,7 +59,7 @@ fun SettingsScreenContent(
 @Composable
 private fun HomeScreenSettings(
     title: String,
-    navigateToNotificationSettingScreen: () -> Unit,
+    navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToHomeScreenContentSettingsScreen: () -> Unit,
@@ -80,25 +80,25 @@ private fun HomeScreenSettings(
             Column {
                 SettingItem(
                     icon = Icons.Default.Notifications,
-                    itemName = "通知設定",
-                    onClick = navigateToNotificationSettingScreen,
+                    itemName = "通知",
+                    onClick = navigateToNotificationSettingsScreen,
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.AccessTime,
-                    itemName = "時計設定",
+                    itemName = "時計",
                     onClick = navigateToClockSettingsScreen,
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.Apps,
-                    itemName = "アプリアイコン設定",
+                    itemName = "アプリアイコン",
                     onClick = navigateToAppIconSettingsScreen,
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.Home,
-                    itemName = "ホーム画面コンテンツ設定",
+                    itemName = "ホーム画面コンテンツ",
                     onClick = navigateToHomeScreenContentSettingsScreen,
                 )
             }
@@ -109,7 +109,7 @@ private fun HomeScreenSettings(
 @Composable
 private fun ModelSettings(
     title: String,
-    navigateToModelSettingScreen: () -> Unit,
+    navigateToModelSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -127,8 +127,8 @@ private fun ModelSettings(
             Column {
                 SettingItem(
                     icon = Icons.Default.InsertDriveFile,
-                    itemName = "アバター設定",
-                    onClick = navigateToModelSettingScreen,
+                    itemName = "アバター",
+                    onClick = navigateToModelSettingsScreen,
                 )
             }
         }

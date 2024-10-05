@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.notification_setting
+package com.example.withmo.ui.screens.notification_settings
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton

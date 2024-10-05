@@ -10,15 +10,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import com.example.withmo.R
 import com.example.withmo.domain.model.ModelFile
 import com.example.withmo.ui.theme.Typography
 import com.example.withmo.ui.theme.UiConfig
@@ -55,10 +52,10 @@ fun ModelFile(
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_file),
-                    contentDescription = null,
-                )
+//                Icon(
+//                    painter = painterResource(id = R.drawable.ic_file),
+//                    contentDescription = null,
+//                )
                 Spacer(
                     modifier = Modifier.width(UiConfig.SmallPadding),
                 )

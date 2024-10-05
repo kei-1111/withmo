@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.setting
+package com.example.withmo.ui.screens.settings
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoTopAppBar
 
@@ -17,10 +16,7 @@ import com.example.withmo.ui.component.WithmoTopAppBar
 fun SettingsScreen(
     navigateToHomeScreen: () -> Unit,
     navigateToNotificationSettingsScreen: () -> Unit,
-    viewModel: SettingViewModel = hiltViewModel(),
 ) {
-    val uiState = viewModel.uiState
-
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -34,11 +30,11 @@ fun SettingsScreen(
             )
             SettingsScreenContent(
                 modifier = Modifier.fillMaxSize(),
-                navigateToNotificationSettingScreen = navigateToNotificationSettingsScreen,
+                navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
                 navigateToClockSettingsScreen = {},
                 navigateToAppIconSettingsScreen = {},
                 navigateToHomeScreenContentSettingsScreen = {},
-                navigateToModelSettingScreen = {},
+                navigateToModelSettingsScreen = {},
             )
         }
     }
