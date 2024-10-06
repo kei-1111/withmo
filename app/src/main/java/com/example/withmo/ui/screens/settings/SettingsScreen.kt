@@ -16,6 +16,7 @@ import com.example.withmo.ui.component.WithmoTopAppBar
 fun SettingsScreen(
     navigateToHomeScreen: () -> Unit,
     navigateToNotificationSettingsScreen: () -> Unit,
+    navigateToClockSettingsScreen: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -31,7 +32,7 @@ fun SettingsScreen(
             SettingsScreenContent(
                 modifier = Modifier.fillMaxSize(),
                 navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
-                navigateToClockSettingsScreen = {},
+                navigateToClockSettingsScreen = navigateToClockSettingsScreen,
                 navigateToAppIconSettingsScreen = {},
                 navigateToHomeScreenContentSettingsScreen = {},
                 navigateToModelSettingsScreen = {},

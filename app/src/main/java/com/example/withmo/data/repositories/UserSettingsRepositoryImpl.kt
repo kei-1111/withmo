@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.withmo.di.IoDispatcher
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.domain.repository.UserSettingsRepository
@@ -29,7 +30,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
 ) : UserSettingsRepository {
     private companion object {
         val IS_NOTIFICATION_ANIMATION_ENABLED = booleanPreferencesKey("is_notification_animation_enabled")
-        val SHOW_CLOCK = booleanPreferencesKey("show_clock")
+        val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
         val CLOCK_MODE = stringPreferencesKey("clock_mode")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
         val APP_ICON_PADDING = floatPreferencesKey("app_icon_padding")
@@ -55,9 +56,11 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED] ?: false,
                 ),
-                showClock = preferences[SHOW_CLOCK] ?: true,
-                clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
-                    ?: ClockMode.TOP_DATE,
+                clockSettings = ClockSettings(
+                    isClockShown = preferences[IS_CLOCK_SHOWN] ?: true,
+                    clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
+                        ?: ClockMode.TOP_DATE,
+                ),
                 appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
                 appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
                 showAppName = preferences[SHOW_APP_NAME] ?: true,
@@ -84,11 +87,18 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveClockSettings(clockSettings: ClockSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[IS_CLOCK_SHOWN] = clockSettings.isClockShown
+                preferences[CLOCK_MODE] = clockSettings.clockMode.name
+            }
+        }
+    }
+
     override suspend fun saveUserSetting(userSettings: UserSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[SHOW_CLOCK] = userSettings.showClock
-                preferences[CLOCK_MODE] = userSettings.clockMode.name
                 preferences[APP_ICON_SIZE] = userSettings.appIconSize
                 preferences[APP_ICON_PADDING] = userSettings.appIconPadding
                 preferences[SHOW_APP_NAME] = userSettings.showAppName

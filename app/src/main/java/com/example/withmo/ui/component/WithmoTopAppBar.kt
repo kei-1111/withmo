@@ -115,6 +115,10 @@ private fun WithmoTopAppBarContent(
                     TitleLargeText(text = "通知")
                 }
 
+                Screen.ClockSettings -> {
+                    TitleLargeText(text = "時計")
+                }
+
                 else -> {}
             }
         }

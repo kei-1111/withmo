@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.Screen
+import com.example.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
@@ -83,11 +84,18 @@ fun AppContent(
                     SettingsScreen(
                         navigateToHomeScreen = { currentScreen = Screen.Home },
                         navigateToNotificationSettingsScreen = { currentScreen = Screen.NotificationSettings },
+                        navigateToClockSettingsScreen = { currentScreen = Screen.ClockSettings },
                     )
                 }
 
                 is Screen.NotificationSettings -> {
                     NotificationSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.ClockSettings -> {
+                    ClockSettingsScreen(
                         navigateToSettingsScreen = navigateToSettingScreen,
                     )
                 }

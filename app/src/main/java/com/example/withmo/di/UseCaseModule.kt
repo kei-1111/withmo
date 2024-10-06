@@ -3,6 +3,10 @@ package com.example.withmo.di
 import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
@@ -45,4 +49,17 @@ object UseCaseModule {
     fun provideSaveNotificationSettingUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveNotificationSettingsUseCase = SaveNotificationSettingsUseCaseImpl(userSettingsRepository)
+
+//    Clock
+    @Provides
+    @Singleton
+    fun provideGetClockSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetClockSettingsUseCase = GetClockSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveClockSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveClockSettingsUseCase = SaveClockSettingsUseCaseImpl(userSettingsRepository)
 }
