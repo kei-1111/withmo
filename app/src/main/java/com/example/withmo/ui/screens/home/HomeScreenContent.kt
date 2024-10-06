@@ -64,9 +64,9 @@ fun HomeScreenContent(
                 )
             }
         } else {
-            if (uiState.currentUserSettings.showClock) {
+            if (uiState.currentUserSettings.clockSettings.isClockShown) {
                 WithmoClock(
-                    clockMode = uiState.currentUserSettings.clockMode,
+                    clockMode = uiState.currentUserSettings.clockSettings.clockMode,
                     dateTimeInfo = getCurrentTime(),
                     modifier = Modifier.padding(start = UiConfig.MediumPadding),
                 )
