@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,9 @@ import javax.inject.Inject
 class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(NotificationSettingsUiState())
-    val uiState: StateFlow<NotificationSettingsUiState> = _uiState.asStateFlow()
+) : BaseViewModel<NotificationSettingsUiState, NotificationSettingsUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<NotificationSettingsUiEvent>()
-    val uiEvent: SharedFlow<NotificationSettingsUiEvent> = _uiEvent.asSharedFlow()
+    override fun createInitialState(): NotificationSettingsUiState = NotificationSettingsUiState()
 
     init {
         viewModelScope.launch {

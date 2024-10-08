@@ -3,6 +3,7 @@ package com.example.withmo.ui.screens.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.withmo.domain.model.user_settings.UserSettings
+import com.example.withmo.ui.base.UiState
 import java.time.ZonedDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -13,4 +14,4 @@ data class HomeUiState(
     val isExpandPopup: Boolean = false,
     val appSearchQuery: String = "",
     val currentUserSettings: UserSettings = UserSettings(),
-)
+) : UiState

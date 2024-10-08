@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,9 @@ import javax.inject.Inject
 class SideButtonSettingsViewModel @Inject constructor(
     private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(SideButtonSettingsUiState())
-    val uiState: StateFlow<SideButtonSettingsUiState> = _uiState.asStateFlow()
+) : BaseViewModel<SideButtonSettingsUiState, SideButtonSettingsUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<SideButtonSettingsUiEvent>()
-    val uiEvent: SharedFlow<SideButtonSettingsUiEvent> = _uiEvent.asSharedFlow()
+    override fun createInitialState(): SideButtonSettingsUiState = SideButtonSettingsUiState()
 
     init {
         viewModelScope.launch {

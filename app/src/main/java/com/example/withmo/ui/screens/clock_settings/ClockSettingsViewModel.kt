@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,12 +22,9 @@ import javax.inject.Inject
 class ClockSettingsViewModel @Inject constructor(
     private val getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(ClockSettingsUiState())
-    val uiState: StateFlow<ClockSettingsUiState> = _uiState.asStateFlow()
+) : BaseViewModel<ClockSettingsUiState, ClockSettingsUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<ClockSettingsUiEvent>()
-    val uiEvent: SharedFlow<ClockSettingsUiEvent> = _uiEvent.asSharedFlow()
+    override fun createInitialState(): ClockSettingsUiState = ClockSettingsUiState()
 
     init {
         viewModelScope.launch {

@@ -1,6 +1,8 @@
 package com.example.withmo.ui.screens.notification_settings
 
-sealed interface NotificationSettingsUiEvent {
+import com.example.withmo.ui.base.UiEvent
+
+sealed interface NotificationSettingsUiEvent : UiEvent {
     data class ChangeIsNotificationAnimationEnabled(
         val isNotificationAnimationEnabled: Boolean,
     ) : NotificationSettingsUiEvent

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.app_icon.SaveAppIconSettingsUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +21,9 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(AppIconSettingsUiState())
-    val uiState: StateFlow<AppIconSettingsUiState> = _uiState.asStateFlow()
+) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<AppIconSettingsUiEvent>()
-    val uiEvent: SharedFlow<AppIconSettingsUiEvent> = _uiEvent
+    override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
 
     init {
         viewModelScope.launch {
