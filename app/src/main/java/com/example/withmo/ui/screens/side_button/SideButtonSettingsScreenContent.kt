@@ -18,7 +18,7 @@ fun SideButtonSettingsScreenContent(
     Column(
         modifier = modifier
             .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding)
+        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         WithmoSettingItemWithSwitch(
             title = "スケールスライダー表示ボタンを表示する",

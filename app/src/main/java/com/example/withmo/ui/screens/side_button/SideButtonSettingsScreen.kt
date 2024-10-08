@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,9 +20,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoSaveButton
 import com.example.withmo.ui.component.WithmoTopAppBar
-import com.example.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenContent
-import com.example.withmo.ui.screens.app_icon_settings.AppIconSettingsUiEvent
-import com.example.withmo.ui.screens.app_icon_settings.AppItemPreviewArea
 import com.example.withmo.ui.theme.UiConfig
 import com.example.withmo.until.showToast
 import kotlinx.coroutines.flow.launchIn

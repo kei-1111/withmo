@@ -86,7 +86,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
-                )
+                ),
             )
         }
 

@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCase
-import com.example.withmo.ui.screens.notification_settings.NotificationSettingsUiEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
