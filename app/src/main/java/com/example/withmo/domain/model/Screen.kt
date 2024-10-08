@@ -5,4 +5,5 @@ sealed interface Screen {
     data object Settings : Screen
     data object NotificationSettings : Screen
     data object ClockSettings : Screen
+    data object AppIconSettings : Screen
 }

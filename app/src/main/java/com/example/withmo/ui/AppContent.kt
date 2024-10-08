@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.Screen
+import com.example.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
 import com.example.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
@@ -30,6 +31,7 @@ import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
 
 @RequiresApi(Build.VERSION_CODES.R)
+@Suppress("LongMethod")
 @Composable
 fun AppContent(
     unityPlayer: UnityPlayer?,
@@ -85,6 +87,7 @@ fun AppContent(
                         navigateToHomeScreen = { currentScreen = Screen.Home },
                         navigateToNotificationSettingsScreen = { currentScreen = Screen.NotificationSettings },
                         navigateToClockSettingsScreen = { currentScreen = Screen.ClockSettings },
+                        navigateToAppIconSettingsScreen = { currentScreen = Screen.AppIconSettings },
                     )
                 }
 
@@ -96,6 +99,12 @@ fun AppContent(
 
                 is Screen.ClockSettings -> {
                     ClockSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.AppIconSettings -> {
+                    AppIconSettingsScreen(
                         navigateToSettingsScreen = navigateToSettingScreen,
                     )
                 }

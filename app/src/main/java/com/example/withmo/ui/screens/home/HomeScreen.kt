@@ -32,6 +32,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -122,6 +123,9 @@ fun HomeScreen(
                     AppList(
                         context = context,
                         appList = homeAppList,
+                        appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
+                            uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
+                        ),
                         appSearchQuery = uiState.appSearchQuery,
                         onEvent = viewModel::onEvent,
                         navigateToSettingScreen = navigateToSettingScreen,

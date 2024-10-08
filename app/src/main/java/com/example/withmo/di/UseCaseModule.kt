@@ -3,6 +3,10 @@ package com.example.withmo.di
 import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.app_icon.SaveAppIconSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.app_icon.SaveAppIconSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
@@ -62,4 +66,17 @@ object UseCaseModule {
     fun provideSaveClockSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveClockSettingsUseCase = SaveClockSettingsUseCaseImpl(userSettingsRepository)
+
+//    AppIcon
+    @Provides
+    @Singleton
+    fun provideGetAppIconSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetAppIconSettingsUseCase = GetAppIconSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveAppIconSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveAppIconSettingsUseCase = SaveAppIconSettingsUseCaseImpl(userSettingsRepository)
 }
