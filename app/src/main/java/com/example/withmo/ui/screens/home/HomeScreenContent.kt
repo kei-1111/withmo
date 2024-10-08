@@ -27,6 +27,8 @@ import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.AppIconSettings
+import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.component.AppItem
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.TitleLargeText
@@ -105,9 +107,7 @@ fun HomeScreenContent(
                 RowAppList(
                     context = context,
                     appList = appList,
-                    appIconSize = uiState.currentUserSettings.appIconSize,
-                    appIconPadding = uiState.currentUserSettings.appIconPadding,
-                    showAppName = uiState.currentUserSettings.showAppName,
+                    appIconSettings = uiState.currentUserSettings.appIconSettings,
                     navigateToSettingScreen = navigateToSettingScreen,
                 )
             }
@@ -190,23 +190,24 @@ private fun PopupContent(
 private fun RowAppList(
     context: Context,
     appList: ImmutableList<AppInfo>,
-    appIconSize: Float,
-    appIconPadding: Float,
-    showAppName: Boolean,
+    appIconSettings: AppIconSettings,
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(appIconPadding.dp),
+        horizontalArrangement = Arrangement.spacedBy(appIconSettings.appIconHorizontalSpacing.dp),
         contentPadding = PaddingValues(horizontal = UiConfig.MediumPadding),
     ) {
         items(appList.size) { index ->
             AppItem(
                 context = context,
                 appInfo = appList[index],
-                appIconSize = appIconSize,
-                showAppName = showAppName,
+                appIconSize = appIconSettings.appIconSize,
+                appIconShape = appIconSettings.appIconShape.toShape(
+                    roundedCornerPercent = appIconSettings.roundedCornerPercent,
+                ),
+                isAppNameShown = appIconSettings.isAppNameShown,
                 navigateToSettingScreen = navigateToSettingScreen,
             )
         }

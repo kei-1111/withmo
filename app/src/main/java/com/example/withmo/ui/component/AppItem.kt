@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.example.withmo.domain.model.AppIcon
@@ -36,7 +37,8 @@ fun AppItem(
     navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
     appIconSize: Float = UiConfig.DefaultAppIconSize,
-    showAppName: Boolean = true,
+    appIconShape: Shape = CircleShape,
+    isAppNameShown: Boolean = true,
 ) {
     Box(
         modifier = modifier,
@@ -44,13 +46,14 @@ fun AppItem(
     ) {
         Column(
             modifier = Modifier
-                .size((appIconSize + UiConfig.AppIconTextHeight).dp),
+                .size((appIconSize + UiConfig.AppIconPadding).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
             AppIcon(
                 appIcon = appInfo.appIcon,
                 appIconSize = appIconSize,
+                appIconShape = appIconShape,
                 modifier = Modifier
                     .combinedClickable(
                         onClick = {
@@ -66,7 +69,7 @@ fun AppItem(
                         },
                     ),
             )
-            if (showAppName) {
+            if (isAppNameShown) {
                 Spacer(modifier = Modifier.weight(UiConfig.DefaultWeight))
                 LabelMediumText(text = appInfo.label)
             }
@@ -90,13 +93,14 @@ private fun AppIcon(
     appIcon: AppIcon,
     modifier: Modifier = Modifier,
     appIconSize: Float = UiConfig.DefaultAppIconSize,
+    appIconShape: Shape = CircleShape,
 ) {
     when (appIcon.backgroundIcon) {
         is Drawable -> {
             Surface(
                 modifier = modifier.size(appIconSize.dp),
                 color = Color.White,
-                shape = CircleShape,
+                shape = appIconShape,
                 shadowElevation = UiConfig.ShadowElevation,
             ) {
                 Image(

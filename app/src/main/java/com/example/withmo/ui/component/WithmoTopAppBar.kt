@@ -119,6 +119,10 @@ private fun WithmoTopAppBarContent(
                     TitleLargeText(text = "時計")
                 }
 
+                Screen.AppIconSettings -> {
+                    TitleLargeText(text = "アプリアイコン")
+                }
+
                 else -> {}
             }
         }

@@ -1,6 +1,7 @@
 package com.example.withmo.domain.repository
 
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.UserSettings
@@ -14,6 +15,8 @@ interface UserSettingsRepository {
     suspend fun saveNotificationSettings(notificationSettings: NotificationSettings)
 
     suspend fun saveClockSettings(clockSettings: ClockSettings)
+
+    suspend fun saveAppIconSettings(appIconSettings: AppIconSettings)
 
     suspend fun saveUserSetting(userSettings: UserSettings)
 }

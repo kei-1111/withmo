@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.AppItem
@@ -35,6 +36,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun AppList(
     context: Context,
     appList: ImmutableList<AppInfo>,
+    appIconShape: Shape,
     appSearchQuery: String,
     onEvent: (HomeUiEvent) -> Unit,
     navigateToSettingScreen: () -> Unit,
@@ -87,6 +89,7 @@ fun AppList(
                         AppItem(
                             context = context,
                             appInfo = resultAppList[index],
+                            appIconShape = appIconShape,
                             navigateToSettingScreen = navigateToSettingScreen,
                             modifier = Modifier.fillMaxWidth(),
                         )

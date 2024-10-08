@@ -11,6 +11,8 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.withmo.di.IoDispatcher
 import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.AppIconSettings
+import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.UserSettings
@@ -24,6 +26,7 @@ import kotlinx.coroutines.withContext
 import java.io.IOException
 import javax.inject.Inject
 
+@Suppress("MaximumLineLength", "MaxLineLength")
 class UserSettingsRepositoryImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
@@ -33,8 +36,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
         val CLOCK_MODE = stringPreferencesKey("clock_mode")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
-        val APP_ICON_PADDING = floatPreferencesKey("app_icon_padding")
-        val SHOW_APP_NAME = booleanPreferencesKey("show_app_name")
+        val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
+        val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
+        val APP_ICON_HORIZONTAL_SPACING = floatPreferencesKey("app_icon_horizontal_spacing")
+        val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_MODE = stringPreferencesKey("sort_mode")
         val SHOW_SCALE_SLIDER_BUTTON = booleanPreferencesKey("show_scale_slider_button")
         val SHOW_SORT_BUTTON = booleanPreferencesKey("show_sort_button")
@@ -61,9 +66,20 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
                         ?: ClockMode.TOP_DATE,
                 ),
-                appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
-                appIconPadding = preferences[APP_ICON_PADDING] ?: UiConfig.DefaultAppIconPadding,
-                showAppName = preferences[SHOW_APP_NAME] ?: true,
+                appIconSettings = AppIconSettings(
+                    appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
+                    appIconHorizontalSpacing = preferences[APP_ICON_HORIZONTAL_SPACING] ?: UiConfig.DefaultAppIconHorizontalSpacing,
+                    appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
+                        when (shape) {
+                            AppIconShape.Circle.toString() -> AppIconShape.Circle
+                            AppIconShape.RoundedCorner.toString() -> AppIconShape.RoundedCorner
+                            AppIconShape.Square.toString() -> AppIconShape.Square
+                            else -> AppIconShape.Circle
+                        }
+                    } ?: AppIconShape.Circle,
+                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: UiConfig.DefaultRoundedCornerPercent,
+                    isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
+                ),
                 sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) }
                     ?: SortMode.ALPHABETICAL,
                 showScaleSliderButton = preferences[SHOW_SCALE_SLIDER_BUTTON] ?: true,
@@ -87,6 +103,18 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveAppIconSettings(appIconSettings: AppIconSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[APP_ICON_SIZE] = appIconSettings.appIconSize
+                preferences[APP_ICON_SHAPE] = appIconSettings.appIconShape.toString()
+                preferences[ROUNDED_CORNER_PERCENT] = appIconSettings.roundedCornerPercent
+                preferences[APP_ICON_HORIZONTAL_SPACING] = appIconSettings.appIconHorizontalSpacing
+                preferences[IS_APP_NAME_SHOWN] = appIconSettings.isAppNameShown
+            }
+        }
+    }
+
     override suspend fun saveClockSettings(clockSettings: ClockSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
@@ -99,9 +127,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveUserSetting(userSettings: UserSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[APP_ICON_SIZE] = userSettings.appIconSize
-                preferences[APP_ICON_PADDING] = userSettings.appIconPadding
-                preferences[SHOW_APP_NAME] = userSettings.showAppName
                 preferences[SORT_MODE] = userSettings.sortMode.name
                 preferences[SHOW_SCALE_SLIDER_BUTTON] = userSettings.showScaleSliderButton
                 preferences[SHOW_SORT_BUTTON] = userSettings.showSortButton

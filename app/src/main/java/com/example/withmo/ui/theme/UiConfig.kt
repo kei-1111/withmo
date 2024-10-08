@@ -13,13 +13,17 @@ data object UiConfig {
     const val MinAppIconSize = 36f
     const val MaxAppIconSize = 72f
 
-    const val DefaultAppIconPadding = 10f
-    const val MinAppIconPadding = 0f
-    const val MaxAppIconPadding = 20f
+    const val DefaultAppIconHorizontalSpacing = 10f
+    const val MinAppIconHorizontalSpacing = 0f
+    const val MaxAppIconHorizontalSpacing = 20f
+
+    const val DefaultRoundedCornerPercent = 20f
+    const val MinRoundedCornerPercent = 0f
+    const val MaxRoundedCornerPercent = 100f
 
     const val AppInfoDefaultUseCount = 0
 
-    const val AppIconTextHeight = 22f
+    const val AppIconPadding = 22f
     const val AppIconTextMaxLines = 1
 
     const val GoldenRatio = 1.618f
@@ -35,7 +39,7 @@ data object UiConfig {
     val BottomSheetTonalElevation = 0.dp
 
 //    App Icon Settings
-    val ExampleAppIconSpaceHeight = 100.dp
+    val AppIconPreviewHeight = 200.dp
 
 //    Paddings
     val ExtraSmallPadding = 5.dp
