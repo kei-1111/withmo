@@ -7,6 +7,5 @@ data class UserSettings(
     val clockSettings: ClockSettings = ClockSettings(),
     val appIconSettings: AppIconSettings = AppIconSettings(),
     val sortMode: SortMode = SortMode.ALPHABETICAL,
-    val showScaleSliderButton: Boolean = true,
-    val showSortButton: Boolean = true,
+    val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
 )

@@ -123,6 +123,10 @@ private fun WithmoTopAppBarContent(
                     TitleLargeText(text = "アプリアイコン")
                 }
 
+                Screen.SideButtonSettings -> {
+                    TitleLargeText(text = "サイドボタン")
+                }
+
                 else -> {}
             }
         }

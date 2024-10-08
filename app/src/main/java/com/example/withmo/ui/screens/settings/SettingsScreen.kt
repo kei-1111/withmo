@@ -18,6 +18,7 @@ fun SettingsScreen(
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
+    navigateToSideButtonSettingsScreen: () -> Unit,
 ) {
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -35,7 +36,7 @@ fun SettingsScreen(
                 navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
                 navigateToClockSettingsScreen = navigateToClockSettingsScreen,
                 navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
-                navigateToHomeScreenContentSettingsScreen = {},
+                navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
                 navigateToModelSettingsScreen = {},
             )
         }

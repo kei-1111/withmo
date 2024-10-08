@@ -27,6 +27,7 @@ import com.example.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
+import com.example.withmo.ui.screens.side_button.SideButtonSettingsScreen
 import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
 
@@ -88,6 +89,7 @@ fun AppContent(
                         navigateToNotificationSettingsScreen = { currentScreen = Screen.NotificationSettings },
                         navigateToClockSettingsScreen = { currentScreen = Screen.ClockSettings },
                         navigateToAppIconSettingsScreen = { currentScreen = Screen.AppIconSettings },
+                        navigateToSideButtonSettingsScreen = { currentScreen = Screen.SideButtonSettings },
                     )
                 }
 
@@ -105,6 +107,12 @@ fun AppContent(
 
                 is Screen.AppIconSettings -> {
                     AppIconSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.SideButtonSettings -> {
+                    SideButtonSettingsScreen(
                         navigateToSettingsScreen = navigateToSettingScreen,
                     )
                 }
