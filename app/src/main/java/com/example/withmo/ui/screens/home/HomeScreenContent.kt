@@ -82,7 +82,7 @@ fun HomeScreenContent(
                     modifier = Modifier.padding(UiConfig.MediumPadding),
                     verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
                 ) {
-                    if (uiState.currentUserSettings.showScaleSliderButton) {
+                    if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
                         WithmoIconButton(
                             onClick = {
                                 UnitySendMessage("Slidermaneger", "ShowSlider", "")
@@ -91,7 +91,7 @@ fun HomeScreenContent(
                             icon = Icons.Default.Man,
                         )
                     }
-                    if (uiState.currentUserSettings.showSortButton) {
+                    if (uiState.currentUserSettings.sideButtonSettings.isSortButtonShown) {
                         WithmoIconButton(
                             onClick = {
                                 if (uiState.isExpandPopup) {

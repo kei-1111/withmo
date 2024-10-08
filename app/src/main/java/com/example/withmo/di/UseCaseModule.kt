@@ -15,6 +15,10 @@ import com.example.withmo.domain.usecase.user_settings.notification.GetNotificat
 import com.example.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCaseImpl
 import dagger.Module
@@ -79,4 +83,17 @@ object UseCaseModule {
     fun provideSaveAppIconSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveAppIconSettingsUseCase = SaveAppIconSettingsUseCaseImpl(userSettingsRepository)
+
+//    SideButton
+    @Provides
+    @Singleton
+    fun provideGetSideButtonSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetSideButtonSettingsUseCase = GetSideButtonSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveSideButtonSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveSideButtonSettingsUseCase = SaveSideButtonSettingsUseCaseImpl(userSettingsRepository)
 }

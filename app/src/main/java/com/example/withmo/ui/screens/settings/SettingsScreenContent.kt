@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -33,7 +33,7 @@ fun SettingsScreenContent(
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
-    navigateToHomeScreenContentSettingsScreen: () -> Unit,
+    navigateToSideButtonSettingsScreen: () -> Unit,
     navigateToModelSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -47,7 +47,7 @@ fun SettingsScreenContent(
             navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
             navigateToClockSettingsScreen = navigateToClockSettingsScreen,
             navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
-            navigateToHomeScreenContentSettingsScreen = navigateToHomeScreenContentSettingsScreen,
+            navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
         )
         ModelSettings(
             title = "モデルの設定",
@@ -62,7 +62,7 @@ private fun HomeScreenSettings(
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
-    navigateToHomeScreenContentSettingsScreen: () -> Unit,
+    navigateToSideButtonSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -97,9 +97,9 @@ private fun HomeScreenSettings(
                 )
                 SettingItemDivider()
                 SettingItem(
-                    icon = Icons.Default.Home,
-                    itemName = "ホーム画面コンテンツ",
-                    onClick = navigateToHomeScreenContentSettingsScreen,
+                    icon = Icons.Default.RadioButtonChecked,
+                    itemName = "サイドボタン",
+                    onClick = navigateToSideButtonSettingsScreen,
                 )
             }
         }

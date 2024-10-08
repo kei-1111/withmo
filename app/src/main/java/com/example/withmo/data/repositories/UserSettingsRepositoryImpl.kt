@@ -15,6 +15,7 @@ import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.NotificationSettings
+import com.example.withmo.domain.model.user_settings.SideButtonSettings
 import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.ui.theme.UiConfig
@@ -41,8 +42,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val APP_ICON_HORIZONTAL_SPACING = floatPreferencesKey("app_icon_horizontal_spacing")
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_MODE = stringPreferencesKey("sort_mode")
-        val SHOW_SCALE_SLIDER_BUTTON = booleanPreferencesKey("show_scale_slider_button")
-        val SHOW_SORT_BUTTON = booleanPreferencesKey("show_sort_button")
+        val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
+        val IS_SORT_BUTTON_SHOWN = booleanPreferencesKey("is_sort_button_shown")
 
         const val TAG = "UserPreferencesRepo"
     }
@@ -82,8 +83,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 ),
                 sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) }
                     ?: SortMode.ALPHABETICAL,
-                showScaleSliderButton = preferences[SHOW_SCALE_SLIDER_BUTTON] ?: true,
-                showSortButton = preferences[SHOW_SORT_BUTTON] ?: true,
+                sideButtonSettings = SideButtonSettings(
+                    isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
+                    isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
+                ),
             )
         }
 
@@ -124,12 +127,19 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveSideButtonSettings(sideButtonSettings: SideButtonSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] = sideButtonSettings.isScaleSliderButtonShown
+                preferences[IS_SORT_BUTTON_SHOWN] = sideButtonSettings.isSortButtonShown
+            }
+        }
+    }
+
     override suspend fun saveUserSetting(userSettings: UserSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[SORT_MODE] = userSettings.sortMode.name
-                preferences[SHOW_SCALE_SLIDER_BUTTON] = userSettings.showScaleSliderButton
-                preferences[SHOW_SORT_BUTTON] = userSettings.showSortButton
             }
         }
     }
