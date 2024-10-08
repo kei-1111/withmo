@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-abstract class BaseViewModel<S: UiState, E: UiEvent>: ViewModel() {
+@Suppress("VariableNaming")
+abstract class BaseViewModel<S : UiState, E : UiEvent> : ViewModel() {
     protected val _uiState = MutableStateFlow<S>(createInitialState())
     val uiState: StateFlow<S> = _uiState.asStateFlow()
 
