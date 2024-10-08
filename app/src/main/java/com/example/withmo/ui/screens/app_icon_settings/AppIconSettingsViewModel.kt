@@ -1,17 +1,12 @@
 package com.example.withmo.ui.screens.app_icon_settings
 
 import android.util.Log
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.app_icon.SaveAppIconSettingsUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -20,12 +15,9 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(AppIconSettingsUiState())
-    val uiState: StateFlow<AppIconSettingsUiState> = _uiState.asStateFlow()
+) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<AppIconSettingsUiEvent>()
-    val uiEvent: SharedFlow<AppIconSettingsUiEvent> = _uiEvent
+    override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
 
     init {
         viewModelScope.launch {

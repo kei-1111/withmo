@@ -1,6 +1,8 @@
 package com.example.withmo.ui.screens.side_button
 
-sealed interface SideButtonSettingsUiEvent {
+import com.example.withmo.ui.base.UiEvent
+
+sealed interface SideButtonSettingsUiEvent : UiEvent {
     data class ChangeIsScaleSliderButtonShown(
         val isScaleSliderButtonShown: Boolean,
     ) : SideButtonSettingsUiEvent

@@ -1,8 +1,9 @@
 package com.example.withmo.ui.screens.clock_settings
 
 import com.example.withmo.domain.model.ClockMode
+import com.example.withmo.ui.base.UiEvent
 
-sealed interface ClockSettingsUiEvent {
+sealed interface ClockSettingsUiEvent : UiEvent {
     data class ChangeIsClockShown(
         val isClockShown: Boolean,
     ) : ClockSettingsUiEvent

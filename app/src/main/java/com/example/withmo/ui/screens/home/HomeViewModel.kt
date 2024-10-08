@@ -2,18 +2,14 @@ package com.example.withmo.ui.screens.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.SortMode
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
+import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
@@ -26,12 +22,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
     private val saveSortModeUseCase: SaveSortModeUseCase,
-) : ViewModel() {
-    private val _uiState = MutableStateFlow(HomeUiState())
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+) : BaseViewModel<HomeUiState, HomeUiEvent>() {
 
-    private val _uiEvent = MutableSharedFlow<HomeUiEvent>()
-    val uiEvent: MutableSharedFlow<HomeUiEvent> = _uiEvent
+    override fun createInitialState(): HomeUiState = HomeUiState()
 
     init {
         viewModelScope.launch {

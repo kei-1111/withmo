@@ -1,8 +1,9 @@
 package com.example.withmo.ui.screens.app_icon_settings
 
 import com.example.withmo.domain.model.user_settings.AppIconShape
+import com.example.withmo.ui.base.UiEvent
 
-sealed interface AppIconSettingsUiEvent {
+sealed interface AppIconSettingsUiEvent : UiEvent {
     data class ChangeAppIconSize(
         val appIconSize: Float,
     ) : AppIconSettingsUiEvent
