@@ -56,32 +56,32 @@ fun WithmoSettingItemWithSlider(
                     .semantics { contentDescription = "Localized Description" }
                     .requiredSizeIn(
                         minWidth = UiConfig.SliderThumbSize,
-                        minHeight = UiConfig.SliderTrackHeight
+                        minHeight = UiConfig.SliderTrackHeight,
                     ),
                 thumb = {
-                    val modifier = Modifier
+                    val thumbModifier = Modifier
                         .size(UiConfig.SliderThumbSize)
                         .shadow(UiConfig.SliderShadowElevation, CircleShape, clip = false)
                         .indication(
                             interactionSource = interactionSource,
                             indication = ripple(
                                 bounded = false,
-                                radius = UiConfig.SliderThumbSize
-                            )
+                                radius = UiConfig.SliderThumbSize,
+                            ),
                         )
                     SliderDefaults.Thumb(
                         interactionSource = interactionSource,
-                        modifier = modifier
+                        modifier = thumbModifier,
                     )
                 },
                 track = {
-                    val modifier = Modifier
+                    val trackModifier = Modifier
                         .height(UiConfig.SliderTrackHeight)
                     SliderDefaults.Track(
                         sliderState = it,
-                        modifier = modifier,
+                        modifier = trackModifier,
                     )
-                }
+                },
             )
         }
     }
