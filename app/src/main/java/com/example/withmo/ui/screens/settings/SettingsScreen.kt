@@ -1,14 +1,30 @@
 package com.example.withmo.ui.screens.settings
 
+import android.content.Intent
 import android.os.Build
+import android.os.Environment
+import android.provider.Settings
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoTopAppBar
+import com.example.withmo.until.showToast
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 @Suppress("ModifierMissing", "LongMethod")
 @RequiresApi(Build.VERSION_CODES.R)
@@ -19,7 +35,51 @@ fun SettingsScreen(
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
+    navigateToDisplayModelSettingScreen: () -> Unit,
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
+
+    val latestNavigateToDisplayModelSettingScreen by rememberUpdatedState(
+        navigateToDisplayModelSettingScreen,
+    )
+
+    val launcher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.StartActivityForResult(),
+            onResult = {
+                if (Environment.isExternalStorageManager()) {
+                    latestNavigateToDisplayModelSettingScreen()
+                }
+            },
+        )
+
+    LaunchedEffect(lifecycleOwner, viewModel) {
+        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+            when (event) {
+                is SettingsUiEvent.NavigateToDisplayModelSettingScreen -> {
+                    if (Environment.isExternalStorageManager()) {
+                        latestNavigateToDisplayModelSettingScreen()
+                    } else {
+                        viewModel.changeIsFileAccessPermissionDialogShown(true)
+                    }
+                }
+
+                is SettingsUiEvent.FileAccessPermissionDialogOnConfirm -> {
+                    viewModel.changeIsFileAccessPermissionDialogShown(false)
+                    launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                }
+
+                is SettingsUiEvent.FileAccessPermissionDialogOnDismiss -> {
+                    viewModel.changeIsFileAccessPermissionDialogShown(false)
+                    showToast(context, "ファイルアクセス許可が必要です")
+                }
+            }
+        }.launchIn(this)
+    }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -37,9 +97,22 @@ fun SettingsScreen(
                 navigateToClockSettingsScreen = navigateToClockSettingsScreen,
                 navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
                 navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
-                navigateToModelSettingsScreen = {},
+                navigateToDisplayModelSettingScreen = {
+                    viewModel.onEvent(SettingsUiEvent.NavigateToDisplayModelSettingScreen)
+                },
             )
         }
+    }
+
+    if (uiState.isFileAccessPermissionDialogShown) {
+        FileAccessPermissionDialog(
+            onConfirm = {
+                viewModel.onEvent(SettingsUiEvent.FileAccessPermissionDialogOnConfirm)
+            },
+            onDismiss = {
+                viewModel.onEvent(SettingsUiEvent.FileAccessPermissionDialogOnDismiss)
+            },
+        )
     }
 //    Column(
 //        modifier = Modifier
