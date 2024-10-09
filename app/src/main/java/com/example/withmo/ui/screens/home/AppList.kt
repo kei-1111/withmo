@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -44,9 +45,8 @@ fun AppList(
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
-    val paddingValues = WindowInsets.safeGestures.asPaddingValues()
-    val topPaddingValue = paddingValues.calculateTopPadding()
-    val bottomPaddingValue = paddingValues.calculateBottomPadding()
+    val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
+    val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
@@ -55,14 +55,17 @@ fun AppList(
     }
 
     Surface(
-        modifier = modifier
-            .padding(
-                top = topPaddingValue,
-                start = UiConfig.MediumPadding,
-                end = UiConfig.MediumPadding,
-            ),
+        modifier = modifier,
     ) {
         Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    top = topPaddingValue,
+                    start = UiConfig.MediumPadding,
+                    end = UiConfig.MediumPadding,
+                    bottom = bottomPaddingValue,
+                ),
             verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
         ) {
             WithmoSearchTextField(
@@ -83,7 +86,7 @@ fun AppList(
                     columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
                     verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
                     horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                    contentPadding = PaddingValues(bottom = bottomPaddingValue),
+                    contentPadding = PaddingValues(bottom = UiConfig.MediumPadding),
                 ) {
                     items(resultAppList.size) { index ->
                         AppItem(
