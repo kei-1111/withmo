@@ -66,4 +66,9 @@ data object UiConfig {
     val SettingItemHeight = 56.dp
 
     val BorderWidth = 1.dp
+
+//    Slider
+    val SliderThumbSize = 20.dp
+    val SliderTrackHeight = 4.dp
+    val SliderShadowElevation = 1.dp
 }
