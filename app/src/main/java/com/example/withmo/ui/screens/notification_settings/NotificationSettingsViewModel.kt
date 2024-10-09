@@ -68,10 +68,4 @@ class NotificationSettingsViewModel @Inject constructor(
             }
         }
     }
-
-    fun onEvent(event: NotificationSettingsUiEvent) {
-        viewModelScope.launch {
-            _uiEvent.emit(event)
-        }
-    }
 }

@@ -70,10 +70,4 @@ class ClockSettingsViewModel @Inject constructor(
             }
         }
     }
-
-    fun onEvent(event: ClockSettingsUiEvent) {
-        viewModelScope.launch {
-            _uiEvent.emit(event)
-        }
-    }
 }
