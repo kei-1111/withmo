@@ -7,4 +7,5 @@ sealed interface Screen {
     data object ClockSettings : Screen
     data object AppIconSettings : Screen
     data object SideButtonSettings : Screen
+    data object DisplayModelSetting : Screen
 }

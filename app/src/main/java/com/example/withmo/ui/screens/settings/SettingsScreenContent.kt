@@ -34,7 +34,7 @@ fun SettingsScreenContent(
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
-    navigateToModelSettingsScreen: () -> Unit,
+    navigateToDisplayModelSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -51,7 +51,7 @@ fun SettingsScreenContent(
         )
         ModelSettings(
             title = "モデルの設定",
-            navigateToModelSettingsScreen = navigateToModelSettingsScreen,
+            navigateToDisplayModelSettingScreen = navigateToDisplayModelSettingScreen,
         )
     }
 }
@@ -109,7 +109,7 @@ private fun HomeScreenSettings(
 @Composable
 private fun ModelSettings(
     title: String,
-    navigateToModelSettingsScreen: () -> Unit,
+    navigateToDisplayModelSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -127,8 +127,8 @@ private fun ModelSettings(
             Column {
                 SettingItem(
                     icon = Icons.Default.InsertDriveFile,
-                    itemName = "アバター",
-                    onClick = navigateToModelSettingsScreen,
+                    itemName = "表示モデル",
+                    onClick = navigateToDisplayModelSettingScreen,
                 )
             }
         }

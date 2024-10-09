@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -105,7 +106,6 @@ fun HomeScreen(
     AnimatedVisibility(uiState.isFinishSplashScreen) {
         if (openBottomSheet) {
             ModalBottomSheet(
-                windowInsets = WindowInsets(UiConfig.BottomSheetWindowInsets),
                 onDismissRequest = {
                     scope.launch {
                         sheetState.hide()
@@ -118,7 +118,7 @@ fun HomeScreen(
                 shape = BottomSheetShape,
                 sheetState = sheetState,
                 dragHandle = {},
-                tonalElevation = UiConfig.BottomSheetTonalElevation,
+                containerColor = MaterialTheme.colorScheme.surface,
                 content = {
                     AppList(
                         context = context,

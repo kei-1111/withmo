@@ -7,10 +7,15 @@ import android.provider.MediaStore
 import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.withmo.domain.model.ModelFile
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 @Suppress("NestedBlockDepth")
 @RequiresApi(Build.VERSION_CODES.Q)
-fun getModelFile(context: Context): MutableList<ModelFile> {
+fun getModelFile(context: Context): ImmutableList<ModelFile> {
     val contentResolver = context.contentResolver
     val modelFileList = mutableListOf<ModelFile>()
 
@@ -38,20 +43,30 @@ fun getModelFile(context: Context): MutableList<ModelFile> {
         }
     }
 
-    return modelFileList
+    return modelFileList.toPersistentList()
 }
+
+private const val SecondsToMilliseconds = 1000L
 
 private fun extractModelFileFromCursor(cursor: Cursor): ModelFile? {
     val fileNameIndex = cursor.getColumnIndex(MediaStore.Downloads.DISPLAY_NAME)
     val filePathIndex = cursor.getColumnIndex(MediaStore.Downloads.DATA)
+    val downloadDateIndex = cursor.getColumnIndex(MediaStore.Downloads.DATE_ADDED)
 
     if (fileNameIndex == -1 || filePathIndex == -1) return null
 
     val fileName = cursor.getString(fileNameIndex)
     val filePath = cursor.getString(filePathIndex)
+    val downloadDate = cursor.getLong(downloadDateIndex)
 
     return if (filePath.endsWith(".vrm")) {
-        ModelFile(fileName = fileName, filePath = filePath)
+        val sdf = SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault())
+
+        ModelFile(
+            fileName = fileName,
+            filePath = filePath,
+            downloadDate = sdf.format(Date(downloadDate * SecondsToMilliseconds)),
+        )
     } else {
         null
     }

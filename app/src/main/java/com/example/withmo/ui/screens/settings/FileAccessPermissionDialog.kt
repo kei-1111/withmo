@@ -1,4 +1,4 @@
-package com.example.withmo.ui.component.settingscreen.home
+package com.example.withmo.ui.screens.settings
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
@@ -8,14 +8,13 @@ import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.TitleLargeText
 
 @Composable
-fun FileAccessCheckDialog(
-    onDismissRequest: () -> Unit,
+fun FileAccessPermissionDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     AlertDialog(
-        onDismissRequest = onDismissRequest,
+        onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(
                 onClick = {

@@ -127,6 +127,10 @@ private fun WithmoTopAppBarContent(
                     TitleLargeText(text = "サイドボタン")
                 }
 
+                Screen.DisplayModelSetting -> {
+                    TitleLargeText(text = "表示モデル")
+                }
+
                 else -> {}
             }
         }
