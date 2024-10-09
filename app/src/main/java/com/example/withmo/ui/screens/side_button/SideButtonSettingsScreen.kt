@@ -28,7 +28,7 @@ import com.example.withmo.until.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@Suppress("ModifierMissing")
+@Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun SideButtonSettingsScreen(
     navigateToSettingsScreen: () -> Unit,

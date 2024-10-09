@@ -13,7 +13,6 @@ import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.core.view.WindowCompat
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.App
 import com.example.withmo.ui.theme.WithmoTheme
