@@ -1,7 +1,11 @@
 package com.example.withmo.ui.screens.display_model_setting
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -55,7 +59,9 @@ fun DisplayModelSettingScreen(
         modifier = Modifier.fillMaxSize(),
     ) {
         Column(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()),
         ) {
             WithmoTopAppBar(
                 currentScreen = Screen.DisplayModelSetting,

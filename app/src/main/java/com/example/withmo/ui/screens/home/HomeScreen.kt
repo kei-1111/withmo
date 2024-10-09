@@ -12,10 +12,13 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ModalBottomSheetDefaults
+import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -29,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.AppInfo
@@ -61,9 +65,8 @@ fun HomeScreen(
 
     var homeAppList by remember { mutableStateOf(appList) }
 
-    val paddingValues = WindowInsets.safeGestures.asPaddingValues()
-    val topPaddingValue = paddingValues.calculateTopPadding()
-    val bottomPaddingValue = paddingValues.calculateBottomPadding()
+    val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
+    val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(appList) {
         homeAppList = when (uiState.currentUserSettings.sortMode) {
@@ -106,6 +109,11 @@ fun HomeScreen(
     AnimatedVisibility(uiState.isFinishSplashScreen) {
         if (openBottomSheet) {
             ModalBottomSheet(
+                contentWindowInsets = {
+                    WindowInsets(
+                        bottom = UiConfig.BottomSheetWindowInsetBottom,
+                    )
+                },
                 onDismissRequest = {
                     scope.launch {
                         sheetState.hide()
@@ -118,7 +126,6 @@ fun HomeScreen(
                 shape = BottomSheetShape,
                 sheetState = sheetState,
                 dragHandle = {},
-                containerColor = MaterialTheme.colorScheme.surface,
                 content = {
                     AppList(
                         context = context,
