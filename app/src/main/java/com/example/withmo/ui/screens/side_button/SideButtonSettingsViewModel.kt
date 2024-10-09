@@ -69,10 +69,4 @@ class SideButtonSettingsViewModel @Inject constructor(
             }
         }
     }
-
-    fun onEvent(event: SideButtonSettingsUiEvent) {
-        viewModelScope.launch {
-            _uiEvent.emit(event)
-        }
-    }
 }

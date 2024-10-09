@@ -38,12 +38,6 @@ class HomeViewModel @Inject constructor(
         startClock()
     }
 
-    fun onEvent(event: HomeUiEvent) {
-        viewModelScope.launch {
-            _uiEvent.emit(event)
-        }
-    }
-
     private fun startClock() {
         viewModelScope.launch {
             while (true) {

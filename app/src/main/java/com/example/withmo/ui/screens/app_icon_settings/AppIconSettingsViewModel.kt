@@ -103,10 +103,4 @@ class AppIconSettingsViewModel @Inject constructor(
             }
         }
     }
-
-    fun onEvent(event: AppIconSettingsUiEvent) {
-        viewModelScope.launch {
-            _uiEvent.emit(event)
-        }
-    }
 }
