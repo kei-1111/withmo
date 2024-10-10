@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.Apps
 import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RadioButtonChecked
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -35,6 +36,7 @@ fun SettingsScreenContent(
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
     navigateToDisplayModelSettingScreen: () -> Unit,
+    navigateToThemeSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -52,6 +54,10 @@ fun SettingsScreenContent(
         ModelSettings(
             title = "モデルの設定",
             navigateToDisplayModelSettingScreen = navigateToDisplayModelSettingScreen,
+        )
+        ThemeSettings(
+            title = "テーマの設定",
+            navigateToThemeSettingScreen = navigateToThemeSettingsScreen,
         )
     }
 }
@@ -129,6 +135,35 @@ private fun ModelSettings(
                     icon = Icons.Default.InsertDriveFile,
                     itemName = "表示モデル",
                     onClick = navigateToDisplayModelSettingScreen,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ThemeSettings(
+    title: String,
+    navigateToThemeSettingScreen: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+    ) {
+        LabelMediumText(
+            text = title,
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+        ) {
+            Column {
+                SettingItem(
+                    icon = Icons.Default.Palette,
+                    itemName = "テーマ",
+                    onClick = navigateToThemeSettingScreen,
                 )
             }
         }

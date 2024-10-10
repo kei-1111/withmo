@@ -40,6 +40,7 @@ fun SettingsScreen(
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
     navigateToDisplayModelSettingScreen: () -> Unit,
+    navigateToThemeSettingsScreen: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -105,6 +106,7 @@ fun SettingsScreen(
                 navigateToDisplayModelSettingScreen = {
                     viewModel.onEvent(SettingsUiEvent.NavigateToDisplayModelSettingScreen)
                 },
+                navigateToThemeSettingsScreen = navigateToThemeSettingsScreen,
             )
         }
     }

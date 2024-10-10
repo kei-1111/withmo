@@ -10,16 +10,28 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.domain.model.user_settings.ThemeSettings
+import com.example.withmo.domain.model.user_settings.ThemeType
+import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.ui.App
 import com.example.withmo.ui.theme.WithmoTheme
 import com.example.withmo.until.getAppList
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import java.time.LocalTime
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -48,6 +60,10 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+    @Inject
+    lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
+    private var themeSettings by mutableStateOf(ThemeSettings())
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,8 +98,25 @@ class MainActivity : ComponentActivity() {
             RECEIVER_NOT_EXPORTED,
         )
 
+        lifecycleScope.launch {
+            getThemeSettingsUseCase().collect { themeSettings = it }
+        }
+
         setContent {
-            WithmoTheme {
+            var isNight by remember { mutableStateOf(isNightTime()) }
+
+            LaunchedEffect(Unit) {
+                repeatOnLifecycle(Lifecycle.State.STARTED) {
+                    while (true) {
+                        isNight = isNightTime()
+                        delay(MillisecondToSecond * SecondToMinute)
+                    }
+                }
+            }
+
+            WithmoTheme(
+                darkTheme = themeTypeToBoolean(themeSettings.themeType, isNight),
+            ) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     window.isNavigationBarContrastEnforced = false
                 }
@@ -118,5 +151,28 @@ class MainActivity : ComponentActivity() {
 
     @Suppress("EmptyFunctionBlock")
     override fun finish() {
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @Suppress("MagicNumber")
+    private fun isNightTime(): Boolean {
+        val currentTime = LocalTime.now()
+        val startNightTime = LocalTime.of(19, 0)
+        val endNightTime = LocalTime.of(6, 0)
+
+        return currentTime.isAfter(startNightTime) || currentTime.isBefore(endNightTime)
+    }
+
+    private fun themeTypeToBoolean(themeType: ThemeType, isNight: Boolean): Boolean {
+        return when (themeType) {
+            ThemeType.TIME_BASED -> isNight
+            ThemeType.LIGHT -> false
+            ThemeType.DARK -> true
+        }
+    }
+
+    companion object {
+        private const val MillisecondToSecond = 1000L
+        private const val SecondToMinute = 60L
     }
 }

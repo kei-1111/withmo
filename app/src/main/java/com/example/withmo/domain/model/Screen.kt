@@ -8,4 +8,5 @@ sealed interface Screen {
     data object AppIconSettings : Screen
     data object SideButtonSettings : Screen
     data object DisplayModelSetting : Screen
+    data object ThemeSettings : Screen
 }

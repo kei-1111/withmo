@@ -8,4 +8,5 @@ data class UserSettings(
     val appIconSettings: AppIconSettings = AppIconSettings(),
     val sortMode: SortMode = SortMode.ALPHABETICAL,
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
+    val themeSettings: ThemeSettings = ThemeSettings(),
 )

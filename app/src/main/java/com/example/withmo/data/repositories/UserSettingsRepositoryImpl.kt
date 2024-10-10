@@ -16,6 +16,8 @@ import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.SideButtonSettings
+import com.example.withmo.domain.model.user_settings.ThemeSettings
+import com.example.withmo.domain.model.user_settings.ThemeType
 import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.domain.repository.UserSettingsRepository
 import com.example.withmo.ui.theme.UiConfig
@@ -44,6 +46,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val SORT_MODE = stringPreferencesKey("sort_mode")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val IS_SORT_BUTTON_SHOWN = booleanPreferencesKey("is_sort_button_shown")
+        val THEME_TYPE = stringPreferencesKey("theme_type")
 
         const val TAG = "UserPreferencesRepo"
     }
@@ -86,6 +89,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
+                ),
+                themeSettings = ThemeSettings(
+                    themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
+                        ?: ThemeType.TIME_BASED,
                 ),
             )
         }
@@ -132,6 +139,14 @@ class UserSettingsRepositoryImpl @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] = sideButtonSettings.isScaleSliderButtonShown
                 preferences[IS_SORT_BUTTON_SHOWN] = sideButtonSettings.isSortButtonShown
+            }
+        }
+    }
+
+    override suspend fun saveThemeSettings(themeSettings: ThemeSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[THEME_TYPE] = themeSettings.themeType.name
             }
         }
     }

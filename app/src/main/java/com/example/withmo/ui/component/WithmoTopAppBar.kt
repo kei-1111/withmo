@@ -131,6 +131,10 @@ private fun WithmoTopAppBarContent(
                     TitleLargeText(text = "表示モデル")
                 }
 
+                Screen.ThemeSettings -> {
+                    TitleLargeText(text = "テーマ")
+                }
+
                 else -> {}
             }
         }
