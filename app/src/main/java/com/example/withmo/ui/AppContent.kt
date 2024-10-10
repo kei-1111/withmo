@@ -29,11 +29,12 @@ import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
 import com.example.withmo.ui.screens.side_button.SideButtonSettingsScreen
+import com.example.withmo.ui.screens.theme_settings.ThemeSettingsScreen
 import com.unity3d.player.UnityPlayer
 import kotlinx.collections.immutable.ImmutableList
 
 @RequiresApi(Build.VERSION_CODES.R)
-@Suppress("LongMethod")
+@Suppress("LongMethod", "CyclomaticComplexMethod")
 @Composable
 fun AppContent(
     unityPlayer: UnityPlayer?,
@@ -92,6 +93,7 @@ fun AppContent(
                         navigateToAppIconSettingsScreen = { currentScreen = Screen.AppIconSettings },
                         navigateToSideButtonSettingsScreen = { currentScreen = Screen.SideButtonSettings },
                         navigateToDisplayModelSettingScreen = { currentScreen = Screen.DisplayModelSetting },
+                        navigateToThemeSettingsScreen = { currentScreen = Screen.ThemeSettings },
                     )
                 }
 
@@ -121,6 +123,12 @@ fun AppContent(
 
                 is Screen.DisplayModelSetting -> {
                     DisplayModelSettingScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.ThemeSettings -> {
+                    ThemeSettingsScreen(
                         navigateToSettingsScreen = navigateToSettingScreen,
                     )
                 }

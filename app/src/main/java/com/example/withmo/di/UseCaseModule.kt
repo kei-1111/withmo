@@ -21,12 +21,17 @@ import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButto
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.theme.SaveThemeSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.theme.SaveThemeSettingsUseCaseImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
+@Suppress("TooManyFunctions")
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
@@ -96,4 +101,17 @@ object UseCaseModule {
     fun provideSaveSideButtonSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveSideButtonSettingsUseCase = SaveSideButtonSettingsUseCaseImpl(userSettingsRepository)
+
+//    Theme
+    @Provides
+    @Singleton
+    fun provideGetThemeSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetThemeSettingsUseCase = GetThemeSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveThemeSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveThemeSettingsUseCase = SaveThemeSettingsUseCaseImpl(userSettingsRepository)
 }
