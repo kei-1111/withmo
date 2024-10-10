@@ -143,7 +143,7 @@ fun HomeScreen(
                 .fillMaxSize()
                 .padding(
                     top = topPaddingValue,
-                    bottom = bottomPaddingValue,
+                    bottom = bottomPaddingValue + UiConfig.MediumPadding,
                 ),
         ) {
             if (!uiState.isShowScaleSlider) {
