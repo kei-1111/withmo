@@ -19,8 +19,8 @@ import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButton
 import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCaseImpl
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCase
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.theme.SaveThemeSettingsUseCase
@@ -43,12 +43,12 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): GetUserSettingsUseCase = GetUserSettingsUseCaseImpl(userSettingsRepository)
 
-//    SortMode
+//    SortType
     @Provides
     @Singleton
-    fun provideSaveSortModeUseCase(
+    fun provideSaveSortTypeUseCase(
         userSettingsRepository: UserSettingsRepository,
-    ): SaveSortModeUseCase = SaveSortModeUseCaseImpl(userSettingsRepository)
+    ): SaveSortTypeUseCase = SaveSortTypeUseCaseImpl(userSettingsRepository)
 
 //    Notification
     @Provides

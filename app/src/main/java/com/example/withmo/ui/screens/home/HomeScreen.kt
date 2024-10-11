@@ -20,6 +20,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,11 +29,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig
@@ -47,7 +48,7 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    navigateToSettingScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
     appList: ImmutableList<AppInfo>,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -59,16 +60,15 @@ fun HomeScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     var openBottomSheet by remember { mutableStateOf(false) }
 
-    var homeAppList by remember { mutableStateOf(appList) }
-
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
-    LaunchedEffect(appList) {
-        homeAppList = when (uiState.currentUserSettings.sortMode) {
-            SortMode.USE_COUNT -> appList.sortedByDescending { it.useCount }.toPersistentList()
-
-            SortMode.ALPHABETICAL -> appList.sortedBy { it.label }.toPersistentList()
+    val homeAppList by remember(appList, uiState.currentUserSettings.sortType) {
+        derivedStateOf {
+            when (uiState.currentUserSettings.sortType) {
+                SortType.USE_COUNT -> appList.sortedByDescending { it.useCount }.toPersistentList()
+                SortType.ALPHABETICAL -> appList.sortedBy { it.label }.toPersistentList()
+            }
         }
     }
 
@@ -89,14 +89,12 @@ fun HomeScreen(
 
                 is HomeUiEvent.OnSelectSortByUsageOrder -> {
                     viewModel.setPopupExpanded(false)
-                    homeAppList = homeAppList.sortedByDescending { it.useCount }.toPersistentList()
-                    viewModel.saveSortMode(SortMode.USE_COUNT)
+                    viewModel.saveSortType(SortType.USE_COUNT)
                 }
 
                 is HomeUiEvent.OnSelectSortByAlphabeticalOrder -> {
                     viewModel.setPopupExpanded(false)
-                    homeAppList = homeAppList.sortedBy { it.label }.toPersistentList()
-                    viewModel.saveSortMode(SortMode.ALPHABETICAL)
+                    viewModel.saveSortType(SortType.ALPHABETICAL)
                 }
             }
         }.launchIn(this)
@@ -131,7 +129,7 @@ fun HomeScreen(
                         ),
                         appSearchQuery = uiState.appSearchQuery,
                         onEvent = viewModel::onEvent,
-                        navigateToSettingScreen = navigateToSettingScreen,
+                        navigateToSettingsScreen = navigateToSettingsScreen,
                         modifier = Modifier.fillMaxSize(),
                     )
                 },
@@ -177,7 +175,7 @@ fun HomeScreen(
                 onEvent = viewModel::onEvent,
                 context = context,
                 appList = homeAppList,
-                navigateToSettingScreen = navigateToSettingScreen,
+                navigateToSettingsScreen = navigateToSettingsScreen,
                 getCurrentTime = viewModel::getTime,
                 modifier = Modifier.fillMaxSize(),
             )

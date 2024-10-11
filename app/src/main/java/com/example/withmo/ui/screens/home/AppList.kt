@@ -40,7 +40,7 @@ fun AppList(
     appIconShape: Shape,
     appSearchQuery: String,
     onEvent: (HomeUiEvent) -> Unit,
-    navigateToSettingScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -93,7 +93,7 @@ fun AppList(
                             context = context,
                             appInfo = resultAppList[index],
                             appIconShape = appIconShape,
-                            navigateToSettingScreen = navigateToSettingScreen,
+                            navigateToSettingScreen = navigateToSettingsScreen,
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }

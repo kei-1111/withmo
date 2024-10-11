@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
-import com.example.withmo.domain.model.SortMode
 import com.example.withmo.domain.model.user_settings.AppIconSettings
+import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.component.AppItem
 import com.example.withmo.ui.component.BodyMediumText
@@ -45,7 +45,7 @@ fun HomeScreenContent(
     onEvent: (HomeUiEvent) -> Unit,
     context: Context,
     appList: ImmutableList<AppInfo>,
-    navigateToSettingScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
     getCurrentTime: () -> DateTimeInfo,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +68,7 @@ fun HomeScreenContent(
         } else {
             if (uiState.currentUserSettings.clockSettings.isClockShown) {
                 WithmoClock(
-                    clockMode = uiState.currentUserSettings.clockSettings.clockMode,
+                    clockType = uiState.currentUserSettings.clockSettings.clockType,
                     dateTimeInfo = getCurrentTime(),
                     modifier = Modifier.padding(start = UiConfig.MediumPadding),
                 )
@@ -108,7 +108,7 @@ fun HomeScreenContent(
                     context = context,
                     appList = appList,
                     appIconSettings = uiState.currentUserSettings.appIconSettings,
-                    navigateToSettingScreen = navigateToSettingScreen,
+                    navigateToSettingsScreen = navigateToSettingsScreen,
                 )
             }
             if (uiState.isExpandPopup) {
@@ -116,7 +116,7 @@ fun HomeScreenContent(
                     onDismissRequest = { onEvent(HomeUiEvent.SetPopupExpanded(false)) },
                     onSelectSortByUsageOrder = { onEvent(HomeUiEvent.OnSelectSortByUsageOrder) },
                     onSelectSortByAlphabeticalOrder = { onEvent(HomeUiEvent.OnSelectSortByAlphabeticalOrder) },
-                    sortMode = uiState.currentUserSettings.sortMode,
+                    sortType = uiState.currentUserSettings.sortType,
                 )
             }
         }
@@ -128,7 +128,7 @@ private fun PopupContent(
     onDismissRequest: () -> Unit,
     onSelectSortByUsageOrder: () -> Unit,
     onSelectSortByAlphabeticalOrder: () -> Unit,
-    sortMode: SortMode,
+    sortType: SortType,
     modifier: Modifier = Modifier,
 ) {
     Popup(
@@ -150,9 +150,7 @@ private fun PopupContent(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(
-                            onClick = onSelectSortByUsageOrder,
-                        ),
+                        .clickable { onSelectSortByUsageOrder() },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     BodyMediumText(
@@ -160,16 +158,14 @@ private fun PopupContent(
                         modifier = Modifier.weight(UiConfig.DefaultWeight),
                     )
                     RadioButton(
-                        selected = sortMode == SortMode.USE_COUNT,
+                        selected = sortType == SortType.USE_COUNT,
                         onClick = onSelectSortByUsageOrder,
                     )
                 }
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable(
-                            onClick = onSelectSortByAlphabeticalOrder,
-                        ),
+                        .clickable { onSelectSortByAlphabeticalOrder() },
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     BodyMediumText(
@@ -177,7 +173,7 @@ private fun PopupContent(
                         modifier = Modifier.weight(UiConfig.DefaultWeight),
                     )
                     RadioButton(
-                        selected = sortMode == SortMode.ALPHABETICAL,
+                        selected = sortType == SortType.ALPHABETICAL,
                         onClick = onSelectSortByAlphabeticalOrder,
                     )
                 }
@@ -191,7 +187,7 @@ private fun RowAppList(
     context: Context,
     appList: ImmutableList<AppInfo>,
     appIconSettings: AppIconSettings,
-    navigateToSettingScreen: () -> Unit,
+    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -208,7 +204,7 @@ private fun RowAppList(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
                 isAppNameShown = appIconSettings.isAppNameShown,
-                navigateToSettingScreen = navigateToSettingScreen,
+                navigateToSettingScreen = navigateToSettingsScreen,
             )
         }
     }

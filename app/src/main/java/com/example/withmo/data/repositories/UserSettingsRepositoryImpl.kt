@@ -9,13 +9,13 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.withmo.di.IoDispatcher
-import com.example.withmo.domain.model.ClockMode
-import com.example.withmo.domain.model.SortMode
 import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.AppIconShape
 import com.example.withmo.domain.model.user_settings.ClockSettings
+import com.example.withmo.domain.model.user_settings.ClockType
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.SideButtonSettings
+import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.ThemeSettings
 import com.example.withmo.domain.model.user_settings.ThemeType
 import com.example.withmo.domain.model.user_settings.UserSettings
@@ -35,26 +35,25 @@ class UserSettingsRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
     private companion object {
-        val IS_NOTIFICATION_ANIMATION_ENABLED = booleanPreferencesKey("is_notification_animation_enabled")
+        val IS_NOTIFICATION_ANIMATION_ENABLED =
+            booleanPreferencesKey("is_notification_animation_enabled")
         val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
-        val CLOCK_MODE = stringPreferencesKey("clock_mode")
+        val CLOCK_TYPE = stringPreferencesKey("clock_type")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
         val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
         val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
         val APP_ICON_HORIZONTAL_SPACING = floatPreferencesKey("app_icon_horizontal_spacing")
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
-        val SORT_MODE = stringPreferencesKey("sort_mode")
+        val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val IS_SORT_BUTTON_SHOWN = booleanPreferencesKey("is_sort_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
-
-        const val TAG = "UserPreferencesRepo"
     }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e(TAG, "Error reading preferences", it)
+                Log.e("UseSettingsRepository", "Error reading preferences", it)
                 emit(emptyPreferences())
             } else {
                 throw it
@@ -63,16 +62,18 @@ class UserSettingsRepositoryImpl @Inject constructor(
         .map { preferences ->
             UserSettings(
                 notificationSettings = NotificationSettings(
-                    isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED] ?: false,
+                    isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED]
+                        ?: false,
                 ),
                 clockSettings = ClockSettings(
                     isClockShown = preferences[IS_CLOCK_SHOWN] ?: true,
-                    clockMode = preferences[CLOCK_MODE]?.let { ClockMode.valueOf(it) }
-                        ?: ClockMode.TOP_DATE,
+                    clockType = preferences[CLOCK_TYPE]?.let { ClockType.valueOf(it) }
+                        ?: ClockType.TOP_DATE,
                 ),
                 appIconSettings = AppIconSettings(
                     appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
-                    appIconHorizontalSpacing = preferences[APP_ICON_HORIZONTAL_SPACING] ?: UiConfig.DefaultAppIconHorizontalSpacing,
+                    appIconHorizontalSpacing = preferences[APP_ICON_HORIZONTAL_SPACING]
+                        ?: UiConfig.DefaultAppIconHorizontalSpacing,
                     appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
                         when (shape) {
                             AppIconShape.Circle.toString() -> AppIconShape.Circle
@@ -81,11 +82,12 @@ class UserSettingsRepositoryImpl @Inject constructor(
                             else -> AppIconShape.Circle
                         }
                     } ?: AppIconShape.Circle,
-                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: UiConfig.DefaultRoundedCornerPercent,
+                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT]
+                        ?: UiConfig.DefaultRoundedCornerPercent,
                     isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
                 ),
-                sortMode = preferences[SORT_MODE]?.let { SortMode.valueOf(it) }
-                    ?: SortMode.ALPHABETICAL,
+                sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
+                    ?: SortType.ALPHABETICAL,
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
@@ -97,10 +99,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun saveSortMode(sortMode: SortMode) {
+    override suspend fun saveSortType(sortType: SortType) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[SORT_MODE] = sortMode.name
+                preferences[SORT_TYPE] = sortType.name
             }
         }
     }
@@ -108,7 +110,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveNotificationSettings(notificationSettings: NotificationSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[IS_NOTIFICATION_ANIMATION_ENABLED] = notificationSettings.isNotificationAnimationEnabled
+                preferences[IS_NOTIFICATION_ANIMATION_ENABLED] =
+                    notificationSettings.isNotificationAnimationEnabled
             }
         }
     }
@@ -129,7 +132,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[IS_CLOCK_SHOWN] = clockSettings.isClockShown
-                preferences[CLOCK_MODE] = clockSettings.clockMode.name
+                preferences[CLOCK_TYPE] = clockSettings.clockType.name
             }
         }
     }
@@ -137,7 +140,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveSideButtonSettings(sideButtonSettings: SideButtonSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] = sideButtonSettings.isScaleSliderButtonShown
+                preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] =
+                    sideButtonSettings.isScaleSliderButtonShown
                 preferences[IS_SORT_BUTTON_SHOWN] = sideButtonSettings.isSortButtonShown
             }
         }
@@ -147,14 +151,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[THEME_TYPE] = themeSettings.themeType.name
-            }
-        }
-    }
-
-    override suspend fun saveUserSetting(userSettings: UserSettings) {
-        withContext(ioDispatcher) {
-            dataStore.edit { preferences ->
-                preferences[SORT_MODE] = userSettings.sortMode.name
             }
         }
     }

@@ -23,9 +23,7 @@ fun WithmoSettingItemWithRadioButton(
 ) {
     Row(
         modifier = modifier
-            .clickable(
-                onClick = onClick,
-            )
+            .clickable { onClick() }
             .padding(horizontal = UiConfig.MediumPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {

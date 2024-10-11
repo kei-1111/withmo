@@ -11,8 +11,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.DateTimeInfo
+import com.example.withmo.domain.model.user_settings.ClockType
 import com.example.withmo.ui.theme.UiConfig
 import com.example.withmo.ui.theme.clockTextExtraSmallSize
 import com.example.withmo.ui.theme.clockTextLargeSize
@@ -21,19 +21,19 @@ import com.example.withmo.ui.theme.clockTextSmallSize
 
 @Composable
 fun WithmoClock(
-    clockMode: ClockMode,
+    clockType: ClockType,
     dateTimeInfo: DateTimeInfo,
     modifier: Modifier = Modifier,
 ) {
-    when (clockMode) {
-        ClockMode.TOP_DATE -> {
+    when (clockType) {
+        ClockType.TOP_DATE -> {
             ClockTopDate(
                 dateTimeInfo = dateTimeInfo,
                 modifier = modifier,
             )
         }
 
-        ClockMode.HORIZONTAL_DATE -> {
+        ClockType.HORIZONTAL_DATE -> {
             ClockHorizontalDate(
                 dateTimeInfo = dateTimeInfo,
                 modifier = modifier,

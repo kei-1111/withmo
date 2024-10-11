@@ -1,5 +1,7 @@
 package com.example.withmo.ui.screens.display_model_setting
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -14,15 +16,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoTopAppBar
-import com.example.withmo.until.getModelFile
+import com.example.withmo.utils.FileUtils
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
+@RequiresApi(Build.VERSION_CODES.Q)
 @Suppress("ModifierMissing")
 @Composable
 fun DisplayModelSettingScreen(
@@ -36,7 +39,7 @@ fun DisplayModelSettingScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     LaunchedEffect(Unit) {
-        val modelFileList = getModelFile(context)
+        val modelFileList = FileUtils.getModelFile(context)
         viewModel.getModelFileList(modelFileList)
     }
 
@@ -55,8 +58,21 @@ fun DisplayModelSettingScreen(
         }.launchIn(this)
     }
 
-    Surface(
+    DisplayModelSettingScreen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
         modifier = Modifier.fillMaxSize(),
+    )
+}
+
+@Composable
+private fun DisplayModelSettingScreen(
+    uiState: DisplayModelSettingUiState,
+    onEvent: (DisplayModelSettingUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
@@ -65,11 +81,11 @@ fun DisplayModelSettingScreen(
         ) {
             WithmoTopAppBar(
                 currentScreen = Screen.DisplayModelSetting,
-                navigateBack = { viewModel.onEvent(DisplayModelSettingUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(DisplayModelSettingUiEvent.NavigateToSettingsScreen) },
             )
             DisplayModelSettingScreenContent(
                 uiState = uiState,
-                onEvent = viewModel::onEvent,
+                onEvent = onEvent,
                 modifier = Modifier.fillMaxSize(),
             )
         }
