@@ -26,8 +26,6 @@ data object UiConfig {
     const val AppIconPadding = 22f
     const val AppIconTextMaxLines = 1
 
-    const val GoldenRatio = 1.618f
-
     const val AppListScreenGridColums = 4
 
     const val DisabledContentAlpha = 0.38f
@@ -48,14 +46,9 @@ data object UiConfig {
 //    Shadow
     val ShadowElevation = 5.dp
 
-//    Tonal
-    val TonalElevation = 5.dp
-
     val PopupWidth = 400.dp
 
     val BadgeSize = 15.dp
-
-    val DividerHeight = 3.dp
 
     val TextFieldHeight = 36.dp
     val TopAppBarHeight = 64.dp

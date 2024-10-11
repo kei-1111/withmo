@@ -24,7 +24,7 @@ import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoSaveButton
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.ui.theme.UiConfig
-import com.example.withmo.until.showToast
+import com.example.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -67,8 +67,21 @@ fun ThemeSettingsScreen(
         }.launchIn(this)
     }
 
-    Surface(
+    ThemeSettingsSceen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
         modifier = Modifier.fillMaxSize(),
+    )
+}
+
+@Composable
+private fun ThemeSettingsSceen(
+    uiState: ThemeSettingsUiState,
+    onEvent: (ThemeSettingsUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
@@ -77,18 +90,18 @@ fun ThemeSettingsScreen(
         ) {
             WithmoTopAppBar(
                 currentScreen = Screen.ThemeSettings,
-                navigateBack = { viewModel.onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen) },
             )
             ThemeSettingsScreenContent(
                 uiState = uiState,
-                onEvent = viewModel::onEvent,
+                onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(UiConfig.DefaultWeight)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { viewModel.onEvent(ThemeSettingsUiEvent.Save) },
+                onClick = { onEvent(ThemeSettingsUiEvent.Save) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

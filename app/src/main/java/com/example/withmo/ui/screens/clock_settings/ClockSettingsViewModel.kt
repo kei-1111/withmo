@@ -2,7 +2,7 @@ package com.example.withmo.ui.screens.clock_settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.example.withmo.domain.model.ClockMode
+import com.example.withmo.domain.model.user_settings.ClockType
 import com.example.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
 import com.example.withmo.ui.base.BaseViewModel
@@ -43,13 +43,13 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeClockMode(clockMode: ClockMode) {
+    fun changeClockType(clockType: ClockType) {
         _uiState.update {
             it.copy(
                 clockSettings = it.clockSettings.copy(
-                    clockMode = clockMode,
+                    clockType = clockType,
                 ),
-                isSaveButtonEnabled = clockMode != it.initialClockSettings.clockMode,
+                isSaveButtonEnabled = clockType != it.initialClockSettings.clockType,
             )
         }
     }

@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -15,14 +17,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoSaveButton
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.ui.theme.UiConfig
-import com.example.withmo.until.showToast
+import com.example.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -45,8 +47,8 @@ fun ClockSettingsScreen(
                     viewModel.changeIsClockShown(event.isClockShown)
                 }
 
-                is ClockSettingsUiEvent.ChangeClockMode -> {
-                    viewModel.changeClockMode(event.clockMode)
+                is ClockSettingsUiEvent.ChangeClockType -> {
+                    viewModel.changeClockType(event.clockType)
                 }
 
                 is ClockSettingsUiEvent.Save -> {
@@ -69,8 +71,21 @@ fun ClockSettingsScreen(
         }.launchIn(this)
     }
 
-    Surface(
+    ClockSettingsScreen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
         modifier = Modifier.fillMaxSize(),
+    )
+}
+
+@Composable
+private fun ClockSettingsScreen(
+    uiState: ClockSettingsUiState,
+    onEvent: (ClockSettingsUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
     ) {
         Column(
             modifier = Modifier
@@ -79,17 +94,18 @@ fun ClockSettingsScreen(
         ) {
             WithmoTopAppBar(
                 currentScreen = Screen.ClockSettings,
-                navigateBack = navigateToSettingsScreen,
+                navigateBack = { onEvent(ClockSettingsUiEvent.NavigateToSettingsScreen) },
             )
             ClockSettingsScreenContent(
                 uiState = uiState,
-                onEvent = viewModel::onEvent,
+                onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight),
+                    .weight(UiConfig.DefaultWeight)
+                    .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { viewModel.onEvent(ClockSettingsUiEvent.Save) },
+                onClick = { onEvent(ClockSettingsUiEvent.Save) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

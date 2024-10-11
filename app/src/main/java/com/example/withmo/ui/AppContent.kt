@@ -80,20 +80,14 @@ fun AppContent(
             when (targetState) {
                 is Screen.Home -> {
                     HomeScreen(
-                        navigateToSettingScreen = navigateToSettingScreen,
+                        navigateToSettingsScreen = navigateToSettingScreen,
                         appList = appList,
                     )
                 }
 
                 is Screen.Settings -> {
                     SettingsScreen(
-                        navigateToHomeScreen = { currentScreen = Screen.Home },
-                        navigateToNotificationSettingsScreen = { currentScreen = Screen.NotificationSettings },
-                        navigateToClockSettingsScreen = { currentScreen = Screen.ClockSettings },
-                        navigateToAppIconSettingsScreen = { currentScreen = Screen.AppIconSettings },
-                        navigateToSideButtonSettingsScreen = { currentScreen = Screen.SideButtonSettings },
-                        navigateToDisplayModelSettingScreen = { currentScreen = Screen.DisplayModelSetting },
-                        navigateToThemeSettingsScreen = { currentScreen = Screen.ThemeSettings },
+                        onNavigate = { screen -> currentScreen = screen },
                     )
                 }
 

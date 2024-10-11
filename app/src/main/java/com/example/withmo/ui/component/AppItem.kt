@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import com.example.withmo.domain.model.AppIcon
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.theme.UiConfig
-import com.example.withmo.until.getHomeAppName
+import com.example.withmo.utils.AppUtils
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -58,7 +58,7 @@ fun AppItem(
                     .combinedClickable(
                         onClick = {
                             if (appInfo.packageName == context.packageName) {
-                                getHomeAppName(context)?.let { Log.d("HOMEAPP", it) }
+                                AppUtils.getHomeAppName(context)?.let { Log.d("HOMEAPP", it) }
                                 navigateToSettingScreen()
                             } else {
                                 appInfo.launch(context = context)

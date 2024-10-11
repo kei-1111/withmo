@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -170,6 +171,7 @@ private fun ThemeSettings(
     }
 }
 
+@NonRestartableComposable
 @Composable
 private fun SettingItemDivider(
     modifier: Modifier = Modifier,
@@ -191,7 +193,7 @@ private fun SettingItem(
     Row(
         modifier = modifier
             .height(UiConfig.SettingItemHeight)
-            .clickable(onClick = onClick)
+            .clickable { onClick() }
             .padding(horizontal = UiConfig.MediumPadding),
         verticalAlignment = Alignment.CenterVertically,
     ) {

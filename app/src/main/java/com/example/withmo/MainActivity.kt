@@ -24,9 +24,11 @@ import com.example.withmo.domain.model.user_settings.ThemeType
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.ui.App
 import com.example.withmo.ui.theme.WithmoTheme
-import com.example.withmo.until.getAppList
+import com.example.withmo.utils.AppUtils
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,7 +39,7 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     private var unityPlayer: UnityPlayer? = null
 
-    private var appList: List<AppInfo> by mutableStateOf(emptyList())
+    private var appList: ImmutableList<AppInfo> by mutableStateOf(persistentListOf())
 
     private val packageReceiver = object : BroadcastReceiver() {
         @RequiresApi(Build.VERSION_CODES.O)
@@ -48,7 +50,7 @@ class MainActivity : ComponentActivity() {
                     if (app.packageName == packageName) app.receiveNotification()
                 }
             } else {
-                val newAppList = getAppList(this@MainActivity)
+                val newAppList = AppUtils.getAppList(this@MainActivity)
 
                 newAppList.forEach { newApp ->
                     appList.find { it.packageName == newApp.packageName }?.let {
@@ -72,7 +74,7 @@ class MainActivity : ComponentActivity() {
 
         unityPlayer = UnityPlayer(this)
 
-        appList = getAppList(this)
+        appList = AppUtils.getAppList(this)
 
         registerReceiver(
             packageReceiver,

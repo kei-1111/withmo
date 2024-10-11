@@ -73,9 +73,7 @@ fun WithmoTextField(
                 )
                 if (showIcon) {
                     Icon(
-                        modifier = Modifier.clickable(
-                            onClick = action,
-                        ),
+                        modifier = Modifier.clickable { action() },
                         imageVector = icon,
                         contentDescription = "Search",
                         tint = MaterialTheme.colorScheme.onSurface,

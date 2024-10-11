@@ -14,6 +14,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.user_settings.AppIconShape
@@ -132,6 +133,7 @@ fun AppIconShapePicker(
     }
 }
 
+@NonRestartableComposable
 @Composable
 fun AppIconShapePickerDivider(
     modifier: Modifier = Modifier,

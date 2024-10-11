@@ -4,9 +4,9 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.DateTimeInfo
-import com.example.withmo.domain.model.SortMode
+import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortModeUseCase
+import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCase
 import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -21,7 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val saveSortModeUseCase: SaveSortModeUseCase,
+    private val saveSortTypeUseCase: SaveSortTypeUseCase,
 ) : BaseViewModel<HomeUiState, HomeUiEvent>() {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
@@ -72,9 +72,9 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun saveSortMode(sortMode: SortMode) {
+    fun saveSortType(sortType: SortType) {
         viewModelScope.launch {
-            saveSortModeUseCase(sortMode)
+            saveSortTypeUseCase(sortType)
         }
     }
 
@@ -96,7 +96,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    @Suppress("MagicNumber")
     companion object {
         private const val SplashScreenDuration = 5000L
         private const val ClockUpdateInterval = 1000L

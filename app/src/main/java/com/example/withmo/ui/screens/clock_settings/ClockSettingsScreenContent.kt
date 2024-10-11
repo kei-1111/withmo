@@ -8,9 +8,10 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
-import com.example.withmo.domain.model.ClockMode
 import com.example.withmo.domain.model.DateTimeInfo
+import com.example.withmo.domain.model.user_settings.ClockType
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.WithmoClock
 import com.example.withmo.ui.component.WithmoSettingItemWithRadioButton
@@ -34,9 +35,9 @@ fun ClockSettingsScreenContent(
             onCheckedChange = { onEvent(ClockSettingsUiEvent.ChangeIsClockShown(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
-        ClockModePicker(
+        ClockTypePicker(
             isClockShown = uiState.clockSettings.isClockShown,
-            selectedClockMode = uiState.clockSettings.clockMode,
+            selectedClockType = uiState.clockSettings.clockType,
             onEvent = onEvent,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -44,9 +45,9 @@ fun ClockSettingsScreenContent(
 }
 
 @Composable
-fun ClockModePicker(
+fun ClockTypePicker(
     isClockShown: Boolean,
-    selectedClockMode: ClockMode,
+    selectedClockType: ClockType,
     onEvent: (ClockSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -63,36 +64,37 @@ fun ClockModePicker(
             WithmoSettingItemWithRadioButton(
                 item = {
                     WithmoClock(
-                        clockMode = ClockMode.TOP_DATE,
+                        clockType = ClockType.TOP_DATE,
                         dateTimeInfo = DateTimeInfo(),
                         modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
                     )
                 },
-                selected = ClockMode.TOP_DATE == selectedClockMode,
+                selected = ClockType.TOP_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockMode(ClockMode.TOP_DATE)) },
+                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockType(ClockType.TOP_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
-            ClockModePickerDivider()
+            ClockTypePickerDivider()
             WithmoSettingItemWithRadioButton(
                 item = {
                     WithmoClock(
-                        clockMode = ClockMode.HORIZONTAL_DATE,
+                        clockType = ClockType.HORIZONTAL_DATE,
                         dateTimeInfo = DateTimeInfo(),
                         modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
                     )
                 },
-                selected = ClockMode.HORIZONTAL_DATE == selectedClockMode,
+                selected = ClockType.HORIZONTAL_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockMode(ClockMode.HORIZONTAL_DATE)) },
+                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockType(ClockType.HORIZONTAL_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
     }
 }
 
+@NonRestartableComposable
 @Composable
-private fun ClockModePickerDivider(
+private fun ClockTypePickerDivider(
     modifier: Modifier = Modifier,
 ) {
     HorizontalDivider(

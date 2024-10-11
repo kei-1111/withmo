@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,7 +20,6 @@ import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.LabelMediumText
 import com.example.withmo.ui.theme.UiConfig
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DisplayModelSettingScreenContent(
     uiState: DisplayModelSettingUiState,

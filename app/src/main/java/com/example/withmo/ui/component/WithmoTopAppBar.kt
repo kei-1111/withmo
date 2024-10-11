@@ -68,9 +68,7 @@ private fun WithmoTopAppBarContent(
                     imageVector = Icons.Default.Close,
                     contentDescription = "Close",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.clickable(
-                        onClick = navigateBack,
-                    ),
+                    modifier = Modifier.clickable { navigateBack() },
                 )
             }
 
@@ -79,9 +77,7 @@ private fun WithmoTopAppBarContent(
                     imageVector = Icons.Default.ArrowBackIosNew,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.clickable(
-                        onClick = navigateBack,
-                    ),
+                    modifier = Modifier.clickable { navigateBack() },
                 )
             }
         }
