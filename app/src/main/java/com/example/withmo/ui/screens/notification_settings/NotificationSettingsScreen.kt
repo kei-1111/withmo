@@ -75,6 +75,7 @@ fun NotificationSettingsScreen(
 
                 is NotificationSettingsUiEvent.NotificationPermissionDialogOnDismiss -> {
                     viewModel.changeIsNotificationPermissionDialogShown(false)
+                    showToast(context, "通知アニメーションを有効にするには\n通知アクセスを許可してください")
                 }
 
                 is NotificationSettingsUiEvent.Save -> {
