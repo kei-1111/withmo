@@ -44,8 +44,6 @@ fun AppList(
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
-    val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
-
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
             appInfo.label.contains(appSearchQuery)
@@ -59,7 +57,7 @@ fun AppList(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    top = topPaddingValue,
+                    top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
                     start = UiConfig.MediumPadding,
                     end = UiConfig.MediumPadding,
                 ),
@@ -83,7 +81,10 @@ fun AppList(
                     columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
                     verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
                     horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                    contentPadding = PaddingValues(bottom = UiConfig.MediumPadding),
+                    contentPadding = PaddingValues(
+                        top = UiConfig.ExtraSmallPadding,
+                        bottom = UiConfig.MediumPadding,
+                    ),
                 ) {
                     items(resultAppList.size) { index ->
                         AppItem(
