@@ -1,6 +1,7 @@
 package com.example.withmo.ui.screens.display_model_setting
 
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -38,6 +39,10 @@ fun DisplayModelSettingScreen(
     val context = LocalContext.current
 
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+
+    BackHandler {
+        viewModel.onEvent(DisplayModelSettingUiEvent.NavigateToSettingsScreen)
+    }
 
     LaunchedEffect(Unit) {
         val modelFileList = FileUtils.getModelFile(context)

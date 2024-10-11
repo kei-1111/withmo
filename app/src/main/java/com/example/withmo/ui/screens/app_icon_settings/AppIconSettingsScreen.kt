@@ -1,5 +1,6 @@
 package com.example.withmo.ui.screens.app_icon_settings
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -40,6 +41,10 @@ fun AppIconSettingsScreen(
     val context = LocalContext.current
 
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+
+    BackHandler {
+        viewModel.onEvent(AppIconSettingsUiEvent.NavigateToSettingsScreen)
+    }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->

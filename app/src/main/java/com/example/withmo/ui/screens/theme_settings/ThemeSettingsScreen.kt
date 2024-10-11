@@ -1,5 +1,6 @@
 package com.example.withmo.ui.screens.theme_settings
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -39,6 +40,10 @@ fun ThemeSettingsScreen(
     val context = LocalContext.current
 
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+
+    BackHandler {
+        viewModel.onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen)
+    }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
