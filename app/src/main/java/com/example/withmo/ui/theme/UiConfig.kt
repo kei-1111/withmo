@@ -53,8 +53,6 @@ data object UiConfig {
     val TextFieldHeight = 36.dp
     val TopAppBarHeight = 64.dp
 
-    val BottomSheetWindowInsetBottom = 0.dp
-
 //    SettingsScreen
     val SettingsScreenItemIconSize = 24.dp
 

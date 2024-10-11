@@ -103,11 +103,6 @@ fun HomeScreen(
     AnimatedVisibility(uiState.isFinishSplashScreen) {
         if (openBottomSheet) {
             ModalBottomSheet(
-                contentWindowInsets = {
-                    WindowInsets(
-                        bottom = UiConfig.BottomSheetWindowInsetBottom,
-                    )
-                },
                 onDismissRequest = {
                     scope.launch {
                         sheetState.hide()
