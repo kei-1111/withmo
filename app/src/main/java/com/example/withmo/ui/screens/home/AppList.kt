@@ -83,7 +83,10 @@ fun AppList(
                     columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
                     verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
                     horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                    contentPadding = PaddingValues(bottom = UiConfig.MediumPadding),
+                    contentPadding = PaddingValues(
+                        top = UiConfig.ExtraSmallPadding,
+                        bottom = UiConfig.MediumPadding
+                    ),
                 ) {
                     items(resultAppList.size) { index ->
                         AppItem(
