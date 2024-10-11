@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Environment
 import android.provider.Settings
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -45,15 +46,18 @@ fun SettingsScreen(
 
     val latestOnNavigate by rememberUpdatedState(onNavigate)
 
-    val launcher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-            onResult = {
-                if (Environment.isExternalStorageManager()) {
-                    latestOnNavigate(Screen.DisplayModelSetting)
-                }
-            },
-        )
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (Environment.isExternalStorageManager()) {
+                latestOnNavigate(Screen.DisplayModelSetting)
+            }
+        },
+    )
+
+    BackHandler {
+        viewModel.onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
+    }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->

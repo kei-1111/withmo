@@ -1,6 +1,7 @@
 package com.example.withmo.ui.screens.notification_settings
 
 import android.content.Intent
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
@@ -44,17 +45,20 @@ fun NotificationSettingsScreen(
 
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
-    val launcher =
-        rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.StartActivityForResult(),
-            onResult = {
-                if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)) {
-                    viewModel.changeIsNotificationAnimationEnable(true)
-                } else {
-                    viewModel.changeIsNotificationAnimationEnable(false)
-                }
-            },
-        )
+    val launcher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+        onResult = {
+            if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)) {
+                viewModel.changeIsNotificationAnimationEnable(true)
+            } else {
+                viewModel.changeIsNotificationAnimationEnable(false)
+            }
+        },
+    )
+
+    BackHandler {
+        viewModel.onEvent(NotificationSettingsUiEvent.NavigateToSettingsScreen)
+    }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
