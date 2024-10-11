@@ -167,9 +167,18 @@ class MainActivity : ComponentActivity() {
 
     private fun themeTypeToBoolean(themeType: ThemeType, isNight: Boolean): Boolean {
         return when (themeType) {
-            ThemeType.TIME_BASED -> isNight
-            ThemeType.LIGHT -> false
-            ThemeType.DARK -> true
+            ThemeType.TIME_BASED -> {
+                UnityPlayer.UnitySendMessage("SkyBlend", "SetTimeBasedMode", "")
+                isNight
+            }
+            ThemeType.LIGHT -> {
+                UnityPlayer.UnitySendMessage("SkyBlend", "SetDayFixedMode", "")
+                false
+            }
+            ThemeType.DARK -> {
+                UnityPlayer.UnitySendMessage("SkyBlend", "SetNightFixedMode", "")
+                true
+            }
         }
     }
 
