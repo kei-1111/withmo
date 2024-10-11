@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -46,7 +45,6 @@ fun AppList(
     var resultAppList by remember { mutableStateOf(appList) }
 
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
-    val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
@@ -64,7 +62,6 @@ fun AppList(
                     top = topPaddingValue,
                     start = UiConfig.MediumPadding,
                     end = UiConfig.MediumPadding,
-                    bottom = bottomPaddingValue,
                 ),
             verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
         ) {
