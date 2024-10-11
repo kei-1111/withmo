@@ -85,7 +85,7 @@ fun AppList(
                     horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
                     contentPadding = PaddingValues(
                         top = UiConfig.ExtraSmallPadding,
-                        bottom = UiConfig.MediumPadding
+                        bottom = UiConfig.MediumPadding,
                     ),
                 ) {
                     items(resultAppList.size) { index ->
