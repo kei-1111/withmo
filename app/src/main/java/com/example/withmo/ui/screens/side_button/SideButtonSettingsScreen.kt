@@ -93,7 +93,7 @@ private fun SideButtonSettingsScreen(
                 .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()),
         ) {
             WithmoTopAppBar(
-                currentScreen = Screen.AppIconSettings,
+                currentScreen = Screen.SideButtonSettings,
                 navigateBack = { onEvent(SideButtonSettingsUiEvent.NavigateToSettingsScreen) },
             )
             SideButtonSettingsScreenContent(
