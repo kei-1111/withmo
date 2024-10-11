@@ -22,6 +22,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.utils.FileUtils
+import com.example.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -49,6 +50,8 @@ fun DisplayModelSettingScreen(
                 is DisplayModelSettingUiEvent.SelectModelFile -> {
                     viewModel.selectModelFile(event.modelFile)
                     event.modelFile.sendPathToUnity()
+                    showToast(context, "モデルを選択しました")
+                    latestNavigateToSettingsScreen()
                 }
 
                 is DisplayModelSettingUiEvent.NavigateToSettingsScreen -> {
