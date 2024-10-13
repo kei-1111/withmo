@@ -15,4 +15,12 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsUiState, S
             )
         }
     }
+
+    fun changeIsDefaultHomeApp(isDefaultHomeApp: Boolean) {
+        _uiState.update {
+            it.copy(
+                isDefaultHomeApp = isDefaultHomeApp,
+            )
+        }
+    }
 }

@@ -29,6 +29,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.WithmoTopAppBar
+import com.example.withmo.utils.AppUtils
 import com.example.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -59,6 +60,10 @@ fun SettingsScreen(
         viewModel.onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.changeIsDefaultHomeApp(context.packageName == AppUtils.getHomeAppName(context))
+    }
+
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
@@ -72,6 +77,11 @@ fun SettingsScreen(
                     } else {
                         latestOnNavigate(event.screen)
                     }
+                }
+
+                is SettingsUiEvent.SetDefaultHomeApp -> {
+                    val intent = Intent(Settings.ACTION_HOME_SETTINGS)
+                    context.startActivity(intent)
                 }
 
                 is SettingsUiEvent.FileAccessPermissionDialogOnConfirm -> {
@@ -122,6 +132,10 @@ private fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
+                uiState = uiState,
+                navigateToDefaultHomeAppSettings = {
+                    onEvent(SettingsUiEvent.SetDefaultHomeApp)
+                },
                 navigateToNotificationSettingsScreen = {
                     onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings))
                 },

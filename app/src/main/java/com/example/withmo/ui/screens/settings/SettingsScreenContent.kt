@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Apps
+import androidx.compose.material.icons.filled.ErrorOutline
 import androidx.compose.material.icons.filled.InsertDriveFile
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
@@ -25,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.LabelMediumText
@@ -32,6 +34,8 @@ import com.example.withmo.ui.theme.UiConfig
 
 @Composable
 fun SettingsScreenContent(
+    uiState: SettingsUiState,
+    navigateToDefaultHomeAppSettings: () -> Unit,
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
@@ -45,6 +49,12 @@ fun SettingsScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
+        if (!uiState.isDefaultHomeApp) {
+            HomeAppSettings(
+                title = "ホームアプリの設定",
+                navigateToDefaultHomeAppSettings = navigateToDefaultHomeAppSettings,
+            )
+        }
         HomeScreenSettings(
             title = "ホーム画面の設定",
             navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
@@ -60,6 +70,36 @@ fun SettingsScreenContent(
             title = "テーマの設定",
             navigateToThemeSettingScreen = navigateToThemeSettingsScreen,
         )
+    }
+}
+
+@Composable
+private fun HomeAppSettings(
+    title: String,
+    navigateToDefaultHomeAppSettings: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+    ) {
+        LabelMediumText(
+            text = title,
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.errorContainer,
+        ) {
+            Column {
+                SettingItem(
+                    icon = Icons.Default.ErrorOutline,
+                    itemName = "デフォルトホームアプリ",
+                    onClick = navigateToDefaultHomeAppSettings,
+                    itemColor = MaterialTheme.colorScheme.onErrorContainer,
+                )
+            }
+        }
     }
 }
 
@@ -189,6 +229,7 @@ private fun SettingItem(
     itemName: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    itemColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
     Row(
         modifier = modifier
@@ -200,7 +241,7 @@ private fun SettingItem(
         Icon(
             imageVector = icon,
             contentDescription = itemName,
-            tint = MaterialTheme.colorScheme.onSurface,
+            tint = itemColor,
             modifier = Modifier.size(UiConfig.SettingsScreenItemIconSize),
         )
         Spacer(
@@ -209,10 +250,12 @@ private fun SettingItem(
         BodyMediumText(
             text = itemName,
             modifier = Modifier.weight(UiConfig.DefaultWeight),
+            color = itemColor,
         )
         Icon(
             imageVector = Icons.Default.KeyboardArrowRight,
             contentDescription = "Next",
+            tint = itemColor,
         )
     }
 }
