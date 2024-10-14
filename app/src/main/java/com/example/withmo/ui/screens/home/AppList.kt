@@ -46,7 +46,7 @@ fun AppList(
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
-            appInfo.label.contains(appSearchQuery)
+            appInfo.label.contains(appSearchQuery, ignoreCase = true)
         }.toPersistentList()
     }
 
@@ -71,7 +71,7 @@ fun AppList(
                 },
                 action = {
                     resultAppList = appList.filter { appInfo ->
-                        appInfo.label.contains(appSearchQuery)
+                        appInfo.label.contains(appSearchQuery, ignoreCase = true)
                     }.toPersistentList()
                 },
             )
