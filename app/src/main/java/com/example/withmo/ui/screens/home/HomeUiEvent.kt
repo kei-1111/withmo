@@ -8,4 +8,7 @@ sealed interface HomeUiEvent : UiEvent {
     data class OnValueChangeAppSearchQuery(val query: String) : HomeUiEvent
     data object OnSelectSortByUsageOrder : HomeUiEvent
     data object OnSelectSortByAlphabeticalOrder : HomeUiEvent
+    data object OpenBottomSheet : HomeUiEvent
+    data object HideBottomSheet : HomeUiEvent
+    data object NavigateToSettingsScreen : HomeUiEvent
 }

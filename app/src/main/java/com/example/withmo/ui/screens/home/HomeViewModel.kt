@@ -42,7 +42,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             while (true) {
                 _uiState.update {
-                    it.copy(currentTime = ZonedDateTime.now())
+                    it.copy(currentTime = getTime(ZonedDateTime.now()))
                 }
                 delay(ClockUpdateInterval)
             }
@@ -58,14 +58,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getTime(): DateTimeInfo {
+    private fun getTime(currentTime: ZonedDateTime): DateTimeInfo {
         return DateTimeInfo(
-            year = _uiState.value.currentTime.year.toString(),
-            month = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.monthValue),
-            day = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.dayOfMonth),
-            hour = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.hour),
-            minute = String.format(Locale.JAPAN, "%02d", _uiState.value.currentTime.minute),
-            dayOfWeek = _uiState.value.currentTime.dayOfWeek.getDisplayName(
+            year = currentTime.year.toString(),
+            month = String.format(Locale.JAPAN, "%02d", currentTime.monthValue),
+            day = String.format(Locale.JAPAN, "%02d", currentTime.dayOfMonth),
+            hour = String.format(Locale.JAPAN, "%02d", currentTime.hour),
+            minute = String.format(Locale.JAPAN, "%02d", currentTime.minute),
+            dayOfWeek = currentTime.dayOfWeek.getDisplayName(
                 TextStyle.SHORT,
                 Locale.ENGLISH,
             ).uppercase(),
@@ -93,6 +93,12 @@ class HomeViewModel @Inject constructor(
     fun setAppSearchQuery(query: String) {
         _uiState.update {
             it.copy(appSearchQuery = query)
+        }
+    }
+
+    fun changeIsBottomSheetOpened(isBottomSheetOpened: Boolean) {
+        _uiState.update {
+            it.copy(isBottomSheetOpened = isBottomSheetOpened)
         }
     }
 

@@ -25,7 +25,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
@@ -45,8 +44,6 @@ fun HomeScreenContent(
     onEvent: (HomeUiEvent) -> Unit,
     context: Context,
     appList: ImmutableList<AppInfo>,
-    navigateToSettingsScreen: () -> Unit,
-    getCurrentTime: () -> DateTimeInfo,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -69,7 +66,7 @@ fun HomeScreenContent(
             if (uiState.currentUserSettings.clockSettings.isClockShown) {
                 WithmoClock(
                     clockType = uiState.currentUserSettings.clockSettings.clockType,
-                    dateTimeInfo = getCurrentTime(),
+                    dateTimeInfo = uiState.currentTime,
                     modifier = Modifier.padding(start = UiConfig.MediumPadding),
                 )
             }
@@ -93,13 +90,7 @@ fun HomeScreenContent(
                     }
                     if (uiState.currentUserSettings.sideButtonSettings.isSortButtonShown) {
                         WithmoIconButton(
-                            onClick = {
-                                if (uiState.isExpandPopup) {
-                                    onEvent(HomeUiEvent.SetPopupExpanded(false))
-                                } else {
-                                    onEvent(HomeUiEvent.SetPopupExpanded(true))
-                                }
-                            },
+                            onClick = { onEvent(HomeUiEvent.SetPopupExpanded(!uiState.isExpandPopup)) },
                             icon = Icons.Default.Tune,
                         )
                     }
@@ -108,7 +99,7 @@ fun HomeScreenContent(
                     context = context,
                     appList = appList,
                     appIconSettings = uiState.currentUserSettings.appIconSettings,
-                    navigateToSettingsScreen = navigateToSettingsScreen,
+                    navigateToSettingsScreen = { onEvent(HomeUiEvent.NavigateToSettingsScreen) },
                 )
             }
             if (uiState.isExpandPopup) {
