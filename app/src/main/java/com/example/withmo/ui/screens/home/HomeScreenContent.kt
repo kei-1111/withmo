@@ -1,6 +1,7 @@
 package com.example.withmo.ui.screens.home
 
 import android.content.Context
+import android.view.View
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,12 +11,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Man
-import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
@@ -25,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
@@ -44,8 +46,11 @@ fun HomeScreenContent(
     onEvent: (HomeUiEvent) -> Unit,
     context: Context,
     appList: ImmutableList<AppInfo>,
+    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
+    val pagerState = rememberPagerState(pageCount = { UiConfig.PageCount })
+
     Box(
         modifier = modifier,
     ) {
@@ -72,29 +77,32 @@ fun HomeScreenContent(
             }
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Bottom,
-                horizontalAlignment = Alignment.End,
             ) {
-                Column(
-                    modifier = Modifier.padding(UiConfig.MediumPadding),
-                    verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                ) {
-                    if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
-                        WithmoIconButton(
-                            onClick = {
-                                UnitySendMessage("Slidermaneger", "ShowSlider", "")
-                                onEvent(HomeUiEvent.SetShowScaleSlider(true))
-                            },
-                            icon = Icons.Default.Man,
-                        )
-                    }
-                    if (uiState.currentUserSettings.sideButtonSettings.isSortButtonShown) {
-                        WithmoIconButton(
-                            onClick = { onEvent(HomeUiEvent.SetPopupExpanded(!uiState.isExpandPopup)) },
-                            icon = Icons.Default.Tune,
-                        )
-                    }
-                }
+                PagerContent(
+                    pagerState = pagerState,
+                    isScaleSliderButtonShown = uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown,
+                    isSortButtonShown = uiState.currentUserSettings.sideButtonSettings.isSortButtonShown,
+                    showScaleSlider = {
+                        UnitySendMessage("Slidermaneger", "ShowSlider", "")
+                        onEvent(HomeUiEvent.SetShowScaleSlider(true))
+                    },
+                    popupExpand = {
+                        onEvent(HomeUiEvent.SetPopupExpanded(!uiState.isExpandPopup))
+                    },
+                    openActionSelectionBottomSheet = {
+                        onEvent(HomeUiEvent.OpenActionSelectionBottomSheet)
+                    },
+                    displayedWidgetList = uiState.displayedWidgetList,
+                    createWidgetView = createWidgetView,
+                    appIconSize = uiState.currentUserSettings.appIconSettings.appIconSize,
+                    isEditMode = uiState.isEditMode,
+                    exitEditMode = {
+                        onEvent(HomeUiEvent.ExitEditMode)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(UiConfig.DefaultWeight),
+                )
                 RowAppList(
                     context = context,
                     appList = appList,

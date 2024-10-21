@@ -34,6 +34,8 @@ data object UiConfig {
 
     const val BottomSheetShowDragHeight = -50f
 
+    const val PageCount = 2
+
 //    App Icon Settings
     val AppIconPreviewHeight = 200.dp
 
@@ -64,4 +66,7 @@ data object UiConfig {
     val SliderThumbSize = 20.dp
     val SliderTrackHeight = 4.dp
     val SliderShadowElevation = 1.dp
+
+    val PageIndicatorSpaceHeight = 25.dp
+    val PageIndicatorSize = 8.dp
 }

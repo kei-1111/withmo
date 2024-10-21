@@ -38,7 +38,7 @@ fun AppList(
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
     appSearchQuery: String,
-    onEvent: (HomeUiEvent) -> Unit,
+    onValueChangeAppSearchQuery: (String) -> Unit,
     navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -66,9 +66,7 @@ fun AppList(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = appSearchQuery,
-                onValueChange = {
-                    onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it))
-                },
+                onValueChange = onValueChangeAppSearchQuery,
                 action = {
                     resultAppList = appList.filter { appInfo ->
                         appInfo.label.contains(appSearchQuery, ignoreCase = true)
