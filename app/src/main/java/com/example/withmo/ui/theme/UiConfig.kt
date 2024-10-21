@@ -67,5 +67,6 @@ data object UiConfig {
     val SliderTrackHeight = 4.dp
     val SliderShadowElevation = 1.dp
 
+    val PageIndicatorSpaceHeight = 25.dp
     val PageIndicatorSize = 8.dp
 }
