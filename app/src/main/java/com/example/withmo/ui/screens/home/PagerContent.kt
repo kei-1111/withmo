@@ -35,6 +35,7 @@ import com.example.withmo.ui.component.LabelMediumText
 import com.example.withmo.ui.component.WithmoIconButton
 import com.example.withmo.ui.component.WithmoWidget
 import com.example.withmo.ui.theme.UiConfig
+import com.unity3d.player.UnityPlayer.UnitySendMessage
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -72,7 +73,11 @@ fun PagerContent(
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
-                                detectTapGestures {}
+                                detectTapGestures(
+                                    onLongPress = {
+                                        UnitySendMessage("AnimationController", "TriggerTouchAnimation", "")
+                                    },
+                                )
                             },
                     )
                 }
