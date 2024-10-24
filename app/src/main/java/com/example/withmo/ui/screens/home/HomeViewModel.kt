@@ -233,14 +233,30 @@ class HomeViewModel @Inject constructor(
         return appWidgetHost.createView(
             context.applicationContext,
             widgetInfo.id,
-            appWidgetManager.getAppWidgetInfo(widgetInfo.id),
+            widgetInfo.info,
         ).apply {
+            val widgetSizeBundle = Bundle().apply {
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, adjustWidgetWidth)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, adjustWidgetHeight)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, adjustWidgetWidth)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, adjustWidgetHeight)
+            }
+
             updateAppWidgetSize(
-                Bundle(),
+                widgetSizeBundle,
                 adjustWidgetWidth,
                 adjustWidgetHeight,
                 adjustWidgetWidth,
                 adjustWidgetHeight,
+            )
+        }
+    }
+
+    fun deleteWidget(widgetInfo: WidgetInfo) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                displayedWidgetList = currentState.displayedWidgetList.filterNot { it.id == widgetInfo.id }
+                    .toPersistentList(),
             )
         }
     }

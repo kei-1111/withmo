@@ -113,6 +113,9 @@ fun HomeScreenContent(
                     exitEditMode = {
                         onEvent(HomeUiEvent.ExitEditMode)
                     },
+                    deleteWidget = { widgetInfo ->
+                        onEvent(HomeUiEvent.DeleteWidget(widgetInfo))
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(UiConfig.DefaultWeight),

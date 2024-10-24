@@ -220,6 +220,10 @@ fun HomeScreen(
                     viewModel.changeIsEditMode(false)
                 }
 
+                is HomeUiEvent.DeleteWidget -> {
+                    viewModel.deleteWidget(event.widgetInfo)
+                }
+
                 is HomeUiEvent.NavigateToSettingsScreen -> {
                     latestNavigateToSettingsScreen()
                 }
