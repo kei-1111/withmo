@@ -3,6 +3,7 @@ package com.example.withmo.ui.screens.home
 import android.content.Context
 import android.view.View
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,6 +25,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
@@ -90,7 +92,17 @@ fun HomeScreenContent(
                 )
             }
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .pointerInput(Unit) {
+                        detectVerticalDragGestures(
+                            onVerticalDrag = { change, dragAmount ->
+                                if (dragAmount < UiConfig.BottomSheetShowDragHeight) {
+                                    onEvent(HomeUiEvent.OpenAppListBottomSheet)
+                                }
+                            },
+                        )
+                    },
             ) {
                 PagerContent(
                     pagerState = pagerState,
