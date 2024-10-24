@@ -7,4 +7,6 @@ data class WidgetInfo(
     val id: Int,
     val info: AppWidgetProviderInfo,
     var position: Offset = Offset.Zero,
+    var width: Int = 0,
+    var height: Int = 0,
 )

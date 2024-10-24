@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Man
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -51,6 +52,7 @@ fun PagerContent(
     appIconSize: Float,
     isEditMode: Boolean,
     exitEditMode: () -> Unit,
+    deleteWidget: (WidgetInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -88,6 +90,7 @@ fun PagerContent(
                         createWidgetView = createWidgetView,
                         appIconSize = appIconSize,
                         isEditMode = isEditMode,
+                        deleteWidget = deleteWidget,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
@@ -190,6 +193,7 @@ private fun WidgetContent(
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     appIconSize: Float,
     isEditMode: Boolean,
+    deleteWidget: (WidgetInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appIconSpaceHeight = (appIconSize + UiConfig.AppIconPadding).dp
@@ -199,13 +203,16 @@ private fun WidgetContent(
         modifier = modifier,
     ) {
         displayedWidgetList.forEach { widgetInfo ->
-            WithmoWidget(
-                widgetInfo = widgetInfo,
-                createWidgetView = createWidgetView,
-                endPadding = UiConfig.MediumPadding + UiConfig.MediumPadding,
-                bottomPadding = bottomPaddingValue + appIconSpaceHeight + UiConfig.PageIndicatorSpaceHeight,
-                isEditMode = isEditMode,
-            )
+            key(widgetInfo.id) {
+                WithmoWidget(
+                    widgetInfo = widgetInfo,
+                    createWidgetView = createWidgetView,
+                    endPadding = UiConfig.MediumPadding + UiConfig.MediumPadding,
+                    bottomPadding = bottomPaddingValue + appIconSpaceHeight + UiConfig.PageIndicatorSpaceHeight,
+                    isEditMode = isEditMode,
+                    deleteWidget = { deleteWidget(widgetInfo) },
+                )
+            }
         }
     }
 }

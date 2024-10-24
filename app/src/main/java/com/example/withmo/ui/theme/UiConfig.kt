@@ -40,6 +40,7 @@ data object UiConfig {
     val AppIconPreviewHeight = 200.dp
 
 //    Paddings
+    val TinyPadding = 2.dp
     val ExtraSmallPadding = 5.dp
     val SmallPadding = 10.dp
     val MediumPadding = 15.dp
