@@ -36,6 +36,8 @@ data object UiConfig {
 
     const val PageCount = 2
 
+    const val FavoriteAppListMaxSize = 4
+
 //    App Icon Settings
     val AppIconPreviewHeight = 200.dp
 
@@ -70,4 +72,6 @@ data object UiConfig {
 
     val PageIndicatorSpaceHeight = 25.dp
     val PageIndicatorSize = 8.dp
+
+    val OnboardingImageSize = 250.dp
 }

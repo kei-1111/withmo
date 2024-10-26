@@ -1,4 +1,4 @@
-package com.example.withmo.ui.component
+package com.example.withmo.ui.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,10 +20,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.ui.component.AppItem
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -36,7 +40,7 @@ fun AppList(
     appSearchQuery: String,
     onValueChangeAppSearchQuery: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onLongClick: (AppInfo) -> Unit,
+    onLongClick: (AppInfo) -> Unit = {},
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
@@ -57,7 +61,8 @@ fun AppList(
                     start = UiConfig.MediumPadding,
                     end = UiConfig.MediumPadding,
                 ),
-            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),

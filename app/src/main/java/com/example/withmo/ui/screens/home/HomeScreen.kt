@@ -45,7 +45,6 @@ import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
-import com.example.withmo.ui.component.AppList
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig

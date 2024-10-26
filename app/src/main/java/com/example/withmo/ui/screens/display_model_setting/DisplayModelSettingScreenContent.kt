@@ -50,7 +50,7 @@ fun DisplayModelSettingScreenContent(
 }
 
 @Composable
-private fun DisplayModelSettingItem(
+fun DisplayModelSettingItem(
     fileName: String,
     downloadDate: String,
     onClick: () -> Unit,

@@ -30,8 +30,8 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @Composable
 fun AppItem(
     appInfo: AppInfo,
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
     appIconSize: Float = UiConfig.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,

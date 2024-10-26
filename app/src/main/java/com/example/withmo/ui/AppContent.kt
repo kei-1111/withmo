@@ -27,6 +27,7 @@ import com.example.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import com.example.withmo.ui.screens.display_model_setting.DisplayModelSettingScreen
 import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
+import com.example.withmo.ui.screens.onboarding.OnboardingScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
 import com.example.withmo.ui.screens.side_button.SideButtonSettingsScreen
 import com.example.withmo.ui.screens.theme_settings.ThemeSettingsScreen
@@ -78,6 +79,12 @@ fun AppContent(
             val navigateToSettingScreen = { currentScreen = Screen.Settings }
 
             when (targetState) {
+                is Screen.Onboarding -> {
+                    OnboardingScreen(
+                        appList = appList,
+                    )
+                }
+
                 is Screen.Home -> {
                     HomeScreen(
                         navigateToSettingsScreen = navigateToSettingScreen,
