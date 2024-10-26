@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.example.withmo.domain.model.Screen
+import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoSaveButton
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.ui.theme.UiConfig
@@ -124,7 +124,7 @@ private fun NotificationSettingsScreen(
                 .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()),
         ) {
             WithmoTopAppBar(
-                currentScreen = Screen.NotificationSettings,
+                content = { TitleLargeText(text = "通知") },
                 navigateBack = { onEvent(NotificationSettingsUiEvent.NavigateToSettingsScreen) },
             )
             NotificationSettingsScreenContent(

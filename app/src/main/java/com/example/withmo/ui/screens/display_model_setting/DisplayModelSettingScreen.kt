@@ -20,7 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.example.withmo.domain.model.Screen
+import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.utils.FileUtils
 import com.example.withmo.utils.showToast
@@ -88,7 +88,7 @@ private fun DisplayModelSettingScreen(
                 .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()),
         ) {
             WithmoTopAppBar(
-                currentScreen = Screen.DisplayModelSetting,
+                content = { TitleLargeText(text = "表示モデル") },
                 navigateBack = { onEvent(DisplayModelSettingUiEvent.NavigateToSettingsScreen) },
             )
             DisplayModelSettingScreenContent(

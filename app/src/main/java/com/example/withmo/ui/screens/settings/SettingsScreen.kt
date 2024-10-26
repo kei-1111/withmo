@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.example.withmo.domain.model.Screen
+import com.example.withmo.ui.component.LogoWithText
 import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.utils.AppUtils
 import com.example.withmo.utils.showToast
@@ -123,10 +124,8 @@ private fun SettingsScreen(
                 ),
         ) {
             WithmoTopAppBar(
-                currentScreen = Screen.Settings,
-                navigateBack = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
-                },
+                content = { LogoWithText("の設定") },
+                navigateClose = { onEvent(SettingsUiEvent.OnNavigate(Screen.Home)) },
             )
             SettingsScreenContent(
                 modifier = Modifier
