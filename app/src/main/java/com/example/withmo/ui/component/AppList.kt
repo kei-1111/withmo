@@ -1,6 +1,5 @@
-package com.example.withmo.ui.screens.home
+package com.example.withmo.ui.component
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,22 +24,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.ui.component.AppItem
-import com.example.withmo.ui.component.BodyMediumText
-import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun AppList(
-    context: Context,
+    onClick: (AppInfo) -> Unit,
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
     appSearchQuery: String,
     onValueChangeAppSearchQuery: (String) -> Unit,
-    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClick: (AppInfo) -> Unit,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
@@ -86,10 +82,10 @@ fun AppList(
                 ) {
                     items(resultAppList.size) { index ->
                         AppItem(
-                            context = context,
                             appInfo = resultAppList[index],
                             appIconShape = appIconShape,
-                            navigateToSettingScreen = navigateToSettingsScreen,
+                            onClick = { onClick(resultAppList[index]) },
+                            onLongClick = { onLongClick(resultAppList[index]) },
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }

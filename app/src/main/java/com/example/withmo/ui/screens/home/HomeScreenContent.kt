@@ -47,7 +47,6 @@ import kotlinx.collections.immutable.ImmutableList
 fun HomeScreenContent(
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
-    context: Context,
     appList: ImmutableList<AppInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
@@ -133,10 +132,10 @@ fun HomeScreenContent(
                         .weight(UiConfig.DefaultWeight),
                 )
                 RowAppList(
-                    context = context,
+                    startApp = { onEvent(HomeUiEvent.StartApp(it)) },
+                    deleteApp = { onEvent(HomeUiEvent.DeleteApp(it)) },
                     appList = appList,
                     appIconSettings = uiState.currentUserSettings.appIconSettings,
-                    navigateToSettingsScreen = { onEvent(HomeUiEvent.NavigateToSettingsScreen) },
                 )
             }
             if (uiState.isExpandPopup) {
@@ -212,10 +211,10 @@ private fun PopupContent(
 
 @Composable
 private fun RowAppList(
-    context: Context,
+    startApp: (AppInfo) -> Unit,
+    deleteApp: (AppInfo) -> Unit,
     appList: ImmutableList<AppInfo>,
     appIconSettings: AppIconSettings,
-    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -225,14 +224,14 @@ private fun RowAppList(
     ) {
         items(appList.size) { index ->
             AppItem(
-                context = context,
+                onClick = { startApp(appList[index]) },
+                onLongClick = { deleteApp(appList[index]) },
                 appInfo = appList[index],
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
                 isAppNameShown = appIconSettings.isAppNameShown,
-                navigateToSettingScreen = navigateToSettingsScreen,
             )
         }
     }
