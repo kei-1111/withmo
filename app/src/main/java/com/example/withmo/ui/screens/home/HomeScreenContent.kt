@@ -13,15 +13,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
@@ -48,21 +45,6 @@ fun HomeScreenContent(
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
-    val pagerState = rememberPagerState(pageCount = { UiConfig.PageCount })
-
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            when (page) {
-                0 -> {
-                    UnitySendMessage("AnimationController", "TriggerEnterScreenAnimation", "")
-                }
-                1 -> {
-                    UnitySendMessage("AnimationController", "TriggerExitScreenAnimation", "")
-                }
-            }
-        }
-    }
-
     Box(
         modifier = modifier,
     ) {
@@ -101,7 +83,6 @@ fun HomeScreenContent(
                     },
             ) {
                 PagerContent(
-                    pagerState = pagerState,
                     isScaleSliderButtonShown = uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown,
                     isSortButtonShown = uiState.currentUserSettings.sideButtonSettings.isSortButtonShown,
                     showScaleSlider = {
