@@ -1,6 +1,5 @@
 package com.example.withmo.ui.component
 
-import android.content.Context
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -30,10 +29,10 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppItem(
-    context: Context,
     appInfo: AppInfo,
-    navigateToSettingScreen: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit = {},
+    onLongClick: () -> Unit = {},
     appIconSize: Float = UiConfig.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
@@ -54,16 +53,8 @@ fun AppItem(
                 appIconShape = appIconShape,
                 modifier = Modifier
                     .combinedClickable(
-                        onClick = {
-                            if (appInfo.packageName == context.packageName) {
-                                navigateToSettingScreen()
-                            } else {
-                                appInfo.launch(context = context)
-                            }
-                        },
-                        onLongClick = {
-                            if (appInfo.packageName != context.packageName) appInfo.delete(context = context)
-                        },
+                        onClick = onClick,
+                        onLongClick = onLongClick,
                     ),
             )
             if (isAppNameShown) {

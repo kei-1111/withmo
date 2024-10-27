@@ -7,6 +7,7 @@ import android.content.pm.ResolveInfo
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import com.example.withmo.domain.model.AppIcon
 import com.example.withmo.domain.model.AppInfo
@@ -47,6 +48,29 @@ object AppUtils {
             }
             .sortedBy { it.label }
             .toPersistentList()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getAppFromPackageName(context: Context, packageName: String): AppInfo? {
+        val pm = context.packageManager
+        return try {
+            val appInfo = pm.getApplicationInfo(packageName, 0)
+            val icon = pm.getApplicationIcon(appInfo)
+            val label = pm.getApplicationLabel(appInfo).toString()
+
+            AppInfo(
+                appIcon = getAppIcon(icon),
+                label = if (packageName == context.packageName) {
+                    "withmoの設定"
+                } else {
+                    label
+                },
+                packageName = packageName,
+            )
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e("getAppFromPackageName", "Failed to get app info", e)
+            null
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)

@@ -4,21 +4,24 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import com.example.withmo.domain.model.AppInfo
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.unity3d.player.UnityPlayer
-import kotlinx.collections.immutable.ImmutableList
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing")
 @Composable
 fun App(
     unityPlayer: UnityPlayer?,
-    appList: ImmutableList<AppInfo>,
+    viewModel: AppViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsState()
+
     AppContent(
+        uiState = uiState,
         unityPlayer = unityPlayer,
-        appList = appList,
         modifier = Modifier.fillMaxSize(),
     )
 }

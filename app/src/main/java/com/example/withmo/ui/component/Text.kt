@@ -9,6 +9,20 @@ import androidx.compose.ui.text.style.TextOverflow
 import com.example.withmo.ui.theme.UiConfig
 
 @Composable
+fun DisplayMediumText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = MaterialTheme.colorScheme.onSurface,
+) {
+    Text(
+        text = text,
+        modifier = modifier,
+        style = MaterialTheme.typography.displayMedium,
+        color = color,
+    )
+}
+
+@Composable
 fun TitleLargeText(
     text: String,
     modifier: Modifier = Modifier,

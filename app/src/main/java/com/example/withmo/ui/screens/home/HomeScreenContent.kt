@@ -2,18 +2,17 @@ package com.example.withmo.ui.screens.home
 
 import android.content.Context
 import android.view.View
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -26,7 +25,6 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
@@ -47,8 +45,6 @@ import kotlinx.collections.immutable.ImmutableList
 fun HomeScreenContent(
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
-    context: Context,
-    appList: ImmutableList<AppInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
@@ -133,10 +129,11 @@ fun HomeScreenContent(
                         .weight(UiConfig.DefaultWeight),
                 )
                 RowAppList(
-                    context = context,
-                    appList = appList,
+                    startApp = { onEvent(HomeUiEvent.StartApp(it)) },
+                    deleteApp = { onEvent(HomeUiEvent.DeleteApp(it)) },
+                    favoriteAppList = uiState.favoriteAppList,
                     appIconSettings = uiState.currentUserSettings.appIconSettings,
-                    navigateToSettingsScreen = { onEvent(HomeUiEvent.NavigateToSettingsScreen) },
+                    modifier = Modifier.fillMaxWidth(),
                 )
             }
             if (uiState.isExpandPopup) {
@@ -212,27 +209,36 @@ private fun PopupContent(
 
 @Composable
 private fun RowAppList(
-    context: Context,
-    appList: ImmutableList<AppInfo>,
+    startApp: (AppInfo) -> Unit,
+    deleteApp: (AppInfo) -> Unit,
+    favoriteAppList: ImmutableList<AppInfo>,
     appIconSettings: AppIconSettings,
-    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    LazyRow(
-        modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(appIconSettings.appIconHorizontalSpacing.dp),
-        contentPadding = PaddingValues(horizontal = UiConfig.MediumPadding),
+    Row(
+        modifier = modifier
+            .padding(horizontal = UiConfig.MediumPadding)
+            .background(
+                MaterialTheme.colorScheme.surface.copy(
+                    alpha = UiConfig.DisabledContentAlpha,
+                ),
+                MaterialTheme.shapes.medium,
+            )
+            .padding(vertical = UiConfig.MediumPadding),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        items(appList.size) { index ->
+        favoriteAppList.forEach {
             AppItem(
-                context = context,
-                appInfo = appList[index],
+                onClick = { startApp(it) },
+                onLongClick = { deleteApp(it) },
+                appInfo = it,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
                 isAppNameShown = appIconSettings.isAppNameShown,
-                navigateToSettingScreen = navigateToSettingsScreen,
+                modifier = Modifier.weight(UiConfig.DefaultWeight),
             )
         }
     }

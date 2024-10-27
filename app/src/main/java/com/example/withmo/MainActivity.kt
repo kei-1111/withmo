@@ -10,26 +10,29 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.user_settings.ThemeSettings
 import com.example.withmo.domain.model.user_settings.ThemeType
+import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.ui.App
 import com.example.withmo.ui.theme.WithmoTheme
 import com.example.withmo.utils.AppUtils
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.time.LocalTime
@@ -39,33 +42,50 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     private var unityPlayer: UnityPlayer? = null
 
-    private var appList: ImmutableList<AppInfo> by mutableStateOf(persistentListOf())
+    @Inject
+    lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
+    private var themeSettings by mutableStateOf(ThemeSettings())
+
+    @Inject
+    lateinit var appInfoRepository: AppInfoRepository
 
     private val packageReceiver = object : BroadcastReceiver() {
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
-            if (intent.action == "notification_received") {
-                val packageName = intent.getStringExtra("notification_data")
-                appList.map { app ->
-                    if (app.packageName == packageName) app.receiveNotification()
-                }
-            } else {
-                val newAppList = AppUtils.getAppList(this@MainActivity)
+            val packageName = intent.getStringExtra("package_name")
 
-                newAppList.forEach { newApp ->
-                    appList.find { it.packageName == newApp.packageName }?.let {
-                        newApp.notification = it.notification
-                        newApp.useCount = it.useCount
+            when (intent.action) {
+                "notification_received" -> {
+                    lifecycleScope.launch {
+                        val currentAppInfo = packageName?.let { pkgName ->
+                            appInfoRepository.getAppInfoByPackageName(pkgName)
+                        } ?: return@launch
+
+                        val updatedAppInfo = currentAppInfo.copy(notification = true)
+                        appInfoRepository.updateAppInfo(updatedAppInfo)
                     }
                 }
-                appList = newAppList
+                "start_activity" -> {
+                    lifecycleScope.launch {
+                        val currentAppInfo = packageName?.let { pkgName ->
+                            appInfoRepository.getAppInfoByPackageName(pkgName)
+                        } ?: return@launch
+
+                        val updatedAppInfo = currentAppInfo.copy(
+                            notification = false,
+                            useCount = currentAppInfo.useCount + 1,
+                        )
+                        appInfoRepository.updateAppInfo(updatedAppInfo)
+                    }
+                }
+                else -> {
+                    lifecycleScope.launch {
+                        syncAppInfo()
+                    }
+                }
             }
         }
     }
-
-    @Inject
-    lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
-    private var themeSettings by mutableStateOf(ThemeSettings())
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -74,7 +94,9 @@ class MainActivity : ComponentActivity() {
 
         unityPlayer = UnityPlayer(this)
 
-        appList = AppUtils.getAppList(this)
+        lifecycleScope.launchWhenCreated {
+            syncAppInfo()
+        }
 
         registerReceiver(
             packageReceiver,
@@ -122,9 +144,9 @@ class MainActivity : ComponentActivity() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     window.isNavigationBarContrastEnforced = false
                 }
+                AlwaysShowNavigationBar()
                 App(
                     unityPlayer = unityPlayer,
-                    appList = appList.toPersistentList(),
                 )
             }
         }
@@ -182,8 +204,30 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private suspend fun syncAppInfo() {
+        val installedApps = AppUtils.getAppList(this)
+
+        appInfoRepository.syncWithInstalledApps(installedApps)
+    }
+
     companion object {
         private const val MillisecondToSecond = 1000L
         private const val SecondToMinute = 60L
+    }
+}
+
+@Composable
+private fun AlwaysShowNavigationBar() {
+    val view = LocalView.current
+
+    DisposableEffect(view) {
+        val insetsController = ViewCompat.getWindowInsetsController(view)
+        insetsController?.apply {
+            show(WindowInsetsCompat.Type.navigationBars()) // Show navigation bar
+            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
+        }
+
+        onDispose { /* Clean up if necessary */ }
     }
 }

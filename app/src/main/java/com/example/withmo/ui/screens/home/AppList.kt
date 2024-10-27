@@ -1,6 +1,5 @@
 package com.example.withmo.ui.screens.home
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
@@ -34,13 +34,13 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun AppList(
-    context: Context,
+    onClick: (AppInfo) -> Unit,
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
     appSearchQuery: String,
     onValueChangeAppSearchQuery: (String) -> Unit,
-    navigateToSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
+    onLongClick: (AppInfo) -> Unit = {},
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
@@ -61,7 +61,8 @@ fun AppList(
                     start = UiConfig.MediumPadding,
                     end = UiConfig.MediumPadding,
                 ),
-            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
@@ -86,10 +87,10 @@ fun AppList(
                 ) {
                     items(resultAppList.size) { index ->
                         AppItem(
-                            context = context,
                             appInfo = resultAppList[index],
                             appIconShape = appIconShape,
-                            navigateToSettingScreen = navigateToSettingsScreen,
+                            onClick = { onClick(resultAppList[index]) },
+                            onLongClick = { onLongClick(resultAppList[index]) },
                             modifier = Modifier.fillMaxWidth(),
                         )
                     }

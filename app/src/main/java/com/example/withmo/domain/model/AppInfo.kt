@@ -9,21 +9,19 @@ import androidx.compose.runtime.Stable
 import com.example.withmo.ui.theme.UiConfig
 
 @Stable
-class AppInfo(
+data class AppInfo(
     val appIcon: AppIcon,
     val label: String,
     val packageName: String,
-    var notification: Boolean = false,
-    var useCount: Int = UiConfig.AppInfoDefaultUseCount,
+    val notification: Boolean = false,
+    val useCount: Int = UiConfig.AppInfoDefaultUseCount,
+    val isFavorite: Boolean = false,
 ) {
     fun launch(context: Context) {
         try {
             val pm = context.packageManager
             val intent = pm.getLaunchIntentForPackage(packageName)
             if (intent != null) {
-                if (notification) notification = false
-                useCount++
-                Log.d("launchApp: $packageName", "useCount: $useCount")
                 val startActivityIntent = Intent("start_activity")
                 startActivityIntent.putExtra("package_name", packageName)
                 context.sendBroadcast(startActivityIntent)
@@ -34,10 +32,6 @@ class AppInfo(
         } catch (e: Exception) {
             Log.e("LauncherTest", "launchApp: ${e.message}")
         }
-    }
-
-    fun receiveNotification() {
-        notification = true
     }
 
     fun delete(context: Context) {

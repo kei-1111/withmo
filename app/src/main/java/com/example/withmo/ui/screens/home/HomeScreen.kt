@@ -10,7 +10,6 @@ import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,7 +59,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navigateToSettingsScreen: () -> Unit,
-    appList: ImmutableList<AppInfo>,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,6 +69,8 @@ fun HomeScreen(
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val actionSelectionSheetState = rememberModalBottomSheetState()
     val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val appList by viewModel.appList.collectAsStateWithLifecycle()
 
     val homeAppList by remember(appList, uiState.currentUserSettings.sortType) {
         derivedStateOf {
@@ -127,6 +127,20 @@ fun HomeScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
+                is HomeUiEvent.StartApp -> {
+                    if (event.appInfo.packageName == context.packageName) {
+                        latestNavigateToSettingsScreen()
+                    } else {
+                        event.appInfo.launch(context = context)
+                    }
+                }
+
+                is HomeUiEvent.DeleteApp -> {
+                    if (event.appInfo.packageName != context.packageName) {
+                        event.appInfo.delete(context = context)
+                    }
+                }
+
                 is HomeUiEvent.SetPopupExpanded -> {
                     viewModel.setPopupExpanded(event.isExpand)
                 }
@@ -229,20 +243,17 @@ fun HomeScreen(
         }.launchIn(this)
     }
 
-    AnimatedVisibility(uiState.isFinishSplashScreen) {
-        HomeScreen(
-            uiState = uiState,
-            onEvent = viewModel::onEvent,
-            homeAppList = homeAppList,
-            appListSheetState = appListSheetState,
-            actionSelectionSheetState = actionSelectionSheetState,
-            widgetListSheetState = widgetListSheetState,
-            context = context,
-            widgetInfoList = viewModel.getWidgetInfoList(),
-            createWidgetView = viewModel::createWidgetView,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
+    HomeScreen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
+        homeAppList = homeAppList,
+        appListSheetState = appListSheetState,
+        actionSelectionSheetState = actionSelectionSheetState,
+        widgetListSheetState = widgetListSheetState,
+        widgetInfoList = viewModel.getWidgetInfoList(),
+        createWidgetView = viewModel::createWidgetView,
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 @Suppress("LongMethod")
@@ -257,7 +268,6 @@ private fun HomeScreen(
     widgetListSheetState: SheetState,
     widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    context: Context,
     modifier: Modifier = Modifier,
 ) {
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
@@ -271,14 +281,14 @@ private fun HomeScreen(
             dragHandle = {},
         ) {
             AppList(
-                context = context,
+                onClick = { onEvent(HomeUiEvent.StartApp(it)) },
+                onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
                 appList = homeAppList,
                 appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
                     uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
                 ),
                 appSearchQuery = uiState.appSearchQuery,
                 onValueChangeAppSearchQuery = { onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it)) },
-                navigateToSettingsScreen = { onEvent(HomeUiEvent.NavigateToSettingsScreen) },
                 modifier = modifier,
             )
         }
@@ -327,8 +337,6 @@ private fun HomeScreen(
         HomeScreenContent(
             uiState = uiState,
             onEvent = onEvent,
-            context = context,
-            appList = homeAppList,
             createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
         )

@@ -1,0 +1,80 @@
+package com.example.withmo.ui.screens.onboarding.content
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
+import com.example.withmo.R
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.DisplayMediumText
+import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
+import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
+import com.example.withmo.ui.screens.onboarding.OnboardingUiEvent
+import com.example.withmo.ui.theme.UiConfig
+
+@Composable
+fun FinishContent(
+    onEvent: (OnboardingUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(UiConfig.DefaultWeight)
+                .padding(UiConfig.MediumPadding),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.onboarding_finish_logo),
+                contentDescription = "Finish",
+                modifier = Modifier.size(UiConfig.OnboardingImageSize),
+            )
+            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            DisplayMediumText("Completed!")
+            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            BodyMediumText("設定が完了しました！")
+        }
+        FinishContentBottomAppBar(
+            navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
+            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(UiConfig.MediumPadding),
+        )
+    }
+}
+
+@Composable
+private fun FinishContentBottomAppBar(
+    navigateToPreviousPage: () -> Unit,
+    navigateToNextPage: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+    ) {
+        OnboardingBottomAppBarPreviousButton(
+            onClick = navigateToPreviousPage,
+            modifier = Modifier.weight(UiConfig.DefaultWeight),
+        )
+        OnboardingBottomAppBarNextButton(
+            text = "はじめる",
+            onClick = navigateToNextPage,
+            modifier = Modifier.weight(UiConfig.DefaultWeight),
+        )
+    }
+}

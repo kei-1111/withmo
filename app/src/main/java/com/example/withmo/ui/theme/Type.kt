@@ -23,6 +23,13 @@ val BizUdGothic = FontFamily(
 )
 
 val Typography = Typography(
+    displayMedium = TextStyle(
+        fontFamily = NotoSansJp,
+        fontWeight = FontWeight.Black,
+        fontSize = 42.sp,
+        lineHeight = 52.sp,
+    ),
+
     titleLarge = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,

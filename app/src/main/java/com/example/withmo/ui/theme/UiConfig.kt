@@ -11,7 +11,7 @@ data object UiConfig {
 
     const val DefaultAppIconSize = 48f
     const val MinAppIconSize = 36f
-    const val MaxAppIconSize = 72f
+    const val MaxAppIconSize = 60f
 
     const val DefaultAppIconHorizontalSpacing = 10f
     const val MinAppIconHorizontalSpacing = 0f
@@ -35,6 +35,8 @@ data object UiConfig {
     const val BottomSheetShowDragHeight = -50f
 
     const val PageCount = 2
+
+    const val FavoriteAppListMaxSize = 4
 
 //    App Icon Settings
     val AppIconPreviewHeight = 200.dp
@@ -70,4 +72,6 @@ data object UiConfig {
 
     val PageIndicatorSpaceHeight = 25.dp
     val PageIndicatorSize = 8.dp
+
+    val OnboardingImageSize = 250.dp
 }

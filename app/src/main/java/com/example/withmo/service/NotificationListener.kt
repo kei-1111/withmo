@@ -30,7 +30,7 @@ class NotificationListener : NotificationListenerService() {
 
             if (notificationSettings.isNotificationAnimationEnabled) {
                 val intent = Intent("notification_received")
-                intent.putExtra("notification_data", sbn.packageName)
+                intent.putExtra("package_name", sbn.packageName)
                 sendBroadcast(intent)
                 UnitySendMessage("Notification", "ShowObject", "")
             }

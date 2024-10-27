@@ -14,9 +14,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
+import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.SortType
+import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCase
 import com.example.withmo.ui.base.BaseViewModel
@@ -24,6 +26,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.ZonedDateTime
@@ -39,9 +44,13 @@ class HomeViewModel @Inject constructor(
     private val saveSortTypeUseCase: SaveSortTypeUseCase,
     private val appWidgetManager: AppWidgetManager,
     private val appWidgetHost: AppWidgetHost,
+    private val appInfoRepository: AppInfoRepository,
 ) : BaseViewModel<HomeUiState, HomeUiEvent>() {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
+
+    val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
+        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
 
     init {
         viewModelScope.launch {
@@ -51,7 +60,13 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-        splashScreenDuration()
+        viewModelScope.launch {
+            appInfoRepository.getFavoriteAppInfoList().collect { appInfoList ->
+                _uiState.update {
+                    it.copy(favoriteAppList = appInfoList.toPersistentList())
+                }
+            }
+        }
         startClock()
         appWidgetHost.startListening()
     }
@@ -63,15 +78,6 @@ class HomeViewModel @Inject constructor(
                     it.copy(currentTime = getTime(ZonedDateTime.now()))
                 }
                 delay(ClockUpdateInterval)
-            }
-        }
-    }
-
-    private fun splashScreenDuration() {
-        viewModelScope.launch {
-            delay(SplashScreenDuration)
-            _uiState.update {
-                it.copy(isFinishSplashScreen = true)
             }
         }
     }
@@ -267,7 +273,7 @@ class HomeViewModel @Inject constructor(
     }
 
     companion object {
-        private const val SplashScreenDuration = 5000L
         private const val ClockUpdateInterval = 1000L
+        private const val TimeoutMillis = 5000L
     }
 }

@@ -1,10 +1,13 @@
 package com.example.withmo.ui.screens.home
 
 import android.appwidget.AppWidgetProviderInfo
+import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.ui.base.UiEvent
 
 sealed interface HomeUiEvent : UiEvent {
+    data class StartApp(val appInfo: AppInfo) : HomeUiEvent
+    data class DeleteApp(val appInfo: AppInfo) : HomeUiEvent
     data class SetShowScaleSlider(val isShow: Boolean) : HomeUiEvent
     data class SetPopupExpanded(val isExpand: Boolean) : HomeUiEvent
     data class OnValueChangeAppSearchQuery(val query: String) : HomeUiEvent
