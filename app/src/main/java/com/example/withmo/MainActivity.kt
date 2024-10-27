@@ -15,7 +15,6 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
@@ -24,6 +23,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.withmo.domain.model.TimeBasedMessageManager
 import com.example.withmo.domain.model.user_settings.ThemeSettings
 import com.example.withmo.domain.model.user_settings.ThemeType
 import com.example.withmo.domain.repository.AppInfoRepository
@@ -34,10 +34,13 @@ import com.example.withmo.utils.AppUtils
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import java.time.LocalTime
+import java.time.ZoneId
 import javax.inject.Inject
 
+@RequiresApi(Build.VERSION_CODES.O)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var unityPlayer: UnityPlayer? = null
@@ -45,12 +48,13 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
     private var themeSettings by mutableStateOf(ThemeSettings())
+    private var isNight by mutableStateOf(isNightTime(LocalTime.now(ZoneId.systemDefault())))
+    private val timeBasedMessageManager = TimeBasedMessageManager()
 
     @Inject
     lateinit var appInfoRepository: AppInfoRepository
 
     private val packageReceiver = object : BroadcastReceiver() {
-        @RequiresApi(Build.VERSION_CODES.O)
         override fun onReceive(context: Context, intent: Intent) {
             val packageName = intent.getStringExtra("package_name")
 
@@ -87,7 +91,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -127,13 +131,21 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            var isNight by remember { mutableStateOf(isNightTime()) }
-
             LaunchedEffect(Unit) {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    while (true) {
-                        isNight = isNightTime()
-                        delay(MillisecondToSecond * SecondToMinute)
+                    while (isActive) {
+                        val currentTime = LocalTime.now(ZoneId.systemDefault())
+                        isNight = isNightTime(currentTime)
+
+                        if (themeSettings.themeType == ThemeType.TIME_BASED) {
+                            timeBasedMessageManager.sendTimeBasedMessage(currentTime)
+
+                            if (currentTime.isAfter(NightStartTime)) {
+                                timeBasedMessageManager.resetFlags()
+                            }
+                        }
+
+                        delay(OneMinuteMillis)
                     }
                 }
             }
@@ -177,20 +189,13 @@ class MainActivity : ComponentActivity() {
     override fun finish() {
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    @Suppress("MagicNumber")
-    private fun isNightTime(): Boolean {
-        val currentTime = LocalTime.now()
-        val startNightTime = LocalTime.of(19, 0)
-        val endNightTime = LocalTime.of(6, 0)
-
-        return currentTime.isAfter(startNightTime) || currentTime.isBefore(endNightTime)
+    private fun isNightTime(currentTime: LocalTime): Boolean {
+        return currentTime.isAfter(NightStartTime) || currentTime.isBefore(MorningStartTime)
     }
 
     private fun themeTypeToBoolean(themeType: ThemeType, isNight: Boolean): Boolean {
         return when (themeType) {
             ThemeType.TIME_BASED -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetTimeBasedMode", "")
                 isNight
             }
             ThemeType.LIGHT -> {
@@ -204,7 +209,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private suspend fun syncAppInfo() {
         val installedApps = AppUtils.getAppList(this)
 
@@ -212,8 +216,10 @@ class MainActivity : ComponentActivity() {
     }
 
     companion object {
-        private const val MillisecondToSecond = 1000L
-        private const val SecondToMinute = 60L
+        private const val OneMinuteMillis = 60_000L
+
+        private val MorningStartTime: LocalTime = LocalTime.of(6, 0)
+        private val NightStartTime: LocalTime = LocalTime.of(19, 0)
     }
 }
 
