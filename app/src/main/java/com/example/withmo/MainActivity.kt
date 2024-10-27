@@ -40,7 +40,7 @@ import java.time.LocalTime
 import java.time.ZoneId
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
+@RequiresApi(Build.VERSION_CODES.R)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private var unityPlayer: UnityPlayer? = null
@@ -91,6 +91,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
