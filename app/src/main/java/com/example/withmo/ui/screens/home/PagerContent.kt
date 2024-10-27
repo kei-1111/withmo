@@ -32,6 +32,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.ui.component.LabelMediumText
@@ -57,6 +59,12 @@ fun PagerContent(
     deleteWidget: (WidgetInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val density = LocalDensity.current
+    val configuration = LocalConfiguration.current
+
+    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
+    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+
     val pagerState = rememberPagerState(pageCount = { UiConfig.PageCount })
 
     LaunchedEffect(pagerState) {
@@ -98,6 +106,16 @@ fun PagerContent(
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
+                                    onTap = {
+                                        val normalizedX = it.x / screenWidthPx
+                                        val normalizedY = it.y / screenHeightPx
+
+                                        UnitySendMessage(
+                                            "AnimationController",
+                                            "MoveLookat",
+                                            "$normalizedX,$normalizedY",
+                                        )
+                                    },
                                     onLongPress = {
                                         UnitySendMessage("AnimationController", "TriggerTouchAnimation", "")
                                     },
