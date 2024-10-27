@@ -18,14 +18,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Man
 import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,9 +41,9 @@ import com.example.withmo.ui.theme.UiConfig
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import kotlinx.collections.immutable.ImmutableList
 
+@Suppress("LongMethod")
 @Composable
 fun PagerContent(
-    pagerState: PagerState,
     isScaleSliderButtonShown: Boolean,
     isSortButtonShown: Boolean,
     showScaleSlider: () -> Unit,
@@ -55,6 +57,26 @@ fun PagerContent(
     deleteWidget: (WidgetInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val pagerState = rememberPagerState(pageCount = { UiConfig.PageCount })
+
+    LaunchedEffect(pagerState) {
+        var isFirstCollect = true
+        snapshotFlow { pagerState.currentPage }.collect { page ->
+            if (isFirstCollect) {
+                isFirstCollect = false
+            } else {
+                when (page) {
+                    0 -> {
+                        UnitySendMessage("AnimationController", "TriggerEnterScreenAnimation", "")
+                    }
+                    1 -> {
+                        UnitySendMessage("AnimationController", "TriggerExitScreenAnimation", "")
+                    }
+                }
+            }
+        }
+    }
+
     Column(
         modifier = modifier
             .padding(horizontal = UiConfig.MediumPadding),
