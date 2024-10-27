@@ -10,7 +10,6 @@ import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -60,7 +59,6 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navigateToSettingsScreen: () -> Unit,
-    appList: ImmutableList<AppInfo>,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -71,6 +69,8 @@ fun HomeScreen(
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val actionSelectionSheetState = rememberModalBottomSheetState()
     val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+
+    val appList by viewModel.appList.collectAsStateWithLifecycle()
 
     val homeAppList by remember(appList, uiState.currentUserSettings.sortType) {
         derivedStateOf {
@@ -243,19 +243,17 @@ fun HomeScreen(
         }.launchIn(this)
     }
 
-    AnimatedVisibility(uiState.isFinishSplashScreen) {
-        HomeScreen(
-            uiState = uiState,
-            onEvent = viewModel::onEvent,
-            homeAppList = homeAppList,
-            appListSheetState = appListSheetState,
-            actionSelectionSheetState = actionSelectionSheetState,
-            widgetListSheetState = widgetListSheetState,
-            widgetInfoList = viewModel.getWidgetInfoList(),
-            createWidgetView = viewModel::createWidgetView,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
+    HomeScreen(
+        uiState = uiState,
+        onEvent = viewModel::onEvent,
+        homeAppList = homeAppList,
+        appListSheetState = appListSheetState,
+        actionSelectionSheetState = actionSelectionSheetState,
+        widgetListSheetState = widgetListSheetState,
+        widgetInfoList = viewModel.getWidgetInfoList(),
+        createWidgetView = viewModel::createWidgetView,
+        modifier = Modifier.fillMaxSize(),
+    )
 }
 
 @Suppress("LongMethod")
@@ -339,7 +337,6 @@ private fun HomeScreen(
         HomeScreenContent(
             uiState = uiState,
             onEvent = onEvent,
-            appList = homeAppList,
             createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
         )

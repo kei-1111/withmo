@@ -20,6 +20,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -34,8 +35,8 @@ import com.example.withmo.ui.screens.onboarding.content.SelectFavoriteAppContent
 import com.example.withmo.ui.screens.onboarding.content.WelcomeContent
 import com.example.withmo.ui.theme.UiConfig
 import com.example.withmo.utils.FileUtils
-import com.example.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -43,29 +44,31 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun OnboardingScreen(
-    appList: ImmutableList<AppInfo>,
+    navigateToHomeScreen: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
+    val appList by viewModel.appList.collectAsStateWithLifecycle()
+
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
         onResult = {
             if (Environment.isExternalStorageManager()) {
-                val modelFileList = FileUtils.getModelFile(context)
-                viewModel.getModelFileList(modelFileList)
+                viewModel.getModelFileList(FileUtils.getModelFile(context))
             }
         },
     )
 
     if (Environment.isExternalStorageManager()) {
         LaunchedEffect(Unit) {
-            val modelFileList = FileUtils.getModelFile(context)
-            viewModel.getModelFileList(modelFileList)
+            viewModel.getModelFileList(FileUtils.getModelFile(context))
         }
     }
+
+    val latestNavigateToHomeScreen by rememberUpdatedState(navigateToHomeScreen)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
@@ -99,20 +102,23 @@ fun OnboardingScreen(
                 }
 
                 is OnboardingUiEvent.OnboardingFinished -> {
-                    showToast(context, "ホーム画面に遷移します")
+                    viewModel.saveFavoriteAppList()
+                    uiState.selectedModelFile?.sendPathToUnity()
+                    latestNavigateToHomeScreen()
                 }
             }
         }.launchIn(this)
     }
 
     OnboardingScreen(
-        appList = appList,
+        appList = appList.toPersistentList(),
         uiState = uiState,
         onEvent = viewModel::onEvent,
         modifier = Modifier.fillMaxSize(),
     )
 }
 
+@RequiresApi(Build.VERSION_CODES.R)
 @Composable
 private fun OnboardingScreen(
     appList: ImmutableList<AppInfo>,

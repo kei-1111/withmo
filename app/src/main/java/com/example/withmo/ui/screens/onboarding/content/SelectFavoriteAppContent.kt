@@ -161,6 +161,7 @@ fun SelectFavoriteAppContent(
         SelectFavoriteAppContentBottomAppBar(
             navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
             navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            isNextButtonEnabled = uiState.selectedAppList.isNotEmpty(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(UiConfig.MediumPadding),
@@ -276,6 +277,7 @@ private fun WithmoSearchTextField(
 private fun SelectFavoriteAppContentBottomAppBar(
     navigateToPreviousPage: () -> Unit,
     navigateToNextPage: () -> Unit,
+    isNextButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -290,6 +292,7 @@ private fun SelectFavoriteAppContentBottomAppBar(
             text = "次へ",
             onClick = navigateToNextPage,
             modifier = Modifier.weight(UiConfig.DefaultWeight),
+            enabled = isNextButtonEnabled,
         )
     }
 }

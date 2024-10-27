@@ -101,6 +101,11 @@ dependencies {
 //    DataStore
     implementation(libs.androidx.datastore.preferences)
 
+//    Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+
 //    Unity
     implementation(project(":unityLibrary"))
     implementation(fileTree(mapOf("dir" to "/Users/kei/Projects/AndroidProjects/withmo/unityLibrary/libs", "include" to listOf("*.jar"))))

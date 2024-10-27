@@ -1,18 +1,41 @@
 package com.example.withmo.ui.screens.onboarding
 
+import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.ModelFile
+import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.ui.base.BaseViewModel
 import com.example.withmo.ui.theme.UiConfig
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class OnboardingViewModel @Inject constructor() : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
+class OnboardingViewModel @Inject constructor(
+    private val appInfoRepository: AppInfoRepository,
+) : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
     override fun createInitialState(): OnboardingUiState = OnboardingUiState()
+
+    val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
+        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
+
+    init {
+        viewModelScope.launch {
+            appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
+                _uiState.update {
+                    it.copy(
+                        selectedAppList = favoriteAppList.toPersistentList(),
+                    )
+                }
+            }
+        }
+    }
 
     fun addSelectedAppList(appInfo: AppInfo) {
         _uiState.update { currentState ->
@@ -79,5 +102,21 @@ class OnboardingViewModel @Inject constructor() : BaseViewModel<OnboardingUiStat
                 it.copy(currentPage = OnboardingPage.entries[previousPage])
             }
         }
+    }
+
+    fun saveFavoriteAppList() {
+        val favoriteAppList = _uiState.value.selectedAppList.map { appInfo ->
+            appInfo.copy(isFavorite = true)
+        }.toPersistentList()
+
+        viewModelScope.launch {
+            favoriteAppList.forEach {
+                appInfoRepository.updateAppInfo(it)
+            }
+        }
+    }
+
+    companion object {
+        private const val TimeoutMillis = 5000L
     }
 }

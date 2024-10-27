@@ -11,7 +11,7 @@ data object UiConfig {
 
     const val DefaultAppIconSize = 48f
     const val MinAppIconSize = 36f
-    const val MaxAppIconSize = 72f
+    const val MaxAppIconSize = 60f
 
     const val DefaultAppIconHorizontalSpacing = 10f
     const val MinAppIconHorizontalSpacing = 0f

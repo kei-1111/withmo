@@ -3,6 +3,7 @@ package com.example.withmo.ui.screens.home
 import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.UserSettings
@@ -13,7 +14,6 @@ import kotlinx.collections.immutable.persistentListOf
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeUiState(
     val currentTime: DateTimeInfo = DateTimeInfo(),
-    val isFinishSplashScreen: Boolean = false,
     val isShowScaleSlider: Boolean = false,
     val isExpandPopup: Boolean = false,
     val isAppListBottomSheetOpened: Boolean = false,
@@ -24,5 +24,6 @@ data class HomeUiState(
     val pendingWidgetInfo: AppWidgetProviderInfo? = null,
     val isEditMode: Boolean = false,
     val appSearchQuery: String = "",
+    val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
     val currentUserSettings: UserSettings = UserSettings(),
 ) : UiState
