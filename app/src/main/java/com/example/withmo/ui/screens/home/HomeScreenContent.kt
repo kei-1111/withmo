@@ -198,14 +198,7 @@ private fun RowAppList(
 ) {
     Row(
         modifier = modifier
-            .padding(horizontal = UiConfig.MediumPadding)
-            .background(
-                MaterialTheme.colorScheme.surface.copy(
-                    alpha = UiConfig.DisabledContentAlpha,
-                ),
-                MaterialTheme.shapes.medium,
-            )
-            .padding(vertical = UiConfig.MediumPadding),
+            .padding(vertical = UiConfig.ExtraSmallPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
