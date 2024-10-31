@@ -2,7 +2,6 @@ package com.example.withmo.ui.screens.home
 
 import android.content.Context
 import android.view.View
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
