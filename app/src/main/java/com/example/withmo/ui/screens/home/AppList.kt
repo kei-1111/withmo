@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.AppItem
 import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.CenteredMessage
 import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -96,7 +97,10 @@ fun AppList(
                     }
                 }
             } else {
-                BodyMediumText(text = "アプリが見つかりませんでした")
+                CenteredMessage(
+                    message = "アプリが見つかりません",
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
     }
