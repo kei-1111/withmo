@@ -26,7 +26,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.AppItem
-import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.CenteredMessage
 import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
