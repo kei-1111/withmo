@@ -132,7 +132,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            LaunchedEffect(Unit) {
+            LaunchedEffect(themeSettings) {
                 repeatOnLifecycle(Lifecycle.State.STARTED) {
                     while (isActive) {
                         val currentTime = LocalTime.now(ZoneId.systemDefault())
@@ -197,6 +197,7 @@ class MainActivity : ComponentActivity() {
     private fun themeTypeToBoolean(themeType: ThemeType, isNight: Boolean): Boolean {
         return when (themeType) {
             ThemeType.TIME_BASED -> {
+                timeBasedMessageManager.resetFlags()
                 isNight
             }
             ThemeType.LIGHT -> {
