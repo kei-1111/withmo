@@ -26,14 +26,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.AppItem
-import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.CenteredMessage
 import com.example.withmo.ui.component.WithmoTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun AppList(
+fun HomeAppList(
     onClick: (AppInfo) -> Unit,
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
@@ -75,29 +75,49 @@ fun AppList(
                 },
             )
             if (resultAppList.isNotEmpty()) {
-                LazyVerticalGrid(
+                HomeAppList(
+                    resultAppList = resultAppList,
+                    appIconShape = appIconShape,
+                    onClick = onClick,
+                    onLongClick = onLongClick,
                     modifier = Modifier.fillMaxSize(),
-                    columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
-                    verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                    horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-                    contentPadding = PaddingValues(
-                        top = UiConfig.ExtraSmallPadding,
-                        bottom = UiConfig.MediumPadding,
-                    ),
-                ) {
-                    items(resultAppList.size) { index ->
-                        AppItem(
-                            appInfo = resultAppList[index],
-                            appIconShape = appIconShape,
-                            onClick = { onClick(resultAppList[index]) },
-                            onLongClick = { onLongClick(resultAppList[index]) },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                    }
-                }
+                )
             } else {
-                BodyMediumText(text = "アプリが見つかりませんでした")
+                CenteredMessage(
+                    message = "アプリが見つかりません",
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
+        }
+    }
+}
+
+@Composable
+private fun HomeAppList(
+    resultAppList: ImmutableList<AppInfo>,
+    appIconShape: Shape,
+    onClick: (AppInfo) -> Unit,
+    onLongClick: (AppInfo) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    LazyVerticalGrid(
+        modifier = modifier,
+        columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
+        verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        contentPadding = PaddingValues(
+            top = UiConfig.ExtraSmallPadding,
+            bottom = UiConfig.MediumPadding,
+        ),
+    ) {
+        items(resultAppList.size) { index ->
+            AppItem(
+                appInfo = resultAppList[index],
+                appIconShape = appIconShape,
+                onClick = { onClick(resultAppList[index]) },
+                onLongClick = { onLongClick(resultAppList[index]) },
+                modifier = Modifier.fillMaxWidth(),
+            )
         }
     }
 }

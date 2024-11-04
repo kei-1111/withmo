@@ -280,7 +280,7 @@ private fun HomeScreen(
             sheetState = appListSheetState,
             dragHandle = {},
         ) {
-            AppList(
+            HomeAppList(
                 onClick = { onEvent(HomeUiEvent.StartApp(it)) },
                 onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
                 appList = homeAppList,
