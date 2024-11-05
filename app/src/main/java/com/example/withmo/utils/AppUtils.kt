@@ -39,7 +39,7 @@ object AppUtils {
                 AppInfo(
                     appIcon = getAppIcon(icon),
                     label = if (packageName == context.packageName) {
-                        "withmoの設定"
+                        "カスタマイズ"
                     } else {
                         it.loadLabel(pm).toString()
                     },
@@ -61,7 +61,7 @@ object AppUtils {
             AppInfo(
                 appIcon = getAppIcon(icon),
                 label = if (packageName == context.packageName) {
-                    "withmoの設定"
+                    "カスタマイズ"
                 } else {
                     label
                 },
