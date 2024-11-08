@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,11 +21,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.ui.component.AppItem
 import com.example.withmo.ui.component.CenteredMessage
-import com.example.withmo.ui.component.WithmoTextField
+import com.example.withmo.ui.component.WithmoSearchTextField
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -120,22 +117,4 @@ private fun HomeAppList(
             )
         }
     }
-}
-
-@Composable
-private fun WithmoSearchTextField(
-    value: String,
-    onValueChange: (String) -> Unit,
-    action: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    WithmoTextField(
-        modifier = modifier,
-        value = value,
-        onValueChange = onValueChange,
-        label = "アプリを検索",
-        action = action,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        keyboardActions = KeyboardActions(onDone = { action() }),
-    )
 }

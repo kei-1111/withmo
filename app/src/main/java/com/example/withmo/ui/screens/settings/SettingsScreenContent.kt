@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -39,6 +40,7 @@ fun SettingsScreenContent(
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
+    navigateToFavoriteAppSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
     navigateToDisplayModelSettingScreen: () -> Unit,
     navigateToThemeSettingsScreen: () -> Unit,
@@ -60,6 +62,7 @@ fun SettingsScreenContent(
             navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
             navigateToClockSettingsScreen = navigateToClockSettingsScreen,
             navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
+            navigateToFavoriteAppSettingsScreen = navigateToFavoriteAppSettingsScreen,
             navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
         )
         ModelSettings(
@@ -109,6 +112,7 @@ private fun HomeScreenSettings(
     navigateToNotificationSettingsScreen: () -> Unit,
     navigateToClockSettingsScreen: () -> Unit,
     navigateToAppIconSettingsScreen: () -> Unit,
+    navigateToFavoriteAppSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -141,6 +145,12 @@ private fun HomeScreenSettings(
                     icon = Icons.Default.Apps,
                     itemName = "アプリアイコン",
                     onClick = navigateToAppIconSettingsScreen,
+                )
+                SettingItemDivider()
+                SettingItem(
+                    icon = Icons.Rounded.Star,
+                    itemName = "お気に入りアプリ",
+                    onClick = navigateToFavoriteAppSettingsScreen,
                 )
                 SettingItemDivider()
                 SettingItem(

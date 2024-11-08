@@ -105,6 +105,7 @@ fun SettingsScreen(
     )
 }
 
+@Suppress("LongMethod")
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUiState,
@@ -143,6 +144,9 @@ private fun SettingsScreen(
                 },
                 navigateToAppIconSettingsScreen = {
                     onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings))
+                },
+                navigateToFavoriteAppSettingsScreen = {
+                    onEvent(SettingsUiEvent.OnNavigate(Screen.FavoriteAppSettings))
                 },
                 navigateToSideButtonSettingsScreen = {
                     onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings))

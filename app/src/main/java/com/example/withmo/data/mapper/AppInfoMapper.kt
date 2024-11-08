@@ -5,6 +5,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.withmo.data.local.entity.AppInfoEntity
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.domain.model.FavoriteOrder
 import com.example.withmo.utils.AppUtils
 
 fun AppInfo.toEntity(): AppInfoEntity {
@@ -12,7 +13,7 @@ fun AppInfo.toEntity(): AppInfoEntity {
         packageName = packageName,
         notification = notification,
         useCount = useCount,
-        isFavorite = isFavorite,
+        favoriteOrder = favoriteOrder.name,
     )
 }
 
@@ -26,7 +27,7 @@ fun AppInfoEntity.toAppInfo(context: Context): AppInfo {
             packageName = packageName,
             notification = notification,
             useCount = useCount,
-            isFavorite = isFavorite,
+            favoriteOrder = FavoriteOrder.valueOf(favoriteOrder),
         )
     } ?: throw IllegalArgumentException("AppInfo not found")
 }

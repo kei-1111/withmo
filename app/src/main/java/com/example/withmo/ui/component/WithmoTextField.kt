@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.input.ImeAction
 import com.example.withmo.ui.theme.UiConfig
 
 @Composable
@@ -82,4 +83,22 @@ fun WithmoTextField(
             }
         }
     }
+}
+
+@Composable
+fun WithmoSearchTextField(
+    value: String,
+    onValueChange: (String) -> Unit,
+    action: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    WithmoTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = "アプリを検索",
+        action = action,
+        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
+        keyboardActions = KeyboardActions(onDone = { action() }),
+    )
 }

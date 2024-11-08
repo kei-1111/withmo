@@ -16,6 +16,6 @@ data class AppInfoEntity(
     @ColumnInfo(name = "use_count")
     val useCount: Int,
 
-    @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean,
+    @ColumnInfo(name = "favorite_order")
+    val favoriteOrder: String,
 )

@@ -2,6 +2,7 @@ package com.example.withmo.ui.screens.onboarding
 
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.domain.model.FavoriteOrder
 import com.example.withmo.domain.model.ModelFile
 import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.ui.base.BaseViewModel
@@ -105,8 +106,16 @@ class OnboardingViewModel @Inject constructor(
     }
 
     fun saveFavoriteAppList() {
-        val favoriteAppList = _uiState.value.selectedAppList.map { appInfo ->
-            appInfo.copy(isFavorite = true)
+        val favoriteAppList = _uiState.value.selectedAppList.mapIndexed { index, appInfo ->
+            appInfo.copy(
+                favoriteOrder = when (index) {
+                    0 -> FavoriteOrder.First
+                    1 -> FavoriteOrder.Second
+                    2 -> FavoriteOrder.Third
+                    3 -> FavoriteOrder.Fourth
+                    else -> FavoriteOrder.NotFavorite
+                },
+            )
         }.toPersistentList()
 
         viewModelScope.launch {

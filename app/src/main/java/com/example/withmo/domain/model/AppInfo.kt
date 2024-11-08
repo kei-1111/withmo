@@ -15,7 +15,7 @@ data class AppInfo(
     val packageName: String,
     val notification: Boolean = false,
     val useCount: Int = UiConfig.AppInfoDefaultUseCount,
-    val isFavorite: Boolean = false,
+    val favoriteOrder: FavoriteOrder = FavoriteOrder.NotFavorite,
 ) {
     fun launch(context: Context) {
         try {
@@ -47,3 +47,11 @@ data class AppIcon(
     val foregroundIcon: Drawable,
     val backgroundIcon: Drawable?,
 )
+
+enum class FavoriteOrder {
+    NotFavorite,
+    First,
+    Second,
+    Third,
+    Fourth,
+}
