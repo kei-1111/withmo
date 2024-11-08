@@ -17,10 +17,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
-import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCase
 import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
@@ -41,7 +39,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val saveSortTypeUseCase: SaveSortTypeUseCase,
     private val appWidgetManager: AppWidgetManager,
     private val appWidgetHost: AppWidgetHost,
     private val appInfoRepository: AppInfoRepository,
@@ -99,21 +96,9 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    fun saveSortType(sortType: SortType) {
-        viewModelScope.launch {
-            saveSortTypeUseCase(sortType)
-        }
-    }
-
     fun setShowScaleSlider(show: Boolean) {
         _uiState.update {
             it.copy(isShowScaleSlider = show)
-        }
-    }
-
-    fun setPopupExpanded(expanded: Boolean) {
-        _uiState.update {
-            it.copy(isExpandPopup = expanded)
         }
     }
 

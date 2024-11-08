@@ -19,8 +19,10 @@ import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButton
 import com.example.withmo.domain.usecase.user_settings.side_button.GetSideButtonSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.side_button.SaveSideButtonSettingsUseCaseImpl
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCase
-import com.example.withmo.domain.usecase.user_settings.sort_mode.SaveSortTypeUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.sort.GetSortSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.sort.GetSortSettingsUseCaseImpl
+import com.example.withmo.domain.usecase.user_settings.sort.SaveSortSettingsUseCase
+import com.example.withmo.domain.usecase.user_settings.sort.SaveSortSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCaseImpl
 import com.example.withmo.domain.usecase.user_settings.theme.SaveThemeSettingsUseCase
@@ -42,13 +44,6 @@ object UseCaseModule {
     fun provideGetUserSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): GetUserSettingsUseCase = GetUserSettingsUseCaseImpl(userSettingsRepository)
-
-//    SortType
-    @Provides
-    @Singleton
-    fun provideSaveSortTypeUseCase(
-        userSettingsRepository: UserSettingsRepository,
-    ): SaveSortTypeUseCase = SaveSortTypeUseCaseImpl(userSettingsRepository)
 
 //    Notification
     @Provides
@@ -101,6 +96,19 @@ object UseCaseModule {
     fun provideSaveSideButtonSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveSideButtonSettingsUseCase = SaveSideButtonSettingsUseCaseImpl(userSettingsRepository)
+
+//    Sort
+    @Provides
+    @Singleton
+    fun provideGetSortSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetSortSettingsUseCase = GetSortSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveSortSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveSortSettingsUseCase = SaveSortSettingsUseCaseImpl(userSettingsRepository)
 
 //    Theme
     @Provides

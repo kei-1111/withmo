@@ -22,7 +22,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Man
-import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -47,9 +46,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun PagerContent(
     isScaleSliderButtonShown: Boolean,
-    isSortButtonShown: Boolean,
     showScaleSlider: () -> Unit,
-    popupExpand: () -> Unit,
     openActionSelectionBottomSheet: () -> Unit,
     displayedWidgetList: ImmutableList<WidgetInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
@@ -99,9 +96,7 @@ fun PagerContent(
                 0 -> {
                     DisplayModelContent(
                         isScaleSliderButtonShown = isScaleSliderButtonShown,
-                        isSortButtonShown = isSortButtonShown,
                         showScaleSlider = showScaleSlider,
-                        popupExpand = popupExpand,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
@@ -202,9 +197,7 @@ private fun PageIndicator(
 @Composable
 private fun DisplayModelContent(
     isScaleSliderButtonShown: Boolean,
-    isSortButtonShown: Boolean,
     showScaleSlider: () -> Unit,
-    popupExpand: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -216,12 +209,6 @@ private fun DisplayModelContent(
             WithmoIconButton(
                 onClick = showScaleSlider,
                 icon = Icons.Default.Man,
-            )
-        }
-        if (isSortButtonShown) {
-            WithmoIconButton(
-                onClick = popupExpand,
-                icon = Icons.Default.Tune,
             )
         }
     }

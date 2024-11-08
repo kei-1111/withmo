@@ -18,6 +18,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.RadioButtonChecked
+import androidx.compose.material.icons.filled.Tune
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -42,6 +43,7 @@ fun SettingsScreenContent(
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToFavoriteAppSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
+    navigateToSortSettingsScreen: () -> Unit,
     navigateToDisplayModelSettingScreen: () -> Unit,
     navigateToThemeSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
@@ -64,6 +66,7 @@ fun SettingsScreenContent(
             navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
             navigateToFavoriteAppSettingsScreen = navigateToFavoriteAppSettingsScreen,
             navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
+            navigateToSortSettingsScreen = navigateToSortSettingsScreen,
         )
         ModelSettings(
             title = "モデルの設定",
@@ -114,6 +117,7 @@ private fun HomeScreenSettings(
     navigateToAppIconSettingsScreen: () -> Unit,
     navigateToFavoriteAppSettingsScreen: () -> Unit,
     navigateToSideButtonSettingsScreen: () -> Unit,
+    navigateToSortSettingsScreen: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -157,6 +161,12 @@ private fun HomeScreenSettings(
                     icon = Icons.Default.RadioButtonChecked,
                     itemName = "サイドボタン",
                     onClick = navigateToSideButtonSettingsScreen,
+                )
+                SettingItemDivider()
+                SettingItem(
+                    icon = Icons.Default.Tune,
+                    itemName = "並び順",
+                    onClick = navigateToSortSettingsScreen,
                 )
             }
         }

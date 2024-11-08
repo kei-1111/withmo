@@ -151,6 +151,9 @@ private fun SettingsScreen(
                 navigateToSideButtonSettingsScreen = {
                     onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings))
                 },
+                navigateToSortSettingsScreen = {
+                    onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings))
+                },
                 navigateToDisplayModelSettingScreen = {
                     onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting))
                 },
