@@ -25,6 +25,7 @@ import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
 import com.example.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import com.example.withmo.ui.screens.display_model_setting.DisplayModelSettingScreen
+import com.example.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsScreen
 import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import com.example.withmo.ui.screens.onboarding.OnboardingScreen
@@ -119,6 +120,12 @@ fun AppContent(
 
                     is Screen.AppIconSettings -> {
                         AppIconSettingsScreen(
+                            navigateToSettingsScreen = navigateToSettingScreen,
+                        )
+                    }
+
+                    is Screen.FavoriteAppSettings -> {
+                        FavoriteAppSettingsScreen(
                             navigateToSettingsScreen = navigateToSettingScreen,
                         )
                     }

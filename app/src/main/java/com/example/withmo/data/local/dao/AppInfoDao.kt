@@ -15,7 +15,7 @@ interface AppInfoDao {
     @Query("SELECT * FROM app_info")
     fun getAllAppInfoList(): Flow<List<AppInfoEntity>>
 
-    @Query("SELECT * FROM app_info WHERE is_favorite = 1")
+    @Query("SELECT * FROM app_info WHERE favorite_order != 'NotFavorite'")
     fun getFavoriteAppInfoList(): Flow<List<AppInfoEntity>>
 
     @Query("SELECT * FROM app_info WHERE package_name = :packageName")

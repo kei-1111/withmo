@@ -1,8 +1,7 @@
-package com.example.withmo.ui.screens.onboarding.content
+package com.example.withmo.ui.screens.favorite_app_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
@@ -14,26 +13,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.AppInfo
+import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.component.CenteredMessage
-import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoSearchTextField
-import com.example.withmo.ui.component.WithmoTopAppBar
 import com.example.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import com.example.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
-import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
-import com.example.withmo.ui.screens.onboarding.OnboardingUiEvent
-import com.example.withmo.ui.screens.onboarding.OnboardingUiState
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
-@Suppress("LongMethod")
 @Composable
-fun SelectFavoriteAppContent(
+fun FavoriteAppSettingsScreenContent(
     appList: ImmutableList<AppInfo>,
-    uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    uiState: FavoriteAppSettingsUiState,
+    onEvent: (FavoriteAppSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -43,6 +36,10 @@ fun SelectFavoriteAppContent(
             appList.filter { it.label.contains(query, ignoreCase = true) }.toPersistentList()
     }
 
+    val appIconShape = uiState.appIconSettings.appIconShape.toShape(
+        uiState.appIconSettings.roundedCornerPercent,
+    )
+
     LaunchedEffect(appList) {
         filterAppList(uiState.appSearchQuery)
     }
@@ -50,9 +47,6 @@ fun SelectFavoriteAppContent(
     Column(
         modifier = modifier,
     ) {
-        WithmoTopAppBar(
-            content = { TitleLargeText("お気に入りアプリは？") },
-        )
         Column(
             modifier = Modifier
                 .weight(UiConfig.DefaultWeight)
@@ -70,18 +64,21 @@ fun SelectFavoriteAppContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.appSearchQuery,
-                onValueChange = { onEvent(OnboardingUiEvent.OnValueChangeAppSearchQuery(it)) },
+                onValueChange = { onEvent(FavoriteAppSettingsUiEvent.OnValueChangeAppSearchQuery(it)) },
                 action = { filterAppList(uiState.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
-                    favoriteAppList = uiState.selectedAppList,
-                    addSelectedAppList = { onEvent(OnboardingUiEvent.AddSelectedAppList(it)) },
-                    removeSelectedAppList = { onEvent(OnboardingUiEvent.RemoveSelectedAppList(it)) },
+                    favoriteAppList = uiState.favoriteAppList,
+                    addSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.AddFavoriteAppList(it)) },
+                    removeSelectedAppList = {
+                        onEvent(FavoriteAppSettingsUiEvent.RemoveFavoriteAppList(it))
+                    },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(UiConfig.DefaultWeight),
+                    appIconShape = appIconShape,
                 )
             } else {
                 CenteredMessage(
@@ -91,40 +88,10 @@ fun SelectFavoriteAppContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = uiState.selectedAppList,
-            removeSelectedAppList = { onEvent(OnboardingUiEvent.RemoveSelectedAppList(it)) },
+            favoriteAppList = uiState.favoriteAppList,
+            removeSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.RemoveFavoriteAppList(it)) },
+            appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
-        )
-        SelectFavoriteAppContentBottomAppBar(
-            navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            isNextButtonEnabled = uiState.selectedAppList.isNotEmpty(),
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun SelectFavoriteAppContentBottomAppBar(
-    navigateToPreviousPage: () -> Unit,
-    navigateToNextPage: () -> Unit,
-    isNextButtonEnabled: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
-    ) {
-        OnboardingBottomAppBarPreviousButton(
-            onClick = navigateToPreviousPage,
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
-        )
-        OnboardingBottomAppBarNextButton(
-            text = "次へ",
-            onClick = navigateToNextPage,
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
-            enabled = isNextButtonEnabled,
         )
     }
 }

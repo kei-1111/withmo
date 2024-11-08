@@ -61,9 +61,12 @@ class HomeViewModel @Inject constructor(
             }
         }
         viewModelScope.launch {
-            appInfoRepository.getFavoriteAppInfoList().collect { appInfoList ->
+            appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 _uiState.update {
-                    it.copy(favoriteAppList = appInfoList.toPersistentList())
+                    it.copy(
+                        favoriteAppList = favoriteAppList
+                            .sortedBy { it.favoriteOrder.ordinal }.toPersistentList(),
+                    )
                 }
             }
         }
