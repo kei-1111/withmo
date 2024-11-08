@@ -31,6 +31,7 @@ import com.example.withmo.ui.screens.notification_settings.NotificationSettingsS
 import com.example.withmo.ui.screens.onboarding.OnboardingScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
 import com.example.withmo.ui.screens.side_button.SideButtonSettingsScreen
+import com.example.withmo.ui.screens.sort_settings.SortSettingsScreen
 import com.example.withmo.ui.screens.theme_settings.ThemeSettingsScreen
 import com.unity3d.player.UnityPlayer
 
@@ -132,6 +133,12 @@ fun AppContent(
 
                     is Screen.SideButtonSettings -> {
                         SideButtonSettingsScreen(
+                            navigateToSettingsScreen = navigateToSettingScreen,
+                        )
+                    }
+
+                    is Screen.SortSettings -> {
+                        SortSettingsScreen(
                             navigateToSettingsScreen = navigateToSettingScreen,
                         )
                     }

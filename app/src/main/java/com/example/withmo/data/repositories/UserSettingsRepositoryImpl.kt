@@ -15,6 +15,7 @@ import com.example.withmo.domain.model.user_settings.ClockSettings
 import com.example.withmo.domain.model.user_settings.ClockType
 import com.example.withmo.domain.model.user_settings.NotificationSettings
 import com.example.withmo.domain.model.user_settings.SideButtonSettings
+import com.example.withmo.domain.model.user_settings.SortSettings
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.ThemeSettings
 import com.example.withmo.domain.model.user_settings.ThemeType
@@ -86,8 +87,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: UiConfig.DefaultRoundedCornerPercent,
                     isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
                 ),
-                sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
-                    ?: SortType.ALPHABETICAL,
+                sortSettings = SortSettings(
+                    sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
+                        ?: SortType.ALPHABETICAL,
+                ),
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
@@ -99,10 +102,10 @@ class UserSettingsRepositoryImpl @Inject constructor(
             )
         }
 
-    override suspend fun saveSortType(sortType: SortType) {
+    override suspend fun saveSortSettings(sortSettings: SortSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[SORT_TYPE] = sortType.name
+                preferences[SORT_TYPE] = sortSettings.sortType.name
             }
         }
     }

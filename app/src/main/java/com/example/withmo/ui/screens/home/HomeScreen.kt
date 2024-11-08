@@ -72,9 +72,9 @@ fun HomeScreen(
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
 
-    val homeAppList by remember(appList, uiState.currentUserSettings.sortType) {
+    val homeAppList by remember(appList, uiState.currentUserSettings.sortSettings.sortType) {
         derivedStateOf {
-            when (uiState.currentUserSettings.sortType) {
+            when (uiState.currentUserSettings.sortSettings.sortType) {
                 SortType.USE_COUNT -> appList.sortedByDescending { it.useCount }.toPersistentList()
                 SortType.ALPHABETICAL -> appList.sortedBy { it.label }.toPersistentList()
             }
@@ -141,26 +141,12 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.SetPopupExpanded -> {
-                    viewModel.setPopupExpanded(event.isExpand)
-                }
-
                 is HomeUiEvent.SetShowScaleSlider -> {
                     viewModel.setShowScaleSlider(event.isShow)
                 }
 
                 is HomeUiEvent.OnValueChangeAppSearchQuery -> {
                     viewModel.setAppSearchQuery(event.query)
-                }
-
-                is HomeUiEvent.OnSelectSortByUsageOrder -> {
-                    viewModel.setPopupExpanded(false)
-                    viewModel.saveSortType(SortType.USE_COUNT)
-                }
-
-                is HomeUiEvent.OnSelectSortByAlphabeticalOrder -> {
-                    viewModel.setPopupExpanded(false)
-                    viewModel.saveSortType(SortType.ALPHABETICAL)
                 }
 
                 is HomeUiEvent.OpenAppListBottomSheet -> {

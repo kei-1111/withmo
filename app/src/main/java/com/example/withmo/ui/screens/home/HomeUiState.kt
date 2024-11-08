@@ -15,7 +15,6 @@ import kotlinx.collections.immutable.persistentListOf
 data class HomeUiState(
     val currentTime: DateTimeInfo = DateTimeInfo(),
     val isShowScaleSlider: Boolean = false,
-    val isExpandPopup: Boolean = false,
     val isAppListBottomSheetOpened: Boolean = false,
     val isActionSelectionBottomSheetOpened: Boolean = false,
     val isWidgetListBottomSheetOpened: Boolean = false,

@@ -9,10 +9,7 @@ sealed interface HomeUiEvent : UiEvent {
     data class StartApp(val appInfo: AppInfo) : HomeUiEvent
     data class DeleteApp(val appInfo: AppInfo) : HomeUiEvent
     data class SetShowScaleSlider(val isShow: Boolean) : HomeUiEvent
-    data class SetPopupExpanded(val isExpand: Boolean) : HomeUiEvent
     data class OnValueChangeAppSearchQuery(val query: String) : HomeUiEvent
-    data object OnSelectSortByUsageOrder : HomeUiEvent
-    data object OnSelectSortByAlphabeticalOrder : HomeUiEvent
     data object OpenAppListBottomSheet : HomeUiEvent
     data object HideAppListBottomSheet : HomeUiEvent
     data object OpenActionSelectionBottomSheet : HomeUiEvent
