@@ -72,6 +72,7 @@ fun WithmoSettingItemWithSlider(
                     SliderDefaults.Thumb(
                         interactionSource = interactionSource,
                         modifier = thumbModifier,
+                        enabled = enabled,
                     )
                 },
                 track = {
@@ -80,6 +81,7 @@ fun WithmoSettingItemWithSlider(
                     SliderDefaults.Track(
                         sliderState = it,
                         modifier = trackModifier,
+                        enabled = enabled,
                     )
                 },
             )
