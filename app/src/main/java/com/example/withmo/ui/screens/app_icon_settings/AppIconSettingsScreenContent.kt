@@ -64,7 +64,7 @@ fun AppIconSettingsScreenContent(
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
-            title = "アプリ名を表示",
+            title = "アプリ名の表示",
             checked = uiState.appIconSettings.isAppNameShown,
             onCheckedChange = { onEvent(AppIconSettingsUiEvent.ChangeIsAppNameShown(it)) },
             modifier = Modifier.fillMaxWidth(),
