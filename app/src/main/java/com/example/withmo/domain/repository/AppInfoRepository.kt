@@ -14,6 +14,8 @@ interface AppInfoRepository {
 
     suspend fun updateAppInfo(appInfo: AppInfo)
 
+    suspend fun updateAppInfoList(appInfoList: List<AppInfo>)
+
     suspend fun deleteAppInfo(appInfo: AppInfo)
 
     suspend fun syncWithInstalledApps(installedApps: List<AppInfo>)

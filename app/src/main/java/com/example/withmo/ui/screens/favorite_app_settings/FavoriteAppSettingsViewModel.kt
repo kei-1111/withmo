@@ -93,36 +93,36 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         val currentFavoriteAppList = _uiState.value.favoriteAppList
         val initialFavoriteAppList = _uiState.value.initialFavoriteAppList
 
-        val appsToRemove = initialFavoriteAppList.filterNot { appInfo ->
-            currentFavoriteAppList.any { it.packageName == appInfo.packageName }
+        val favoriteOrders = listOf(
+            FavoriteOrder.First,
+            FavoriteOrder.Second,
+            FavoriteOrder.Third,
+            FavoriteOrder.Fourth
+        )
+
+        val currentPackageNames = currentFavoriteAppList.map { it.packageName }.toSet()
+
+        val appsToRemoveFromFavorites = initialFavoriteAppList.filter { appInfo ->
+            appInfo.favoriteOrder != FavoriteOrder.NotFavorite && !currentPackageNames.contains(appInfo.packageName)
         }.map { appInfo ->
             appInfo.copy(favoriteOrder = FavoriteOrder.NotFavorite)
         }
 
-        _uiState.update {
-            it.copy(
-                isSaveButtonEnabled = false,
+        val appsToUpdateFavorites = currentFavoriteAppList.mapIndexed { index, appInfo ->
+            appInfo.copy(
+                favoriteOrder = favoriteOrders.getOrNull(index) ?: FavoriteOrder.NotFavorite
             )
+        }
+
+        val appsToUpdate = appsToUpdateFavorites + appsToRemoveFromFavorites
+
+        _uiState.update {
+            it.copy(isSaveButtonEnabled = false)
         }
 
         viewModelScope.launch {
             try {
-                appsToRemove.forEach {
-                    appInfoRepository.updateAppInfo(it)
-                }
-                currentFavoriteAppList.forEachIndexed { index, appInfo ->
-                    appInfoRepository.updateAppInfo(
-                        appInfo.copy(
-                            favoriteOrder = when (index) {
-                                0 -> FavoriteOrder.First
-                                1 -> FavoriteOrder.Second
-                                2 -> FavoriteOrder.Third
-                                3 -> FavoriteOrder.Fourth
-                                else -> FavoriteOrder.NotFavorite
-                            },
-                        ),
-                    )
-                }
+                appInfoRepository.updateAppInfoList(appsToUpdate)
                 _uiEvent.emit(FavoriteAppSettingsUiEvent.SaveSuccess)
             } catch (e: Exception) {
                 Log.e("FavoriteAppSettingsViewModel", "お気に入りアプリの保存に失敗しました", e)

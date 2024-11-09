@@ -27,6 +27,9 @@ interface AppInfoDao {
     @Update
     suspend fun updateAppInfo(appInfo: AppInfoEntity)
 
+    @Update
+    suspend fun updateAppInfoList(appInfoList: List<AppInfoEntity>)
+
     @Delete
     suspend fun deleteAppInfo(appInfo: AppInfoEntity)
 }

@@ -119,9 +119,7 @@ class OnboardingViewModel @Inject constructor(
         }.toPersistentList()
 
         viewModelScope.launch {
-            favoriteAppList.forEach {
-                appInfoRepository.updateAppInfo(it)
-            }
+            appInfoRepository.updateAppInfoList(favoriteAppList)
         }
     }
 

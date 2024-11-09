@@ -58,6 +58,12 @@ class AppInfoRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateAppInfoList(appInfoList: List<AppInfo>) {
+        withContext(ioDispatcher) {
+            appInfoDao.updateAppInfoList(appInfoList.map { it.toEntity() })
+        }
+    }
+
     override suspend fun deleteAppInfo(appInfo: AppInfo) {
         withContext(ioDispatcher) {
             appInfoDao.deleteAppInfo(appInfo.toEntity())
