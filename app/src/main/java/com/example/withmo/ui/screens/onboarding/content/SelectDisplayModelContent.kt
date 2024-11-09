@@ -22,9 +22,9 @@ import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.ModelFile
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.CenteredMessage
+import com.example.withmo.ui.component.DisplayModelSettingItem
 import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoTopAppBar
-import com.example.withmo.ui.screens.display_model_setting.DisplayModelSettingItem
 import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
 import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import com.example.withmo.ui.screens.onboarding.OnboardingUiEvent
