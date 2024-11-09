@@ -30,7 +30,7 @@ fun ClockSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         WithmoSettingItemWithSwitch(
-            title = "時計を表示する",
+            title = "時計の表示",
             checked = uiState.clockSettings.isClockShown,
             onCheckedChange = { onEvent(ClockSettingsUiEvent.ChangeIsClockShown(it)) },
             modifier = Modifier.fillMaxWidth(),
