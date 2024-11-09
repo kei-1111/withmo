@@ -56,13 +56,6 @@ fun AppIconSettingsScreenContent(
             enabled = uiState.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )
-        WithmoSettingItemWithSlider(
-            title = "アプリアイコンの間隔",
-            value = uiState.appIconSettings.appIconHorizontalSpacing,
-            onValueChange = { onEvent(AppIconSettingsUiEvent.ChangeAppIconHorizontalSpacing(it)) },
-            valueRange = UiConfig.MinAppIconHorizontalSpacing..UiConfig.MaxAppIconHorizontalSpacing,
-            modifier = Modifier.fillMaxWidth(),
-        )
         WithmoSettingItemWithSwitch(
             title = "アプリ名の表示",
             checked = uiState.appIconSettings.isAppNameShown,

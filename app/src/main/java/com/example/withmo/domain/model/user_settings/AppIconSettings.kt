@@ -10,7 +10,6 @@ data class AppIconSettings(
     val appIconSize: Float = UiConfig.DefaultAppIconSize,
     val appIconShape: AppIconShape = AppIconShape.Circle,
     val roundedCornerPercent: Float = UiConfig.DefaultRoundedCornerPercent,
-    val appIconHorizontalSpacing: Float = UiConfig.DefaultAppIconHorizontalSpacing,
     val isAppNameShown: Boolean = true,
 )
 
