@@ -13,10 +13,6 @@ data object UiConfig {
     const val MinAppIconSize = 36f
     const val MaxAppIconSize = 60f
 
-    const val DefaultAppIconHorizontalSpacing = 10f
-    const val MinAppIconHorizontalSpacing = 0f
-    const val MaxAppIconHorizontalSpacing = 20f
-
     const val DefaultRoundedCornerPercent = 20f
     const val MinRoundedCornerPercent = 0f
     const val MaxRoundedCornerPercent = 100f

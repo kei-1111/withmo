@@ -65,17 +65,6 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeAppIconHorizontalSpacing(appIconHorizontalSpacing: Float) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    appIconHorizontalSpacing = appIconHorizontalSpacing,
-                ),
-                isSaveButtonEnabled = appIconHorizontalSpacing != it.initialAppIconSettings.appIconHorizontalSpacing,
-            )
-        }
-    }
-
     fun changeIsAppNameShown(isAppNameShown: Boolean) {
         _uiState.update {
             it.copy(

@@ -36,17 +36,19 @@ fun AppItemPreviewArea(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(UiConfig.MediumPadding),
-            horizontalArrangement = Arrangement.spacedBy(
-                appIconSettings.appIconHorizontalSpacing.dp,
-                Alignment.CenterHorizontally,
-            ),
             verticalAlignment = Alignment.Bottom,
         ) {
             AppItemPreview(
                 appIconSettings = appIconSettings,
+                modifier = Modifier.weight(UiConfig.DefaultWeight),
             )
             AppItemPreview(
                 appIconSettings = appIconSettings,
+                modifier = Modifier.weight(UiConfig.DefaultWeight),
+            )
+            AppItemPreview(
+                appIconSettings = appIconSettings,
+                modifier = Modifier.weight(UiConfig.DefaultWeight),
             )
         }
     }

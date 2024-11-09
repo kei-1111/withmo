@@ -61,10 +61,6 @@ fun AppIconSettingsScreen(
                     viewModel.changeRoundedCornerPercent(event.roundedCornerPercent)
                 }
 
-                is AppIconSettingsUiEvent.ChangeAppIconHorizontalSpacing -> {
-                    viewModel.changeAppIconHorizontalSpacing(event.appIconHorizontalSpacing)
-                }
-
                 is AppIconSettingsUiEvent.ChangeIsAppNameShown -> {
                     viewModel.changeIsAppNameShown(event.isAppNameShown)
                 }

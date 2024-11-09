@@ -13,9 +13,6 @@ sealed interface AppIconSettingsUiEvent : UiEvent {
     data class ChangeRoundedCornerPercent(
         val roundedCornerPercent: Float,
     ) : AppIconSettingsUiEvent
-    data class ChangeAppIconHorizontalSpacing(
-        val appIconHorizontalSpacing: Float,
-    ) : AppIconSettingsUiEvent
     data class ChangeIsAppNameShown(
         val isAppNameShown: Boolean,
     ) : AppIconSettingsUiEvent

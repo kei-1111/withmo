@@ -43,7 +43,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
         val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
         val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
-        val APP_ICON_HORIZONTAL_SPACING = floatPreferencesKey("app_icon_horizontal_spacing")
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
@@ -72,8 +71,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 ),
                 appIconSettings = AppIconSettings(
                     appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
-                    appIconHorizontalSpacing = preferences[APP_ICON_HORIZONTAL_SPACING]
-                        ?: UiConfig.DefaultAppIconHorizontalSpacing,
                     appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
                         when (shape) {
                             AppIconShape.Circle.toString() -> AppIconShape.Circle
@@ -123,7 +120,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 preferences[APP_ICON_SIZE] = appIconSettings.appIconSize
                 preferences[APP_ICON_SHAPE] = appIconSettings.appIconShape.toString()
                 preferences[ROUNDED_CORNER_PERCENT] = appIconSettings.roundedCornerPercent
-                preferences[APP_ICON_HORIZONTAL_SPACING] = appIconSettings.appIconHorizontalSpacing
                 preferences[IS_APP_NAME_SHOWN] = appIconSettings.isAppNameShown
             }
         }
