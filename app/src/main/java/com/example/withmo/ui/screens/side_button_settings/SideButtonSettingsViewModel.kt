@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.side_button
+package com.example.withmo.ui.screens.side_button_settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
