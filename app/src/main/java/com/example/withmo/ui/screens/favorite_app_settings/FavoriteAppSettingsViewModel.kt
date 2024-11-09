@@ -97,7 +97,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             FavoriteOrder.First,
             FavoriteOrder.Second,
             FavoriteOrder.Third,
-            FavoriteOrder.Fourth
+            FavoriteOrder.Fourth,
         )
 
         val currentPackageNames = currentFavoriteAppList.map { it.packageName }.toSet()
@@ -110,7 +110,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
         val appsToUpdateFavorites = currentFavoriteAppList.mapIndexed { index, appInfo ->
             appInfo.copy(
-                favoriteOrder = favoriteOrders.getOrNull(index) ?: FavoriteOrder.NotFavorite
+                favoriteOrder = favoriteOrders.getOrNull(index) ?: FavoriteOrder.NotFavorite,
             )
         }
 
