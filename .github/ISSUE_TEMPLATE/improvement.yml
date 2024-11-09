@@ -1,6 +1,6 @@
 name: "Improvement Request"
 description: "既存の機能の改善提案を行う場合に使用"
-title: "Improvement: "
+title: "[Improvement]: "
 labels: ["improvement"]
 body:
   - type: markdown
