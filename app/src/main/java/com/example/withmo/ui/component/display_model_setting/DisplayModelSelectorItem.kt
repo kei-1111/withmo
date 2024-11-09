@@ -1,4 +1,4 @@
-package com.example.withmo.ui.component
+package com.example.withmo.ui.component.display_model_setting
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -12,10 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.example.withmo.domain.model.ModelFile
+import com.example.withmo.ui.component.BodyMediumText
+import com.example.withmo.ui.component.LabelMediumText
 import com.example.withmo.ui.theme.UiConfig
 
 @Composable
-fun DisplayModelSettingItem(
+fun DisplayModelSelectorItem(
     fileName: String,
     downloadDate: String,
     onClick: () -> Unit,
