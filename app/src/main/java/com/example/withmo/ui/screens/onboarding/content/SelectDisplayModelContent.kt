@@ -11,26 +11,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.withmo.domain.model.ModelFile
 import com.example.withmo.ui.component.BodyMediumText
-import com.example.withmo.ui.component.CenteredMessage
-import com.example.withmo.ui.component.DisplayModelSettingItem
 import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoTopAppBar
+import com.example.withmo.ui.component.display_model_setting.DisplayModelSelector
 import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
 import com.example.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import com.example.withmo.ui.screens.onboarding.OnboardingUiEvent
 import com.example.withmo.ui.screens.onboarding.OnboardingUiState
 import com.example.withmo.ui.theme.UiConfig
-import kotlinx.collections.immutable.ImmutableList
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
@@ -49,7 +44,7 @@ fun SelectDisplayModelContent(
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         ) {
             if (isExternalStorageManager) {
-                ModelFileList(
+                DisplayModelSelector(
                     modelFileList = uiState.modelFileList,
                     selectedModelFile = uiState.selectedModelFile,
                     selectModelFile = { onEvent(OnboardingUiEvent.SelectModelFile(it)) },
@@ -57,15 +52,14 @@ fun SelectDisplayModelContent(
                 )
             } else {
                 PermissionRequiredContent(
-                    requestExternalStoragePermission = { onEvent(OnboardingUiEvent.RequestExternalStoragePermission) },
+                    onEvent = onEvent,
                     modifier = Modifier.fillMaxSize(),
                 )
             }
         }
         SelectDisplayModelContentBottomAppBar(
-            navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            isSelected = uiState.selectedModelFile != null,
+            uiState = uiState,
+            onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(UiConfig.MediumPadding),
@@ -74,39 +68,8 @@ fun SelectDisplayModelContent(
 }
 
 @Composable
-fun ModelFileList(
-    modelFileList: ImmutableList<ModelFile>,
-    selectedModelFile: ModelFile?,
-    selectModelFile: (ModelFile) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    if (modelFileList.isNotEmpty()) {
-        LazyColumn(
-            modifier = modifier
-                .padding(UiConfig.MediumPadding),
-            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
-        ) {
-            items(modelFileList) {
-                DisplayModelSettingItem(
-                    fileName = it.fileName,
-                    downloadDate = it.downloadDate,
-                    onClick = { selectModelFile(it) },
-                    selectedModelFile = selectedModelFile,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            }
-        }
-    } else {
-        CenteredMessage(
-            message = "VRMファイルが見つかりません",
-            modifier = modifier,
-        )
-    }
-}
-
-@Composable
-fun PermissionRequiredContent(
-    requestExternalStoragePermission: () -> Unit,
+private fun PermissionRequiredContent(
+    onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -121,7 +84,7 @@ fun PermissionRequiredContent(
             text = "設定へ",
             modifier = Modifier
                 .align(Alignment.End)
-                .clickable { requestExternalStoragePermission() },
+                .clickable { onEvent(OnboardingUiEvent.RequestExternalStoragePermission) },
             color = MaterialTheme.colorScheme.primary,
         )
     }
@@ -129,9 +92,8 @@ fun PermissionRequiredContent(
 
 @Composable
 private fun SelectDisplayModelContentBottomAppBar(
-    navigateToPreviousPage: () -> Unit,
-    navigateToNextPage: () -> Unit,
-    isSelected: Boolean,
+    uiState: OnboardingUiState,
+    onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -139,12 +101,12 @@ private fun SelectDisplayModelContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = navigateToPreviousPage,
+            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         )
         OnboardingBottomAppBarNextButton(
-            text = if (isSelected) "次へ" else "スキップ",
-            onClick = navigateToNextPage,
+            text = if (uiState.selectedModelFile != null) "次へ" else "スキップ",
+            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         )
     }

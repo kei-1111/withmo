@@ -48,8 +48,7 @@ fun FinishContent(
             BodyMediumText("設定が完了しました！")
         }
         FinishContentBottomAppBar(
-            navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(UiConfig.MediumPadding),
@@ -59,8 +58,7 @@ fun FinishContent(
 
 @Composable
 private fun FinishContentBottomAppBar(
-    navigateToPreviousPage: () -> Unit,
-    navigateToNextPage: () -> Unit,
+    onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -68,12 +66,12 @@ private fun FinishContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = navigateToPreviousPage,
+            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         )
         OnboardingBottomAppBarNextButton(
             text = "はじめる",
-            onClick = navigateToNextPage,
+            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         )
     }

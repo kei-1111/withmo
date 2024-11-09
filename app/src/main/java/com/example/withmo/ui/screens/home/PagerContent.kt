@@ -40,20 +40,13 @@ import com.example.withmo.ui.component.WithmoIconButton
 import com.example.withmo.ui.component.WithmoWidget
 import com.example.withmo.ui.theme.UiConfig
 import com.unity3d.player.UnityPlayer.UnitySendMessage
-import kotlinx.collections.immutable.ImmutableList
 
 @Suppress("LongMethod")
 @Composable
 fun PagerContent(
-    isScaleSliderButtonShown: Boolean,
-    showScaleSlider: () -> Unit,
-    openActionSelectionBottomSheet: () -> Unit,
-    displayedWidgetList: ImmutableList<WidgetInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    appIconSize: Float,
-    isEditMode: Boolean,
-    exitEditMode: () -> Unit,
-    deleteWidget: (WidgetInfo) -> Unit,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -95,8 +88,8 @@ fun PagerContent(
             when (page) {
                 0 -> {
                     DisplayModelContent(
-                        isScaleSliderButtonShown = isScaleSliderButtonShown,
-                        showScaleSlider = showScaleSlider,
+                        uiState = uiState,
+                        onEvent = onEvent,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
@@ -121,17 +114,15 @@ fun PagerContent(
 
                 1 -> {
                     WidgetContent(
-                        displayedWidgetList = displayedWidgetList,
                         createWidgetView = createWidgetView,
-                        appIconSize = appIconSize,
-                        isEditMode = isEditMode,
-                        deleteWidget = deleteWidget,
+                        uiState = uiState,
+                        onEvent = onEvent,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onLongPress = {
-                                        openActionSelectionBottomSheet()
+                                        onEvent(HomeUiEvent.OpenActionSelectionBottomSheet)
                                     },
                                 )
                             },
@@ -142,8 +133,10 @@ fun PagerContent(
         PageIndicator(
             pageCount = pagerState.pageCount,
             currentPage = pagerState.currentPage,
-            isEditMode = isEditMode,
-            exitEditMode = exitEditMode,
+            isEditMode = uiState.isEditMode,
+            exitEditMode = {
+                onEvent(HomeUiEvent.ExitEditMode)
+            },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -196,8 +189,8 @@ private fun PageIndicator(
 
 @Composable
 private fun DisplayModelContent(
-    isScaleSliderButtonShown: Boolean,
-    showScaleSlider: () -> Unit,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -205,9 +198,12 @@ private fun DisplayModelContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding, Alignment.Bottom),
         horizontalAlignment = Alignment.End,
     ) {
-        if (isScaleSliderButtonShown) {
+        if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
             WithmoIconButton(
-                onClick = showScaleSlider,
+                onClick = {
+                    UnitySendMessage("Slidermaneger", "ShowSlider", "")
+                    onEvent(HomeUiEvent.SetShowScaleSlider(true))
+                },
                 icon = Icons.Rounded.Man,
             )
         }
@@ -216,28 +212,26 @@ private fun DisplayModelContent(
 
 @Composable
 private fun WidgetContent(
-    displayedWidgetList: ImmutableList<WidgetInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    appIconSize: Float,
-    isEditMode: Boolean,
-    deleteWidget: (WidgetInfo) -> Unit,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appIconSpaceHeight = (appIconSize + UiConfig.AppIconPadding).dp
+    val appIconSpaceHeight = (uiState.currentUserSettings.appIconSettings.appIconSize + UiConfig.AppIconPadding).dp
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(
         modifier = modifier,
     ) {
-        displayedWidgetList.forEach { widgetInfo ->
+        uiState.displayedWidgetList.forEach { widgetInfo ->
             key(widgetInfo.id) {
                 WithmoWidget(
                     widgetInfo = widgetInfo,
                     createWidgetView = createWidgetView,
                     endPadding = UiConfig.MediumPadding + UiConfig.MediumPadding,
                     bottomPadding = bottomPaddingValue + appIconSpaceHeight + UiConfig.PageIndicatorSpaceHeight,
-                    isEditMode = isEditMode,
-                    deleteWidget = { deleteWidget(widgetInfo) },
+                    isEditMode = uiState.isEditMode,
+                    deleteWidget = { onEvent(HomeUiEvent.DeleteWidget(widgetInfo)) },
                 )
             }
         }
