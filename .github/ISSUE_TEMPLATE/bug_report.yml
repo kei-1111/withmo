@@ -1,6 +1,6 @@
 name: "Bug Report"
 description: "アプリケーションで発生したバグを報告する場合に使用"
-title: "[Bug]: "
+title: "Bug: "
 labels: ["bug"]
 body:
   - type: markdown
