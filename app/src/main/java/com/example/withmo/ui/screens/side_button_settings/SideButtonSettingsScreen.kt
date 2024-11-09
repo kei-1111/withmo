@@ -52,10 +52,6 @@ fun SideButtonSettingsScreen(
                     viewModel.changeIsScaleSliderButtonShown(event.isScaleSliderButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.ChangeIsSortButtonShown -> {
-                    viewModel.changeIsSortButtonShown(event.isSortButtonShown)
-                }
-
                 is SideButtonSettingsUiEvent.Save -> {
                     viewModel.saveSideButtonSettings()
                 }

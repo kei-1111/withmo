@@ -42,17 +42,6 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsSortButtonShown(isSortButtonShown: Boolean) {
-        _uiState.update {
-            it.copy(
-                sideButtonSettings = it.sideButtonSettings.copy(
-                    isSortButtonShown = isSortButtonShown,
-                ),
-                isSaveButtonEnabled = isSortButtonShown != it.initialSideButtonSettings.isSortButtonShown,
-            )
-        }
-    }
-
     fun saveSideButtonSettings() {
         _uiState.update {
             it.copy(

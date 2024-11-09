@@ -26,11 +26,5 @@ fun SideButtonSettingsScreenContent(
             onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
-        WithmoSettingItemWithSwitch(
-            title = "ソートボタンを表示する",
-            checked = uiState.sideButtonSettings.isSortButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsSortButtonShown(it)) },
-            modifier = Modifier.fillMaxWidth(),
-        )
     }
 }
