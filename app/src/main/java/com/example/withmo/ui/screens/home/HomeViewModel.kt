@@ -61,8 +61,7 @@ class HomeViewModel @Inject constructor(
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 _uiState.update {
                     it.copy(
-                        favoriteAppList = favoriteAppList
-                            .sortedBy { it.favoriteOrder.ordinal }.toPersistentList(),
+                        favoriteAppList = favoriteAppList.toPersistentList(),
                     )
                 }
             }

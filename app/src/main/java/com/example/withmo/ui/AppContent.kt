@@ -30,7 +30,7 @@ import com.example.withmo.ui.screens.home.HomeScreen
 import com.example.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import com.example.withmo.ui.screens.onboarding.OnboardingScreen
 import com.example.withmo.ui.screens.settings.SettingsScreen
-import com.example.withmo.ui.screens.side_button.SideButtonSettingsScreen
+import com.example.withmo.ui.screens.side_button_settings.SideButtonSettingsScreen
 import com.example.withmo.ui.screens.sort_settings.SortSettingsScreen
 import com.example.withmo.ui.screens.theme_settings.ThemeSettingsScreen
 import com.unity3d.player.UnityPlayer

@@ -96,9 +96,8 @@ fun SelectFavoriteAppContent(
             modifier = Modifier.fillMaxWidth(),
         )
         SelectFavoriteAppContentBottomAppBar(
-            navigateToPreviousPage = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            isNextButtonEnabled = uiState.selectedAppList.isNotEmpty(),
+            uiState = uiState,
+            onEvent = onEvent,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -106,9 +105,8 @@ fun SelectFavoriteAppContent(
 
 @Composable
 private fun SelectFavoriteAppContentBottomAppBar(
-    navigateToPreviousPage: () -> Unit,
-    navigateToNextPage: () -> Unit,
-    isNextButtonEnabled: Boolean,
+    uiState: OnboardingUiState,
+    onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -117,14 +115,14 @@ private fun SelectFavoriteAppContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = navigateToPreviousPage,
+            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
         )
         OnboardingBottomAppBarNextButton(
             text = "次へ",
-            onClick = navigateToNextPage,
+            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
             modifier = Modifier.weight(UiConfig.DefaultWeight),
-            enabled = isNextButtonEnabled,
+            enabled = uiState.selectedAppList.isNotEmpty(),
         )
     }
 }

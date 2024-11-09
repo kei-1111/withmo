@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.side_button
+package com.example.withmo.ui.screens.side_button_settings
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Column
@@ -50,10 +50,6 @@ fun SideButtonSettingsScreen(
             when (event) {
                 is SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown -> {
                     viewModel.changeIsScaleSliderButtonShown(event.isScaleSliderButtonShown)
-                }
-
-                is SideButtonSettingsUiEvent.ChangeIsSortButtonShown -> {
-                    viewModel.changeIsSortButtonShown(event.isSortButtonShown)
                 }
 
                 is SideButtonSettingsUiEvent.Save -> {

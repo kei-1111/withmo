@@ -8,7 +8,9 @@ import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,15 +23,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.example.withmo.R
 import com.example.withmo.domain.model.Screen
-import com.example.withmo.ui.component.LogoWithText
+import com.example.withmo.ui.component.TitleLargeText
 import com.example.withmo.ui.component.WithmoTopAppBar
+import com.example.withmo.ui.theme.UiConfig
 import com.example.withmo.utils.AppUtils
 import com.example.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
@@ -133,33 +140,7 @@ private fun SettingsScreen(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 uiState = uiState,
-                navigateToDefaultHomeAppSettings = {
-                    onEvent(SettingsUiEvent.SetDefaultHomeApp)
-                },
-                navigateToNotificationSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings))
-                },
-                navigateToClockSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings))
-                },
-                navigateToAppIconSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings))
-                },
-                navigateToFavoriteAppSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.FavoriteAppSettings))
-                },
-                navigateToSideButtonSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings))
-                },
-                navigateToSortSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings))
-                },
-                navigateToDisplayModelSettingScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting))
-                },
-                navigateToThemeSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.ThemeSettings))
-                },
+                onEvent = onEvent,
             )
         }
     }
@@ -173,5 +154,30 @@ private fun SettingsScreen(
                 onEvent(SettingsUiEvent.FileAccessPermissionDialogOnDismiss)
             },
         )
+    }
+}
+
+@Composable
+private fun LogoWithText(
+    text: String,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.withmo_logo),
+            contentDescription = "withmo Logo",
+            contentScale = ContentScale.FillHeight,
+            modifier = Modifier
+                .padding(
+                    start = UiConfig.ExtraSmallPadding,
+                    end = UiConfig.ExtraSmallPadding,
+                    top = UiConfig.SmallPadding,
+                    bottom = UiConfig.ExtraSmallPadding,
+                ),
+        )
+        TitleLargeText(text = text)
     }
 }

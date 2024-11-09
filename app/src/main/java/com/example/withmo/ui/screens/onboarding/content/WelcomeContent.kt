@@ -47,7 +47,7 @@ fun WelcomeContent(
             BodyMediumText("今すぐwithmoを始めよう！")
         }
         WelcomeContentBottomAppBar(
-            navigateToNextPage = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(UiConfig.MediumPadding),
@@ -57,12 +57,12 @@ fun WelcomeContent(
 
 @Composable
 private fun WelcomeContentBottomAppBar(
-    navigateToNextPage: () -> Unit,
+    onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OnboardingBottomAppBarNextButton(
         text = "次へ",
-        onClick = navigateToNextPage,
+        onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
         modifier = modifier,
     )
 }

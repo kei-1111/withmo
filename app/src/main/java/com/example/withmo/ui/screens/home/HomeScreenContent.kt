@@ -11,28 +11,25 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
-import com.example.withmo.domain.model.user_settings.AppIconSettings
 import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.component.AppItem
 import com.example.withmo.ui.component.WithmoClock
 import com.example.withmo.ui.component.WithmoIconButton
 import com.example.withmo.ui.theme.UiConfig
 import com.unity3d.player.UnityPlayer.UnitySendMessage
-import kotlinx.collections.immutable.ImmutableList
 
 @Suppress("LongMethod")
 @Composable
 fun HomeScreenContent(
+    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -47,7 +44,7 @@ fun HomeScreenContent(
                         UnitySendMessage("Slidermaneger", "HideSlider", "")
                         onEvent(HomeUiEvent.SetShowScaleSlider(false))
                     },
-                    icon = Icons.Default.Close,
+                    icon = Icons.Rounded.Close,
                     modifier = Modifier.padding(start = UiConfig.MediumPadding),
                 )
             }
@@ -73,33 +70,16 @@ fun HomeScreenContent(
                     },
             ) {
                 PagerContent(
-                    isScaleSliderButtonShown = uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown,
-                    showScaleSlider = {
-                        UnitySendMessage("Slidermaneger", "ShowSlider", "")
-                        onEvent(HomeUiEvent.SetShowScaleSlider(true))
-                    },
-                    openActionSelectionBottomSheet = {
-                        onEvent(HomeUiEvent.OpenActionSelectionBottomSheet)
-                    },
-                    displayedWidgetList = uiState.displayedWidgetList,
                     createWidgetView = createWidgetView,
-                    appIconSize = uiState.currentUserSettings.appIconSettings.appIconSize,
-                    isEditMode = uiState.isEditMode,
-                    exitEditMode = {
-                        onEvent(HomeUiEvent.ExitEditMode)
-                    },
-                    deleteWidget = { widgetInfo ->
-                        onEvent(HomeUiEvent.DeleteWidget(widgetInfo))
-                    },
+                    uiState = uiState,
+                    onEvent = onEvent,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(UiConfig.DefaultWeight),
                 )
                 RowAppList(
-                    startApp = { onEvent(HomeUiEvent.StartApp(it)) },
-                    deleteApp = { onEvent(HomeUiEvent.DeleteApp(it)) },
-                    favoriteAppList = uiState.favoriteAppList,
-                    appIconSettings = uiState.currentUserSettings.appIconSettings,
+                    uiState = uiState,
+                    onEvent = onEvent,
                     modifier = Modifier.fillMaxWidth(),
                 )
             }
@@ -109,22 +89,22 @@ fun HomeScreenContent(
 
 @Composable
 private fun RowAppList(
-    startApp: (AppInfo) -> Unit,
-    deleteApp: (AppInfo) -> Unit,
-    favoriteAppList: ImmutableList<AppInfo>,
-    appIconSettings: AppIconSettings,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val appIconSettings = uiState.currentUserSettings.appIconSettings
+
     Row(
         modifier = modifier
             .padding(vertical = UiConfig.ExtraSmallPadding),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        favoriteAppList.forEach {
+        uiState.favoriteAppList.forEach {
             AppItem(
-                onClick = { startApp(it) },
-                onLongClick = { deleteApp(it) },
+                onClick = { onEvent(HomeUiEvent.StartApp(it)) },
+                onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
                 appInfo = it,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(

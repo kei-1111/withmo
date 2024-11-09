@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.side_button
+package com.example.withmo.ui.screens.side_button_settings
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -24,12 +24,6 @@ fun SideButtonSettingsScreenContent(
             title = "スケールスライダー表示ボタンを表示する",
             checked = uiState.sideButtonSettings.isScaleSliderButtonShown,
             onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown(it)) },
-            modifier = Modifier.fillMaxWidth(),
-        )
-        WithmoSettingItemWithSwitch(
-            title = "ソートボタンを表示する",
-            checked = uiState.sideButtonSettings.isSortButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsSortButtonShown(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

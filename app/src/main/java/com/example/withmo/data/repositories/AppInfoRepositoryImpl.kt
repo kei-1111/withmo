@@ -32,7 +32,9 @@ class AppInfoRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getFavoriteAppInfoList(): Flow<List<AppInfo>> {
         return appInfoDao.getFavoriteAppInfoList().map { entities ->
-            entities.map { entity -> entity.toAppInfo(context) }
+            entities
+                .map { entity -> entity.toAppInfo(context) }
+                .sortedBy { it.favoriteOrder.ordinal }
         }
     }
 
@@ -53,6 +55,12 @@ class AppInfoRepositoryImpl @Inject constructor(
     override suspend fun updateAppInfo(appInfo: AppInfo) {
         withContext(ioDispatcher) {
             appInfoDao.updateAppInfo(appInfo.toEntity())
+        }
+    }
+
+    override suspend fun updateAppInfoList(appInfoList: List<AppInfo>) {
+        withContext(ioDispatcher) {
+            appInfoDao.updateAppInfoList(appInfoList.map { it.toEntity() })
         }
     }
 

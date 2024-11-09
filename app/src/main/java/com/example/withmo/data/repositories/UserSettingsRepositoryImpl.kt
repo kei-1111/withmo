@@ -47,7 +47,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
-        val IS_SORT_BUTTON_SHOWN = booleanPreferencesKey("is_sort_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
     }
 
@@ -93,7 +92,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 ),
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
-                    isSortButtonShown = preferences[IS_SORT_BUTTON_SHOWN] ?: true,
                 ),
                 themeSettings = ThemeSettings(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
@@ -145,7 +143,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] =
                     sideButtonSettings.isScaleSliderButtonShown
-                preferences[IS_SORT_BUTTON_SHOWN] = sideButtonSettings.isSortButtonShown
             }
         }
     }

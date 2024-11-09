@@ -1,4 +1,4 @@
-package com.example.withmo.ui.screens.side_button
+package com.example.withmo.ui.screens.side_button_settings
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
@@ -38,17 +38,6 @@ class SideButtonSettingsViewModel @Inject constructor(
                     isScaleSliderButtonShown = isScaleSliderButtonShown,
                 ),
                 isSaveButtonEnabled = isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
-            )
-        }
-    }
-
-    fun changeIsSortButtonShown(isSortButtonShown: Boolean) {
-        _uiState.update {
-            it.copy(
-                sideButtonSettings = it.sideButtonSettings.copy(
-                    isSortButtonShown = isSortButtonShown,
-                ),
-                isSaveButtonEnabled = isSortButtonShown != it.initialSideButtonSettings.isSortButtonShown,
             )
         }
     }
