@@ -21,7 +21,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Man
+import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -208,7 +208,7 @@ private fun DisplayModelContent(
         if (isScaleSliderButtonShown) {
             WithmoIconButton(
                 onClick = showScaleSlider,
-                icon = Icons.Default.Man,
+                icon = Icons.Rounded.Man,
             )
         }
     }

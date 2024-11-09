@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.ArrowBackIosNew
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -44,7 +44,7 @@ fun WithmoTopAppBar(
         ) {
             navigateBack?.let {
                 Icon(
-                    imageVector = Icons.Default.ArrowBackIosNew,
+                    imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.clickable { navigateBack() },
@@ -52,7 +52,7 @@ fun WithmoTopAppBar(
             }
             navigateClose?.let {
                 Icon(
-                    imageVector = Icons.Default.Close,
+                    imageVector = Icons.Rounded.Close,
                     contentDescription = "Close",
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.clickable { navigateClose() },

@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,7 +47,7 @@ fun HomeScreenContent(
                         UnitySendMessage("Slidermaneger", "HideSlider", "")
                         onEvent(HomeUiEvent.SetShowScaleSlider(false))
                     },
-                    icon = Icons.Default.Close,
+                    icon = Icons.Rounded.Close,
                     modifier = Modifier.padding(start = UiConfig.MediumPadding),
                 )
             }

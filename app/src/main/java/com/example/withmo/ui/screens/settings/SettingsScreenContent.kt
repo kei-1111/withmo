@@ -10,16 +10,16 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccessTime
-import androidx.compose.material.icons.filled.Apps
-import androidx.compose.material.icons.filled.ErrorOutline
-import androidx.compose.material.icons.filled.InsertDriveFile
-import androidx.compose.material.icons.filled.KeyboardArrowRight
-import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.Palette
-import androidx.compose.material.icons.filled.RadioButtonChecked
-import androidx.compose.material.icons.filled.Tune
+import androidx.compose.material.icons.rounded.AccessTime
+import androidx.compose.material.icons.rounded.Apps
+import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.InsertDriveFile
+import androidx.compose.material.icons.rounded.KeyboardArrowRight
+import androidx.compose.material.icons.rounded.Notifications
+import androidx.compose.material.icons.rounded.Palette
+import androidx.compose.material.icons.rounded.RadioButtonChecked
 import androidx.compose.material.icons.rounded.Star
+import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -74,7 +74,7 @@ private fun HomeAppSettings(
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Default.ErrorOutline,
+                    icon = Icons.Rounded.ErrorOutline,
                     itemName = "デフォルトホームアプリ",
                     onClick = { onEvent(SettingsUiEvent.SetDefaultHomeApp) },
                     itemColor = MaterialTheme.colorScheme.onErrorContainer,
@@ -103,19 +103,19 @@ private fun HomeScreenSettings(
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Default.Notifications,
+                    icon = Icons.Rounded.Notifications,
                     itemName = "通知",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
-                    icon = Icons.Default.AccessTime,
+                    icon = Icons.Rounded.AccessTime,
                     itemName = "時計",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
-                    icon = Icons.Default.Apps,
+                    icon = Icons.Rounded.Apps,
                     itemName = "アプリアイコン",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings)) },
                 )
@@ -127,13 +127,13 @@ private fun HomeScreenSettings(
                 )
                 SettingItemDivider()
                 SettingItem(
-                    icon = Icons.Default.RadioButtonChecked,
+                    icon = Icons.Rounded.RadioButtonChecked,
                     itemName = "サイドボタン",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
-                    icon = Icons.Default.Tune,
+                    icon = Icons.Rounded.Tune,
                     itemName = "並び順",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings)) },
                 )
@@ -161,7 +161,7 @@ private fun ModelSettings(
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Default.InsertDriveFile,
+                    icon = Icons.Rounded.InsertDriveFile,
                     itemName = "表示モデル",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting)) },
                 )
@@ -189,7 +189,7 @@ private fun ThemeSettings(
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Default.Palette,
+                    icon = Icons.Rounded.Palette,
                     itemName = "テーマ",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.ThemeSettings)) },
                 )
@@ -240,7 +240,7 @@ private fun SettingItem(
             color = itemColor,
         )
         Icon(
-            imageVector = Icons.Default.KeyboardArrowRight,
+            imageVector = Icons.Rounded.KeyboardArrowRight,
             contentDescription = "Next",
             tint = itemColor,
         )
