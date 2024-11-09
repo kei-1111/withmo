@@ -1,0 +1,31 @@
+name: "Improvement Request"
+description: "既存の機能の改善提案を行う場合に使用"
+title: "[Improvement]: "
+labels: ["enhancement", "improvement"]
+body:
+  - type: markdown
+    attributes:
+      value: "## 概要"
+  - type: input
+    id: improvement_summary
+    attributes:
+      label: "改善の説明"
+      description: "改善したいポイントを簡潔に記載"
+      placeholder: "例: アプリ起動速度の改善"
+    validations:
+      required: true
+  - type: textarea
+    id: current_issues
+    attributes:
+      label: "現在の問題点"
+      description: "現行機能における問題や不便な点を説明"
+  - type: textarea
+    id: suggested_solution
+    attributes:
+      label: "提案する解決策"
+      description: "どのように改善するか、具体的なアイデアを記載"
+  - type: textarea
+    id: additional_info
+    attributes:
+      label: "補足情報"
+      description: "関連する資料やスクリーンショットがあれば追加"
