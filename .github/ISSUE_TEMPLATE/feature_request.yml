@@ -1,6 +1,6 @@
 name: "Feature Request"
 description: "新しい機能の追加を提案する場合に使用"
-title: "Feature: "
+title: "[Feature]: "
 labels: ["enhancement"]
 body:
   - type: markdown
