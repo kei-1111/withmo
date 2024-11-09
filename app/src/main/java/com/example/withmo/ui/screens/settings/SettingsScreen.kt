@@ -133,33 +133,7 @@ private fun SettingsScreen(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 uiState = uiState,
-                navigateToDefaultHomeAppSettings = {
-                    onEvent(SettingsUiEvent.SetDefaultHomeApp)
-                },
-                navigateToNotificationSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings))
-                },
-                navigateToClockSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings))
-                },
-                navigateToAppIconSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings))
-                },
-                navigateToFavoriteAppSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.FavoriteAppSettings))
-                },
-                navigateToSideButtonSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings))
-                },
-                navigateToSortSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings))
-                },
-                navigateToDisplayModelSettingScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting))
-                },
-                navigateToThemeSettingsScreen = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.ThemeSettings))
-                },
+                onEvent = onEvent,
             )
         }
     }

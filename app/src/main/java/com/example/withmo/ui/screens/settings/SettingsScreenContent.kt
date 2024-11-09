@@ -30,6 +30,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import com.example.withmo.domain.model.Screen
 import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.component.LabelMediumText
 import com.example.withmo.ui.theme.UiConfig
@@ -37,15 +38,7 @@ import com.example.withmo.ui.theme.UiConfig
 @Composable
 fun SettingsScreenContent(
     uiState: SettingsUiState,
-    navigateToDefaultHomeAppSettings: () -> Unit,
-    navigateToNotificationSettingsScreen: () -> Unit,
-    navigateToClockSettingsScreen: () -> Unit,
-    navigateToAppIconSettingsScreen: () -> Unit,
-    navigateToFavoriteAppSettingsScreen: () -> Unit,
-    navigateToSideButtonSettingsScreen: () -> Unit,
-    navigateToSortSettingsScreen: () -> Unit,
-    navigateToDisplayModelSettingScreen: () -> Unit,
-    navigateToThemeSettingsScreen: () -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -54,35 +47,17 @@ fun SettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
         if (!uiState.isDefaultHomeApp) {
-            HomeAppSettings(
-                title = "ホームアプリの設定",
-                navigateToDefaultHomeAppSettings = navigateToDefaultHomeAppSettings,
-            )
+            HomeAppSettings(onEvent = onEvent)
         }
-        HomeScreenSettings(
-            title = "ホーム画面の設定",
-            navigateToNotificationSettingsScreen = navigateToNotificationSettingsScreen,
-            navigateToClockSettingsScreen = navigateToClockSettingsScreen,
-            navigateToAppIconSettingsScreen = navigateToAppIconSettingsScreen,
-            navigateToFavoriteAppSettingsScreen = navigateToFavoriteAppSettingsScreen,
-            navigateToSideButtonSettingsScreen = navigateToSideButtonSettingsScreen,
-            navigateToSortSettingsScreen = navigateToSortSettingsScreen,
-        )
-        ModelSettings(
-            title = "モデルの設定",
-            navigateToDisplayModelSettingScreen = navigateToDisplayModelSettingScreen,
-        )
-        ThemeSettings(
-            title = "テーマの設定",
-            navigateToThemeSettingScreen = navigateToThemeSettingsScreen,
-        )
+        HomeScreenSettings(onEvent = onEvent)
+        ModelSettings(onEvent = onEvent)
+        ThemeSettings(onEvent = onEvent)
     }
 }
 
 @Composable
 private fun HomeAppSettings(
-    title: String,
-    navigateToDefaultHomeAppSettings: () -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -90,7 +65,7 @@ private fun HomeAppSettings(
         verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
     ) {
         LabelMediumText(
-            text = title,
+            text = "ホームアプリの設定",
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -101,7 +76,7 @@ private fun HomeAppSettings(
                 SettingItem(
                     icon = Icons.Default.ErrorOutline,
                     itemName = "デフォルトホームアプリ",
-                    onClick = navigateToDefaultHomeAppSettings,
+                    onClick = { onEvent(SettingsUiEvent.SetDefaultHomeApp) },
                     itemColor = MaterialTheme.colorScheme.onErrorContainer,
                 )
             }
@@ -111,13 +86,7 @@ private fun HomeAppSettings(
 
 @Composable
 private fun HomeScreenSettings(
-    title: String,
-    navigateToNotificationSettingsScreen: () -> Unit,
-    navigateToClockSettingsScreen: () -> Unit,
-    navigateToAppIconSettingsScreen: () -> Unit,
-    navigateToFavoriteAppSettingsScreen: () -> Unit,
-    navigateToSideButtonSettingsScreen: () -> Unit,
-    navigateToSortSettingsScreen: () -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -125,7 +94,7 @@ private fun HomeScreenSettings(
         verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
     ) {
         LabelMediumText(
-            text = title,
+            text = "ホーム画面の設定",
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -136,37 +105,37 @@ private fun HomeScreenSettings(
                 SettingItem(
                     icon = Icons.Default.Notifications,
                     itemName = "通知",
-                    onClick = navigateToNotificationSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.AccessTime,
                     itemName = "時計",
-                    onClick = navigateToClockSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.Apps,
                     itemName = "アプリアイコン",
-                    onClick = navigateToAppIconSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Rounded.Star,
                     itemName = "お気に入りアプリ",
-                    onClick = navigateToFavoriteAppSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.FavoriteAppSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.RadioButtonChecked,
                     itemName = "サイドボタン",
-                    onClick = navigateToSideButtonSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings)) },
                 )
                 SettingItemDivider()
                 SettingItem(
                     icon = Icons.Default.Tune,
                     itemName = "並び順",
-                    onClick = navigateToSortSettingsScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings)) },
                 )
             }
         }
@@ -175,8 +144,7 @@ private fun HomeScreenSettings(
 
 @Composable
 private fun ModelSettings(
-    title: String,
-    navigateToDisplayModelSettingScreen: () -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -184,7 +152,7 @@ private fun ModelSettings(
         verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
     ) {
         LabelMediumText(
-            text = title,
+            text = "モデルの設定",
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -195,7 +163,7 @@ private fun ModelSettings(
                 SettingItem(
                     icon = Icons.Default.InsertDriveFile,
                     itemName = "表示モデル",
-                    onClick = navigateToDisplayModelSettingScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting)) },
                 )
             }
         }
@@ -204,8 +172,7 @@ private fun ModelSettings(
 
 @Composable
 private fun ThemeSettings(
-    title: String,
-    navigateToThemeSettingScreen: () -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -213,7 +180,7 @@ private fun ThemeSettings(
         verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
     ) {
         LabelMediumText(
-            text = title,
+            text = "テーマの設定",
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
@@ -224,7 +191,7 @@ private fun ThemeSettings(
                 SettingItem(
                     icon = Icons.Default.Palette,
                     itemName = "テーマ",
-                    onClick = navigateToThemeSettingScreen,
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.ThemeSettings)) },
                 )
             }
         }
