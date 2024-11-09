@@ -50,6 +50,7 @@ fun SettingsScreenContent(
             HomeAppSettings(onEvent = onEvent)
         }
         HomeScreenSettings(onEvent = onEvent)
+        NotificationSettings(onEvent = onEvent)
         ModelSettings(onEvent = onEvent)
         ThemeSettings(onEvent = onEvent)
     }
@@ -103,12 +104,6 @@ private fun HomeScreenSettings(
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Rounded.Notifications,
-                    itemName = "通知",
-                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings)) },
-                )
-                SettingItemDivider()
-                SettingItem(
                     icon = Icons.Rounded.AccessTime,
                     itemName = "時計",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings)) },
@@ -136,6 +131,34 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Tune,
                     itemName = "並び順",
                     onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings)) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun NotificationSettings(
+    onEvent: (SettingsUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+    ) {
+        LabelMediumText(
+            text = "通知の設定",
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+        ) {
+            Column {
+                SettingItem(
+                    icon = Icons.Rounded.Notifications,
+                    itemName = "通知",
+                    onClick = { onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings)) },
                 )
             }
         }
