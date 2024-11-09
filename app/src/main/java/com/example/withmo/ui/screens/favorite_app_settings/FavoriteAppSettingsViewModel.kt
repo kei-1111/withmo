@@ -31,7 +31,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                val sortedFavoriteAppList = favoriteAppList.sortedBy { it.favoriteOrder.ordinal }.toPersistentList()
+                val sortedFavoriteAppList = favoriteAppList.toPersistentList()
 
                 _uiState.update {
                     it.copy(
