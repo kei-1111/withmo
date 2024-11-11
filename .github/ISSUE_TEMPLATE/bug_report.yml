@@ -6,7 +6,7 @@ body:
   - type: checkboxes
     id: priority
     attributes:
-      label: "優先度"
+      label: "## 優先度"
       options:
         - label: "High Priority"
           required: false
