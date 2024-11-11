@@ -8,17 +8,20 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
       - name: Add priority labels based on issue content
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ISSUE_BODY="${{ github.event.issue.body }}"
           
-          if echo "$ISSUE_BODY" | grep -q '\- \[x\] High Priority'; then
+          if echo "$ISSUE_BODY" | grep -qi '\- \[x\] High Priority'; then
             gh issue edit ${{ github.event.issue.number }} --add-label "Priority: High"
-          elif echo "$ISSUE_BODY" | grep -q '\- \[x\] Medium Priority'; then
+          elif echo "$ISSUE_BODY" | grep -qi '\- \[x\] Medium Priority'; then
             gh issue edit ${{ github.event.issue.number }} --add-label "Priority: Medium"
-          elif echo "$ISSUE_BODY" | grep -q '\- \[x\] Low Priority'; then
+          elif echo "$ISSUE_BODY" | grep -qi '\- \[x\] Low Priority'; then
             gh issue edit ${{ github.event.issue.number }} --add-label "Priority: Low"
           else
             gh issue comment ${{ github.event.issue.number }} --body "⚠️ 優先度が未選択です。High, Medium, Low のいずれかを選択してください。"
