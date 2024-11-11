@@ -1,4 +1,4 @@
-name: "Add Priority Labels Based on Issue Content"
+name: "Add Labels"
 on:
   issues:
     types: [opened]
