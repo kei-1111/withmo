@@ -1,12 +1,26 @@
 name: "Feature Request"
 description: "新しい機能の追加を提案する場合に使用"
 title: "[Feature]: "
-labels: ["enhancement"]
+labels: ["Type: Feature", "Status: Ready"]
 body:
   - type: markdown
     attributes:
-      value: "## 概要"
-  - type: input
+      value: "## 優先度の選択"
+  - type: checkboxes
+    id: priority
+    attributes:
+      label: "優先度"
+      options:
+        - label: "High Priority"
+          required: false
+        - label: "Medium Priority"
+          required: false
+        - label: "Low Priority"
+          required: false
+  - type: markdown
+    attributes:
+      value: "## 新機能の概要"
+  - type: textarea
     id: feature_summary
     attributes:
       label: "新機能の説明"
