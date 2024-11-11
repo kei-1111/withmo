@@ -1,12 +1,26 @@
 name: "Improvement Request"
 description: "既存の機能の改善提案を行う場合に使用"
 title: "[Improvement]: "
-labels: ["improvement"]
+labels: ["Type: Improvement", "Status: Ready"]
 body:
   - type: markdown
     attributes:
-      value: "## 概要"
-  - type: input
+      value: "## 優先度の選択"
+  - type: checkboxes
+    id: priority
+    attributes:
+      label: "優先度"
+      options:
+        - label: "High Priority"
+          required: false
+        - label: "Medium Priority"
+          required: false
+        - label: "Low Priority"
+          required: false
+  - type: markdown
+    attributes:
+      value: "## 改善案の概要"
+  - type: textarea
     id: improvement_summary
     attributes:
       label: "改善の説明"
