@@ -17,8 +17,6 @@ body:
           required: false
         - label: "Low Priority"
           required: false
-    validations:
-      required: true
   - type: markdown
     attributes:
       value: "## バグの概要"
