@@ -3,10 +3,13 @@ description: "アプリケーションで発生したバグを報告する場合
 title: "[Bug]: "
 labels: ["Type: Bug", "Status: Ready"]
 body:
+  - type: markdown
+    attributes:
+      value: "## 優先度の選択"
   - type: checkboxes
     id: priority
     attributes:
-      label: "## 優先度"
+      label: "優先度"
       options:
         - label: "High Priority"
           required: false
@@ -14,9 +17,11 @@ body:
           required: false
         - label: "Low Priority"
           required: false
+    validations:
+      required: true
   - type: markdown
     attributes:
-      value: "## 概要"
+      value: "## バグの概要"
   - type: textarea
     id: reproduction_steps
     attributes:
