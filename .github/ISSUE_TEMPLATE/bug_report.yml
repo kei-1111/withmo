@@ -1,8 +1,19 @@
 name: "Bug Report"
 description: "アプリケーションで発生したバグを報告する場合に使用"
 title: "[Bug]: "
-labels: ["bug"]
+labels: ["Type: Bug", "Status: Ready"]
 body:
+  - type: checkboxes
+    id: priority
+    attributes:
+      label: "優先度"
+      options:
+        - label: "High Priority"
+          required: false
+        - label: "Medium Priority"
+          required: false
+        - label: "Low Priority"
+          required: false
   - type: markdown
     attributes:
       value: "## 概要"
