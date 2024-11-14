@@ -1,5 +1,6 @@
 package com.example.withmo
 
+import android.appwidget.AppWidgetHost
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -53,6 +54,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var appInfoRepository: AppInfoRepository
+
+    @Inject
+    lateinit var appWidgetHost: AppWidgetHost
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -172,12 +176,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        unityPlayer?.resume()
+        unityPlayer?.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        unityPlayer?.pause()
+        unityPlayer?.onPause()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        appWidgetHost.stopListening()
     }
 
     override fun onDestroy() {
