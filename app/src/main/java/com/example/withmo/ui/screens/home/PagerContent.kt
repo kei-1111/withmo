@@ -122,7 +122,7 @@ fun PagerContent(
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onLongPress = {
-                                        onEvent(HomeUiEvent.OpenActionSelectionBottomSheet)
+                                        onEvent(HomeUiEvent.EnterEditMode)
                                     },
                                 )
                             },
@@ -137,6 +137,9 @@ fun PagerContent(
             exitEditMode = {
                 onEvent(HomeUiEvent.ExitEditMode)
             },
+            openWidgetList = {
+                onEvent(HomeUiEvent.OpenWidgetListBottomSheet)
+            },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -148,6 +151,7 @@ private fun PageIndicator(
     currentPage: Int,
     isEditMode: Boolean,
     exitEditMode: () -> Unit,
+    openWidgetList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -158,8 +162,20 @@ private fun PageIndicator(
     ) {
         if (isEditMode) {
             LabelMediumText(
+                text = "＋",
+                modifier = Modifier
+                    .padding(horizontal = UiConfig.MediumPadding)
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        CircleShape,
+                    )
+                    .clickable { openWidgetList() }
+                    .padding(horizontal = UiConfig.MediumPadding),
+            )
+            LabelMediumText(
                 text = "編集完了",
                 modifier = Modifier
+                    .padding(horizontal = UiConfig.MediumPadding)
                     .background(
                         MaterialTheme.colorScheme.surface,
                         CircleShape,

@@ -10,15 +10,10 @@ import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
@@ -33,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -44,7 +38,6 @@ import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
-import com.example.withmo.ui.component.BodyMediumText
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -67,7 +60,6 @@ fun HomeScreen(
 
     val scope = rememberCoroutineScope()
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val actionSelectionSheetState = rememberModalBottomSheetState()
     val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
@@ -166,23 +158,6 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OpenActionSelectionBottomSheet -> {
-                    scope.launch {
-                        viewModel.changeIsActionSelectionBottomSheetOpened(true)
-                        actionSelectionSheetState.show()
-                    }
-                }
-
-                is HomeUiEvent.HideActionSelectionBottomSheet -> {
-                    scope.launch {
-                        actionSelectionSheetState.hide()
-                    }.invokeOnCompletion {
-                        if (!actionSelectionSheetState.isVisible) {
-                            viewModel.changeIsActionSelectionBottomSheetOpened(false)
-                        }
-                    }
-                }
-
                 is HomeUiEvent.OpenWidgetListBottomSheet -> {
                     scope.launch {
                         viewModel.changeIsWidgetListBottomSheetOpened(true)
@@ -234,7 +209,6 @@ fun HomeScreen(
         onEvent = viewModel::onEvent,
         homeAppList = homeAppList,
         appListSheetState = appListSheetState,
-        actionSelectionSheetState = actionSelectionSheetState,
         widgetListSheetState = widgetListSheetState,
         widgetInfoList = viewModel.getWidgetInfoList(),
         createWidgetView = viewModel::createWidgetView,
@@ -250,7 +224,6 @@ private fun HomeScreen(
     onEvent: (HomeUiEvent) -> Unit,
     homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
-    actionSelectionSheetState: SheetState,
     widgetListSheetState: SheetState,
     widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
@@ -295,24 +268,6 @@ private fun HomeScreen(
         }
     }
 
-    if (uiState.isActionSelectionBottomSheetOpened) {
-        ModalBottomSheet(
-            onDismissRequest = { onEvent(HomeUiEvent.HideActionSelectionBottomSheet) },
-            sheetState = actionSelectionSheetState,
-        ) {
-            HomeScreenActionPicker(
-                addWidget = {
-                    onEvent(HomeUiEvent.OpenWidgetListBottomSheet)
-                    onEvent(HomeUiEvent.HideActionSelectionBottomSheet)
-                },
-                enterExitMode = {
-                    onEvent(HomeUiEvent.EnterEditMode)
-                    onEvent(HomeUiEvent.HideActionSelectionBottomSheet)
-                },
-            )
-        }
-    }
-
     Box(
         modifier = modifier
             .padding(
@@ -325,49 +280,6 @@ private fun HomeScreen(
             onEvent = onEvent,
             createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-@Composable
-private fun HomeScreenActionPicker(
-    addWidget: () -> Unit,
-    enterExitMode: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .padding(horizontal = UiConfig.MediumPadding),
-    ) {
-        HomeScreenActionPickerItem(
-            title = "Widgetを追加する",
-            action = addWidget,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        HomeScreenActionPickerItem(
-            title = "編集する",
-            action = enterExitMode,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun HomeScreenActionPickerItem(
-    title: String,
-    action: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .height(UiConfig.SettingItemHeight)
-            .clickable { action() }
-            .padding(horizontal = UiConfig.MediumPadding),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        BodyMediumText(
-            text = title,
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

@@ -16,7 +16,6 @@ data class HomeUiState(
     val currentTime: DateTimeInfo = DateTimeInfo(),
     val isShowScaleSlider: Boolean = false,
     val isAppListBottomSheetOpened: Boolean = false,
-    val isActionSelectionBottomSheetOpened: Boolean = false,
     val isWidgetListBottomSheetOpened: Boolean = false,
     val displayedWidgetList: ImmutableList<WidgetInfo> = persistentListOf(),
     val pendingWidgetId: Int = 0,

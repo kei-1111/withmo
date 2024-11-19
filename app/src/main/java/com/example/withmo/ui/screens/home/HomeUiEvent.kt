@@ -12,8 +12,6 @@ sealed interface HomeUiEvent : UiEvent {
     data class OnValueChangeAppSearchQuery(val query: String) : HomeUiEvent
     data object OpenAppListBottomSheet : HomeUiEvent
     data object HideAppListBottomSheet : HomeUiEvent
-    data object OpenActionSelectionBottomSheet : HomeUiEvent
-    data object HideActionSelectionBottomSheet : HomeUiEvent
     data object OpenWidgetListBottomSheet : HomeUiEvent
     data object HideWidgetListBottomSheet : HomeUiEvent
     data class OnSelectWidget(val widgetInfo: AppWidgetProviderInfo) : HomeUiEvent
