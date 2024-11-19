@@ -119,12 +119,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun changeIsActionSelectionBottomSheetOpened(isActionSelectionBottomSheetOpened: Boolean) {
-        _uiState.update {
-            it.copy(isActionSelectionBottomSheetOpened = isActionSelectionBottomSheetOpened)
-        }
-    }
-
     fun changeIsWidgetListBottomSheetOpened(isWidgetListBottomSheetOpened: Boolean) {
         _uiState.update {
             it.copy(isWidgetListBottomSheetOpened = isWidgetListBottomSheetOpened)
