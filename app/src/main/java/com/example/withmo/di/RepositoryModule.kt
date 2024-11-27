@@ -1,13 +1,17 @@
 package com.example.withmo.di
 
+import android.appwidget.AppWidgetManager
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.example.withmo.data.local.dao.AppInfoDao
+import com.example.withmo.data.local.dao.WidgetInfoDao
 import com.example.withmo.data.repositories.AppInfoRepositoryImpl
 import com.example.withmo.data.repositories.UserSettingsRepositoryImpl
+import com.example.withmo.data.repositories.WidgetInfoRepositoryImpl
 import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.repository.UserSettingsRepository
+import com.example.withmo.domain.repository.WidgetInfoRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -34,4 +38,12 @@ object RepositoryModule {
         @ApplicationContext context: Context,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): AppInfoRepository = AppInfoRepositoryImpl(appInfoDao, context, coroutineDispatcher)
+
+    @Provides
+    @Singleton
+    fun provideWidgetInfoRepository(
+        widgetInfoDao: WidgetInfoDao,
+        appWidgetManager: AppWidgetManager,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): WidgetInfoRepository = WidgetInfoRepositoryImpl(widgetInfoDao, appWidgetManager, coroutineDispatcher)
 }

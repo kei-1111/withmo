@@ -239,7 +239,7 @@ private fun WidgetContent(
     Box(
         modifier = modifier,
     ) {
-        uiState.displayedWidgetList.forEach { widgetInfo ->
+        uiState.widgetList.forEach { widgetInfo ->
             key(widgetInfo.id) {
                 WithmoWidget(
                     widgetInfo = widgetInfo,
