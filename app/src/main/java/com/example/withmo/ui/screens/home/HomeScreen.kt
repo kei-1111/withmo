@@ -190,6 +190,7 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.ExitEditMode -> {
+                    viewModel.saveWidgetList()
                     viewModel.changeIsEditMode(false)
                 }
 

@@ -18,6 +18,7 @@ import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.repository.AppInfoRepository
+import com.example.withmo.domain.repository.WidgetInfoRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -42,6 +43,7 @@ class HomeViewModel @Inject constructor(
     private val appWidgetManager: AppWidgetManager,
     private val appWidgetHost: AppWidgetHost,
     private val appInfoRepository: AppInfoRepository,
+    private val widgetInfoRepository: WidgetInfoRepository,
 ) : BaseViewModel<HomeUiState, HomeUiEvent>() {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
@@ -62,6 +64,16 @@ class HomeViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         favoriteAppList = favoriteAppList.toPersistentList(),
+                    )
+                }
+            }
+        }
+        viewModelScope.launch {
+            widgetInfoRepository.getAllWidgetList().collect { widgetList ->
+                _uiState.update {
+                    it.copy(
+                        widgetList = widgetList.toPersistentList(),
+                        initialWidgetList = widgetList.toPersistentList(),
                     )
                 }
             }
@@ -138,13 +150,6 @@ class HomeViewModel @Inject constructor(
         val widgetId = appWidgetHost.allocateAppWidgetId()
         val provider = widgetInfo.provider
 
-        _uiState.update {
-            it.copy(
-                pendingWidgetId = widgetId,
-                pendingWidgetInfo = widgetInfo,
-            )
-        }
-
         val options = bundleOf(
             AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH to widgetInfo.minWidth,
             AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH to widgetInfo.minWidth,
@@ -202,7 +207,7 @@ class HomeViewModel @Inject constructor(
     fun addDisplayedWidgetList(widgetInfo: WidgetInfo) {
         _uiState.update { currentState ->
             currentState.copy(
-                displayedWidgetList = (currentState.displayedWidgetList + widgetInfo).toPersistentList(),
+                widgetList = (currentState.widgetList + widgetInfo).toPersistentList(),
             )
         }
     }
@@ -242,9 +247,32 @@ class HomeViewModel @Inject constructor(
     fun deleteWidget(widgetInfo: WidgetInfo) {
         _uiState.update { currentState ->
             currentState.copy(
-                displayedWidgetList = currentState.displayedWidgetList.filterNot { it.id == widgetInfo.id }
+                widgetList = currentState.widgetList.filterNot { it.id == widgetInfo.id }
                     .toPersistentList(),
             )
+        }
+    }
+
+    fun saveWidgetList() {
+        val currentWidgetList = _uiState.value.widgetList
+        val initialWidgetList = _uiState.value.initialWidgetList
+
+        val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
+            initialWidgetList.any { initialWidget -> initialWidget.id == currentWidget.id }
+        }
+
+        val updatedWidgetList = currentWidgetList.filter { currentWidget ->
+            initialWidgetList.any { initialWidget -> initialWidget.id == currentWidget.id }
+        }
+
+        val deletedWidgetList = initialWidgetList.filterNot { initialWidget ->
+            currentWidgetList.any { currentWidget -> initialWidget.id == currentWidget.id }
+        }
+
+        viewModelScope.launch {
+            widgetInfoRepository.insertWidget(addedWidgetList)
+            widgetInfoRepository.deleteWidget(deletedWidgetList)
+            widgetInfoRepository.updateWidget(updatedWidgetList)
         }
     }
 

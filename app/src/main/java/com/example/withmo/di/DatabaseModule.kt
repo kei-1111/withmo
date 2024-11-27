@@ -42,4 +42,9 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideAppInfoDao(database: WithmoDatabase) = database.appInfoDao()
+
+//    WidgetInfoDao
+    @Provides
+    @Singleton
+    fun provideWidgetInfoDao(database: WithmoDatabase) = database.widgetInfoDao()
 }
