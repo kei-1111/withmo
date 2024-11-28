@@ -74,6 +74,16 @@ object WidgetUtils {
         }
     }
 
+    fun loadAppLabel(context: Context, packageName: String): String? {
+        return try {
+            val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
+            context.packageManager.getApplicationLabel(applicationInfo).toString()
+        } catch (e: Exception) {
+            Log.e("loadAppName", "Failed to load app name", e)
+            null
+        }
+    }
+
     private const val PreviewImageSize = 500
     private const val PackageContextFlags = Context.CONTEXT_IGNORE_SECURITY or Context.CONTEXT_INCLUDE_CODE
 }

@@ -22,8 +22,9 @@ import com.example.withmo.domain.repository.WidgetInfoRepository
 import com.example.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import com.example.withmo.ui.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -137,8 +138,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getWidgetInfoList(): ImmutableList<AppWidgetProviderInfo> {
-        return appWidgetManager.installedProviders.toPersistentList()
+    fun getGroupedWidgetInfoMap(): ImmutableMap<String, List<AppWidgetProviderInfo>> {
+        return appWidgetManager
+            .installedProviders
+            .groupBy { it.provider.packageName }
+            .toPersistentMap()
     }
 
     fun selectWidget(

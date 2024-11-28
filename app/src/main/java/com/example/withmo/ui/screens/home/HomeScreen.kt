@@ -41,6 +41,7 @@ import com.example.withmo.domain.model.user_settings.toShape
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -211,7 +212,7 @@ fun HomeScreen(
         homeAppList = homeAppList,
         appListSheetState = appListSheetState,
         widgetListSheetState = widgetListSheetState,
-        widgetInfoList = viewModel.getWidgetInfoList(),
+        groupedWidgetInfoMap = viewModel.getGroupedWidgetInfoMap(),
         createWidgetView = viewModel::createWidgetView,
         modifier = Modifier.fillMaxSize(),
     )
@@ -226,7 +227,7 @@ private fun HomeScreen(
     homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     widgetListSheetState: SheetState,
-    widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
+    groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
@@ -263,7 +264,7 @@ private fun HomeScreen(
             ),
         ) {
             WidgetList(
-                widgetInfoList = widgetInfoList,
+                groupedWidgetInfoMap = groupedWidgetInfoMap,
                 selectWidget = { onEvent(HomeUiEvent.OnSelectWidget(it)) },
             )
         }
