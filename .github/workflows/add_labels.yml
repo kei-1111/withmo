@@ -2,17 +2,14 @@ name: "Add Labels"
 on:
   issues:
     types: [opened]
-
 permissions:
   issues: write
   contents: read
-
 jobs:
-  add-priority-label:
+  add_priority_label:
     runs-on: ubuntu-latest
-    
     steps:
-      - name: Extract Priority and Add Label
+      - name: Add priority labels based on issue content
         uses: actions/github-script@v6
         with:
           script: |
@@ -22,14 +19,31 @@ jobs:
               'Low Priority': 'Priority: Low',
             };
 
-            const issueBody = context.payload.issue.body;
-            const priorityMatch = issueBody.match(/優先度\s*\*\*(.+?)\*\*/);
-            
-            if (priorityMatch && priorityMap[priorityMatch[1]]) {
-              await github.rest.issues.addLabels({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                issue_number: context.issue.number,
-                labels: [priorityMap[priorityMatch[1]]],
-              });
+            const issueBody = context.payload.issue.body || '';
+            console.log('Issue Body:', issueBody);
+
+            const priorityMatch = issueBody.match(/## 優先度の選択\s*\n\s*(.+)/);
+            console.log('Priority Match:', priorityMatch);
+
+            if (priorityMatch) {
+              const priorityValue = priorityMatch[1].trim();
+              console.log('Extracted Priority Value:', priorityValue);
+
+              const labelToAdd = priorityMap[priorityValue];
+              console.log('Label to Add:', labelToAdd);
+
+              if (labelToAdd) {
+                await github.rest.issues.addLabels({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  labels: [labelToAdd],
+                });
+                console.log(`Label "${labelToAdd}" has been added to issue #${context.issue.number}.`);
+              } else {
+                console.log(`No matching label found for priority value "${priorityValue}".`);
+              }
+            } else {
+              console.log('No priority found in the issue body.');
             }
+
