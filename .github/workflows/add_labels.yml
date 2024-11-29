@@ -3,9 +3,16 @@ on:
   issues:
     types: [opened]
 
+permissions:
+  contents: read
+
 jobs:
   add-priority-label:
     runs-on: ubuntu-latest
+
+    permissions:
+      issues: write
+    
     steps:
       - name: Extract Priority and Add Label
         uses: actions/github-script@v6
@@ -18,8 +25,8 @@ jobs:
             };
 
             const issueBody = context.payload.issue.body;
-            const priorityMatch = issueBody.match(/優先度[\s\S]*?\*\*(.*?)\*\*/);
-
+            const priorityMatch = issueBody.match(/優先度\s*\*\*(.+?)\*\*/);
+            
             if (priorityMatch && priorityMap[priorityMatch[1]]) {
               await github.rest.issues.addLabels({
                 owner: context.repo.owner,
