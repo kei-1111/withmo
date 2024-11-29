@@ -6,17 +6,17 @@ body:
   - type: markdown
     attributes:
       value: "## 優先度の選択"
-  - type: checkboxes
+  - type: dropdown
     id: priority
     attributes:
       label: "優先度"
+      description: "このIssueの優先度を選択してください"
       options:
-        - label: "High Priority"
-          required: false
-        - label: "Medium Priority"
-          required: false
-        - label: "Low Priority"
-          required: false
+        - "High Priority"
+        - "Medium Priority"
+        - "Low Priority"
+    validations:
+      required: true
   - type: markdown
     attributes:
       value: "## バグの概要"
