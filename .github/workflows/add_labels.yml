@@ -9,7 +9,7 @@ jobs:
   add_priority_label:
     runs-on: ubuntu-latest
     steps:
-      - name: Add priority labels based on issue content
+      - name: Extract Priority and Add Label
         uses: actions/github-script@v6
         with:
           script: |
@@ -22,7 +22,7 @@ jobs:
             const issueBody = context.payload.issue.body || '';
             console.log('Issue Body:', issueBody);
 
-            const priorityMatch = issueBody.match(/## 優先度の選択\s*\n\s*(.+)/);
+            const priorityMatch = issueBody.match(/### 優先度\s*\n\s*(.+)/);
             console.log('Priority Match:', priorityMatch);
 
             if (priorityMatch) {
@@ -46,4 +46,3 @@ jobs:
             } else {
               console.log('No priority found in the issue body.');
             }
-
