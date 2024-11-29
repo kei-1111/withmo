@@ -4,14 +4,12 @@ on:
     types: [opened]
 
 permissions:
+  issues: write
   contents: read
 
 jobs:
   add-priority-label:
     runs-on: ubuntu-latest
-
-    permissions:
-      issues: write
     
     steps:
       - name: Extract Priority and Add Label
