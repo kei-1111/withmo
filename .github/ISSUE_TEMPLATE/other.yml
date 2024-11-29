@@ -1,24 +1,21 @@
 name: "Other Issue"
 description: "バグや新機能提案に該当しないその他のタスク（リファクタリング、ドキュメント更新など）に使用"
-title: "[{{ type }}]: "
+title: "[Type]: "
 labels: ["Status: Ready"]
 body:
   - type: markdown
     attributes:
-      value: "## タスクの種類の選択"
-  - type: dropdown
-    id: type
-    attributes:
-      label: "タスクタイプ"
-      description: "このIssueが何に該当するかを選択"
-      options:
-        - "Refactor"
-        - "Documentation"
-        - "Research"
-        - "Improvement"
-        - "Other"
-    validations:
-      required: true
+      value: |
+        ## このテンプレートの使い方
+
+        タイトル `[Type]:` の `Type` 部分を以下の例から選んで入力してください：
+        - `Refactor`
+        - `Documentation`
+        - `Research`
+        - `Improvement`
+        - `Other`
+
+        **例: `[Refactor]: コードベースのクリーンアップ`**
   - type: markdown
     attributes:
       value: "## 優先度の選択"
