@@ -12,7 +12,6 @@ body:
         - `Refactor`
         - `Documentation`
         - `Research`
-        - `Improvement`
         - `Other`
 
         **例: `[Refactor]: コードベースのクリーンアップ`**
