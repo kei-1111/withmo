@@ -2,11 +2,15 @@
 
 package com.example.withmo.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import com.example.withmo.domain.model.user_settings.ThemeType
+import com.example.withmo.ui.composition.LocalCurrentTime
+import com.example.withmo.utils.isNight
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -70,14 +74,24 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark,
 )
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WithmoTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    themeType: ThemeType,
     content: @Composable () -> Unit,
 ) {
-    val colorScheme = when {
-        darkTheme -> darkScheme
-        else -> lightScheme
+    val currentTime = LocalCurrentTime.current
+
+    val colorScheme = when (themeType) {
+        ThemeType.TIME_BASED -> {
+            if (isNight(currentTime.toLocalTime())) {
+                darkScheme
+            } else {
+                lightScheme
+            }
+        }
+        ThemeType.LIGHT -> lightScheme
+        ThemeType.DARK -> darkScheme
     }
 
     MaterialTheme(

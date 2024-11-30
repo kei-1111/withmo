@@ -21,24 +21,23 @@ import androidx.compose.ui.platform.LocalView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
-import com.example.withmo.domain.model.TimeBasedMessageManager
+import com.example.withmo.domain.model.TimeBasedUnitySendMessageManager
 import com.example.withmo.domain.model.user_settings.ThemeSettings
 import com.example.withmo.domain.model.user_settings.ThemeType
 import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import com.example.withmo.ui.App
+import com.example.withmo.ui.composition.CurrentTimeProvider
+import com.example.withmo.ui.composition.LocalCurrentTime
 import com.example.withmo.ui.theme.WithmoTheme
 import com.example.withmo.utils.AppUtils
+import com.example.withmo.utils.isEvening
+import com.example.withmo.utils.isMorning
+import com.example.withmo.utils.isNight
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import java.time.LocalTime
-import java.time.ZoneId
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -49,8 +48,7 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
     private var themeSettings by mutableStateOf(ThemeSettings())
-    private var isNight by mutableStateOf(isNightTime(LocalTime.now(ZoneId.systemDefault())))
-    private val timeBasedMessageManager = TimeBasedMessageManager()
+    private val timeBasedUnitySendMessageManager = TimeBasedUnitySendMessageManager()
 
     @Inject
     lateinit var appInfoRepository: AppInfoRepository
@@ -136,35 +134,26 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            LaunchedEffect(themeSettings) {
-                repeatOnLifecycle(Lifecycle.State.STARTED) {
-                    while (isActive) {
-                        val currentTime = LocalTime.now(ZoneId.systemDefault())
-                        isNight = isNightTime(currentTime)
+            CurrentTimeProvider {
+                val currentTime = LocalCurrentTime.current
 
-                        if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                            timeBasedMessageManager.sendTimeBasedMessage(currentTime)
+                UnitySendThemeMessage(themeSettings.themeType)
 
-                            if (currentTime.isAfter(NightStartTime)) {
-                                timeBasedMessageManager.resetFlags()
-                            }
-                        }
+                LaunchedEffect(currentTime) {
+                    timeBasedUnitySendMessageManager.sendTimeBasedMessage(currentTime)
+                }
 
-                        delay(OneMinuteMillis)
+                WithmoTheme(
+                    themeType = themeSettings.themeType,
+                ) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        window.isNavigationBarContrastEnforced = false
                     }
+                    AlwaysShowNavigationBar()
+                    App(
+                        unityPlayer = unityPlayer,
+                    )
                 }
-            }
-
-            WithmoTheme(
-                darkTheme = themeTypeToBoolean(themeSettings.themeType, isNight),
-            ) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    window.isNavigationBarContrastEnforced = false
-                }
-                AlwaysShowNavigationBar()
-                App(
-                    unityPlayer = unityPlayer,
-                )
             }
         }
     }
@@ -187,6 +176,7 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         appWidgetHost.stopListening()
+        timeBasedUnitySendMessageManager.resetFlags()
     }
 
     override fun onDestroy() {
@@ -199,38 +189,10 @@ class MainActivity : ComponentActivity() {
     override fun finish() {
     }
 
-    private fun isNightTime(currentTime: LocalTime): Boolean {
-        return currentTime.isAfter(NightStartTime) || currentTime.isBefore(MorningStartTime)
-    }
-
-    private fun themeTypeToBoolean(themeType: ThemeType, isNight: Boolean): Boolean {
-        return when (themeType) {
-            ThemeType.TIME_BASED -> {
-                timeBasedMessageManager.resetFlags()
-                isNight
-            }
-            ThemeType.LIGHT -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetDayFixedMode", "")
-                false
-            }
-            ThemeType.DARK -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetNightFixedMode", "")
-                true
-            }
-        }
-    }
-
     private suspend fun syncAppInfo() {
         val installedApps = AppUtils.getAppList(this)
 
         appInfoRepository.syncWithInstalledApps(installedApps)
-    }
-
-    companion object {
-        private const val OneMinuteMillis = 60_000L
-
-        private val MorningStartTime: LocalTime = LocalTime.of(6, 0)
-        private val NightStartTime: LocalTime = LocalTime.of(19, 0)
     }
 }
 
@@ -246,5 +208,35 @@ private fun AlwaysShowNavigationBar() {
         }
 
         onDispose { /* Clean up if necessary */ }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+private fun UnitySendThemeMessage(themeType: ThemeType) {
+    val currentTime = LocalCurrentTime.current.toLocalTime()
+
+    LaunchedEffect(themeType) {
+        when (themeType) {
+            ThemeType.TIME_BASED -> {
+                when {
+                    isMorning(currentTime) -> {
+                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeDay", "")
+                    }
+                    isEvening(currentTime) -> {
+                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeEvening", "")
+                    }
+                    isNight(currentTime) -> {
+                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeNight", "")
+                    }
+                }
+            }
+            ThemeType.LIGHT -> {
+                UnityPlayer.UnitySendMessage("SkyBlend", "SetDayFixedMode", "")
+            }
+            ThemeType.DARK -> {
+                UnityPlayer.UnitySendMessage("SkyBlend", "SetNightFixedMode", "")
+            }
+        }
     }
 }

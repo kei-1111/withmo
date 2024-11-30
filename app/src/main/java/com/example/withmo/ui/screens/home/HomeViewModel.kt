@@ -15,7 +15,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.repository.AppInfoRepository
 import com.example.withmo.domain.repository.WidgetInfoRepository
@@ -25,15 +24,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.ZonedDateTime
-import java.time.format.TextStyle
-import java.util.Locale
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -79,33 +74,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-        startClock()
         appWidgetHost.startListening()
-    }
-
-    private fun startClock() {
-        viewModelScope.launch {
-            while (true) {
-                _uiState.update {
-                    it.copy(currentTime = getTime(ZonedDateTime.now()))
-                }
-                delay(ClockUpdateInterval)
-            }
-        }
-    }
-
-    private fun getTime(currentTime: ZonedDateTime): DateTimeInfo {
-        return DateTimeInfo(
-            year = currentTime.year.toString(),
-            month = String.format(Locale.JAPAN, "%02d", currentTime.monthValue),
-            day = String.format(Locale.JAPAN, "%02d", currentTime.dayOfMonth),
-            hour = String.format(Locale.JAPAN, "%02d", currentTime.hour),
-            minute = String.format(Locale.JAPAN, "%02d", currentTime.minute),
-            dayOfWeek = currentTime.dayOfWeek.getDisplayName(
-                TextStyle.SHORT,
-                Locale.ENGLISH,
-            ).uppercase(),
-        )
     }
 
     fun setShowScaleSlider(show: Boolean) {
@@ -286,7 +255,6 @@ class HomeViewModel @Inject constructor(
     }
 
     companion object {
-        private const val ClockUpdateInterval = 1000L
         private const val TimeoutMillis = 5000L
     }
 }
