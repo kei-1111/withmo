@@ -786,7 +786,7 @@ style:
 
 Compose:
   CompositionLocalAllowlist:
-    active: true
+    active: false
   ContentEmitterReturningValues:
     active: true
   DefaultsVisibility:

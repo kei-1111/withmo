@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.example.withmo.domain.model.AppInfo
-import com.example.withmo.domain.model.DateTimeInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.UserSettings
 import com.example.withmo.ui.base.UiState
@@ -13,7 +12,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeUiState(
-    val currentTime: DateTimeInfo = DateTimeInfo(),
     val isShowScaleSlider: Boolean = false,
     val isAppListBottomSheetOpened: Boolean = false,
     val isWidgetListBottomSheetOpened: Boolean = false,
