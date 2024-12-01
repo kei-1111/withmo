@@ -28,16 +28,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
 import com.example.withmo.domain.model.WidgetInfo
+import com.example.withmo.ktx.toDp
+import com.example.withmo.ktx.toInt
+import com.example.withmo.ktx.toPx
 import com.example.withmo.ui.theme.UiConfig
 import kotlin.math.roundToInt
 
-@Suppress("LongMethod", "CyclomaticComplexMethod")
+@Suppress("LongMethod")
 @Composable
 fun WithmoWidget(
     widgetInfo: WidgetInfo,
@@ -45,25 +48,23 @@ fun WithmoWidget(
     isEditMode: Boolean,
     deleteWidget: () -> Unit,
     modifier: Modifier = Modifier,
-    scale: Float = 0.6f,
     topPadding: Dp = 0.dp,
     bottomPadding: Dp = 0.dp,
     startPadding: Dp = 0.dp,
     endPadding: Dp = 0.dp,
 ) {
     val configuration = LocalConfiguration.current
-    val density = LocalDensity.current
 
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
-    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
-    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    val screenWidthPx = screenWidth.toPx()
+    val screenHeightPx = screenHeight.toPx()
 
-    val topPaddingPx = with(density) { topPadding.toPx() }
-    val bottomPaddingPx = with(density) { bottomPadding.toPx() }
-    val startPaddingPx = with(density) { startPadding.toPx() }
-    val endPaddingPx = with(density) { endPadding.toPx() }
+    val topPaddingPx = topPadding.toPx()
+    val bottomPaddingPx = bottomPadding.toPx()
+    val startPaddingPx = startPadding.toPx()
+    val endPaddingPx = endPadding.toPx()
 
     var position by remember {
         mutableStateOf(
@@ -74,34 +75,26 @@ fun WithmoWidget(
         )
     }
 
-    if (widgetInfo.width == 0) {
-        val minWidgetWidth = widgetInfo.info.minWidth
-        val scaledWidgetWidth = (minWidgetWidth * scale).roundToInt()
-        val draggedSpaceWidth = screenWidth - startPadding.value.roundToInt() - endPadding.value.roundToInt()
-        val adjustWidgetWidth = if (scaledWidgetWidth > draggedSpaceWidth) {
-            draggedSpaceWidth
-        } else {
-            scaledWidgetWidth
-        }
+    val draggedSpaceWidth = screenWidth.dp - startPadding - endPadding
+    val draggedSpaceHeight = screenHeight.dp - topPadding - bottomPadding
+    val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
-        widgetInfo.width = adjustWidgetWidth
+    if (widgetInfo.width == 0) {
+        widgetInfo.width = calculateWidgetWidth(
+            widgetWidth = widgetInfo.info.minWidth.toDp(),
+            minDraggedSpaceDimension = minDraggedSpaceDimension,
+        )
     }
 
     if (widgetInfo.height == 0) {
-        val minWidgetHeight = widgetInfo.info.minHeight
-        val scaledWidgetHeight = (minWidgetHeight * scale).roundToInt()
-        val draggedSpaceHeight = screenHeight - topPadding.value.roundToInt() - bottomPadding.value.roundToInt()
-        val adjustWidgetHeight = if (scaledWidgetHeight > draggedSpaceHeight) {
-            draggedSpaceHeight
-        } else {
-            scaledWidgetHeight
-        }
-
-        widgetInfo.height = adjustWidgetHeight
+        widgetInfo.height = calculateWidgetHeight(
+            widgetHeight = widgetInfo.info.minHeight.toDp(),
+            minDraggedSpaceDimension = screenWidth.dp - startPadding - endPadding,
+        )
     }
 
-    val adjustWidgetWidthPx = with(density) { widgetInfo.width.dp.toPx() }
-    val adjustWidgetHeightPx = with(density) { widgetInfo.height.dp.toPx() }
+    val widgetWidthPx = widgetInfo.width.toPx()
+    val widgetHeightPx = widgetInfo.height.toPx()
 
     val widgetModifier = if (isEditMode) {
         modifier
@@ -113,14 +106,13 @@ fun WithmoWidget(
                     onDrag = { change, dragAmount ->
                         change.consume()
 
-                        // 画面内に収める
                         val newOffsetX = (position.x + dragAmount.x).coerceIn(
                             startPaddingPx,
-                            (screenWidthPx - endPaddingPx) - adjustWidgetWidthPx,
+                            (screenWidthPx - endPaddingPx) - widgetWidthPx,
                         )
                         val newOffsetY = (position.y + dragAmount.y).coerceIn(
                             topPaddingPx,
-                            (screenHeightPx - bottomPaddingPx) - adjustWidgetHeightPx,
+                            (screenHeightPx - bottomPaddingPx) - widgetHeightPx,
                         )
 
                         position = Offset(newOffsetX, newOffsetY)
@@ -163,6 +155,42 @@ fun WithmoWidget(
                     .clickable { deleteWidget() },
                 tint = MaterialTheme.colorScheme.onSurface,
             )
+        }
+    }
+}
+
+private const val SizeDivisor = 3
+
+fun calculateWidgetWidth(
+    widgetWidth: Dp,
+    minDraggedSpaceDimension: Dp,
+): Int {
+    return when {
+        widgetWidth <= minDraggedSpaceDimension / SizeDivisor -> {
+            (minDraggedSpaceDimension / SizeDivisor).toInt()
+        }
+        widgetWidth <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
+            (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
+        }
+        else -> {
+            minDraggedSpaceDimension.toInt()
+        }
+    }
+}
+
+fun calculateWidgetHeight(
+    widgetHeight: Dp,
+    minDraggedSpaceDimension: Dp,
+): Int {
+    return when {
+        widgetHeight <= minDraggedSpaceDimension / SizeDivisor -> {
+            (minDraggedSpaceDimension / SizeDivisor).toInt()
+        }
+        widgetHeight <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
+            (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
+        }
+        else -> {
+            minDraggedSpaceDimension.toInt()
         }
     }
 }
