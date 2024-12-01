@@ -22,7 +22,6 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import com.example.withmo.ui.theme.UiConfig
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WithmoSettingItemWithSlider(
     title: String,
@@ -32,8 +31,6 @@ fun WithmoSettingItemWithSlider(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-
     Surface(
         modifier = modifier,
         color = MaterialTheme.colorScheme.surfaceContainer,
@@ -46,44 +43,11 @@ fun WithmoSettingItemWithSlider(
                 text = title,
                 modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
             )
-            Slider(
+            WithmoSlider(
                 value = value,
                 onValueChange = onValueChange,
-                enabled = enabled,
                 valueRange = valueRange,
-                interactionSource = interactionSource,
-                modifier = Modifier
-                    .semantics { contentDescription = "Localized Description" }
-                    .requiredSizeIn(
-                        minWidth = UiConfig.SliderThumbSize,
-                        minHeight = UiConfig.SliderTrackHeight,
-                    ),
-                thumb = {
-                    val thumbModifier = Modifier
-                        .size(UiConfig.SliderThumbSize)
-                        .shadow(UiConfig.SliderShadowElevation, CircleShape, clip = false)
-                        .indication(
-                            interactionSource = interactionSource,
-                            indication = ripple(
-                                bounded = false,
-                                radius = UiConfig.SliderThumbSize,
-                            ),
-                        )
-                    SliderDefaults.Thumb(
-                        interactionSource = interactionSource,
-                        modifier = thumbModifier,
-                        enabled = enabled,
-                    )
-                },
-                track = {
-                    val trackModifier = Modifier
-                        .height(UiConfig.SliderTrackHeight)
-                    SliderDefaults.Track(
-                        sliderState = it,
-                        modifier = trackModifier,
-                        enabled = enabled,
-                    )
-                },
+                enabled = enabled,
             )
         }
     }
