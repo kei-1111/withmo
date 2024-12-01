@@ -159,7 +159,6 @@ fun WithmoWidget(
     }
 }
 
-
 private const val SizeDivisor = 3
 
 fun calculateWidgetWidth(
