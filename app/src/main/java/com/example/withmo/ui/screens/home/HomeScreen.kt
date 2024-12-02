@@ -10,10 +10,13 @@ import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
@@ -25,11 +28,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,6 +47,8 @@ import com.example.withmo.domain.model.AppInfo
 import com.example.withmo.domain.model.WidgetInfo
 import com.example.withmo.domain.model.user_settings.SortType
 import com.example.withmo.domain.model.user_settings.toShape
+import com.example.withmo.ui.component.Widget
+import com.example.withmo.ui.component.WithmoSettingItemWithSlider
 import com.example.withmo.ui.theme.BottomSheetShape
 import com.example.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -46,6 +57,7 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -199,6 +211,18 @@ fun HomeScreen(
                     viewModel.deleteWidget(event.widgetInfo)
                 }
 
+                is HomeUiEvent.ResizeWidget -> {
+                    viewModel.changeIsWidgetResizing(true)
+                    viewModel.changeResizingWidget(event.widgetInfo)
+                    viewModel.deleteWidget(event.widgetInfo)
+                }
+
+                is HomeUiEvent.FinishResizeWidget -> {
+                    viewModel.changeIsWidgetResizing(false)
+                    viewModel.addDisplayedWidgetList(event.widgetInfo)
+                    viewModel.changeResizingWidget(null)
+                }
+
                 is HomeUiEvent.NavigateToSettingsScreen -> {
                     latestNavigateToSettingsScreen()
                 }
@@ -270,6 +294,16 @@ private fun HomeScreen(
         }
     }
 
+    if (uiState.isWidgetResizing) {
+        uiState.resizeWidget?.let { widgetInfo ->
+            WidgetResizeBottomSheet(
+                widgetInfo = widgetInfo,
+                createWidgetView = createWidgetView,
+                close = { onEvent(HomeUiEvent.FinishResizeWidget(it)) },
+            )
+        }
+    }
+
     Box(
         modifier = modifier
             .padding(
@@ -283,5 +317,72 @@ private fun HomeScreen(
             createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun WidgetResizeBottomSheet(
+    widgetInfo: WidgetInfo,
+    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
+    close: (WidgetInfo) -> Unit,
+) {
+    val configuration = LocalConfiguration.current
+
+    val screenWidth = configuration.screenWidthDp
+    val screenHeight = configuration.screenHeightDp
+
+    val draggedSpaceWidth = screenWidth.dp - UiConfig.MediumPadding - UiConfig.MediumPadding
+    val draggedSpaceHeight = screenHeight.dp - UiConfig.MediumPadding - UiConfig.MediumPadding
+    val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
+
+    var widgetWidth by remember { mutableFloatStateOf(widgetInfo.width.toFloat()) }
+    var widgetHeight by remember { mutableFloatStateOf(widgetInfo.height.toFloat()) }
+
+    ModalBottomSheet(
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        onDismissRequest = {
+            close(
+                widgetInfo.copy(
+                    width = widgetWidth.roundToInt(),
+                    height = widgetHeight.roundToInt(),
+                ),
+            )
+        },
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Widget(
+                widgetInfo = widgetInfo.copy(
+                    width = widgetWidth.roundToInt(),
+                    height = widgetHeight.roundToInt(),
+                ),
+                createWidgetView = createWidgetView,
+            )
+            Column(
+                modifier = Modifier.padding(UiConfig.MediumPadding),
+                verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            ) {
+                WithmoSettingItemWithSlider(
+                    title = "Widget 幅",
+                    value = widgetWidth,
+                    onValueChange = { widgetWidth = it },
+                    valueRange = (minDraggedSpaceDimension / 3f).value..minDraggedSpaceDimension.value,
+                    modifier = Modifier.fillMaxWidth(),
+                    steps = 1,
+                )
+                WithmoSettingItemWithSlider(
+                    title = "Widget 高さ",
+                    value = widgetHeight,
+                    onValueChange = { widgetHeight = it },
+                    valueRange = (minDraggedSpaceDimension / 3f).value..minDraggedSpaceDimension.value,
+                    modifier = Modifier.fillMaxWidth(),
+                    steps = 1,
+                )
+            }
+        }
     }
 }

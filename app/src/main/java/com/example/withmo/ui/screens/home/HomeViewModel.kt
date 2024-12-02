@@ -249,6 +249,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun changeResizingWidget(widgetInfo: WidgetInfo?) {
+        _uiState.update {
+            it.copy(resizeWidget = widgetInfo)
+        }
+    }
+
+    fun changeIsWidgetResizing(isWidgetResizing: Boolean) {
+        _uiState.update {
+            it.copy(isWidgetResizing = isWidgetResizing)
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         appWidgetHost.deleteHost()

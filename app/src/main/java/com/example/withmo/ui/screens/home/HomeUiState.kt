@@ -20,6 +20,8 @@ data class HomeUiState(
     val pendingWidgetId: Int = 0,
     val pendingWidgetInfo: AppWidgetProviderInfo? = null,
     val isEditMode: Boolean = false,
+    val resizeWidget: WidgetInfo? = null,
+    val isWidgetResizing: Boolean = false,
     val appSearchQuery: String = "",
     val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
     val currentUserSettings: UserSettings = UserSettings(),
