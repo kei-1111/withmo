@@ -1,5 +1,6 @@
 package com.example.withmo.ui.component
 
+import androidx.annotation.IntRange
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,7 @@ fun WithmoSlider(
     valueRange: ClosedFloatingPointRange<Float>,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    @IntRange(from = 0.toLong()) steps: Int = 0,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
@@ -41,6 +43,7 @@ fun WithmoSlider(
                 minWidth = UiConfig.SliderThumbSize,
                 minHeight = UiConfig.SliderTrackHeight,
             ),
+        steps = steps,
         thumb = {
             val thumbModifier = Modifier
                 .size(UiConfig.SliderThumbSize)
