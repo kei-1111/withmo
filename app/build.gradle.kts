@@ -63,6 +63,8 @@ android {
     }
 }
 
+val unityLibraryLibsDir = project(":unityLibrary").projectDir.resolve("libs")
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -108,8 +110,7 @@ dependencies {
 
 //    Unity
     implementation(project(":unityLibrary"))
-    implementation(fileTree(mapOf("dir" to "/Users/kei/Projects/AndroidProjects/withmo/unityLibrary/libs", "include" to listOf("*.jar"))))
-
+    implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
 
 //    detekt
     detektPlugins(libs.detekt.compose)
