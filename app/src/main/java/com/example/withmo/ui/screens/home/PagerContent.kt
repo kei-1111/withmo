@@ -76,8 +76,7 @@ fun PagerContent(
     }
 
     Column(
-        modifier = modifier
-            .padding(horizontal = UiConfig.MediumPadding),
+        modifier = modifier,
     ) {
         HorizontalPager(
             state = pagerState,
@@ -92,6 +91,7 @@ fun PagerContent(
                         onEvent = onEvent,
                         modifier = Modifier
                             .fillMaxSize()
+                            .padding(horizontal = UiConfig.MediumPadding)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
@@ -244,10 +244,12 @@ private fun WidgetContent(
                 WithmoWidget(
                     widgetInfo = widgetInfo,
                     createWidgetView = createWidgetView,
-                    endPadding = UiConfig.MediumPadding + UiConfig.MediumPadding,
+                    startPadding = UiConfig.MediumPadding,
+                    endPadding = UiConfig.MediumPadding,
                     bottomPadding = bottomPaddingValue + appIconSpaceHeight + UiConfig.PageIndicatorSpaceHeight,
                     isEditMode = uiState.isEditMode,
                     deleteWidget = { onEvent(HomeUiEvent.DeleteWidget(widgetInfo)) },
+                    resizeWidget = { onEvent(HomeUiEvent.ResizeWidget(widgetInfo)) },
                 )
             }
         }

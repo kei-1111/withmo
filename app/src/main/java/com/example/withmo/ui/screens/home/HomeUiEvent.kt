@@ -18,5 +18,7 @@ sealed interface HomeUiEvent : UiEvent {
     data object EnterEditMode : HomeUiEvent
     data object ExitEditMode : HomeUiEvent
     data class DeleteWidget(val widgetInfo: WidgetInfo) : HomeUiEvent
+    data class ResizeWidget(val widgetInfo: WidgetInfo) : HomeUiEvent
+    data class FinishResizeWidget(val widgetInfo: WidgetInfo) : HomeUiEvent
     data object NavigateToSettingsScreen : HomeUiEvent
 }

@@ -132,6 +132,13 @@ class HomeViewModel @Inject constructor(
 
         val success = appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, provider, options)
 
+        _uiState.update {
+            it.copy(
+                pendingWidgetId = widgetId,
+                pendingWidgetInfo = widgetInfo,
+            )
+        }
+
         if (success) {
             if (widgetInfo.configure != null) {
                 val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
@@ -246,6 +253,18 @@ class HomeViewModel @Inject constructor(
             widgetInfoRepository.insertWidget(addedWidgetList)
             widgetInfoRepository.deleteWidget(deletedWidgetList)
             widgetInfoRepository.updateWidget(updatedWidgetList)
+        }
+    }
+
+    fun changeResizingWidget(widgetInfo: WidgetInfo?) {
+        _uiState.update {
+            it.copy(resizeWidget = widgetInfo)
+        }
+    }
+
+    fun changeIsWidgetResizing(isWidgetResizing: Boolean) {
+        _uiState.update {
+            it.copy(isWidgetResizing = isWidgetResizing)
         }
     }
 

@@ -7,7 +7,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -16,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.ZoomOutMap
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -45,9 +45,10 @@ import kotlin.math.roundToInt
 fun WithmoWidget(
     widgetInfo: WidgetInfo,
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    isEditMode: Boolean,
-    deleteWidget: () -> Unit,
     modifier: Modifier = Modifier,
+    isEditMode: Boolean = false,
+    deleteWidget: () -> Unit = {},
+    resizeWidget: () -> Unit = {},
     topPadding: Dp = 0.dp,
     bottomPadding: Dp = 0.dp,
     startPadding: Dp = 0.dp,
@@ -65,15 +66,6 @@ fun WithmoWidget(
     val bottomPaddingPx = bottomPadding.toPx()
     val startPaddingPx = startPadding.toPx()
     val endPaddingPx = endPadding.toPx()
-
-    var position by remember {
-        mutableStateOf(
-            Offset(
-                x = widgetInfo.position.x.coerceAtLeast(startPaddingPx),
-                y = widgetInfo.position.y.coerceAtLeast(topPaddingPx),
-            ),
-        )
-    }
 
     val draggedSpaceWidth = screenWidth.dp - startPadding - endPadding
     val draggedSpaceHeight = screenHeight.dp - topPadding - bottomPadding
@@ -96,6 +88,23 @@ fun WithmoWidget(
     val widgetWidthPx = widgetInfo.width.toPx()
     val widgetHeightPx = widgetInfo.height.toPx()
 
+    val availableWidthPx = screenWidthPx - endPaddingPx
+    val availableHeightPx = screenHeightPx - bottomPaddingPx
+
+    var position by remember {
+        mutableStateOf(
+            calculateWidgetPosition(
+                widgetPosition = widgetInfo.position,
+                widgetWidthPx = widgetWidthPx,
+                widgetHeightPx = widgetHeightPx,
+                availableWidthPx = availableWidthPx,
+                availableHeightPx = availableHeightPx,
+                startPaddingPx = startPaddingPx,
+                topPaddingPx = topPaddingPx,
+            ),
+        )
+    }
+
     val widgetModifier = if (isEditMode) {
         modifier
             .width(widgetInfo.width.dp)
@@ -108,11 +117,11 @@ fun WithmoWidget(
 
                         val newOffsetX = (position.x + dragAmount.x).coerceIn(
                             startPaddingPx,
-                            (screenWidthPx - endPaddingPx) - widgetWidthPx,
+                            availableWidthPx - widgetWidthPx,
                         )
                         val newOffsetY = (position.y + dragAmount.y).coerceIn(
                             topPaddingPx,
-                            (screenHeightPx - bottomPaddingPx) - widgetHeightPx,
+                            availableHeightPx - widgetHeightPx,
                         )
 
                         position = Offset(newOffsetX, newOffsetY)
@@ -135,19 +144,17 @@ fun WithmoWidget(
     Box(
         modifier = widgetModifier,
     ) {
-        AndroidView(
-            factory = { context ->
-                createWidgetView(context.applicationContext, widgetInfo, widgetInfo.width, widgetInfo.height)
-            },
-            modifier = Modifier
-                .fillMaxSize()
-                .align(Alignment.Center),
+        Widget(
+            widgetInfo = widgetInfo,
+            createWidgetView = createWidgetView,
+            modifier = Modifier.align(Alignment.Center),
         )
         if (isEditMode) {
             Icon(
                 imageVector = Icons.Rounded.Close,
                 contentDescription = null,
                 modifier = Modifier
+                    .padding(UiConfig.TinyPadding)
                     .background(MaterialTheme.colorScheme.surface, CircleShape)
                     .padding(UiConfig.TinyPadding)
                     .align(Alignment.TopEnd)
@@ -155,8 +162,36 @@ fun WithmoWidget(
                     .clickable { deleteWidget() },
                 tint = MaterialTheme.colorScheme.onSurface,
             )
+            Icon(
+                imageVector = Icons.Rounded.ZoomOutMap,
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(UiConfig.TinyPadding)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape)
+                    .padding(UiConfig.TinyPadding)
+                    .align(Alignment.BottomEnd)
+                    .size(UiConfig.BadgeSize)
+                    .clickable { resizeWidget() },
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
         }
     }
+}
+
+@Composable
+fun Widget(
+    widgetInfo: WidgetInfo,
+    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
+    modifier: Modifier = Modifier,
+) {
+    AndroidView(
+        factory = { context ->
+            createWidgetView(context.applicationContext, widgetInfo, widgetInfo.width, widgetInfo.height)
+        },
+        modifier = modifier
+            .width(widgetInfo.width.dp)
+            .height(widgetInfo.height.dp),
+    )
 }
 
 private const val SizeDivisor = 3
@@ -193,4 +228,26 @@ fun calculateWidgetHeight(
             minDraggedSpaceDimension.toInt()
         }
     }
+}
+
+fun calculateWidgetPosition(
+    widgetPosition: Offset,
+    widgetWidthPx: Float,
+    widgetHeightPx: Float,
+    availableWidthPx: Float,
+    availableHeightPx: Float,
+    startPaddingPx: Float,
+    topPaddingPx: Float,
+): Offset {
+    var x = widgetPosition.x.coerceAtLeast(startPaddingPx)
+    var y = widgetPosition.y.coerceAtLeast(topPaddingPx)
+
+    if (widgetPosition.x + widgetWidthPx > availableWidthPx) {
+        x = (availableWidthPx - widgetWidthPx).coerceAtLeast(startPaddingPx)
+    }
+    if (widgetPosition.y + widgetHeightPx > availableHeightPx) {
+        y = (availableHeightPx - widgetHeightPx).coerceAtLeast(topPaddingPx)
+    }
+
+    return Offset(x, y)
 }
