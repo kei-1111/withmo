@@ -140,7 +140,9 @@ class MainActivity : ComponentActivity() {
                 UnitySendThemeMessage(themeSettings.themeType)
 
                 LaunchedEffect(currentTime) {
-                    timeBasedUnitySendMessageManager.sendTimeBasedMessage(currentTime)
+                    if (themeSettings.themeType == ThemeType.TIME_BASED) {
+                        timeBasedUnitySendMessageManager.sendTimeBasedMessage(currentTime)
+                    }
                 }
 
                 WithmoTheme(
