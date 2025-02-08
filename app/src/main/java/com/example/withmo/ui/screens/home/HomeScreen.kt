@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -256,7 +257,9 @@ private fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
-    val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+
+    val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
     if (uiState.isAppListBottomSheetOpened) {
         ModalBottomSheet(

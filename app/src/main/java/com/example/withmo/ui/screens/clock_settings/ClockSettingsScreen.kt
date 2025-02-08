@@ -1,6 +1,7 @@
 package com.example.withmo.ui.screens.clock_settings
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -89,13 +90,16 @@ private fun ClockSettingsScreen(
     onEvent: (ClockSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
+
     Surface(
         modifier = modifier,
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(bottom = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()),
+                .padding(bottom = bottomPaddingValue),
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "時計") },
