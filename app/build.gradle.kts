@@ -15,15 +15,15 @@ plugins {
 }
 
 android {
-    namespace = "com.example.withmo"
+    namespace = "io.github.kei_1111.withmo"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.withmo"
+        applicationId = "io.github.kei_1111.withmo"
         minSdk = 24
         targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 

@@ -1,0 +1,14 @@
+package io.github.kei_1111.withmo.domain.usecase.user_settings.notification
+
+import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import javax.inject.Inject
+
+class GetNotificationSettingsUseCaseImpl @Inject constructor(
+    private val userSettingsRepository: UserSettingsRepository,
+) : GetNotificationSettingsUseCase {
+    override suspend operator fun invoke(): Flow<NotificationSettings> =
+        userSettingsRepository.userSettings.map { it.notificationSettings }
+}

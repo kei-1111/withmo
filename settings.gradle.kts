@@ -19,7 +19,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Withmo"
+rootProject.name = "withmo"
 include(":app")
 
 // unity
