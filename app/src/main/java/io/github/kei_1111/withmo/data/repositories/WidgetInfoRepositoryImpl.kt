@@ -19,7 +19,7 @@ class WidgetInfoRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : WidgetInfoRepository {
 
-    override fun getAllWidgetList(): Flow<List<WidgetInfo>> {
+    override fun getAllWidgetList(): Flow<List<WidgetInfo?>> {
         return widgetInfoDao.getAllWidgets().map { entities ->
             entities.map { entity -> entity.toWidgetInfo(appWidgetManager) }
         }

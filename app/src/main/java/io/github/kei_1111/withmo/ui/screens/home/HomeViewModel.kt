@@ -68,8 +68,8 @@ class HomeViewModel @Inject constructor(
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
                 _uiState.update {
                     it.copy(
-                        widgetList = widgetList.toPersistentList(),
-                        initialWidgetList = widgetList.toPersistentList(),
+                        widgetList = widgetList.filterNotNull().toPersistentList(),
+                        initialWidgetList = widgetList.filterNotNull().toPersistentList(),
                     )
                 }
             }
