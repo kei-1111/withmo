@@ -4,7 +4,7 @@ import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import kotlinx.coroutines.flow.Flow
 
 interface WidgetInfoRepository {
-    fun getAllWidgetList(): Flow<List<WidgetInfo?>>
+    fun getAllWidgetList(): Flow<List<WidgetInfo>>
 
     suspend fun insertWidget(widgetInfoList: List<WidgetInfo>)
 
