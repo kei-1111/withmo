@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.data.mapper
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.data.local.entity.AppInfoEntity
 import io.github.kei_1111.withmo.domain.model.AppInfo
@@ -18,16 +19,19 @@ fun AppInfo.toEntity(): AppInfoEntity {
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun AppInfoEntity.toAppInfo(context: Context): AppInfo {
-    val appInfo = AppUtils.getAppFromPackageName(context, packageName)
-    return appInfo?.let {
-        AppInfo(
-            appIcon = it.appIcon,
-            label = it.label,
-            packageName = packageName,
-            notification = notification,
-            useCount = useCount,
-            favoriteOrder = FavoriteOrder.valueOf(favoriteOrder),
-        )
-    } ?: throw IllegalArgumentException("AppInfo not found")
+fun AppInfoEntity.toAppInfo(context: Context): AppInfo? {
+    val info = AppUtils.getAppFromPackageName(context, packageName)
+    if (info == null) {
+        Log.e("toAppInfo", "AppInfo not found: $packageName")
+        return null
+    }
+
+    return AppInfo(
+        appIcon = info.appIcon,
+        label = info.label,
+        packageName = packageName,
+        notification = notification,
+        useCount = useCount,
+        favoriteOrder = FavoriteOrder.valueOf(favoriteOrder),
+    )
 }
