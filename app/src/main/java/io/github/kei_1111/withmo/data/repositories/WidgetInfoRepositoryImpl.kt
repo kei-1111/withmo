@@ -21,7 +21,7 @@ class WidgetInfoRepositoryImpl @Inject constructor(
 
     override fun getAllWidgetList(): Flow<List<WidgetInfo>> {
         return widgetInfoDao.getAllWidgets().map { entities ->
-            entities.map { entity -> entity.toWidgetInfo(appWidgetManager) }
+            entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
         }
     }
 

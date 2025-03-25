@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.data.mapper
 
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
+import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import io.github.kei_1111.withmo.data.local.entity.WidgetInfoEntity
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
@@ -17,11 +18,16 @@ fun WidgetInfo.toEntity(): WidgetInfoEntity {
     )
 }
 
-fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WidgetInfo {
+fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WidgetInfo? {
+    val info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
+    if (info == null) {
+        Log.e("toWidgetInfo", "AppWidgetProviderInfo not found: $appWidgetProviderClassName")
+        return null
+    }
+
     return WidgetInfo(
         id = id,
-        info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
-            ?: throw IllegalArgumentException("AppWidgetProviderInfo not found"),
+        info = info,
         position = Offset(positionX, positionY),
         width = width,
         height = height,

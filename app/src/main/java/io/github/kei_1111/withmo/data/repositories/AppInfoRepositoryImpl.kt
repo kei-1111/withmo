@@ -25,7 +25,7 @@ class AppInfoRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getAllAppInfoList(): Flow<List<AppInfo>> {
         return appInfoDao.getAllAppInfoList().map { entities ->
-            entities.map { entity -> entity.toAppInfo(context) }
+            entities.mapNotNull { entity -> entity.toAppInfo(context) }
         }
     }
 
@@ -33,7 +33,7 @@ class AppInfoRepositoryImpl @Inject constructor(
     override fun getFavoriteAppInfoList(): Flow<List<AppInfo>> {
         return appInfoDao.getFavoriteAppInfoList().map { entities ->
             entities
-                .map { entity -> entity.toAppInfo(context) }
+                .mapNotNull { entity -> entity.toAppInfo(context) }
                 .sortedBy { it.favoriteOrder.ordinal }
         }
     }
