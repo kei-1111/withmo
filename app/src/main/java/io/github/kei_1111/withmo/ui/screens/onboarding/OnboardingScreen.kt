@@ -103,7 +103,7 @@ fun OnboardingScreen(
                 }
 
                 is OnboardingUiEvent.OnboardingFinished -> {
-                    viewModel.saveFavoriteAppList()
+                    viewModel.saveSetting()
                     uiState.selectedModelFile?.sendPathToUnity()
                     latestNavigateToHomeScreen()
                 }
