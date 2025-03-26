@@ -9,6 +9,7 @@ import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.domain.model.ModelFile
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -45,6 +46,11 @@ object FileUtils {
         }
 
         return modelFileList.toPersistentList()
+    }
+
+    fun fileExists(path: String): Boolean {
+        val file = File(path)
+        return file.exists()
     }
 
     private const val SecondsToMilliseconds = 1000L

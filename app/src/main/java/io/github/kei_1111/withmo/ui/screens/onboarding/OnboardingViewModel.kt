@@ -5,7 +5,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.ModelFile
+import io.github.kei_1111.withmo.domain.model.user_settings.DisplayModelSetting
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.SaveDisplayModelSettingUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import io.github.kei_1111.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.ImmutableList
@@ -20,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
+    private val saveDisplayModelSettingUseCase: SaveDisplayModelSettingUseCase,
 ) : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
     override fun createInitialState(): OnboardingUiState = OnboardingUiState()
 
@@ -105,7 +108,7 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun saveFavoriteAppList() {
+    fun saveSetting() {
         val favoriteAppList = _uiState.value.selectedAppList.mapIndexed { index, appInfo ->
             appInfo.copy(
                 favoriteOrder = when (index) {
@@ -120,6 +123,7 @@ class OnboardingViewModel @Inject constructor(
 
         viewModelScope.launch {
             appInfoRepository.updateAppInfoList(favoriteAppList)
+            saveDisplayModelSettingUseCase(DisplayModelSetting(_uiState.value.selectedModelFile))
         }
     }
 

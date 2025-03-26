@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Surface
@@ -22,7 +23,9 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
+import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.ui.theme.UiConfig
 import io.github.kei_1111.withmo.utils.FileUtils
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
@@ -55,9 +58,19 @@ fun DisplayModelSettingScreen(
             when (event) {
                 is DisplayModelSettingUiEvent.SelectModelFile -> {
                     viewModel.selectModelFile(event.modelFile)
-                    event.modelFile.sendPathToUnity()
-                    showToast(context, "モデルを選択しました")
+                }
+
+                is DisplayModelSettingUiEvent.Save -> {
+                    viewModel.saveDisplayModelSetting()
+                }
+
+                is DisplayModelSettingUiEvent.SaveSuccess -> {
+                    showToast(context, "保存しました")
                     latestNavigateToSettingsScreen()
+                }
+
+                is DisplayModelSettingUiEvent.SaveFailure -> {
+                    showToast(context, "保存に失敗しました")
                 }
 
                 is DisplayModelSettingUiEvent.NavigateToSettingsScreen -> {
@@ -98,7 +111,16 @@ private fun DisplayModelSettingScreen(
             DisplayModelSettingScreenContent(
                 uiState = uiState,
                 onEvent = onEvent,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .weight(UiConfig.DefaultWeight),
+            )
+            WithmoSaveButton(
+                onClick = { onEvent(DisplayModelSettingUiEvent.Save) },
+                enabled = uiState.isSaveButtonEnabled,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(UiConfig.MediumPadding),
             )
         }
     }

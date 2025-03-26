@@ -17,7 +17,7 @@ fun DisplayModelSettingScreenContent(
     ) {
         DisplayModelSelector(
             modelFileList = uiState.modelFileList,
-            selectedModelFile = uiState.selectedModelFile,
+            selectedModelFile = uiState.displayModelSetting.modelFile,
             selectModelFile = { onEvent(DisplayModelSettingUiEvent.SelectModelFile(it)) },
             modifier = Modifier.fillMaxSize(),
         )

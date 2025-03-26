@@ -6,4 +6,7 @@ import io.github.kei_1111.withmo.ui.base.UiEvent
 sealed interface DisplayModelSettingUiEvent : UiEvent {
     data class SelectModelFile(val modelFile: ModelFile) : DisplayModelSettingUiEvent
     data object NavigateToSettingsScreen : DisplayModelSettingUiEvent
+    data object Save : DisplayModelSettingUiEvent
+    data object SaveSuccess : DisplayModelSettingUiEvent
+    data object SaveFailure : DisplayModelSettingUiEvent
 }
