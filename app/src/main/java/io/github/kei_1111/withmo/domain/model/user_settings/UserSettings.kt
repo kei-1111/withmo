@@ -7,4 +7,5 @@ data class UserSettings(
     val sortSettings: SortSettings = SortSettings(),
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
     val themeSettings: ThemeSettings = ThemeSettings(),
+    val displayModelSetting: DisplayModelSetting = DisplayModelSetting(),
 )

@@ -13,6 +13,7 @@ import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
+import io.github.kei_1111.withmo.domain.model.user_settings.DisplayModelSetting
 import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.SortSettings
@@ -47,6 +48,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
+        val MODEL_PATH = stringPreferencesKey("model_path")
     }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
@@ -93,6 +95,9 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 themeSettings = ThemeSettings(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
                         ?: ThemeType.TIME_BASED,
+                ),
+                displayModelSetting = DisplayModelSetting(
+                    modelPath = preferences[MODEL_PATH],
                 ),
             )
         }
@@ -147,6 +152,18 @@ class UserSettingsRepositoryImpl @Inject constructor(
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
                 preferences[THEME_TYPE] = themeSettings.themeType.name
+            }
+        }
+    }
+
+    override suspend fun saveDisplayModelSetting(displayModelSetting: DisplayModelSetting) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                if (displayModelSetting.modelPath != null) {
+                    preferences[MODEL_PATH] = displayModelSetting.modelPath
+                } else {
+                    preferences.remove(MODEL_PATH)
+                }
             }
         }
     }
