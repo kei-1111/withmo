@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.kei_1111.withmo.di.IoDispatcher
+import io.github.kei_1111.withmo.domain.model.ModelFile
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
@@ -48,7 +49,9 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
-        val MODEL_PATH = stringPreferencesKey("model_path")
+        val FILE_NAME = stringPreferencesKey("file_name")
+        val FILE_PATH = stringPreferencesKey("file_path")
+        val DOWNLOAD_DATE = stringPreferencesKey("download_date")
     }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
@@ -97,7 +100,13 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: ThemeType.TIME_BASED,
                 ),
                 displayModelSetting = DisplayModelSetting(
-                    modelPath = preferences[MODEL_PATH],
+                    modelFile = preferences[FILE_PATH]?.let { filePath ->
+                        ModelFile(
+                            fileName = preferences[FILE_NAME] ?: "",
+                            filePath = filePath,
+                            downloadDate = preferences[DOWNLOAD_DATE] ?: "",
+                        )
+                    },
                 ),
             )
         }
@@ -159,10 +168,14 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveDisplayModelSetting(displayModelSetting: DisplayModelSetting) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                if (displayModelSetting.modelPath != null) {
-                    preferences[MODEL_PATH] = displayModelSetting.modelPath
+                if (displayModelSetting.modelFile != null) {
+                    preferences[FILE_NAME] = displayModelSetting.modelFile.fileName
+                    preferences[FILE_PATH] = displayModelSetting.modelFile.filePath
+                    preferences[DOWNLOAD_DATE] = displayModelSetting.modelFile.downloadDate
                 } else {
-                    preferences.remove(MODEL_PATH)
+                    preferences.remove(FILE_NAME)
+                    preferences.remove(FILE_PATH)
+                    preferences.remove(DOWNLOAD_DATE)
                 }
             }
         }
