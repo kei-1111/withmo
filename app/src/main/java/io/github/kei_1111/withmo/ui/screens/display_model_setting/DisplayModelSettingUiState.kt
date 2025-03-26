@@ -1,7 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.display_model_setting
 
 import io.github.kei_1111.withmo.domain.model.ModelFile
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.DisplayModelSetting
 import io.github.kei_1111.withmo.ui.base.UiState
 import kotlinx.collections.immutable.ImmutableList

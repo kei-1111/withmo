@@ -4,11 +4,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.domain.model.ModelFile
-import io.github.kei_1111.withmo.domain.model.user_settings.DisplayModelSetting
 import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.GetDisplayModelSettingUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.SaveDisplayModelSettingUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch

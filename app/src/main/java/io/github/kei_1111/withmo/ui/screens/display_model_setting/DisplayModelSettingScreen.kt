@@ -25,7 +25,6 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiEvent
 import io.github.kei_1111.withmo.ui.theme.UiConfig
 import io.github.kei_1111.withmo.utils.FileUtils
 import io.github.kei_1111.withmo.utils.showToast
