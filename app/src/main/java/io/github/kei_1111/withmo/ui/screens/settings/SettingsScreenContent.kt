@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.ErrorOutline
+import androidx.compose.material.icons.rounded.Home
 import androidx.compose.material.icons.rounded.InsertDriveFile
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Notifications
@@ -46,9 +47,10 @@ fun SettingsScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
     ) {
-        if (!uiState.isDefaultHomeApp) {
-            HomeAppSettings(onEvent = onEvent)
-        }
+        HomeAppSettings(
+            isDefaultHomeApp = uiState.isDefaultHomeApp,
+            onEvent = onEvent,
+        )
         HomeScreenSettings(onEvent = onEvent)
         NotificationSettings(onEvent = onEvent)
         ModelSettings(onEvent = onEvent)
@@ -59,6 +61,7 @@ fun SettingsScreenContent(
 @Composable
 private fun HomeAppSettings(
     onEvent: (SettingsUiEvent) -> Unit,
+    isDefaultHomeApp: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -71,16 +74,28 @@ private fun HomeAppSettings(
         Surface(
             modifier = Modifier.fillMaxWidth(),
             shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.errorContainer,
+            color = if (isDefaultHomeApp) {
+                MaterialTheme.colorScheme.surfaceContainer
+            } else {
+                MaterialTheme.colorScheme.errorContainer
+            },
         ) {
             Column {
                 SettingItem(
-                    icon = Icons.Rounded.ErrorOutline,
+                    icon = if (isDefaultHomeApp) {
+                        Icons.Rounded.Home
+                    } else {
+                        Icons.Rounded.ErrorOutline
+                    },
                     itemName = "デフォルトホームアプリ",
                     onClick = {
                         onEvent(SettingsUiEvent.SetDefaultHomeApp)
                     },
-                    itemColor = MaterialTheme.colorScheme.onErrorContainer,
+                    itemColor = if (isDefaultHomeApp) {
+                        MaterialTheme.colorScheme.onSurface
+                    } else {
+                        MaterialTheme.colorScheme.onErrorContainer
+                    },
                 )
             }
         }
