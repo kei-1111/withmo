@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.unity3d.player.UnityPlayer
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
@@ -52,6 +53,7 @@ import io.github.kei_1111.withmo.ui.component.Widget
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
 import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
@@ -128,6 +130,23 @@ fun HomeScreen(
         }
     }
 
+    val openDocumentLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        scope.launch {
+            if (uri == null) {
+                showToast(context, "ファイルが選択されませんでした")
+            } else {
+                val filePath = viewModel.getVrmFilePath(context, uri)
+                if (filePath == null) {
+                    showToast(context, "ファイルの読み込みに失敗しました")
+                } else {
+                    UnityPlayer.UnitySendMessage("VRMload", "ReceiveVRMFilePath", filePath)
+                }
+            }
+        }
+    }
+
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
@@ -149,6 +168,10 @@ fun HomeScreen(
 
                 is HomeUiEvent.SetShowScaleSlider -> {
                     viewModel.setShowScaleSlider(event.isShow)
+                }
+
+                is HomeUiEvent.OnOpenDocumentButtonClick -> {
+                    openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
                 is HomeUiEvent.OnValueChangeAppSearchQuery -> {

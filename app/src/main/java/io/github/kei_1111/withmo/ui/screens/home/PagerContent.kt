@@ -21,6 +21,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -214,6 +215,13 @@ private fun DisplayModelContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding, Alignment.Bottom),
         horizontalAlignment = Alignment.End,
     ) {
+        WithmoIconButton(
+            onClick = {
+                onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
+            },
+            icon = Icons.Rounded.ChangeCircle,
+            modifier = Modifier.padding(start = UiConfig.MediumPadding),
+        )
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
             WithmoIconButton(
                 onClick = {

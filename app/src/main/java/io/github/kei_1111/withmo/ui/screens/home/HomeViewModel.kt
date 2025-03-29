@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -21,6 +22,7 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
+import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
@@ -81,6 +83,11 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(isShowScaleSlider = show)
         }
+    }
+
+    suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
+        FileUtils.deleteAllCacheFiles(context)
+        return FileUtils.copyVrmFile(context, uri)?.absolutePath
     }
 
     fun setAppSearchQuery(query: String) {
