@@ -48,6 +48,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
+        val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
         val FILE_NAME = stringPreferencesKey("file_name")
         val FILE_PATH = stringPreferencesKey("file_path")
@@ -94,6 +95,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 ),
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
+                    isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
                 ),
                 themeSettings = ThemeSettings(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
@@ -153,6 +155,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] =
                     sideButtonSettings.isScaleSliderButtonShown
+                preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] =
+                    sideButtonSettings.isOpenDocumentButtonShown
             }
         }
     }

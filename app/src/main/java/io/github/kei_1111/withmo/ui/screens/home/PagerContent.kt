@@ -215,13 +215,15 @@ private fun DisplayModelContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding, Alignment.Bottom),
         horizontalAlignment = Alignment.End,
     ) {
-        WithmoIconButton(
-            onClick = {
-                onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
-            },
-            icon = Icons.Rounded.ChangeCircle,
-            modifier = Modifier.padding(start = UiConfig.MediumPadding),
-        )
+        if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+            WithmoIconButton(
+                onClick = {
+                    onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
+                },
+                icon = Icons.Rounded.ChangeCircle,
+                modifier = Modifier.padding(start = UiConfig.MediumPadding),
+            )
+        }
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
             WithmoIconButton(
                 onClick = {

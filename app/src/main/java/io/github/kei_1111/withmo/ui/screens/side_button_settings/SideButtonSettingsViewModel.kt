@@ -42,6 +42,17 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
+    fun changeIsOpenDocumentButtonShown(isOpenDocumentButtonShown: Boolean) {
+        _uiState.update {
+            it.copy(
+                sideButtonSettings = it.sideButtonSettings.copy(
+                    isOpenDocumentButtonShown = isOpenDocumentButtonShown,
+                ),
+                isSaveButtonEnabled = isOpenDocumentButtonShown != it.initialSideButtonSettings.isOpenDocumentButtonShown,
+            )
+        }
+    }
+
     fun saveSideButtonSettings() {
         _uiState.update {
             it.copy(
