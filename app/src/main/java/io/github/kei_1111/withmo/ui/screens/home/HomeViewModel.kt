@@ -90,6 +90,12 @@ class HomeViewModel @Inject constructor(
         return FileUtils.copyVrmFile(context, uri)?.absolutePath
     }
 
+    fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
+        _uiState.update {
+            it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
+        }
+    }
+
     fun setAppSearchQuery(query: String) {
         _uiState.update {
             it.copy(appSearchQuery = query)

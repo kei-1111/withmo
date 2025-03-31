@@ -10,6 +10,8 @@ sealed interface HomeUiEvent : UiEvent {
     data class DeleteApp(val appInfo: AppInfo) : HomeUiEvent
     data class SetShowScaleSlider(val isShow: Boolean) : HomeUiEvent
     data object OnOpenDocumentButtonClick : HomeUiEvent
+    data object OnModelChangeWarningDialogConfirm : HomeUiEvent
+    data object OnModelChangeWarningDialogDismiss : HomeUiEvent
     data class OnValueChangeAppSearchQuery(val query: String) : HomeUiEvent
     data object OpenAppListBottomSheet : HomeUiEvent
     data object HideAppListBottomSheet : HomeUiEvent

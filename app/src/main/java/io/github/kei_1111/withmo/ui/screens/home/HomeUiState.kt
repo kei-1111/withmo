@@ -13,6 +13,7 @@ import kotlinx.collections.immutable.persistentListOf
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeUiState(
     val isShowScaleSlider: Boolean = false,
+    val isModelChangeWarningDialogShown: Boolean = false,
     val isAppListBottomSheetOpened: Boolean = false,
     val isWidgetListBottomSheetOpened: Boolean = false,
     val widgetList: ImmutableList<WidgetInfo> = persistentListOf(),

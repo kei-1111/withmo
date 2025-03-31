@@ -171,7 +171,16 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnOpenDocumentButtonClick -> {
+                    viewModel.setIsModelChangeWarningDialogShown(true)
+                }
+
+                is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
+                    viewModel.setIsModelChangeWarningDialogShown(false)
                     openDocumentLauncher.launch(arrayOf("*/*"))
+                }
+
+                is HomeUiEvent.OnModelChangeWarningDialogDismiss -> {
+                    viewModel.setIsModelChangeWarningDialogShown(false)
                 }
 
                 is HomeUiEvent.OnValueChangeAppSearchQuery -> {
@@ -342,6 +351,13 @@ private fun HomeScreen(
             onEvent = onEvent,
             createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
+        )
+    }
+
+    if (uiState.isModelChangeWarningDialogShown) {
+        ModelChangeWarningDialog(
+            onConfirm = { onEvent(HomeUiEvent.OnModelChangeWarningDialogConfirm) },
+            onDismiss = { onEvent(HomeUiEvent.OnModelChangeWarningDialogDismiss) },
         )
     }
 }
