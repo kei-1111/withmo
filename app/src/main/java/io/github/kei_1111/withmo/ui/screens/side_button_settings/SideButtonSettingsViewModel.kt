@@ -37,7 +37,8 @@ class SideButtonSettingsViewModel @Inject constructor(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isScaleSliderButtonShown = isScaleSliderButtonShown,
                 ),
-                isSaveButtonEnabled = isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
+                isSaveButtonEnabled =
+                isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
             )
         }
     }
@@ -48,7 +49,8 @@ class SideButtonSettingsViewModel @Inject constructor(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isOpenDocumentButtonShown = isOpenDocumentButtonShown,
                 ),
-                isSaveButtonEnabled = isOpenDocumentButtonShown != it.initialSideButtonSettings.isOpenDocumentButtonShown,
+                isSaveButtonEnabled =
+                isOpenDocumentButtonShown != it.initialSideButtonSettings.isOpenDocumentButtonShown,
             )
         }
     }
