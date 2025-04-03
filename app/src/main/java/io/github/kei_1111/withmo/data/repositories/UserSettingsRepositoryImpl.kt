@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.kei_1111.withmo.di.IoDispatcher
+import io.github.kei_1111.withmo.di.UserSetting
 import io.github.kei_1111.withmo.domain.model.ModelFile
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
@@ -34,7 +35,7 @@ import javax.inject.Inject
 
 @Suppress("MaximumLineLength", "MaxLineLength")
 class UserSettingsRepositoryImpl @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
+    @UserSetting private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
     private companion object {

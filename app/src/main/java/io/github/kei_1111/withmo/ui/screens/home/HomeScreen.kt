@@ -146,6 +146,7 @@ fun HomeScreen(
             }
         }
     }
+    val isModelChangeWarningFirstShown by viewModel.isModelChangeWarningFirstShown.collectAsStateWithLifecycle()
 
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
@@ -171,11 +172,16 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnOpenDocumentButtonClick -> {
-                    viewModel.setIsModelChangeWarningDialogShown(true)
+                    if (isModelChangeWarningFirstShown) {
+                        openDocumentLauncher.launch(arrayOf("*/*"))
+                    } else {
+                        viewModel.setIsModelChangeWarningDialogShown(true)
+                    }
                 }
 
                 is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
                     viewModel.setIsModelChangeWarningDialogShown(false)
+                    viewModel.markModelChangeWarningFirstShown()
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 

@@ -19,6 +19,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
@@ -42,12 +43,16 @@ class HomeViewModel @Inject constructor(
     private val appWidgetHost: AppWidgetHost,
     private val appInfoRepository: AppInfoRepository,
     private val widgetInfoRepository: WidgetInfoRepository,
+    private val oneTimeEventRepository: OneTimeEventRepository,
 ) : BaseViewModel<HomeUiState, HomeUiEvent>() {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
+
+    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown
+        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = false)
 
     init {
         viewModelScope.launch {
@@ -93,6 +98,12 @@ class HomeViewModel @Inject constructor(
     fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
         _uiState.update {
             it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
+        }
+    }
+
+    fun markModelChangeWarningFirstShown() {
+        viewModelScope.launch {
+            oneTimeEventRepository.markModelChangeWarningFirstShown()
         }
     }
 

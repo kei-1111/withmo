@@ -12,9 +12,11 @@ import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.data.local.dao.AppInfoDao
 import io.github.kei_1111.withmo.data.local.dao.WidgetInfoDao
 import io.github.kei_1111.withmo.data.repositories.AppInfoRepositoryImpl
+import io.github.kei_1111.withmo.data.repositories.OneTimeEventRepositoryImpl
 import io.github.kei_1111.withmo.data.repositories.UserSettingsRepositoryImpl
 import io.github.kei_1111.withmo.data.repositories.WidgetInfoRepositoryImpl
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
@@ -27,9 +29,16 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideUserSettingsRepository(
-        dataStore: DataStore<Preferences>,
+        @UserSetting dataStore: DataStore<Preferences>,
         @io.github.kei_1111.withmo.di.IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): UserSettingsRepository = UserSettingsRepositoryImpl(dataStore, coroutineDispatcher)
+
+    @Provides
+    @Singleton
+    fun provideOneTimeEventRepository(
+        @OneTimeEvent dataStore: DataStore<Preferences>,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+    ): OneTimeEventRepository = OneTimeEventRepositoryImpl(dataStore, coroutineDispatcher)
 
     @Provides
     @Singleton
