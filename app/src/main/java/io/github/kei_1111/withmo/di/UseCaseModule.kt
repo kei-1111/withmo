@@ -15,10 +15,10 @@ import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.GetClockSett
 import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCaseImpl
 import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCaseImpl
-import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.GetDisplayModelSettingUseCase
-import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.GetDisplayModelSettingUseCaseImpl
-import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.SaveDisplayModelSettingUseCase
-import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.SaveDisplayModelSettingUseCaseImpl
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCaseImpl
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCaseImpl
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCaseImpl
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
@@ -127,16 +127,16 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveThemeSettingsUseCase = SaveThemeSettingsUseCaseImpl(userSettingsRepository)
 
-//    DisplayModel
+//    ModelFilePath
     @Provides
     @Singleton
-    fun provideGetDisplayModelSettingUseCase(
+    fun provideGetModelFilePathUseCase(
         userSettingsRepository: UserSettingsRepository,
-    ): GetDisplayModelSettingUseCase = GetDisplayModelSettingUseCaseImpl(userSettingsRepository)
+    ): GetModelFilePathUseCase = GetModelFilePathUseCaseImpl(userSettingsRepository)
 
     @Provides
     @Singleton
-    fun provideSaveDisplayModelSettingUseCase(
+    fun provideSaveModelFilePathUseCase(
         userSettingsRepository: UserSettingsRepository,
-    ): SaveDisplayModelSettingUseCase = SaveDisplayModelSettingUseCaseImpl(userSettingsRepository)
+    ): SaveModelFilePathUseCase = SaveModelFilePathUseCaseImpl(userSettingsRepository)
 }

@@ -44,9 +44,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.unity3d.player.UnityPlayer
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.Widget
@@ -141,7 +141,7 @@ fun HomeScreen(
                 if (filePath == null) {
                     showToast(context, "ファイルの読み込みに失敗しました")
                 } else {
-                    UnityPlayer.UnitySendMessage("VRMload", "ReceiveVRMFilePath", filePath)
+                    viewModel.saveModelFilePath(ModelFilePath(filePath))
                 }
             }
         }

@@ -10,12 +10,11 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.kei_1111.withmo.di.IoDispatcher
 import io.github.kei_1111.withmo.di.UserSetting
-import io.github.kei_1111.withmo.domain.model.ModelFile
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
-import io.github.kei_1111.withmo.domain.model.user_settings.DisplayModelSetting
+import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.SortSettings
@@ -51,9 +50,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
-        val FILE_NAME = stringPreferencesKey("file_name")
-        val FILE_PATH = stringPreferencesKey("file_path")
-        val DOWNLOAD_DATE = stringPreferencesKey("download_date")
+        val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
     }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
@@ -102,14 +99,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
                         ?: ThemeType.TIME_BASED,
                 ),
-                displayModelSetting = DisplayModelSetting(
-                    modelFile = preferences[FILE_PATH]?.let { filePath ->
-                        ModelFile(
-                            fileName = preferences[FILE_NAME] ?: "",
-                            filePath = filePath,
-                            downloadDate = preferences[DOWNLOAD_DATE] ?: "",
-                        )
-                    },
+                modelFilePath = ModelFilePath(
+                    path = preferences[MODEL_FILE_PATH],
                 ),
             )
         }
@@ -170,17 +161,13 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveDisplayModelSetting(displayModelSetting: DisplayModelSetting) {
+    override suspend fun saveModelFilePath(modelFilePath: ModelFilePath) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                if (displayModelSetting.modelFile != null) {
-                    preferences[FILE_NAME] = displayModelSetting.modelFile.fileName
-                    preferences[FILE_PATH] = displayModelSetting.modelFile.filePath
-                    preferences[DOWNLOAD_DATE] = displayModelSetting.modelFile.downloadDate
+                if (modelFilePath.path != null) {
+                    preferences[MODEL_FILE_PATH] = modelFilePath.path
                 } else {
-                    preferences.remove(FILE_NAME)
-                    preferences.remove(FILE_PATH)
-                    preferences.remove(DOWNLOAD_DATE)
+                    preferences.remove(MODEL_FILE_PATH)
                 }
             }
         }

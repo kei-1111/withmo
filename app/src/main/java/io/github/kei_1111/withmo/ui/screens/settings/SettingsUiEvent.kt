@@ -6,6 +6,4 @@ import io.github.kei_1111.withmo.ui.base.UiEvent
 sealed interface SettingsUiEvent : UiEvent {
     data class OnNavigate(val screen: Screen) : SettingsUiEvent
     data object SetDefaultHomeApp : SettingsUiEvent
-    data object FileAccessPermissionDialogOnDismiss : SettingsUiEvent
-    data object FileAccessPermissionDialogOnConfirm : SettingsUiEvent
 }

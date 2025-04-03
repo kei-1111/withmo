@@ -25,7 +25,6 @@ import com.unity3d.player.UnityPlayer
 import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.display_model_setting.DisplayModelSettingScreen
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreen
 import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsScreen
@@ -139,12 +138,6 @@ fun AppContent(
 
                     is Screen.SortSettings -> {
                         SortSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
-
-                    is Screen.DisplayModelSetting -> {
-                        DisplayModelSettingScreen(
                             navigateToSettingsScreen = navigateToSettingScreen,
                         )
                     }
