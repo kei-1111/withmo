@@ -116,7 +116,7 @@ class HomeViewModel @Inject constructor(
     }
 
     suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        return FileUtils.copyVrmFile(context, uri)?.absolutePath
+        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
     }
 
     fun deleteCopiedCacheFiles(context: Context) {

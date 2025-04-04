@@ -27,14 +27,14 @@ object FileUtils {
         }
     }
 
-    suspend fun copyVrmFile(context: Context, uri: Uri): File? {
+    suspend fun copyVrmFileFromUri(context: Context, uri: Uri): File? {
         val fileName = getFileName(context, uri) ?: "model.vrm"
         if (!fileName.endsWith(".vrm", ignoreCase = true)) return null
 
-        return copyFile(context, uri, fileName)
+        return copyFileFromUri(context, uri, fileName)
     }
 
-    private suspend fun copyFile(context: Context, uri: Uri, fileName: String): File? =
+    private suspend fun copyFileFromUri(context: Context, uri: Uri, fileName: String): File? =
         withContext(FileIoDispatcher) {
             try {
                 val inputStream = context.contentResolver.openInputStream(uri) ?: return@withContext null

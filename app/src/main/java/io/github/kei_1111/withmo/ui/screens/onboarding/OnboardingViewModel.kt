@@ -72,11 +72,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        return FileUtils.copyVrmFile(context, uri)?.absolutePath
-    }
-
-    suspend fun deleteAllCacheFiles(context: Context) {
-        FileUtils.deleteAllCacheFiles(context)
+        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
     }
 
     fun setModelFilePath(modelFilePath: ModelFilePath) {
