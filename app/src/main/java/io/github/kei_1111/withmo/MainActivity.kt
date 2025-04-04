@@ -106,7 +106,7 @@ class MainActivity : ComponentActivity() {
 
         unityPlayer = UnityPlayer(this)
 
-        getDisplayModelSetting()
+        getDisplayModelSetting(this)
 
         lifecycleScope.launchWhenCreated {
             syncAppInfo()
@@ -204,13 +204,20 @@ class MainActivity : ComponentActivity() {
         appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
-    private fun getDisplayModelSetting() {
+    private fun getDisplayModelSetting(context: Context) {
         lifecycleScope.launch {
+            val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+
             getModelFilePathUseCase().collect { modelFilePath ->
-                modelFilePath.path?.let { path ->
+                if (modelFilePath.path != null) {
+                    val path = modelFilePath.path
                     if (FileUtils.fileExists(path)) {
-                        UnityPlayer.UnitySendMessage("VRMload", "ReceiveVRMFilePath", path)
+                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", path)
+                    } else {
+                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                     }
+                } else {
+                    UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                 }
             }
         }

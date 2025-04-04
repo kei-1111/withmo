@@ -14,16 +14,22 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.width
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +42,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -49,6 +56,7 @@ import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
+import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.Widget
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
@@ -137,9 +145,12 @@ fun HomeScreen(
             if (uri == null) {
                 showToast(context, "ファイルが選択されませんでした")
             } else {
+                viewModel.setIsModelLoading(true)
+                viewModel.deleteCopiedCacheFiles(context)
                 val filePath = viewModel.getVrmFilePath(context, uri)
                 if (filePath == null) {
                     showToast(context, "ファイルの読み込みに失敗しました")
+                    viewModel.setIsModelLoading(false)
                 } else {
                     viewModel.saveModelFilePath(ModelFilePath(filePath))
                 }
@@ -281,7 +292,7 @@ fun HomeScreen(
     )
 }
 
-@Suppress("LongMethod")
+@Suppress("LongMethod", "MultipleEmitters")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeScreen(
@@ -366,6 +377,12 @@ private fun HomeScreen(
             onDismiss = { onEvent(HomeUiEvent.OnModelChangeWarningDialogDismiss) },
         )
     }
+
+    if (uiState.isModelLoading) {
+        ModelLoading(
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -430,6 +447,42 @@ fun WidgetResizeBottomSheet(
                     modifier = Modifier.fillMaxWidth(),
                     steps = 1,
                 )
+            }
+        }
+    }
+}
+
+@Composable
+private fun ModelLoading(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .pointerInput(Unit) {
+                awaitPointerEventScope {
+                    while (true) {
+                        awaitPointerEvent()
+                    }
+                }
+            }
+            .padding(UiConfig.MediumPadding),
+        contentAlignment = Alignment.Center,
+    ) {
+        Surface(
+            modifier = Modifier
+                .height(UiConfig.ModelLoadingHeight)
+                .width(UiConfig.ModelLoadingWidth),
+            shape = MaterialTheme.shapes.medium,
+            shadowElevation = UiConfig.ShadowElevation,
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement
+                    .spacedBy(UiConfig.LargePadding, Alignment.CenterHorizontally),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BodyMediumText("モデルの読込中")
+                CircularProgressIndicator()
             }
         }
     }

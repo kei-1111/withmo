@@ -16,6 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -34,6 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -47,9 +49,27 @@ class HomeViewModel @Inject constructor(
     private val widgetInfoRepository: WidgetInfoRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
-) : BaseViewModel<HomeUiState, HomeUiEvent>() {
+) : BaseViewModel<HomeUiState, HomeUiEvent>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
+
+    override fun onMessageReceivedFromUnity(message: String) {
+        when (message) {
+            ModelLoadState.LoadingSuccess.name -> {
+                _uiState.update {
+                    it.copy(isModelLoading = false)
+                }
+            }
+            ModelLoadState.LoadingFailure.name -> {
+                _uiState.update {
+                    it.copy(isModelLoading = false)
+                }
+            }
+            else -> {
+                Log.d("HomeViewModel", "Unknown message from Unity: $message")
+            }
+        }
+    }
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
@@ -58,6 +78,8 @@ class HomeViewModel @Inject constructor(
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = false)
 
     init {
+        UnityToAndroidMessenger.receiver = WeakReference(this)
+
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
                 _uiState.update {
@@ -94,8 +116,13 @@ class HomeViewModel @Inject constructor(
     }
 
     suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        FileUtils.deleteAllCacheFiles(context)
         return FileUtils.copyVrmFile(context, uri)?.absolutePath
+    }
+
+    fun deleteCopiedCacheFiles(context: Context) {
+        viewModelScope.launch {
+            FileUtils.deleteCopiedCacheFiles(context)
+        }
     }
 
     fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
@@ -113,6 +140,12 @@ class HomeViewModel @Inject constructor(
     fun saveModelFilePath(modelFilePath: ModelFilePath) {
         viewModelScope.launch {
             saveModelFilePathUseCase(modelFilePath)
+        }
+    }
+
+    fun setIsModelLoading(isModelLoading: Boolean) {
+        _uiState.update {
+            it.copy(isModelLoading = isModelLoading)
         }
     }
 
@@ -309,4 +342,9 @@ class HomeViewModel @Inject constructor(
     companion object {
         private const val TimeoutMillis = 5000L
     }
+}
+
+enum class ModelLoadState {
+    LoadingSuccess,
+    LoadingFailure,
 }

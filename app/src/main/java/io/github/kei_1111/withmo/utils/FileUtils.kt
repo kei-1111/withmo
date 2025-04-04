@@ -13,14 +13,18 @@ import java.io.IOException
 object FileUtils {
     private val FileIoDispatcher = Dispatchers.IO
 
+    private const val DefaultModelFileName = "alicia_solid.vrm"
+
     fun fileExists(path: String): Boolean {
         val file = File(path)
         return file.exists()
     }
 
-    suspend fun deleteAllCacheFiles(context: Context) = withContext(FileIoDispatcher) {
+    suspend fun deleteCopiedCacheFiles(context: Context) = withContext(FileIoDispatcher) {
         val cacheDir = context.cacheDir
-        cacheDir.listFiles()?.forEach { it.delete() }
+        cacheDir.listFiles()?.forEach { file ->
+            if (file.name != DefaultModelFileName) file.delete()
+        }
     }
 
     suspend fun copyVrmFile(context: Context, uri: Uri): File? {
@@ -39,6 +43,22 @@ object FileUtils {
                 tempFile
             } catch (e: IOException) {
                 Log.e("copyFile", "Failed to copy file: $uri", e)
+                null
+            }
+        }
+
+    suspend fun copyVrmFileFromAssets(context: Context): File? =
+        withContext(FileIoDispatcher) {
+            val outputFile = File(context.filesDir, DefaultModelFileName)
+            if (outputFile.exists()) return@withContext outputFile
+
+            try {
+                context.assets.open(DefaultModelFileName).use { inputStream ->
+                    FileOutputStream(outputFile).use { output -> inputStream.copyTo(output) }
+                }
+                outputFile
+            } catch (e: IOException) {
+                Log.e("copyVrmFromAssets", "Failed to copy $DefaultModelFileName from assets", e)
                 null
             }
         }
