@@ -66,10 +66,10 @@ fun PagerContent(
             } else {
                 when (page) {
                     0 -> {
-                        UnitySendMessage("AnimationController", "TriggerEnterScreenAnimation", "")
+                        UnitySendMessage("IKAnimationController", "TriggerEnterScreenAnimation", "")
                     }
                     1 -> {
-                        UnitySendMessage("AnimationController", "TriggerExitScreenAnimation", "")
+                        UnitySendMessage("IKAnimationController", "TriggerExitScreenAnimation", "")
                     }
                 }
             }
@@ -100,13 +100,13 @@ fun PagerContent(
                                         val normalizedY = it.y / screenHeightPx
 
                                         UnitySendMessage(
-                                            "AnimationController",
+                                            "IKAnimationController",
                                             "MoveLookat",
                                             "$normalizedX,$normalizedY",
                                         )
                                     },
                                     onLongPress = {
-                                        UnitySendMessage("AnimationController", "TriggerTouchAnimation", "")
+                                        UnitySendMessage("VRMAnimationController", "TriggerTouchAnimation", "")
                                     },
                                 )
                             },
