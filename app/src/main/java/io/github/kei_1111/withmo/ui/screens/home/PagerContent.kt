@@ -221,7 +221,6 @@ private fun DisplayModelContent(
                     onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
                 },
                 icon = Icons.Rounded.ChangeCircle,
-                modifier = Modifier.padding(start = UiConfig.MediumPadding),
             )
         }
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
