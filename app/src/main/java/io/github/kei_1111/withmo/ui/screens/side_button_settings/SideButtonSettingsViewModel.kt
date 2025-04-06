@@ -37,7 +37,32 @@ class SideButtonSettingsViewModel @Inject constructor(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isScaleSliderButtonShown = isScaleSliderButtonShown,
                 ),
-                isSaveButtonEnabled = isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
+                isSaveButtonEnabled =
+                isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
+            )
+        }
+    }
+
+    fun changeIsOpenDocumentButtonShown(isOpenDocumentButtonShown: Boolean) {
+        _uiState.update {
+            it.copy(
+                sideButtonSettings = it.sideButtonSettings.copy(
+                    isOpenDocumentButtonShown = isOpenDocumentButtonShown,
+                ),
+                isSaveButtonEnabled =
+                isOpenDocumentButtonShown != it.initialSideButtonSettings.isOpenDocumentButtonShown,
+            )
+        }
+    }
+
+    fun changeIsSetDefaultModelButtonShown(isSetDefaultModelButtonShown: Boolean) {
+        _uiState.update {
+            it.copy(
+                sideButtonSettings = it.sideButtonSettings.copy(
+                    isSetDefaultModelButtonShown = isSetDefaultModelButtonShown,
+                ),
+                isSaveButtonEnabled =
+                isSetDefaultModelButtonShown != it.initialSideButtonSettings.isSetDefaultModelButtonShown,
             )
         }
     }

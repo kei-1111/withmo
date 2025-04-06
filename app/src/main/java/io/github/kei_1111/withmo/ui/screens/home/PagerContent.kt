@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import android.content.Context
 import android.view.View
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -21,8 +22,10 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
@@ -31,10 +34,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.unity3d.player.UnityPlayer.UnitySendMessage
+import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
@@ -65,10 +71,11 @@ fun PagerContent(
             } else {
                 when (page) {
                     0 -> {
-                        UnitySendMessage("AnimationController", "TriggerEnterScreenAnimation", "")
+                        UnitySendMessage("IKAnimationController", "TriggerEnterScreenAnimation", "")
                     }
+
                     1 -> {
-                        UnitySendMessage("AnimationController", "TriggerExitScreenAnimation", "")
+                        UnitySendMessage("IKAnimationController", "TriggerExitScreenAnimation", "")
                     }
                 }
             }
@@ -99,13 +106,17 @@ fun PagerContent(
                                         val normalizedY = it.y / screenHeightPx
 
                                         UnitySendMessage(
-                                            "AnimationController",
+                                            "IKAnimationController",
                                             "MoveLookat",
                                             "$normalizedX,$normalizedY",
                                         )
                                     },
                                     onLongPress = {
-                                        UnitySendMessage("AnimationController", "TriggerTouchAnimation", "")
+                                        UnitySendMessage(
+                                            "VRMAnimationController",
+                                            "TriggerTouchAnimation",
+                                            "",
+                                        )
                                     },
                                 )
                             },
@@ -214,13 +225,42 @@ private fun DisplayModelContent(
         verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding, Alignment.Bottom),
         horizontalAlignment = Alignment.End,
     ) {
+        if (
+            uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+            uiState.currentUserSettings.modelFilePath.path != null
+        ) {
+            Surface(
+                modifier = Modifier
+                    .size(UiConfig.DefaultAppIconSize.dp)
+                    .clickable { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
+                shape = CircleShape,
+                shadowElevation = UiConfig.ShadowElevation,
+            ) {
+                Image(
+                    painter = painterResource(R.drawable.alicia_icon),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop,
+                )
+            }
+        }
+        if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+            WithmoIconButton(
+                onClick = {
+                    onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
+                },
+                icon = Icons.Rounded.ChangeCircle,
+                modifier = Modifier.size(UiConfig.DefaultAppIconSize.dp),
+            )
+        }
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
             WithmoIconButton(
                 onClick = {
-                    UnitySendMessage("Slidermaneger", "ShowSlider", "")
+                    UnitySendMessage("SliderManeger", "ShowObject", "")
                     onEvent(HomeUiEvent.SetShowScaleSlider(true))
                 },
                 icon = Icons.Rounded.Man,
+                modifier = Modifier.size(UiConfig.DefaultAppIconSize.dp),
             )
         }
     }
@@ -233,7 +273,8 @@ private fun WidgetContent(
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appIconSpaceHeight = (uiState.currentUserSettings.appIconSettings.appIconSize + UiConfig.AppIconPadding).dp
+    val appIconSpaceHeight =
+        (uiState.currentUserSettings.appIconSettings.appIconSize + UiConfig.AppIconPadding).dp
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(

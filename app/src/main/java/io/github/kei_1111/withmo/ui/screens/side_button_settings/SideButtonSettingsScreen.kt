@@ -53,6 +53,14 @@ fun SideButtonSettingsScreen(
                     viewModel.changeIsScaleSliderButtonShown(event.isScaleSliderButtonShown)
                 }
 
+                is SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown -> {
+                    viewModel.changeIsOpenDocumentButtonShown(event.isOpenDocumentButtonShown)
+                }
+
+                is SideButtonSettingsUiEvent.ChangeIsSetDefaultModelButtonShown -> {
+                    viewModel.changeIsSetDefaultModelButtonShown(event.isSetDefaultModelButtonShown)
+                }
+
                 is SideButtonSettingsUiEvent.Save -> {
                     viewModel.saveSideButtonSettings()
                 }

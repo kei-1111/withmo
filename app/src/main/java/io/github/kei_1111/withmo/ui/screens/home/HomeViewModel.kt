@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -15,12 +16,17 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
+import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
@@ -29,6 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
@@ -40,14 +47,39 @@ class HomeViewModel @Inject constructor(
     private val appWidgetHost: AppWidgetHost,
     private val appInfoRepository: AppInfoRepository,
     private val widgetInfoRepository: WidgetInfoRepository,
-) : BaseViewModel<HomeUiState, HomeUiEvent>() {
+    private val oneTimeEventRepository: OneTimeEventRepository,
+    private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
+) : BaseViewModel<HomeUiState, HomeUiEvent>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
+
+    override fun onMessageReceivedFromUnity(message: String) {
+        when (message) {
+            ModelLoadState.LoadingSuccess.name -> {
+                _uiState.update {
+                    it.copy(isModelLoading = false)
+                }
+            }
+            ModelLoadState.LoadingFailure.name -> {
+                _uiState.update {
+                    it.copy(isModelLoading = false)
+                }
+            }
+            else -> {
+                Log.d("HomeViewModel", "Unknown message from Unity: $message")
+            }
+        }
+    }
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
 
+    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown
+        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = false)
+
     init {
+        UnityToAndroidMessenger.receiver = WeakReference(this)
+
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
                 _uiState.update {
@@ -80,6 +112,40 @@ class HomeViewModel @Inject constructor(
     fun setShowScaleSlider(show: Boolean) {
         _uiState.update {
             it.copy(isShowScaleSlider = show)
+        }
+    }
+
+    suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
+        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
+    }
+
+    fun deleteCopiedCacheFiles(context: Context) {
+        viewModelScope.launch {
+            FileUtils.deleteCopiedCacheFiles(context)
+        }
+    }
+
+    fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
+        _uiState.update {
+            it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
+        }
+    }
+
+    fun markModelChangeWarningFirstShown() {
+        viewModelScope.launch {
+            oneTimeEventRepository.markModelChangeWarningFirstShown()
+        }
+    }
+
+    fun saveModelFilePath(modelFilePath: ModelFilePath) {
+        viewModelScope.launch {
+            saveModelFilePathUseCase(modelFilePath)
+        }
+    }
+
+    fun setIsModelLoading(isModelLoading: Boolean) {
+        _uiState.update {
+            it.copy(isModelLoading = isModelLoading)
         }
     }
 
@@ -276,4 +342,9 @@ class HomeViewModel @Inject constructor(
     companion object {
         private const val TimeoutMillis = 5000L
     }
+}
+
+enum class ModelLoadState {
+    LoadingSuccess,
+    LoadingFailure,
 }

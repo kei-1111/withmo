@@ -28,7 +28,7 @@ import io.github.kei_1111.withmo.domain.model.TimeBasedUnitySendMessageManager
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.domain.usecase.user_settings.display_model.GetDisplayModelSettingUseCase
+import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.ui.App
 import io.github.kei_1111.withmo.ui.composition.CurrentTimeProvider
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
     private val timeBasedUnitySendMessageManager = TimeBasedUnitySendMessageManager()
 
     @Inject
-    lateinit var getDisplayModelSettingUseCase: GetDisplayModelSettingUseCase
+    lateinit var getModelFilePathUseCase: GetModelFilePathUseCase
 
     @Inject
     lateinit var appInfoRepository: AppInfoRepository
@@ -106,7 +106,7 @@ class MainActivity : ComponentActivity() {
 
         unityPlayer = UnityPlayer(this)
 
-        getDisplayModelSetting()
+        getDisplayModelSetting(this)
 
         lifecycleScope.launchWhenCreated {
             syncAppInfo()
@@ -204,13 +204,20 @@ class MainActivity : ComponentActivity() {
         appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
-    private fun getDisplayModelSetting() {
+    private fun getDisplayModelSetting(context: Context) {
         lifecycleScope.launch {
-            getDisplayModelSettingUseCase().collect { displayModelSetting ->
-                displayModelSetting.modelFile?.let { modelFile ->
-                    if (FileUtils.fileExists(modelFile.filePath)) {
-                        modelFile.sendPathToUnity()
+            val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+
+            getModelFilePathUseCase().collect { modelFilePath ->
+                if (modelFilePath.path != null) {
+                    val path = modelFilePath.path
+                    if (FileUtils.fileExists(path)) {
+                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", path)
+                    } else {
+                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                     }
+                } else {
+                    UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                 }
             }
         }

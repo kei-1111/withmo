@@ -2,11 +2,8 @@ package io.github.kei_1111.withmo.ui.screens.settings
 
 import android.content.Intent
 import android.os.Build
-import android.os.Environment
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -39,7 +36,6 @@ import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.theme.UiConfig
 import io.github.kei_1111.withmo.utils.AppUtils
-import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -56,15 +52,6 @@ fun SettingsScreen(
 
     val latestOnNavigate by rememberUpdatedState(onNavigate)
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            if (Environment.isExternalStorageManager()) {
-                latestOnNavigate(Screen.DisplayModelSetting)
-            }
-        },
-    )
-
     BackHandler {
         viewModel.onEvent(io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate(Screen.Home))
     }
@@ -77,30 +64,12 @@ fun SettingsScreen(
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
                 is io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate -> {
-                    if (event.screen == Screen.DisplayModelSetting) {
-                        if (Environment.isExternalStorageManager()) {
-                            latestOnNavigate(Screen.DisplayModelSetting)
-                        } else {
-                            viewModel.changeIsFileAccessPermissionDialogShown(true)
-                        }
-                    } else {
-                        latestOnNavigate(event.screen)
-                    }
+                    latestOnNavigate(event.screen)
                 }
 
                 is SettingsUiEvent.SetDefaultHomeApp -> {
                     val intent = Intent(Settings.ACTION_HOME_SETTINGS)
                     context.startActivity(intent)
-                }
-
-                is SettingsUiEvent.FileAccessPermissionDialogOnConfirm -> {
-                    viewModel.changeIsFileAccessPermissionDialogShown(false)
-                    launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
-                }
-
-                is SettingsUiEvent.FileAccessPermissionDialogOnDismiss -> {
-                    viewModel.changeIsFileAccessPermissionDialogShown(false)
-                    showToast(context, "ファイルアクセス許可が必要です")
                 }
             }
         }.launchIn(this)
@@ -147,21 +116,6 @@ private fun SettingsScreen(
                 onEvent = onEvent,
             )
         }
-    }
-
-    if (uiState.isFileAccessPermissionDialogShown) {
-        FileAccessPermissionDialog(
-            onConfirm = {
-                onEvent(
-                    io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.FileAccessPermissionDialogOnConfirm,
-                )
-            },
-            onDismiss = {
-                onEvent(
-                    io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.FileAccessPermissionDialogOnDismiss,
-                )
-            },
-        )
     }
 }
 

@@ -12,20 +12,34 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.data.local.database.WithmoDatabase
+import javax.inject.Qualifier
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
 
-//    DataStore
+//    UserSettingDataStore
     @Provides
     @Singleton
+    @UserSetting
     fun providePreferencesDataStore(
         @ApplicationContext context: Context,
     ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
         produceFile = {
             context.preferencesDataStoreFile("user_setting_preference")
+        },
+    )
+
+//    OneTimeEvenDataStore
+    @Provides
+    @Singleton
+    @OneTimeEvent
+    fun provideOneTimeEventPreferencesDataStore(
+        @ApplicationContext context: Context,
+    ): DataStore<Preferences> = PreferenceDataStoreFactory.create(
+        produceFile = {
+            context.preferencesDataStoreFile("one_time_event_preference")
         },
     )
 
@@ -48,3 +62,11 @@ object DatabaseModule {
     @Singleton
     fun provideWidgetInfoDao(database: WithmoDatabase) = database.widgetInfoDao()
 }
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class UserSetting
+
+@Qualifier
+@Retention(AnnotationRetention.BINARY)
+annotation class OneTimeEvent

@@ -14,7 +14,6 @@ import androidx.compose.material.icons.rounded.AccessTime
 import androidx.compose.material.icons.rounded.Apps
 import androidx.compose.material.icons.rounded.ErrorOutline
 import androidx.compose.material.icons.rounded.Home
-import androidx.compose.material.icons.rounded.InsertDriveFile
 import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Palette
@@ -53,7 +52,6 @@ fun SettingsScreenContent(
         )
         HomeScreenSettings(onEvent = onEvent)
         NotificationSettings(onEvent = onEvent)
-        ModelSettings(onEvent = onEvent)
         ThemeSettings(onEvent = onEvent)
     }
 }
@@ -187,36 +185,6 @@ private fun NotificationSettings(
                     itemName = "通知",
                     onClick = {
                         onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings))
-                    },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ModelSettings(
-    onEvent: (io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
-    ) {
-        LabelMediumText(
-            text = "モデルの設定",
-        )
-        Surface(
-            modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceContainer,
-        ) {
-            Column {
-                SettingItem(
-                    icon = Icons.Rounded.InsertDriveFile,
-                    itemName = "表示モデル",
-                    onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.DisplayModelSetting))
                     },
                 )
             }

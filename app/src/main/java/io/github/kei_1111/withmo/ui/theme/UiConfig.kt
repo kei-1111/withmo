@@ -49,7 +49,8 @@ data object UiConfig {
 //    Shadow
     val ShadowElevation = 5.dp
 
-    val PopupWidth = 400.dp
+    val ModelLoadingHeight = 100.dp
+    val ModelLoadingWidth = 300.dp
 
     val BadgeSize = 15.dp
 

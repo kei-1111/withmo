@@ -8,14 +8,6 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsUiState, S
 
     override fun createInitialState(): SettingsUiState = SettingsUiState()
 
-    fun changeIsFileAccessPermissionDialogShown(isFileAccessPermissionDialogShown: Boolean) {
-        _uiState.update {
-            it.copy(
-                isFileAccessPermissionDialogShown = isFileAccessPermissionDialogShown,
-            )
-        }
-    }
-
     fun changeIsDefaultHomeApp(isDefaultHomeApp: Boolean) {
         _uiState.update {
             it.copy(

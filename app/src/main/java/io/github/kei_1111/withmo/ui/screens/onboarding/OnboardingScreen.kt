@@ -1,9 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
-import android.content.Intent
 import android.os.Build
-import android.os.Environment
-import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -21,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -29,17 +27,19 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.FinishContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectDisplayModelContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectFavoriteAppContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.WelcomeContent
 import io.github.kei_1111.withmo.ui.theme.UiConfig
-import io.github.kei_1111.withmo.utils.FileUtils
+import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing")
@@ -51,21 +51,23 @@ fun OnboardingScreen(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            if (Environment.isExternalStorageManager()) {
-                viewModel.getModelFileList(FileUtils.getModelFile(context))
+    val openDocumentLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.OpenDocument(),
+    ) { uri ->
+        scope.launch {
+            if (uri == null) {
+                showToast(context, "ファイルが選択されませんでした")
+            } else {
+                val filePath = viewModel.getVrmFilePath(context, uri)
+                if (filePath == null) {
+                    showToast(context, "ファイルの読み込みに失敗しました")
+                }
+                viewModel.setModelFilePath(ModelFilePath(filePath))
             }
-        },
-    )
-
-    if (Environment.isExternalStorageManager()) {
-        LaunchedEffect(Unit) {
-            viewModel.getModelFileList(FileUtils.getModelFile(context))
         }
     }
 
@@ -86,12 +88,8 @@ fun OnboardingScreen(
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is OnboardingUiEvent.SelectModelFile -> {
-                    viewModel.selectModelFile(event.modelFile)
-                }
-
-                is OnboardingUiEvent.RequestExternalStoragePermission -> {
-                    launcher.launch(Intent(Settings.ACTION_MANAGE_ALL_FILES_ACCESS_PERMISSION))
+                is OnboardingUiEvent.OnOpenDocumentButtonClick -> {
+                    openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
                 is OnboardingUiEvent.NavigateToNextPage -> {
@@ -104,7 +102,6 @@ fun OnboardingScreen(
 
                 is OnboardingUiEvent.OnboardingFinished -> {
                     viewModel.saveSetting()
-                    uiState.selectedModelFile?.sendPathToUnity()
                     latestNavigateToHomeScreen()
                 }
             }
