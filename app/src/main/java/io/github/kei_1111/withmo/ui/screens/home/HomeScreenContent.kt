@@ -48,7 +48,7 @@ fun HomeScreenContent(
             ) {
                 WithmoIconButton(
                     onClick = {
-                        UnitySendMessage("Slidermaneger", "HideObject", "")
+                        UnitySendMessage("SliderManeger", "HideObject", "")
                         onEvent(HomeUiEvent.SetShowScaleSlider(false))
                     },
                     icon = Icons.Rounded.Close,

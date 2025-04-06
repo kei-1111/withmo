@@ -256,7 +256,7 @@ private fun DisplayModelContent(
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
             WithmoIconButton(
                 onClick = {
-                    UnitySendMessage("Slidermaneger", "ShowObject", "")
+                    UnitySendMessage("SliderManeger", "ShowObject", "")
                     onEvent(HomeUiEvent.SetShowScaleSlider(true))
                 },
                 icon = Icons.Rounded.Man,
