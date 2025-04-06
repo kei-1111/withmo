@@ -49,6 +49,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
         val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
+        val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
         val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
     }
@@ -94,6 +95,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 sideButtonSettings = SideButtonSettings(
                     isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
+                    isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
                 ),
                 themeSettings = ThemeSettings(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
@@ -149,6 +151,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     sideButtonSettings.isScaleSliderButtonShown
                 preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] =
                     sideButtonSettings.isOpenDocumentButtonShown
+                preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] =
+                    sideButtonSettings.isSetDefaultModelButtonShown
             }
         }
     }

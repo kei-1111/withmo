@@ -32,5 +32,11 @@ fun SideButtonSettingsScreenContent(
             onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
+        WithmoSettingItemWithSwitch(
+            title = "デフォルトモデル設定ボタンの表示",
+            checked = uiState.sideButtonSettings.isSetDefaultModelButtonShown,
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsSetDefaultModelButtonShown(it)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

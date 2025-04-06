@@ -9,6 +9,9 @@ sealed interface SideButtonSettingsUiEvent : UiEvent {
     data class ChangeIsOpenDocumentButtonShown(
         val isOpenDocumentButtonShown: Boolean,
     ) : SideButtonSettingsUiEvent
+    data class ChangeIsSetDefaultModelButtonShown(
+        val isSetDefaultModelButtonShown: Boolean,
+    ) : SideButtonSettingsUiEvent
     data object Save : SideButtonSettingsUiEvent
     data object SaveSuccess : SideButtonSettingsUiEvent
     data object SaveFailure : SideButtonSettingsUiEvent

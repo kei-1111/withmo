@@ -182,6 +182,15 @@ fun HomeScreen(
                     viewModel.setShowScaleSlider(event.isShow)
                 }
 
+                is HomeUiEvent.OnSetDefaultModelButtonClick -> {
+                    scope.launch {
+                        if (uiState.currentUserSettings.modelFilePath.path != null) {
+                            viewModel.setIsModelLoading(true)
+                            viewModel.saveModelFilePath(ModelFilePath(null))
+                        }
+                    }
+                }
+
                 is HomeUiEvent.OnOpenDocumentButtonClick -> {
                     if (isModelChangeWarningFirstShown) {
                         openDocumentLauncher.launch(arrayOf("*/*"))
