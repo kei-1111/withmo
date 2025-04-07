@@ -20,7 +20,7 @@ import io.github.kei_1111.withmo.ui.theme.UiConfig
 
 @Composable
 fun ClockSettingsScreenContent(
-    uiState: io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState,
+    uiState: ClockSettingsUiState,
     onEvent: (ClockSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {

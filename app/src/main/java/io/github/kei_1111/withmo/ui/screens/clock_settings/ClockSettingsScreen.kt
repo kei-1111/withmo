@@ -86,7 +86,7 @@ fun ClockSettingsScreen(
 
 @Composable
 private fun ClockSettingsScreen(
-    uiState: io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState,
+    uiState: ClockSettingsUiState,
     onEvent: (ClockSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {

@@ -53,7 +53,7 @@ fun SettingsScreen(
     val latestOnNavigate by rememberUpdatedState(onNavigate)
 
     BackHandler {
-        viewModel.onEvent(io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate(Screen.Home))
+        viewModel.onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
     }
 
     LaunchedEffect(Unit) {
@@ -63,7 +63,7 @@ fun SettingsScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate -> {
+                is SettingsUiEvent.OnNavigate -> {
                     latestOnNavigate(event.screen)
                 }
 
@@ -86,7 +86,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUiState,
-    onEvent: (io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent) -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -103,9 +103,7 @@ private fun SettingsScreen(
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
                 navigateClose = {
-                    onEvent(
-                        io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate(Screen.Home),
-                    )
+                    onEvent(SettingsUiEvent.OnNavigate(Screen.Home),)
                 },
             )
             SettingsScreenContent(

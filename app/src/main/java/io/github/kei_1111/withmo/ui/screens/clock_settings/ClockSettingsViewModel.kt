@@ -17,8 +17,7 @@ class ClockSettingsViewModel @Inject constructor(
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
 ) : BaseViewModel<ClockSettingsUiState, ClockSettingsUiEvent>() {
 
-    override fun createInitialState(): io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState =
-        io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState()
+    override fun createInitialState(): ClockSettingsUiState = ClockSettingsUiState()
 
     init {
         viewModelScope.launch {

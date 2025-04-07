@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<AppUiState>(AppUiState())
+    private val _uiState = MutableStateFlow(AppUiState())
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     init {
