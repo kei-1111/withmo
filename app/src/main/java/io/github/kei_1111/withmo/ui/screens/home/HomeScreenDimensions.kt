@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import androidx.compose.ui.unit.dp
 
-object HomeScreenDimensions {
+internal data object HomeScreenDimensions {
     val ModelLoadingHeight = 100.dp
     val ModelLoadingWidth = 300.dp
 

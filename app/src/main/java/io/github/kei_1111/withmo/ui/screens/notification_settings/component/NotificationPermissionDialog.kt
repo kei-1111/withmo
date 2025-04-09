@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 
 @Composable
-fun NotificationPermissionDialog(
+internal fun NotificationPermissionDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,

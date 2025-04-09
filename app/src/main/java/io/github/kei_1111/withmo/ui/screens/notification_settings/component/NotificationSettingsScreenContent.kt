@@ -12,7 +12,7 @@ import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSe
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
-fun NotificationSettingsScreenContent(
+internal fun NotificationSettingsScreenContent(
     uiState: NotificationSettingsUiState,
     onEvent: (NotificationSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
