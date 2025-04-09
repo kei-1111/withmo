@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.ui.screens.home.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +14,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,82 +30,95 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
 import io.github.kei_1111.withmo.ui.theme.DesignConstants
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeAppList(
-    onClick: (AppInfo) -> Unit,
+internal fun AppListSheet(
     appList: ImmutableList<AppInfo>,
-    appIconShape: Shape,
-    appSearchQuery: String,
-    onValueChangeAppSearchQuery: (String) -> Unit,
+    appListSheetState: SheetState,
+    uiState: HomeUiState,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
-    onLongClick: (AppInfo) -> Unit = {},
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
-            appInfo.label.contains(appSearchQuery, ignoreCase = true)
+            appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
         }.toPersistentList()
     }
 
-    Surface(
-        modifier = modifier,
+    ModalBottomSheet(
+        onDismissRequest = { onEvent(HomeUiEvent.HideAppListBottomSheet) },
+        shape = BottomSheetShape,
+        sheetState = appListSheetState,
+        dragHandle = {},
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
-                    start = Paddings.Medium,
-                    end = Paddings.Medium,
-                ),
-            verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Surface(
+            modifier = modifier,
         ) {
-            WithmoSearchTextField(
-                modifier = Modifier.fillMaxWidth(),
-                value = appSearchQuery,
-                onValueChange = onValueChangeAppSearchQuery,
-                action = {
-                    resultAppList = appList.filter { appInfo ->
-                        appInfo.label.contains(appSearchQuery, ignoreCase = true)
-                    }.toPersistentList()
-                },
-            )
-            if (resultAppList.isNotEmpty()) {
-                HomeAppList(
-                    appList = resultAppList,
-                    appIconShape = appIconShape,
-                    onClick = onClick,
-                    onLongClick = onLongClick,
-                    modifier = Modifier.fillMaxSize(),
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
+                        start = Paddings.Medium,
+                        end = Paddings.Medium,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(
+                    Paddings.Medium,
+                    Alignment.CenterVertically,
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                WithmoSearchTextField(
+                    modifier = Modifier.fillMaxWidth(),
+                    value = uiState.appSearchQuery,
+                    onValueChange = { onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it)) },
+                    action = {
+                        resultAppList = appList.filter { appInfo ->
+                            appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
+                        }.toPersistentList()
+                    },
                 )
-            } else {
-                CenteredMessage(
-                    message = "アプリが見つかりません",
-                    modifier = Modifier.fillMaxSize(),
-                )
+                if (resultAppList.isNotEmpty()) {
+                    AppList(
+                        appList = resultAppList,
+                        appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
+                            uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
+                        ),
+                        onEvent = onEvent,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                } else {
+                    CenteredMessage(
+                        message = "アプリが見つかりません",
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
             }
         }
     }
 }
 
 @Composable
-private fun HomeAppList(
+private fun AppList(
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
-    onClick: (AppInfo) -> Unit,
-    onLongClick: (AppInfo) -> Unit,
+    onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -129,8 +145,8 @@ private fun HomeAppList(
                     items = launchableAppList,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = onClick,
-                    onLongClick = onLongClick,
+                    onClick = { onEvent(HomeUiEvent.StartApp(it)) },
+                    onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
                 )
             }
         }
@@ -145,8 +161,8 @@ private fun HomeAppList(
                     items = settingApp,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = onClick,
-                    onLongClick = onLongClick,
+                    onClick = { onEvent(HomeUiEvent.StartApp(it)) },
+                    onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
                 )
             }
         }
@@ -154,7 +170,7 @@ private fun HomeAppList(
 }
 
 @Composable
-fun CustomAppInfoGridLayout(
+private fun CustomAppInfoGridLayout(
     items: ImmutableList<AppInfo>,
     columns: Int,
     appIconShape: Shape,

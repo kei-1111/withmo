@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.ui.screens.home.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 
 @Composable
-fun ModelChangeWarningDialog(
+internal fun ModelChangeWarningDialog(
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,

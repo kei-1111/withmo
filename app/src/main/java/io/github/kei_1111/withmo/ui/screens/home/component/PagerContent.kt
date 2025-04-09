@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.ui.screens.home.component
 
 import android.content.Context
 import android.view.View
@@ -46,6 +46,9 @@ import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
+import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
@@ -55,7 +58,7 @@ private const val PageCount = 2
 
 @Suppress("LongMethod")
 @Composable
-fun PagerContent(
+internal fun PagerContent(
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,

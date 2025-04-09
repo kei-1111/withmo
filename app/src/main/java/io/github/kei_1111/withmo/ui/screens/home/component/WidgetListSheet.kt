@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.ui.screens.home.component
 
 import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
@@ -21,8 +21,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -36,6 +39,8 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
@@ -46,9 +51,29 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+internal fun WidgetListSheet(
+    widgetListSheetState: SheetState,
+    groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
+    onEvent: (HomeUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    ModalBottomSheet(
+        onDismissRequest = { onEvent(HomeUiEvent.HideWidgetListBottomSheet) },
+        sheetState = widgetListSheetState,
+        modifier = modifier,
+    ) {
+        WidgetList(
+            groupedWidgetInfoMap = groupedWidgetInfoMap,
+            selectWidget = { onEvent(HomeUiEvent.OnSelectWidget(it)) },
+        )
+    }
+}
+
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun WidgetList(
+private fun WidgetList(
     groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -73,7 +98,7 @@ fun WidgetList(
 @RequiresApi(Build.VERSION_CODES.S)
 @Suppress("LongMethod")
 @Composable
-fun WidgetContainer(
+private fun WidgetContainer(
     packageName: String,
     widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
@@ -148,7 +173,7 @@ private const val WidgetDescriptionMaxLines = 3
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-fun WidgetItem(
+private fun WidgetItem(
     widgetInfo: AppWidgetProviderInfo,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,

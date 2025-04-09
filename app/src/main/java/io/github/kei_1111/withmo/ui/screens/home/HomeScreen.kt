@@ -11,42 +11,25 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.min
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -55,13 +38,13 @@ import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
-import io.github.kei_1111.withmo.domain.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.Widget
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
-import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
+import io.github.kei_1111.withmo.ui.screens.home.component.AppListSheet
+import io.github.kei_1111.withmo.ui.screens.home.component.HomeScreenContent
+import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDialog
+import io.github.kei_1111.withmo.ui.screens.home.component.ModelLoading
+import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
+import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -69,7 +52,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import kotlin.math.roundToInt
 
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -321,39 +303,23 @@ private fun HomeScreen(
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
     if (uiState.isAppListBottomSheetOpened) {
-        ModalBottomSheet(
-            onDismissRequest = { onEvent(HomeUiEvent.HideAppListBottomSheet) },
-            shape = BottomSheetShape,
-            sheetState = appListSheetState,
-            dragHandle = {},
-        ) {
-            HomeAppList(
-                onClick = { onEvent(HomeUiEvent.StartApp(it)) },
-                onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
-                appList = homeAppList,
-                appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
-                    uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
-                ),
-                appSearchQuery = uiState.appSearchQuery,
-                onValueChangeAppSearchQuery = { onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it)) },
-                modifier = modifier,
-            )
-        }
+        AppListSheet(
+            appList = homeAppList,
+            appListSheetState = appListSheetState,
+            uiState = uiState,
+            onEvent = onEvent,
+        )
     }
 
     if (uiState.isWidgetListBottomSheetOpened) {
-        ModalBottomSheet(
-            onDismissRequest = { onEvent(HomeUiEvent.HideWidgetListBottomSheet) },
-            sheetState = widgetListSheetState,
+        WidgetListSheet(
+            widgetListSheetState = widgetListSheetState,
+            groupedWidgetInfoMap = groupedWidgetInfoMap,
+            onEvent = onEvent,
             modifier = Modifier.padding(
                 top = topPaddingValue,
             ),
-        ) {
-            WidgetList(
-                groupedWidgetInfoMap = groupedWidgetInfoMap,
-                selectWidget = { onEvent(HomeUiEvent.OnSelectWidget(it)) },
-            )
-        }
+        )
     }
 
     if (uiState.isWidgetResizing) {
@@ -392,108 +358,5 @@ private fun HomeScreen(
         ModelLoading(
             modifier = Modifier.fillMaxSize(),
         )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun WidgetResizeBottomSheet(
-    widgetInfo: WidgetInfo,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    close: (WidgetInfo) -> Unit,
-) {
-    val configuration = LocalConfiguration.current
-
-    val screenWidth = configuration.screenWidthDp
-    val screenHeight = configuration.screenHeightDp
-
-    val draggedSpaceWidth = screenWidth.dp - Paddings.Medium - Paddings.Medium
-    val draggedSpaceHeight = screenHeight.dp - Paddings.Medium - Paddings.Medium
-    val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
-
-    var widgetWidth by remember { mutableFloatStateOf(widgetInfo.width.toFloat()) }
-    var widgetHeight by remember { mutableFloatStateOf(widgetInfo.height.toFloat()) }
-
-    ModalBottomSheet(
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
-        onDismissRequest = {
-            close(
-                widgetInfo.copy(
-                    width = widgetWidth.roundToInt(),
-                    height = widgetHeight.roundToInt(),
-                ),
-            )
-        },
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Widget(
-                widgetInfo = widgetInfo.copy(
-                    width = widgetWidth.roundToInt(),
-                    height = widgetHeight.roundToInt(),
-                ),
-                createWidgetView = createWidgetView,
-            )
-            Column(
-                modifier = Modifier.padding(Paddings.Medium),
-                verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-            ) {
-                WithmoSettingItemWithSlider(
-                    title = "Widget 幅",
-                    value = widgetWidth,
-                    onValueChange = { widgetWidth = it },
-                    valueRange = (minDraggedSpaceDimension / 3f).value..minDraggedSpaceDimension.value,
-                    modifier = Modifier.fillMaxWidth(),
-                    steps = 1,
-                )
-                WithmoSettingItemWithSlider(
-                    title = "Widget 高さ",
-                    value = widgetHeight,
-                    onValueChange = { widgetHeight = it },
-                    valueRange = (minDraggedSpaceDimension / 3f).value..minDraggedSpaceDimension.value,
-                    modifier = Modifier.fillMaxWidth(),
-                    steps = 1,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun ModelLoading(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .pointerInput(Unit) {
-                awaitPointerEventScope {
-                    while (true) {
-                        awaitPointerEvent()
-                    }
-                }
-            }
-            .padding(Paddings.Medium),
-        contentAlignment = Alignment.Center,
-    ) {
-        Surface(
-            modifier = Modifier
-                .height(HomeScreenDimensions.ModelLoadingHeight)
-                .width(HomeScreenDimensions.ModelLoadingWidth),
-            shape = MaterialTheme.shapes.medium,
-            shadowElevation = ShadowElevations.Medium,
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement
-                    .spacedBy(Paddings.Large, Alignment.CenterHorizontally),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                BodyMediumText("モデルの読込中")
-                CircularProgressIndicator()
-            }
-        }
     }
 }

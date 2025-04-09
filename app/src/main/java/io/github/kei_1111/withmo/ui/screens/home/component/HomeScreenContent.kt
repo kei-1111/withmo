@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.ui.screens.home.component
 
 import android.content.Context
 import android.os.Build
@@ -26,6 +26,8 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
@@ -34,7 +36,7 @@ private const val BottomSheetShowDragHeight = -50f
 @RequiresApi(Build.VERSION_CODES.O)
 @Suppress("LongMethod")
 @Composable
-fun HomeScreenContent(
+internal fun HomeScreenContent(
     createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
