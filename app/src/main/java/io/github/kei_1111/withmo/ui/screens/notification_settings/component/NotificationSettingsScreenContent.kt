@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.notification_settings
+package io.github.kei_1111.withmo.ui.screens.notification_settings.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable

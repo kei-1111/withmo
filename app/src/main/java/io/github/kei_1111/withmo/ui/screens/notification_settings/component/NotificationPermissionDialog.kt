@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.notification_settings
+package io.github.kei_1111.withmo.ui.screens.notification_settings.component
 
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
