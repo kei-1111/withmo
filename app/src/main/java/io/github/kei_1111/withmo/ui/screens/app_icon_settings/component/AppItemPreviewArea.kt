@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.app_icon_settings
+package io.github.kei_1111.withmo.ui.screens.app_icon_settings.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -21,11 +21,12 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
-fun AppItemPreviewArea(
+internal fun AppItemPreviewArea(
     appIconSettings: AppIconSettings,
     modifier: Modifier = Modifier,
 ) {
