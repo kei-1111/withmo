@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding.content
+package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,10 +20,10 @@ import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
@@ -31,7 +31,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
 @Composable
-fun SelectFavoriteAppContent(
+internal fun SelectFavoriteAppContent(
     appList: ImmutableList<AppInfo>,
     uiState: OnboardingUiState,
     onEvent: (OnboardingUiEvent) -> Unit,

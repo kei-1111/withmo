@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding.content
+package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -15,16 +15,16 @@ import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
-fun SelectDisplayModelContent(
+internal fun SelectDisplayModelContent(
     uiState: OnboardingUiState,
     onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,

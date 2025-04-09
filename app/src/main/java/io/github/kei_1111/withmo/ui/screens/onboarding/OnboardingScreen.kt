@@ -8,12 +8,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,13 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.FinishContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectDisplayModelContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectFavoriteAppContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.WelcomeContent
-import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.FinishContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectDisplayModelContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectFavoriteAppContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.WelcomeContent
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -168,43 +161,5 @@ private fun OnboardingScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun OnboardingBottomAppBarNextButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    FilledTonalButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
-        enabled = enabled,
-    ) {
-        BodyMediumText(
-            text = text,
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-            },
-        )
-    }
-}
-
-@Composable
-fun OnboardingBottomAppBarPreviousButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
-    ) {
-        BodyMediumText(text = "戻る")
     }
 }
