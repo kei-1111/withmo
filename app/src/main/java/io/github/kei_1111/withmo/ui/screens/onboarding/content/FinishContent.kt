@@ -18,8 +18,10 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 fun FinishContent(
@@ -32,26 +34,26 @@ fun FinishContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(UiConfig.DefaultWeight)
-                .padding(UiConfig.MediumPadding),
+                .weight(Weights.Medium)
+                .padding(Paddings.Medium),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.onboarding_finish_logo),
                 contentDescription = "Finish",
-                modifier = Modifier.size(UiConfig.OnboardingImageSize),
+                modifier = Modifier.size(OnboardingDimensions.FinishImageSize),
             )
-            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            Spacer(modifier = Modifier.height(Paddings.Medium))
             DisplayMediumText("Completed!")
-            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            Spacer(modifier = Modifier.height(Paddings.Medium))
             BodyMediumText("設定が完了しました！")
         }
         FinishContentBottomAppBar(
             onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(UiConfig.MediumPadding),
+                .padding(Paddings.Medium),
         )
     }
 }
@@ -63,16 +65,16 @@ private fun FinishContentBottomAppBar(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
             onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "はじめる",
             onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
         )
     }
 }

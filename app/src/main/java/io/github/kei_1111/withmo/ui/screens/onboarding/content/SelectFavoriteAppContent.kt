@@ -24,7 +24,8 @@ import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNex
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -55,14 +56,14 @@ fun SelectFavoriteAppContent(
         )
         Column(
             modifier = Modifier
-                .weight(UiConfig.DefaultWeight)
+                .weight(Weights.Medium)
                 .padding(
-                    top = UiConfig.MediumPadding,
-                    start = UiConfig.MediumPadding,
-                    end = UiConfig.MediumPadding,
+                    top = Paddings.Medium,
+                    start = Paddings.Medium,
+                    end = Paddings.Medium,
                 ),
             verticalArrangement = Arrangement.spacedBy(
-                UiConfig.MediumPadding,
+                Paddings.Medium,
                 Alignment.CenterVertically,
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -81,12 +82,12 @@ fun SelectFavoriteAppContent(
                     removeSelectedAppList = { onEvent(OnboardingUiEvent.RemoveSelectedAppList(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(UiConfig.DefaultWeight),
+                        .weight(Weights.Medium),
                 )
             } else {
                 CenteredMessage(
                     message = "アプリが見つかりません",
-                    modifier = Modifier.weight(UiConfig.DefaultWeight),
+                    modifier = Modifier.weight(Weights.Medium),
                 )
             }
         }
@@ -111,17 +112,17 @@ private fun SelectFavoriteAppContentBottomAppBar(
 ) {
     Row(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
             onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "次へ",
             onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
             enabled = uiState.selectedAppList.isNotEmpty(),
         )
     }

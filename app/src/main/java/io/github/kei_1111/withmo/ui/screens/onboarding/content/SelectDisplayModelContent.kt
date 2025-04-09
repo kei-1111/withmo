@@ -19,7 +19,8 @@ import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNex
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
@@ -34,13 +35,13 @@ fun SelectDisplayModelContent(
         WithmoTopAppBar(content = { TitleLargeText("表示モデルしたいモデルは？") })
         Column(
             modifier = Modifier
-                .padding(UiConfig.MediumPadding)
-                .weight(UiConfig.DefaultWeight),
+                .padding(Paddings.Medium)
+                .weight(Weights.Medium),
             verticalArrangement = Arrangement.Center,
         ) {
             TitleLargeText(
                 text = "表示モデル選択の注意",
-                modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
+                modifier = Modifier.padding(vertical = Paddings.Medium),
             )
             BodyMediumText(text = "モデルは、VRMファイルのみ対応しております。")
             BodyMediumText(text = "モデルのVRMファイルを選択してください。")
@@ -53,14 +54,14 @@ fun SelectDisplayModelContent(
             )
             BodyMediumText(
                 text = "選択中のファイル：${uiState.modelFilePath.path?.substringAfterLast("/") ?: "デフォルト"}",
-                modifier = Modifier.padding(vertical = UiConfig.SmallPadding),
+                modifier = Modifier.padding(vertical = Paddings.Small),
             )
         }
         SelectDisplayModelContentBottomAppBar(
             onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(UiConfig.MediumPadding),
+                .padding(Paddings.Medium),
         )
     }
 }
@@ -72,16 +73,16 @@ private fun SelectDisplayModelContentBottomAppBar(
 ) {
     Row(
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
             onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "次へ",
             onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
-            modifier = Modifier.weight(UiConfig.DefaultWeight),
+            modifier = Modifier.weight(Weights.Medium),
         )
     }
 }

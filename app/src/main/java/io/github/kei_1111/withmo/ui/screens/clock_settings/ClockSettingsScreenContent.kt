@@ -16,7 +16,7 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun ClockSettingsScreenContent(
@@ -26,8 +26,8 @@ fun ClockSettingsScreenContent(
 ) {
     Column(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         WithmoSettingItemWithSwitch(
             title = "時計の表示",
@@ -59,14 +59,14 @@ fun ClockTypePicker(
         Column {
             BodyMediumText(
                 text = "時計の種類",
-                modifier = Modifier.padding(UiConfig.MediumPadding),
+                modifier = Modifier.padding(Paddings.Medium),
             )
             WithmoSettingItemWithRadioButton(
                 item = {
                     WithmoClock(
                         clockType = ClockType.TOP_DATE,
                         dateTimeInfo = DateTimeInfo(),
-                        modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
+                        modifier = Modifier.padding(vertical = Paddings.Medium),
                     )
                 },
                 selected = ClockType.TOP_DATE == selectedClockType,
@@ -80,7 +80,7 @@ fun ClockTypePicker(
                     WithmoClock(
                         clockType = ClockType.HORIZONTAL_DATE,
                         dateTimeInfo = DateTimeInfo(),
-                        modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
+                        modifier = Modifier.padding(vertical = Paddings.Medium),
                     )
                 },
                 selected = ClockType.HORIZONTAL_DATE == selectedClockType,
@@ -99,7 +99,7 @@ private fun ClockTypePickerDivider(
 ) {
     HorizontalDivider(
         modifier = modifier
-            .padding(start = UiConfig.MediumPadding)
+            .padding(start = Paddings.Medium)
             .fillMaxWidth(),
     )
 }

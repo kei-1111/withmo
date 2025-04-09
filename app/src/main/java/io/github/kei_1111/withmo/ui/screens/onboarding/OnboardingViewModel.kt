@@ -4,13 +4,13 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
@@ -44,7 +44,7 @@ class OnboardingViewModel @Inject constructor(
 
     fun addSelectedAppList(appInfo: AppInfo) {
         _uiState.update { currentState ->
-            if (currentState.selectedAppList.size < UiConfig.FavoriteAppListMaxSize &&
+            if (currentState.selectedAppList.size < Constants.FavoriteAppListMaxSize &&
                 currentState.selectedAppList.none { it.packageName == appInfo.packageName }
             ) {
                 currentState.copy(

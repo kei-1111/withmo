@@ -33,7 +33,8 @@ import io.github.kei_1111.withmo.ui.screens.onboarding.content.FinishContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectDisplayModelContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectFavoriteAppContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.content.WelcomeContent
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -180,7 +181,7 @@ fun OnboardingBottomAppBarNextButton(
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         enabled = enabled,
     ) {
         BodyMediumText(
@@ -188,7 +189,7 @@ fun OnboardingBottomAppBarNextButton(
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha)
+                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
             },
         )
     }
@@ -202,7 +203,7 @@ fun OnboardingBottomAppBarPreviousButton(
     OutlinedButton(
         onClick = onClick,
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
     ) {
         BodyMediumText(text = "戻る")
     }

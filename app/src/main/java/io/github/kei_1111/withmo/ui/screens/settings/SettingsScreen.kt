@@ -34,7 +34,7 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.utils.AppUtils
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -103,7 +103,7 @@ private fun SettingsScreen(
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
                 navigateClose = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.Home),)
+                    onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
                 },
             )
             SettingsScreenContent(
@@ -132,10 +132,10 @@ private fun LogoWithText(
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
                 .padding(
-                    start = UiConfig.ExtraSmallPadding,
-                    end = UiConfig.ExtraSmallPadding,
-                    top = UiConfig.SmallPadding,
-                    bottom = UiConfig.ExtraSmallPadding,
+                    start = Paddings.ExtraSmall,
+                    end = Paddings.ExtraSmall,
+                    top = Paddings.Small,
+                    bottom = Paddings.ExtraSmall,
                 ),
         )
         TitleLargeText(text = text)

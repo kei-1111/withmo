@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun NotificationSettingsScreenContent(
@@ -17,8 +17,8 @@ fun NotificationSettingsScreenContent(
 ) {
     Column(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         WithmoSettingItemWithSwitch(
             title = "通知の受け取り",

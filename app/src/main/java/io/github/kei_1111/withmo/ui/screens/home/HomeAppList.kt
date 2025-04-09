@@ -31,7 +31,9 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.DesignConstants
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -61,10 +63,10 @@ fun HomeAppList(
                 .fillMaxSize()
                 .padding(
                     top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
-                    start = UiConfig.MediumPadding,
-                    end = UiConfig.MediumPadding,
+                    start = Paddings.Medium,
+                    end = Paddings.Medium,
                 ),
-            verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding, Alignment.CenterVertically),
+            verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             WithmoSearchTextField(
@@ -114,18 +116,18 @@ private fun HomeAppList(
     Column(
         modifier = modifier
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         if (launchableAppList.isNotEmpty()) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+                verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
             ) {
                 LabelMediumText(
                     text = "アプリ一覧",
                 )
                 CustomAppInfoGridLayout(
                     items = launchableAppList,
-                    columns = UiConfig.AppListScreenGridColums,
+                    columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
                     onClick = onClick,
                     onLongClick = onLongClick,
@@ -134,14 +136,14 @@ private fun HomeAppList(
         }
         if (settingApp.isNotEmpty()) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+                verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
             ) {
                 LabelMediumText(
                     text = "カスタマイズ",
                 )
                 CustomAppInfoGridLayout(
                     items = settingApp,
-                    columns = UiConfig.AppListScreenGridColums,
+                    columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
                     onClick = onClick,
                     onLongClick = onLongClick,
@@ -159,10 +161,10 @@ fun CustomAppInfoGridLayout(
     onClick: (AppInfo) -> Unit,
     onLongClick: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
-    verticalSpacing: Dp = UiConfig.LargePadding,
-    horizontalSpacing: Dp = UiConfig.LargePadding,
+    verticalSpacing: Dp = Paddings.Large,
+    horizontalSpacing: Dp = Paddings.Large,
     contentPadding: PaddingValues = PaddingValues(
-        bottom = UiConfig.ExtraSmallPadding,
+        bottom = Paddings.ExtraSmall,
     ),
 ) {
     Column(
@@ -178,7 +180,7 @@ fun CustomAppInfoGridLayout(
                 rowItems.forEach { item ->
                     Box(
                         modifier = Modifier
-                            .weight(UiConfig.DefaultWeight),
+                            .weight(Weights.Medium),
                         contentAlignment = Alignment.Center,
                     ) {
                         AppItem(
@@ -191,7 +193,7 @@ fun CustomAppInfoGridLayout(
                 }
                 if (rowItems.size < columns) {
                     repeat(columns - rowItems.size) {
-                        Spacer(modifier = Modifier.weight(UiConfig.DefaultWeight))
+                        Spacer(modifier = Modifier.weight(Weights.Medium))
                     }
                 }
             }

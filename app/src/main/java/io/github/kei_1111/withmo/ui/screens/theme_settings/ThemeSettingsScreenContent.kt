@@ -17,7 +17,9 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun ThemeSettingsScreenContent(
@@ -27,8 +29,8 @@ fun ThemeSettingsScreenContent(
 ) {
     Column(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         ThemeTypePicker(
             selectedThemeType = uiState.themeSettings.themeType,
@@ -53,9 +55,9 @@ private fun ThemeTypePicker(
             Box(
                 modifier = Modifier
                     .height(
-                        UiConfig.SettingItemHeight,
+                        CommonDimensions.SettingItemHeight,
                     )
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "テーマ")
@@ -103,7 +105,7 @@ private fun ThemeTypePickerDivider(
 ) {
     HorizontalDivider(
         modifier = modifier
-            .padding(start = UiConfig.MediumPadding)
+            .padding(start = Paddings.Medium)
             .fillMaxWidth(),
     )
 }
@@ -115,7 +117,7 @@ private fun ThemeTypePickerItem(
 ) {
     Column(
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         verticalArrangement = Arrangement.Center,
     ) {
         when (themeType) {
@@ -123,7 +125,7 @@ private fun ThemeTypePickerItem(
                 BodyMediumText(text = "時間帯による自動切り替え")
                 LabelMediumText(
                     text = "6時-19時: ライトモード, 19時-6時: ダークモード",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
                 )
             }
             ThemeType.LIGHT -> {

@@ -60,7 +60,8 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.Widget
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -369,7 +370,7 @@ private fun HomeScreen(
         modifier = modifier
             .padding(
                 top = topPaddingValue,
-                bottom = bottomPaddingValue + UiConfig.MediumPadding,
+                bottom = bottomPaddingValue + Paddings.Medium,
             ),
     ) {
         HomeScreenContent(
@@ -406,8 +407,8 @@ fun WidgetResizeBottomSheet(
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
-    val draggedSpaceWidth = screenWidth.dp - UiConfig.MediumPadding - UiConfig.MediumPadding
-    val draggedSpaceHeight = screenHeight.dp - UiConfig.MediumPadding - UiConfig.MediumPadding
+    val draggedSpaceWidth = screenWidth.dp - Paddings.Medium - Paddings.Medium
+    val draggedSpaceHeight = screenHeight.dp - Paddings.Medium - Paddings.Medium
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
     var widgetWidth by remember { mutableFloatStateOf(widgetInfo.width.toFloat()) }
@@ -437,8 +438,8 @@ fun WidgetResizeBottomSheet(
                 createWidgetView = createWidgetView,
             )
             Column(
-                modifier = Modifier.padding(UiConfig.MediumPadding),
-                verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+                modifier = Modifier.padding(Paddings.Medium),
+                verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
             ) {
                 WithmoSettingItemWithSlider(
                     title = "Widget 幅",
@@ -474,20 +475,20 @@ private fun ModelLoading(
                     }
                 }
             }
-            .padding(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
         contentAlignment = Alignment.Center,
     ) {
         Surface(
             modifier = Modifier
-                .height(UiConfig.ModelLoadingHeight)
-                .width(UiConfig.ModelLoadingWidth),
+                .height(HomeScreenDimensions.ModelLoadingHeight)
+                .width(HomeScreenDimensions.ModelLoadingWidth),
             shape = MaterialTheme.shapes.medium,
-            shadowElevation = UiConfig.ShadowElevation,
+            shadowElevation = ShadowElevations.Medium,
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement
-                    .spacedBy(UiConfig.LargePadding, Alignment.CenterHorizontally),
+                    .spacedBy(Paddings.Large, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BodyMediumText("モデルの読込中")

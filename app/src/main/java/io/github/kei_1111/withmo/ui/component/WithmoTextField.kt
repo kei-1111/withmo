@@ -21,7 +21,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private val TextFieldHeight = 36.dp
 
 @Composable
 fun WithmoTextField(
@@ -44,9 +49,9 @@ fun WithmoTextField(
     ) {
         Box(
             modifier = Modifier
-                .height(UiConfig.TextFieldHeight)
+                .height(TextFieldHeight)
                 .padding(
-                    horizontal = UiConfig.MediumPadding,
+                    horizontal = Paddings.Medium,
                 ),
             contentAlignment = Alignment.CenterStart,
         ) {
@@ -54,7 +59,7 @@ fun WithmoTextField(
                 Text(
                     text = label,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
                 )
             }
             Row(
@@ -64,7 +69,7 @@ fun WithmoTextField(
                 BasicTextField(
                     value = value,
                     onValueChange = onValueChange,
-                    modifier = Modifier.weight(UiConfig.DefaultWeight),
+                    modifier = Modifier.weight(Weights.Medium),
                     singleLine = singleLine,
                     textStyle = MaterialTheme.typography.bodyMedium.copy(
                         color = MaterialTheme.colorScheme.onSurface,

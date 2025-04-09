@@ -13,11 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import io.github.kei_1111.withmo.domain.model.DateTimeInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 import io.github.kei_1111.withmo.ui.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.ui.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.ui.theme.clockTextMediumSize
 import io.github.kei_1111.withmo.ui.theme.clockTextSmallSize
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun WithmoClock(
@@ -52,7 +52,7 @@ private fun ClockTopDate(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(UiConfig.ExtraSmallPadding),
+            horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
         ) {
             Text(
                 text = dateTimeInfo.year,
@@ -75,7 +75,7 @@ private fun ClockTopDate(
                 color = textColor,
             )
         }
-        Spacer(modifier = Modifier.height(UiConfig.ExtraSmallPadding))
+        Spacer(modifier = Modifier.height(Paddings.ExtraSmall))
         Row {
             Text(
                 text = "${dateTimeInfo.hour}:",
@@ -118,14 +118,14 @@ private fun ClockHorizontalDate(
                     color = textColor,
                 )
             }
-            Spacer(modifier = Modifier.width(UiConfig.SmallPadding))
+            Spacer(modifier = Modifier.width(Paddings.Small))
             Column {
                 Text(
                     text = dateTimeInfo.dayOfWeek,
                     style = clockTextSmallSize,
                     color = textColor,
                 )
-                Spacer(modifier = Modifier.height(UiConfig.ExtraSmallPadding))
+                Spacer(modifier = Modifier.height(Paddings.ExtraSmall))
                 Row {
                     Text(
                         text = "${dateTimeInfo.hour}:",

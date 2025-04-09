@@ -11,7 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.DesignConstants
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -25,12 +27,12 @@ fun FavoriteAppSelector(
 ) {
     LazyVerticalGrid(
         modifier = modifier,
-        columns = GridCells.Fixed(UiConfig.AppListScreenGridColums),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        columns = GridCells.Fixed(DesignConstants.AppListGridColums),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Large),
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
         contentPadding = PaddingValues(
-            top = UiConfig.ExtraSmallPadding,
-            bottom = UiConfig.MediumPadding,
+            top = Paddings.ExtraSmall,
+            bottom = Paddings.Medium,
         ),
     ) {
         items(appList.size) { index ->
@@ -52,7 +54,7 @@ fun FavoriteAppSelector(
                     }
                 },
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                    alpha = UiConfig.DisabledContentAlpha,
+                    alpha = Alphas.Disabled,
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 appIconShape = appIconShape,

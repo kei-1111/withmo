@@ -11,7 +11,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val SwitchScale = 0.75f
 
 @Composable
 fun WithmoSettingItemWithSwitch(
@@ -22,24 +26,24 @@ fun WithmoSettingItemWithSwitch(
 ) {
     Surface(
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         color = MaterialTheme.colorScheme.surfaceContainer,
         shape = MaterialTheme.shapes.medium,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(UiConfig.MediumPadding),
+                .padding(Paddings.Medium),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BodyMediumText(
                 text = title,
-                modifier = Modifier.weight(1f),
+                modifier = Modifier.weight(Weights.Medium),
             )
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
-                modifier = Modifier.scale(UiConfig.SwitchScale),
+                modifier = Modifier.scale(SwitchScale),
             )
         }
     }

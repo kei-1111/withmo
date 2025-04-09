@@ -16,7 +16,8 @@ import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun SortSettingsScreenContent(
@@ -26,8 +27,8 @@ fun SortSettingsScreenContent(
 ) {
     Column(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         SortTypePicker(
             selectedSortType = uiState.sortSettings.sortType,
@@ -52,9 +53,9 @@ private fun SortTypePicker(
             Box(
                 modifier = Modifier
                     .height(
-                        UiConfig.SettingItemHeight,
+                        CommonDimensions.SettingItemHeight,
                     )
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "並び順")
@@ -91,7 +92,7 @@ private fun SortTypePickerDivider(
 ) {
     HorizontalDivider(
         modifier = modifier
-            .padding(start = UiConfig.MediumPadding)
+            .padding(start = Paddings.Medium)
             .fillMaxWidth(),
     )
 }
@@ -103,7 +104,7 @@ private fun SortTypePickerItem(
 ) {
     Column(
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         verticalArrangement = Arrangement.Center,
     ) {
         when (sortType) {

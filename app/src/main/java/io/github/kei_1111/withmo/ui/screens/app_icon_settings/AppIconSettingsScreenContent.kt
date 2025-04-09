@@ -17,13 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.Constants.DefaultRoundedCornerPercent
+import io.github.kei_1111.withmo.common.Constants.MaxRoundedCornerPercent
+import io.github.kei_1111.withmo.common.Constants.MinRoundedCornerPercent
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun AppIconSettingsScreenContent(
@@ -33,14 +39,14 @@ fun AppIconSettingsScreenContent(
 ) {
     Column(
         modifier = modifier
-            .padding(UiConfig.MediumPadding),
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+            .padding(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         WithmoSettingItemWithSlider(
             title = "アプリアイコンの大きさ",
             value = uiState.appIconSettings.appIconSize,
             onValueChange = { onEvent(AppIconSettingsUiEvent.ChangeAppIconSize(it)) },
-            valueRange = UiConfig.MinAppIconSize..UiConfig.MaxAppIconSize,
+            valueRange = Constants.MinAppIconSize..Constants.MaxAppIconSize,
             modifier = Modifier.fillMaxWidth(),
         )
         AppIconShapePicker(
@@ -52,7 +58,7 @@ fun AppIconSettingsScreenContent(
             title = "角丸の大きさ",
             value = uiState.appIconSettings.roundedCornerPercent,
             onValueChange = { onEvent(AppIconSettingsUiEvent.ChangeRoundedCornerPercent(it)) },
-            valueRange = UiConfig.MinRoundedCornerPercent..UiConfig.MaxRoundedCornerPercent,
+            valueRange = MinRoundedCornerPercent..MaxRoundedCornerPercent,
             enabled = uiState.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -80,9 +86,9 @@ fun AppIconShapePicker(
             Box(
                 modifier = Modifier
                     .height(
-                        UiConfig.SettingItemHeight,
+                        CommonDimensions.SettingItemHeight,
                     )
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "アプリアイコンの形")
@@ -133,7 +139,7 @@ fun AppIconShapePickerDivider(
 ) {
     HorizontalDivider(
         modifier = modifier.padding(
-            start = UiConfig.MediumPadding + UiConfig.SettingsScreenItemIconSize + UiConfig.SmallPadding,
+            start = Paddings.Medium + IconSizes.Medium + Paddings.Small,
         ),
     )
 }
@@ -146,19 +152,19 @@ fun AppIconShapePickerItem(
 ) {
     Row(
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(
             modifier = Modifier
-                .size(UiConfig.SettingsScreenItemIconSize)
+                .size(IconSizes.Medium)
                 .background(
                     MaterialTheme.colorScheme.onSurface,
-                    appIconShape.toShape(UiConfig.DefaultRoundedCornerPercent),
+                    appIconShape.toShape(DefaultRoundedCornerPercent),
                 ),
         )
         Spacer(
-            modifier = Modifier.padding(UiConfig.ExtraSmallPadding),
+            modifier = Modifier.padding(Paddings.ExtraSmall),
         )
         BodyMediumText(text = title)
     }

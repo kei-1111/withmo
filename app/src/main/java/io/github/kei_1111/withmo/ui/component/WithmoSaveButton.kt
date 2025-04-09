@@ -5,7 +5,8 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 
 @Composable
 fun WithmoSaveButton(
@@ -16,7 +17,7 @@ fun WithmoSaveButton(
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier
-            .height(UiConfig.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight),
         enabled = enabled,
     ) {
         BodyMediumText(
@@ -24,7 +25,7 @@ fun WithmoSaveButton(
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha)
+                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
             },
         )
     }

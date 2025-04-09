@@ -17,7 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import androidx.compose.ui.unit.dp
+
+private val SliderThumbSize = 20.dp
+private val SliderTrackHeight = 4.dp
+private val SliderShadowElevation = 1.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,19 +44,19 @@ fun WithmoSlider(
         modifier = modifier
             .semantics { contentDescription = "Localized Description" }
             .requiredSizeIn(
-                minWidth = UiConfig.SliderThumbSize,
-                minHeight = UiConfig.SliderTrackHeight,
+                minWidth = SliderThumbSize,
+                minHeight = SliderTrackHeight,
             ),
         steps = steps,
         thumb = {
             val thumbModifier = Modifier
-                .size(UiConfig.SliderThumbSize)
-                .shadow(UiConfig.SliderShadowElevation, CircleShape, clip = false)
+                .size(SliderThumbSize)
+                .shadow(SliderShadowElevation, CircleShape, clip = false)
                 .indication(
                     interactionSource = interactionSource,
                     indication = ripple(
                         bounded = false,
-                        radius = UiConfig.SliderThumbSize,
+                        radius = SliderThumbSize,
                     ),
                 )
             SliderDefaults.Thumb(
@@ -63,7 +67,7 @@ fun WithmoSlider(
         },
         track = {
             val trackModifier = Modifier
-                .height(UiConfig.SliderTrackHeight)
+                .height(SliderTrackHeight)
             SliderDefaults.Track(
                 sliderState = it,
                 modifier = trackModifier,

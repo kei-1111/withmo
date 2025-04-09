@@ -26,7 +26,10 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val BottomSheetShowDragHeight = -50f
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Suppress("LongMethod")
@@ -52,7 +55,7 @@ fun HomeScreenContent(
                         onEvent(HomeUiEvent.SetShowScaleSlider(false))
                     },
                     icon = Icons.Rounded.Close,
-                    modifier = Modifier.padding(start = UiConfig.MediumPadding),
+                    modifier = Modifier.padding(start = Paddings.Medium),
                 )
             }
         } else {
@@ -60,7 +63,7 @@ fun HomeScreenContent(
                 WithmoClock(
                     clockType = uiState.currentUserSettings.clockSettings.clockType,
                     dateTimeInfo = currentTime.toDateTimeInfo(),
-                    modifier = Modifier.padding(start = UiConfig.MediumPadding),
+                    modifier = Modifier.padding(start = Paddings.Medium),
                 )
             }
             Column(
@@ -69,7 +72,7 @@ fun HomeScreenContent(
                     .pointerInput(Unit) {
                         detectVerticalDragGestures(
                             onVerticalDrag = { change, dragAmount ->
-                                if (dragAmount < UiConfig.BottomSheetShowDragHeight) {
+                                if (dragAmount < BottomSheetShowDragHeight) {
                                     onEvent(HomeUiEvent.OpenAppListBottomSheet)
                                 }
                             },
@@ -82,7 +85,7 @@ fun HomeScreenContent(
                     onEvent = onEvent,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(UiConfig.DefaultWeight),
+                        .weight(Weights.Medium),
                 )
                 RowAppList(
                     uiState = uiState,
@@ -104,7 +107,7 @@ private fun RowAppList(
 
     Row(
         modifier = modifier
-            .padding(vertical = UiConfig.ExtraSmallPadding),
+            .padding(vertical = Paddings.ExtraSmall),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -118,7 +121,7 @@ private fun RowAppList(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
                 isAppNameShown = appIconSettings.isAppNameShown,
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
             )
         }
     }

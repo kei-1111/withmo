@@ -21,7 +21,8 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 fun AppItemPreviewArea(
@@ -30,25 +31,25 @@ fun AppItemPreviewArea(
 ) {
     Box(
         modifier = modifier
-            .height(UiConfig.AppIconPreviewHeight),
+            .height(AppIconSettingsScreenDimensions.PreviewHeight),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(UiConfig.MediumPadding),
+                .padding(Paddings.Medium),
             verticalAlignment = Alignment.Bottom,
         ) {
             AppItemPreview(
                 appIconSettings = appIconSettings,
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
             )
             AppItemPreview(
                 appIconSettings = appIconSettings,
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
             )
             AppItemPreview(
                 appIconSettings = appIconSettings,
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
             )
         }
     }
@@ -64,7 +65,7 @@ private fun AppItemPreview(
 
     Column(
         modifier = modifier
-            .size((appIconSettings.appIconSize + UiConfig.AppIconPadding).dp),
+            .size((appIconSettings.appIconSize + Paddings.AppIconPadding).dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -77,7 +78,7 @@ private fun AppItemPreview(
                 .clip(appIconSettings.appIconShape.toShape(appIconSettings.roundedCornerPercent)),
         )
         if (appIconSettings.isAppNameShown) {
-            Spacer(modifier = Modifier.weight(UiConfig.DefaultWeight))
+            Spacer(modifier = Modifier.weight(Weights.Medium))
             LabelMediumText(text = previewAppLabel)
         }
     }

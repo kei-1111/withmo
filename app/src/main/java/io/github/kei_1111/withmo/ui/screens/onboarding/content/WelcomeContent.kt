@@ -16,8 +16,10 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 fun WelcomeContent(
@@ -30,19 +32,19 @@ fun WelcomeContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(UiConfig.DefaultWeight)
-                .padding(UiConfig.MediumPadding),
+                .weight(Weights.Medium)
+                .padding(Paddings.Medium),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
                 painter = painterResource(id = R.drawable.onboarding_welcome_logo),
                 contentDescription = "Welcome",
-                modifier = Modifier.size(UiConfig.OnboardingImageSize),
+                modifier = Modifier.size(OnboardingDimensions.WelcomeImageSize),
             )
-            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            Spacer(modifier = Modifier.height(Paddings.Medium))
             DisplayMediumText("Let's get started!")
-            Spacer(modifier = Modifier.height(UiConfig.MediumPadding))
+            Spacer(modifier = Modifier.height(Paddings.Medium))
             BodyMediumText("お気に入りアプリの登録と表示モデル設定をして")
             BodyMediumText("今すぐwithmoを始めよう！")
         }
@@ -50,7 +52,7 @@ fun WelcomeContent(
             onEvent = onEvent,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(UiConfig.MediumPadding),
+                .padding(Paddings.Medium),
         )
     }
 }

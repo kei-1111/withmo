@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.di.IoDispatcher
 import io.github.kei_1111.withmo.di.UserSetting
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
@@ -23,7 +24,6 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -75,7 +75,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: ClockType.TOP_DATE,
                 ),
                 appIconSettings = AppIconSettings(
-                    appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
+                    appIconSize = preferences[APP_ICON_SIZE] ?: Constants.DefaultAppIconSize,
                     appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
                         when (shape) {
                             AppIconShape.Circle.toString() -> AppIconShape.Circle
@@ -85,7 +85,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         }
                     } ?: AppIconShape.Circle,
                     roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT]
-                        ?: UiConfig.DefaultRoundedCornerPercent,
+                        ?: Constants.DefaultRoundedCornerPercent,
                     isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
                 ),
                 sortSettings = SortSettings(

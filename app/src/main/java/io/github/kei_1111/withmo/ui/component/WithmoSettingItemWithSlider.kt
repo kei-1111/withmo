@@ -7,7 +7,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 fun WithmoSettingItemWithSlider(
@@ -25,11 +25,11 @@ fun WithmoSettingItemWithSlider(
         shape = MaterialTheme.shapes.medium,
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = UiConfig.MediumPadding),
+            modifier = Modifier.padding(horizontal = Paddings.Medium),
         ) {
             BodyMediumText(
                 text = title,
-                modifier = Modifier.padding(vertical = UiConfig.MediumPadding),
+                modifier = Modifier.padding(vertical = Paddings.Medium),
             )
             WithmoSlider(
                 value = value,

@@ -36,7 +36,11 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.WidgetUtils
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -51,8 +55,8 @@ fun WidgetList(
 ) {
     LazyColumn(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
-        contentPadding = PaddingValues(UiConfig.MediumPadding),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+        contentPadding = PaddingValues(Paddings.Medium),
     ) {
         groupedWidgetInfoMap.forEach { (packageName, widgetInfoList) ->
             item {
@@ -90,26 +94,26 @@ fun WidgetContainer(
         Column {
             Row(
                 modifier = Modifier
-                    .height(UiConfig.SettingItemHeight)
+                    .height(CommonDimensions.SettingItemHeight)
                     .fillMaxWidth()
                     .clickable { expanded = !expanded }
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 appIcon?.let {
                     Image(
                         painter = rememberDrawablePainter(drawable = appIcon),
                         contentDescription = null,
-                        modifier = Modifier.size(UiConfig.SettingsScreenItemIconSize),
+                        modifier = Modifier.size(IconSizes.Medium),
                     )
                 }
                 Spacer(
-                    modifier = Modifier.width(UiConfig.ExtraSmallPadding),
+                    modifier = Modifier.width(Paddings.ExtraSmall),
                 )
                 appLabel?.let {
                     BodyMediumText(
                         text = appLabel,
-                        modifier = Modifier.weight(UiConfig.DefaultWeight),
+                        modifier = Modifier.weight(Weights.Medium),
                     )
                 }
                 Icon(
@@ -122,9 +126,9 @@ fun WidgetContainer(
             if (expanded) {
                 Column(
                     modifier = Modifier
-                        .padding(UiConfig.MediumPadding)
+                        .padding(Paddings.Medium)
                         .align(Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(UiConfig.MediumPadding),
+                    verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     widgetInfoList.forEach { widgetInfo ->
@@ -139,6 +143,8 @@ fun WidgetContainer(
         }
     }
 }
+
+private const val WidgetDescriptionMaxLines = 3
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
@@ -164,7 +170,10 @@ fun WidgetItem(
                 painter = rememberDrawablePainter(drawable = previewDrawable),
                 contentDescription = null,
                 modifier = Modifier
-                    .sizeIn(maxWidth = UiConfig.WidgetPreviewSize, maxHeight = UiConfig.WidgetPreviewSize),
+                    .sizeIn(
+                        maxWidth = HomeScreenDimensions.WidgetPreviewSize,
+                        maxHeight = HomeScreenDimensions.WidgetPreviewSize,
+                    ),
             )
         } else {
             previewLayout?.asImageBitmap()?.let {
@@ -172,12 +181,15 @@ fun WidgetItem(
                     bitmap = it,
                     contentDescription = null,
                     modifier = Modifier
-                        .sizeIn(maxWidth = UiConfig.WidgetPreviewSize, maxHeight = UiConfig.WidgetPreviewSize),
+                        .sizeIn(
+                            maxWidth = HomeScreenDimensions.WidgetPreviewSize,
+                            maxHeight = HomeScreenDimensions.WidgetPreviewSize,
+                        ),
                 )
             }
         }
         Spacer(
-            modifier = Modifier.height(UiConfig.TinyPadding),
+            modifier = Modifier.height(Paddings.Tiny),
         )
         widgetLabel?.let {
             BodyMediumText(text = it)
@@ -185,8 +197,8 @@ fun WidgetItem(
         widgetDescription?.let {
             LabelMediumText(
                 text = it.toString(),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
-                maxLines = UiConfig.WidgetDescriptionMaxLines,
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                maxLines = WidgetDescriptionMaxLines,
             )
         }
     }

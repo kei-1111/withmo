@@ -8,8 +8,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -22,10 +24,10 @@ fun FavoriteAppListRow(
     Row(
         modifier = modifier
             .padding(
-                horizontal = UiConfig.MediumPadding,
-                vertical = UiConfig.SmallPadding,
+                horizontal = Paddings.Medium,
+                vertical = Paddings.Small,
             ),
-        horizontalArrangement = Arrangement.spacedBy(UiConfig.LargePadding),
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
     ) {
         favoriteAppList.forEach {
             FavoriteAppSelectorItem(
@@ -35,14 +37,14 @@ fun FavoriteAppListRow(
                 removeSelectedAppList = { removeSelectedAppList(it) },
                 onClick = { removeSelectedAppList(it) },
                 backgroundColor = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
                 appIconShape = appIconShape,
             )
         }
 
-        repeat(UiConfig.FavoriteAppListMaxSize - favoriteAppList.size) {
+        repeat(Constants.FavoriteAppListMaxSize - favoriteAppList.size) {
             EmptyAppItem(
-                modifier = Modifier.weight(UiConfig.DefaultWeight),
+                modifier = Modifier.weight(Weights.Medium),
             )
         }
     }

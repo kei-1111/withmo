@@ -18,7 +18,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
+
+private val TopAppBarHeight = 64.dp
 
 @Composable
 fun WithmoTopAppBar(
@@ -32,14 +36,14 @@ fun WithmoTopAppBar(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(UiConfig.TopAppBarHeight + topPaddingValue),
-        shadowElevation = UiConfig.ShadowElevation,
+            .height(TopAppBarHeight + topPaddingValue),
+        shadowElevation = ShadowElevations.Medium,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = topPaddingValue)
-                .padding(horizontal = UiConfig.MediumPadding),
+                .padding(horizontal = Paddings.Medium),
             contentAlignment = Alignment.CenterStart,
         ) {
             navigateBack?.let {

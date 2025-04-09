@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 
 @Composable
 fun WithmoIconButton(
@@ -20,7 +20,7 @@ fun WithmoIconButton(
     IconButton(
         onClick = onClick,
         modifier = modifier
-            .shadow(UiConfig.ShadowElevation, CircleShape)
+            .shadow(ShadowElevations.Medium, CircleShape)
             .background(MaterialTheme.colorScheme.surface, CircleShape),
     ) {
         Icon(

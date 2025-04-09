@@ -41,11 +41,17 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.unity3d.player.UnityPlayer.UnitySendMessage
 import io.github.kei_1111.withmo.R
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val PageCount = 2
 
 @Suppress("LongMethod")
 @Composable
@@ -61,7 +67,7 @@ fun PagerContent(
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
 
-    val pagerState = rememberPagerState(pageCount = { UiConfig.PageCount })
+    val pagerState = rememberPagerState(pageCount = { PageCount })
 
     LaunchedEffect(pagerState) {
         var isFirstCollect = true
@@ -89,7 +95,7 @@ fun PagerContent(
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(UiConfig.DefaultWeight),
+                .weight(Weights.Medium),
         ) { page ->
             when (page) {
                 0 -> {
@@ -98,7 +104,7 @@ fun PagerContent(
                         onEvent = onEvent,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = UiConfig.MediumPadding)
+                            .padding(horizontal = Paddings.Medium)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
@@ -167,7 +173,7 @@ private fun PageIndicator(
 ) {
     Row(
         modifier = modifier
-            .height(UiConfig.PageIndicatorSpaceHeight),
+            .height(HomeScreenDimensions.PageIndicatorSpaceHeight),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -175,24 +181,24 @@ private fun PageIndicator(
             LabelMediumText(
                 text = "＋",
                 modifier = Modifier
-                    .padding(horizontal = UiConfig.MediumPadding)
+                    .padding(horizontal = Paddings.Medium)
                     .background(
                         MaterialTheme.colorScheme.surface,
                         CircleShape,
                     )
                     .clickable { openWidgetList() }
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
             )
             LabelMediumText(
                 text = "編集完了",
                 modifier = Modifier
-                    .padding(horizontal = UiConfig.MediumPadding)
+                    .padding(horizontal = Paddings.Medium)
                     .background(
                         MaterialTheme.colorScheme.surface,
                         CircleShape,
                     )
                     .clickable { exitEditMode() }
-                    .padding(horizontal = UiConfig.MediumPadding),
+                    .padding(horizontal = Paddings.Medium),
             )
         } else {
             repeat(pageCount) { iteration ->
@@ -200,14 +206,14 @@ private fun PageIndicator(
                     if (currentPage == iteration) {
                         MaterialTheme.colorScheme.onSurface
                     } else {
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha)
+                        MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
                     }
                 Box(
                     modifier = Modifier
-                        .padding(horizontal = UiConfig.MediumPadding)
+                        .padding(horizontal = Paddings.Medium)
                         .clip(CircleShape)
                         .background(color)
-                        .size(UiConfig.PageIndicatorSize),
+                        .size(HomeScreenDimensions.PageIndicatorSize),
                 )
             }
         }
@@ -222,7 +228,7 @@ private fun DisplayModelContent(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(UiConfig.LargePadding, Alignment.Bottom),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
         horizontalAlignment = Alignment.End,
     ) {
         if (
@@ -231,10 +237,10 @@ private fun DisplayModelContent(
         ) {
             Surface(
                 modifier = Modifier
-                    .size(UiConfig.DefaultAppIconSize.dp)
+                    .size(Constants.DefaultAppIconSize.dp)
                     .clickable { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
                 shape = CircleShape,
-                shadowElevation = UiConfig.ShadowElevation,
+                shadowElevation = ShadowElevations.Medium,
             ) {
                 Image(
                     painter = painterResource(R.drawable.alicia_icon),
@@ -250,7 +256,7 @@ private fun DisplayModelContent(
                     onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
                 },
                 icon = Icons.Rounded.ChangeCircle,
-                modifier = Modifier.size(UiConfig.DefaultAppIconSize.dp),
+                modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
             )
         }
         if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
@@ -260,7 +266,7 @@ private fun DisplayModelContent(
                     onEvent(HomeUiEvent.SetShowScaleSlider(true))
                 },
                 icon = Icons.Rounded.Man,
-                modifier = Modifier.size(UiConfig.DefaultAppIconSize.dp),
+                modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
             )
         }
     }
@@ -274,7 +280,7 @@ private fun WidgetContent(
     modifier: Modifier = Modifier,
 ) {
     val appIconSpaceHeight =
-        (uiState.currentUserSettings.appIconSettings.appIconSize + UiConfig.AppIconPadding).dp
+        (uiState.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(
@@ -285,9 +291,10 @@ private fun WidgetContent(
                 WithmoWidget(
                     widgetInfo = widgetInfo,
                     createWidgetView = createWidgetView,
-                    startPadding = UiConfig.MediumPadding,
-                    endPadding = UiConfig.MediumPadding,
-                    bottomPadding = bottomPaddingValue + appIconSpaceHeight + UiConfig.PageIndicatorSpaceHeight,
+                    startPadding = Paddings.Medium,
+                    endPadding = Paddings.Medium,
+                    bottomPadding =
+                    bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                     isEditMode = uiState.isEditMode,
                     deleteWidget = { onEvent(HomeUiEvent.DeleteWidget(widgetInfo)) },
                     resizeWidget = { onEvent(HomeUiEvent.ResizeWidget(widgetInfo)) },

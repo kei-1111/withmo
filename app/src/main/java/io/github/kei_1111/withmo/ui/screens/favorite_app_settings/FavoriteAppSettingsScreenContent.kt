@@ -18,7 +18,8 @@ import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -49,14 +50,14 @@ fun FavoriteAppSettingsScreenContent(
     ) {
         Column(
             modifier = Modifier
-                .weight(UiConfig.DefaultWeight)
+                .weight(Weights.Medium)
                 .padding(
-                    top = UiConfig.MediumPadding,
-                    start = UiConfig.MediumPadding,
-                    end = UiConfig.MediumPadding,
+                    top = Paddings.Medium,
+                    start = Paddings.Medium,
+                    end = Paddings.Medium,
                 ),
             verticalArrangement = Arrangement.spacedBy(
-                UiConfig.MediumPadding,
+                Paddings.Medium,
                 Alignment.CenterVertically,
             ),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -77,13 +78,13 @@ fun FavoriteAppSettingsScreenContent(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(UiConfig.DefaultWeight),
+                        .weight(Weights.Medium),
                     appIconShape = appIconShape,
                 )
             } else {
                 CenteredMessage(
                     message = "アプリが見つかりません",
-                    modifier = Modifier.weight(UiConfig.DefaultWeight),
+                    modifier = Modifier.weight(Weights.Medium),
                 )
             }
         }

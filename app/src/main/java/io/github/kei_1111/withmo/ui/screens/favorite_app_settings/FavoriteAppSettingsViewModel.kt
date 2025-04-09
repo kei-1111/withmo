@@ -3,12 +3,12 @@ package io.github.kei_1111.withmo.ui.screens.favorite_app_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -55,7 +55,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         val addedFavoriteAppList = (_uiState.value.favoriteAppList + appInfo).toPersistentList()
 
         _uiState.update { currentState ->
-            if (currentState.favoriteAppList.size < UiConfig.FavoriteAppListMaxSize &&
+            if (currentState.favoriteAppList.size < Constants.FavoriteAppListMaxSize &&
                 currentState.favoriteAppList.none { it.packageName == appInfo.packageName }
             ) {
                 currentState.copy(
