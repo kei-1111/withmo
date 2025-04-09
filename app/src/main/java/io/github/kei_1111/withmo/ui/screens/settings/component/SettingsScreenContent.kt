@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.settings
+package io.github.kei_1111.withmo.ui.screens.settings.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -33,13 +33,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
-fun SettingsScreenContent(
+internal fun SettingsScreenContent(
     uiState: SettingsUiState,
     onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,

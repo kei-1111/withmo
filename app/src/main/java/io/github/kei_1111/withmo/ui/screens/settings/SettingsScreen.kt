@@ -34,6 +34,7 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.ui.screens.settings.component.SettingsScreenContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.utils.AppUtils
 import kotlinx.coroutines.flow.launchIn
