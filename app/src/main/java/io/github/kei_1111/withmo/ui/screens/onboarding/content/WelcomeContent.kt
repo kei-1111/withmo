@@ -16,7 +16,7 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingDimensions
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -40,7 +40,7 @@ fun WelcomeContent(
             Image(
                 painter = painterResource(id = R.drawable.onboarding_welcome_logo),
                 contentDescription = "Welcome",
-                modifier = Modifier.size(OnboardingDimensions.WelcomeImageSize),
+                modifier = Modifier.size(OnboardingScreenDimensions.WelcomeImageSize),
             )
             Spacer(modifier = Modifier.height(Paddings.Medium))
             DisplayMediumText("Let's get started!")

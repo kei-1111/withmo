@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingDimensions
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -42,7 +42,7 @@ fun FinishContent(
             Image(
                 painter = painterResource(id = R.drawable.onboarding_finish_logo),
                 contentDescription = "Finish",
-                modifier = Modifier.size(OnboardingDimensions.FinishImageSize),
+                modifier = Modifier.size(OnboardingScreenDimensions.FinishImageSize),
             )
             Spacer(modifier = Modifier.height(Paddings.Medium))
             DisplayMediumText("Completed!")
