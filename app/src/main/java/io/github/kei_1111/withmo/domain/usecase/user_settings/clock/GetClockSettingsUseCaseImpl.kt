@@ -7,5 +7,5 @@ import javax.inject.Inject
 class GetClockSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetClockSettingsUseCase {
-    override suspend operator fun invoke() = userSettingsRepository.userSettings.map { it.clockSettings }
+    override operator fun invoke() = userSettingsRepository.userSettings.map { it.clockSettings }
 }

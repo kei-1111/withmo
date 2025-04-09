@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetSortSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetSortSettingsUseCase {
-    override suspend operator fun invoke() =
+    override operator fun invoke() =
         userSettingsRepository.userSettings.map { it.sortSettings }
 }

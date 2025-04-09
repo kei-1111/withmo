@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetAppIconSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetAppIconSettingsUseCase {
-    override suspend fun invoke(): Flow<AppIconSettings> =
+    override fun invoke(): Flow<AppIconSettings> =
         userSettingsRepository.userSettings.map { it.appIconSettings }
 }

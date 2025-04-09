@@ -4,5 +4,5 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import kotlinx.coroutines.flow.Flow
 
 interface GetModelFilePathUseCase {
-    suspend operator fun invoke(): Flow<ModelFilePath>
+    operator fun invoke(): Flow<ModelFilePath>
 }

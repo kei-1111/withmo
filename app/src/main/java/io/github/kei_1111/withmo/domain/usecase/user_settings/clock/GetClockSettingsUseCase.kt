@@ -4,5 +4,5 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
 import kotlinx.coroutines.flow.Flow
 
 interface GetClockSettingsUseCase {
-    suspend operator fun invoke(): Flow<ClockSettings>
+    operator fun invoke(): Flow<ClockSettings>
 }

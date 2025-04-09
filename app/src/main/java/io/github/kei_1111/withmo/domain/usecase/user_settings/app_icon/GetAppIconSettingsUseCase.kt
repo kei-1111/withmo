@@ -4,5 +4,5 @@ import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import kotlinx.coroutines.flow.Flow
 
 interface GetAppIconSettingsUseCase {
-    suspend operator fun invoke(): Flow<AppIconSettings>
+    operator fun invoke(): Flow<AppIconSettings>
 }

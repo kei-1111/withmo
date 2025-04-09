@@ -9,6 +9,6 @@ import javax.inject.Inject
 class GetModelFilePathUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetModelFilePathUseCase {
-    override suspend operator fun invoke(): Flow<ModelFilePath> =
+    override operator fun invoke(): Flow<ModelFilePath> =
         userSettingsRepository.userSettings.map { it.modelFilePath }
 }
