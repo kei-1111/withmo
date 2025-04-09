@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.favorite_app_settings
+package io.github.kei_1111.withmo.ui.screens.favorite_app_settings.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,13 +18,15 @@ import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
-fun FavoriteAppSettingsScreenContent(
+internal fun FavoriteAppSettingsScreenContent(
     appList: ImmutableList<AppInfo>,
     uiState: FavoriteAppSettingsUiState,
     onEvent: (FavoriteAppSettingsUiEvent) -> Unit,
