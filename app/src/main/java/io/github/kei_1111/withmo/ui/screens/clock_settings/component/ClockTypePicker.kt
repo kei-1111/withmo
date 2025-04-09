@@ -1,6 +1,5 @@
-package io.github.kei_1111.withmo.ui.screens.clock_settings
+package io.github.kei_1111.withmo.ui.screens.clock_settings.component
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,37 +14,11 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
-fun ClockSettingsScreenContent(
-    uiState: ClockSettingsUiState,
-    onEvent: (ClockSettingsUiEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .padding(Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        WithmoSettingItemWithSwitch(
-            title = "時計の表示",
-            checked = uiState.clockSettings.isClockShown,
-            onCheckedChange = { onEvent(ClockSettingsUiEvent.ChangeIsClockShown(it)) },
-            modifier = Modifier.fillMaxWidth(),
-        )
-        ClockTypePicker(
-            isClockShown = uiState.clockSettings.isClockShown,
-            selectedClockType = uiState.clockSettings.clockType,
-            onEvent = onEvent,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-fun ClockTypePicker(
+internal fun ClockTypePicker(
     isClockShown: Boolean,
     selectedClockType: ClockType,
     onEvent: (ClockSettingsUiEvent) -> Unit,
