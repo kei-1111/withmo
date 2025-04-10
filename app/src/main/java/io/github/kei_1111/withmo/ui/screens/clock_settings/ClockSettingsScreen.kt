@@ -71,10 +71,6 @@ fun ClockSettingsScreen(
                     )
                 }
 
-                is ClockSettingsUiEvent.OnNavigateToSettingsScreenButtonClick -> {
-                    latestNavigateToSettingsScreen()
-                }
-
                 is ClockSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
@@ -108,7 +104,7 @@ private fun ClockSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "時計") },
-                navigateBack = { onEvent(ClockSettingsUiEvent.OnNavigateToSettingsScreenButtonClick) },
+                navigateBack = { onEvent(ClockSettingsUiEvent.OnBackButtonClick) },
             )
             ClockSettingsScreenContent(
                 uiState = uiState,

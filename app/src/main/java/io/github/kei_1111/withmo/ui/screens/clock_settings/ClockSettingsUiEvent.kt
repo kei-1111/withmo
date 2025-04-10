@@ -7,6 +7,5 @@ sealed interface ClockSettingsUiEvent : UiEvent {
     data class OnIsClockShownSwitchChange(val isClockShown: Boolean) : ClockSettingsUiEvent
     data class OnClockTypeRadioButtonClick(val clockType: ClockType) : ClockSettingsUiEvent
     data object OnSaveButtonClick : ClockSettingsUiEvent
-    data object OnNavigateToSettingsScreenButtonClick : ClockSettingsUiEvent
     data object OnBackButtonClick : ClockSettingsUiEvent
 }
