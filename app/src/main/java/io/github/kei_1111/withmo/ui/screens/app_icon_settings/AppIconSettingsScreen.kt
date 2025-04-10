@@ -47,7 +47,7 @@ fun AppIconSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(AppIconSettingsUiEvent.OnBackPress)
+        viewModel.onEvent(AppIconSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
@@ -81,11 +81,7 @@ fun AppIconSettingsScreen(
                     )
                 }
 
-                is AppIconSettingsUiEvent.OnNavigateToSettingsScreenButtonClick -> {
-                    latestNavigateToSettingsScreen()
-                }
-
-                is AppIconSettingsUiEvent.OnBackPress -> {
+                is AppIconSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -118,7 +114,7 @@ private fun AppIconSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "アプリアイコン") },
-                navigateBack = { onEvent(AppIconSettingsUiEvent.OnNavigateToSettingsScreenButtonClick) },
+                navigateBack = { onEvent(AppIconSettingsUiEvent.OnBackButtonClick) },
             )
             AppItemPreviewArea(
                 appIconSettings = uiState.appIconSettings,

@@ -9,6 +9,5 @@ sealed interface AppIconSettingsUiEvent : UiEvent {
     data class OnRoundedCornerPercentSliderChange(val roundedCornerPercent: Float) : AppIconSettingsUiEvent
     data class OnIsAppNameShownSwitchChange(val isAppNameShown: Boolean) : AppIconSettingsUiEvent
     data object OnSaveButtonClick : AppIconSettingsUiEvent
-    data object OnNavigateToSettingsScreenButtonClick : AppIconSettingsUiEvent
-    data object OnBackPress : AppIconSettingsUiEvent
+    data object OnBackButtonClick : AppIconSettingsUiEvent
 }
