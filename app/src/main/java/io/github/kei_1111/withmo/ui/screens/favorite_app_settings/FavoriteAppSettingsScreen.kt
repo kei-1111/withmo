@@ -48,38 +48,37 @@ fun FavoriteAppSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(FavoriteAppSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(FavoriteAppSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is FavoriteAppSettingsUiEvent.AddFavoriteAppList -> {
+                is FavoriteAppSettingsUiEvent.OnAllAppListAppClick -> {
                     viewModel.addFavoriteAppList(event.appInfo)
                 }
 
-                is FavoriteAppSettingsUiEvent.RemoveFavoriteAppList -> {
+                is FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick -> {
                     viewModel.removeFavoriteAppList(event.appInfo)
                 }
 
-                is FavoriteAppSettingsUiEvent.OnValueChangeAppSearchQuery -> {
+                is FavoriteAppSettingsUiEvent.OnAppSearchQueryChange -> {
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is FavoriteAppSettingsUiEvent.Save -> {
-                    viewModel.saveFavoriteAppList()
+                is FavoriteAppSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveFavoriteAppList(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is FavoriteAppSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is FavoriteAppSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is FavoriteAppSettingsUiEvent.NavigateToSettingsScreen -> {
+                is FavoriteAppSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -114,7 +113,7 @@ private fun FavoriteAppSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "お気に入りアプリ") },
-                navigateBack = { onEvent(FavoriteAppSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(FavoriteAppSettingsUiEvent.OnBackButtonClick) },
             )
             FavoriteAppSettingsScreenContent(
                 appList = appList,
@@ -125,7 +124,7 @@ private fun FavoriteAppSettingsScreen(
                     .weight(Weights.Medium),
             )
             WithmoSaveButton(
-                onClick = { onEvent(FavoriteAppSettingsUiEvent.Save) },
+                onClick = { onEvent(FavoriteAppSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

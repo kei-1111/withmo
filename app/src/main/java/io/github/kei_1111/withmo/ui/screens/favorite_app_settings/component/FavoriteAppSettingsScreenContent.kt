@@ -67,16 +67,16 @@ internal fun FavoriteAppSettingsScreenContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.appSearchQuery,
-                onValueChange = { onEvent(FavoriteAppSettingsUiEvent.OnValueChangeAppSearchQuery(it)) },
+                onValueChange = { onEvent(FavoriteAppSettingsUiEvent.OnAppSearchQueryChange(it)) },
                 action = { filterAppList(uiState.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
                     favoriteAppList = uiState.favoriteAppList,
-                    addSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.AddFavoriteAppList(it)) },
+                    addSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = {
-                        onEvent(FavoriteAppSettingsUiEvent.RemoveFavoriteAppList(it))
+                        onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -92,7 +92,7 @@ internal fun FavoriteAppSettingsScreenContent(
         }
         FavoriteAppListRow(
             favoriteAppList = uiState.favoriteAppList,
-            removeSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.RemoveFavoriteAppList(it)) },
+            removeSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
         )

@@ -89,7 +89,10 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveFavoriteAppList() {
+    fun saveFavoriteAppList(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         val currentFavoriteAppList = _uiState.value.favoriteAppList
         val initialFavoriteAppList = _uiState.value.initialFavoriteAppList
 
@@ -123,10 +126,10 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 appInfoRepository.updateAppInfoList(appsToUpdate)
-                _uiEvent.emit(FavoriteAppSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("FavoriteAppSettingsViewModel", "お気に入りアプリの保存に失敗しました", e)
-                _uiEvent.emit(FavoriteAppSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }
