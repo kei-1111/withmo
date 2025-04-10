@@ -45,34 +45,37 @@ fun ClockSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(ClockSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(ClockSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is ClockSettingsUiEvent.ChangeIsClockShown -> {
+                is ClockSettingsUiEvent.OnIsClockShownSwitchChange -> {
                     viewModel.changeIsClockShown(event.isClockShown)
                 }
 
-                is ClockSettingsUiEvent.ChangeClockType -> {
+                is ClockSettingsUiEvent.OnClockTypeRadioButtonClick -> {
                     viewModel.changeClockType(event.clockType)
                 }
 
-                is ClockSettingsUiEvent.Save -> {
-                    viewModel.saveClockSettings()
+                is ClockSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveClockSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is ClockSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
+                is ClockSettingsUiEvent.OnNavigateToSettingsScreenButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
 
-                is ClockSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is ClockSettingsUiEvent.NavigateToSettingsScreen -> {
+                is ClockSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -105,7 +108,7 @@ private fun ClockSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "時計") },
-                navigateBack = { onEvent(ClockSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(ClockSettingsUiEvent.OnNavigateToSettingsScreenButtonClick) },
             )
             ClockSettingsScreenContent(
                 uiState = uiState,
@@ -116,7 +119,7 @@ private fun ClockSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ClockSettingsUiEvent.Save) },
+                onClick = { onEvent(ClockSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

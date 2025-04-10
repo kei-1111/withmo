@@ -54,7 +54,10 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveClockSettings() {
+    fun saveClockSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -63,10 +66,10 @@ class ClockSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveClockSettingsUseCase(uiState.value.clockSettings)
-                _uiEvent.emit(ClockSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("ClockSettingsViewModel", "Failed to save clock settings", e)
-                _uiEvent.emit(ClockSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }

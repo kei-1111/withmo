@@ -44,7 +44,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.TOP_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockType(ClockType.TOP_DATE)) },
+                onClick = { onEvent(ClockSettingsUiEvent.OnClockTypeRadioButtonClick(ClockType.TOP_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ClockTypePickerDivider()
@@ -58,7 +58,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.HORIZONTAL_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.ChangeClockType(ClockType.HORIZONTAL_DATE)) },
+                onClick = { onEvent(ClockSettingsUiEvent.OnClockTypeRadioButtonClick(ClockType.HORIZONTAL_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

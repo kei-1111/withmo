@@ -25,7 +25,7 @@ internal fun ClockSettingsScreenContent(
         WithmoSettingItemWithSwitch(
             title = "時計の表示",
             checked = uiState.clockSettings.isClockShown,
-            onCheckedChange = { onEvent(ClockSettingsUiEvent.ChangeIsClockShown(it)) },
+            onCheckedChange = { onEvent(ClockSettingsUiEvent.OnIsClockShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         ClockTypePicker(

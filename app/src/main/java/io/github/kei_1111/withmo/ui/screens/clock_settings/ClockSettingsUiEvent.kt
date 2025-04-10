@@ -4,14 +4,9 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.base.UiEvent
 
 sealed interface ClockSettingsUiEvent : UiEvent {
-    data class ChangeIsClockShown(
-        val isClockShown: Boolean,
-    ) : ClockSettingsUiEvent
-    data class ChangeClockType(
-        val clockType: ClockType,
-    ) : ClockSettingsUiEvent
-    data object Save : ClockSettingsUiEvent
-    data object SaveSuccess : ClockSettingsUiEvent
-    data object SaveFailure : ClockSettingsUiEvent
-    data object NavigateToSettingsScreen : ClockSettingsUiEvent
+    data class OnIsClockShownSwitchChange(val isClockShown: Boolean) : ClockSettingsUiEvent
+    data class OnClockTypeRadioButtonClick(val clockType: ClockType) : ClockSettingsUiEvent
+    data object OnSaveButtonClick : ClockSettingsUiEvent
+    data object OnNavigateToSettingsScreenButtonClick : ClockSettingsUiEvent
+    data object OnBackButtonClick : ClockSettingsUiEvent
 }
