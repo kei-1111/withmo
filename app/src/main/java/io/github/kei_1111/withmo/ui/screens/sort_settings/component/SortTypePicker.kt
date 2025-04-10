@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.sort_settings
+package io.github.kei_1111.withmo.ui.screens.sort_settings.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -16,30 +16,12 @@ import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
-fun SortSettingsScreenContent(
-    uiState: SortSettingsUiState,
-    onEvent: (SortSettingsUiEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .padding(Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        SortTypePicker(
-            selectedSortType = uiState.sortSettings.sortType,
-            onEvent = onEvent,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun SortTypePicker(
+internal fun SortTypePicker(
     selectedSortType: SortType,
     onEvent: (SortSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,

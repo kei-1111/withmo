@@ -25,6 +25,7 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.ui.screens.sort_settings.component.SortSettingsScreenContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
