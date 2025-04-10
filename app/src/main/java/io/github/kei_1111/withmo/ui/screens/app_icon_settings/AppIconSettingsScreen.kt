@@ -47,42 +47,45 @@ fun AppIconSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(AppIconSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(AppIconSettingsUiEvent.OnBackPress)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is AppIconSettingsUiEvent.ChangeAppIconSize -> {
+                is AppIconSettingsUiEvent.OnAppIconSizeSliderChange -> {
                     viewModel.changeAppIconSize(event.appIconSize)
                 }
 
-                is AppIconSettingsUiEvent.ChangeAppIconShape -> {
+                is AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick -> {
                     viewModel.changeAppIconShape(event.appIconShape)
                 }
 
-                is AppIconSettingsUiEvent.ChangeRoundedCornerPercent -> {
+                is AppIconSettingsUiEvent.OnRoundedCornerPercentSliderChange -> {
                     viewModel.changeRoundedCornerPercent(event.roundedCornerPercent)
                 }
 
-                is AppIconSettingsUiEvent.ChangeIsAppNameShown -> {
+                is AppIconSettingsUiEvent.OnIsAppNameShownSwitchChange -> {
                     viewModel.changeIsAppNameShown(event.isAppNameShown)
                 }
 
-                is AppIconSettingsUiEvent.Save -> {
-                    viewModel.saveAppIconSettings()
+                is AppIconSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveAppIconSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is AppIconSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
+                is AppIconSettingsUiEvent.OnNavigateToSettingsScreenButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
 
-                is AppIconSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is AppIconSettingsUiEvent.NavigateToSettingsScreen -> {
+                is AppIconSettingsUiEvent.OnBackPress -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -115,7 +118,7 @@ private fun AppIconSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "アプリアイコン") },
-                navigateBack = { onEvent(AppIconSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(AppIconSettingsUiEvent.OnNavigateToSettingsScreenButtonClick) },
             )
             AppItemPreviewArea(
                 appIconSettings = uiState.appIconSettings,
@@ -131,7 +134,7 @@ private fun AppIconSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(AppIconSettingsUiEvent.Save) },
+                onClick = { onEvent(AppIconSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

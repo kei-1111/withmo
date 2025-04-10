@@ -56,7 +56,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Circle == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.ChangeAppIconShape(AppIconShape.Circle)) },
+                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.Circle)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -68,7 +68,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.RoundedCorner == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.ChangeAppIconShape(AppIconShape.RoundedCorner)) },
+                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.RoundedCorner)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -80,7 +80,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Square == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.ChangeAppIconShape(AppIconShape.Square)) },
+                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.Square)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

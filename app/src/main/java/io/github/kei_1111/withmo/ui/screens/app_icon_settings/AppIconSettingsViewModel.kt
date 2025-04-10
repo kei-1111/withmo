@@ -76,7 +76,10 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveAppIconSettings() {
+    fun saveAppIconSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -85,10 +88,10 @@ class AppIconSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveAppIconSettingsUseCase(uiState.value.appIconSettings)
-                _uiEvent.emit(AppIconSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("AppIconSettingsViewModel", "Failed to save app icon settings", e)
-                _uiEvent.emit(AppIconSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }

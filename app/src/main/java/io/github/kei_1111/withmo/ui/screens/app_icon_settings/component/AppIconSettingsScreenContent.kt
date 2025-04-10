@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.common.Constants
-import io.github.kei_1111.withmo.common.Constants.MaxRoundedCornerPercent
-import io.github.kei_1111.withmo.common.Constants.MinRoundedCornerPercent
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
@@ -30,7 +28,7 @@ internal fun AppIconSettingsScreenContent(
         WithmoSettingItemWithSlider(
             title = "アプリアイコンの大きさ",
             value = uiState.appIconSettings.appIconSize,
-            onValueChange = { onEvent(AppIconSettingsUiEvent.ChangeAppIconSize(it)) },
+            onValueChange = { onEvent(AppIconSettingsUiEvent.OnAppIconSizeSliderChange(it)) },
             valueRange = Constants.MinAppIconSize..Constants.MaxAppIconSize,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -42,15 +40,15 @@ internal fun AppIconSettingsScreenContent(
         WithmoSettingItemWithSlider(
             title = "角丸の大きさ",
             value = uiState.appIconSettings.roundedCornerPercent,
-            onValueChange = { onEvent(AppIconSettingsUiEvent.ChangeRoundedCornerPercent(it)) },
-            valueRange = MinRoundedCornerPercent..MaxRoundedCornerPercent,
+            onValueChange = { onEvent(AppIconSettingsUiEvent.OnRoundedCornerPercentSliderChange(it)) },
+            valueRange = Constants.MinRoundedCornerPercent..Constants.MaxRoundedCornerPercent,
             enabled = uiState.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "アプリ名の表示",
             checked = uiState.appIconSettings.isAppNameShown,
-            onCheckedChange = { onEvent(AppIconSettingsUiEvent.ChangeIsAppNameShown(it)) },
+            onCheckedChange = { onEvent(AppIconSettingsUiEvent.OnIsAppNameShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }
