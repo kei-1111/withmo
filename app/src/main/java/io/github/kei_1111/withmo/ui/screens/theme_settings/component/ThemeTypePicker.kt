@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.theme_settings
+package io.github.kei_1111.withmo.ui.screens.theme_settings.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,31 +17,13 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
-fun ThemeSettingsScreenContent(
-    uiState: ThemeSettingsUiState,
-    onEvent: (ThemeSettingsUiEvent) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .padding(Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        ThemeTypePicker(
-            selectedThemeType = uiState.themeSettings.themeType,
-            onEvent = onEvent,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun ThemeTypePicker(
+internal fun ThemeTypePicker(
     selectedThemeType: ThemeType,
     onEvent: (ThemeSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
