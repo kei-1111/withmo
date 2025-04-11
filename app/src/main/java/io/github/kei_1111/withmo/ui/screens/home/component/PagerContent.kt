@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.unity3d.player.UnityPlayer.UnitySendMessage
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
@@ -53,8 +52,6 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
-
-private const val PageCount = 2
 
 @Suppress("LongMethod")
 @Composable
@@ -70,22 +67,17 @@ internal fun PagerContent(
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
 
-    val pagerState = rememberPagerState(pageCount = { PageCount })
+    val pagerState = rememberPagerState(pageCount = { PagerContent.entries.size })
 
-    LaunchedEffect(pagerState) {
-        var isFirstCollect = true
+    LaunchedEffect(pagerState, onEvent) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            if (isFirstCollect) {
-                isFirstCollect = false
-            } else {
-                when (page) {
-                    0 -> {
-                        UnitySendMessage("IKAnimationController", "TriggerEnterScreenAnimation", "")
-                    }
+            when (page) {
+                PagerContent.DisplayModel.ordinal -> {
+                    onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
+                }
 
-                    1 -> {
-                        UnitySendMessage("IKAnimationController", "TriggerExitScreenAnimation", "")
-                    }
+                PagerContent.Widget.ordinal -> {
+                    onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
                 }
             }
         }
@@ -101,7 +93,7 @@ internal fun PagerContent(
                 .weight(Weights.Medium),
         ) { page ->
             when (page) {
-                0 -> {
+                PagerContent.DisplayModel.ordinal -> {
                     DisplayModelContent(
                         uiState = uiState,
                         onEvent = onEvent,
@@ -114,25 +106,20 @@ internal fun PagerContent(
                                         val normalizedX = it.x / screenWidthPx
                                         val normalizedY = it.y / screenHeightPx
 
-                                        UnitySendMessage(
-                                            "IKAnimationController",
-                                            "MoveLookat",
-                                            "$normalizedX,$normalizedY",
+                                        onEvent(
+                                            HomeUiEvent.OnDisplayModelContentClick(
+                                                x = normalizedX,
+                                                y = normalizedY,
+                                            ),
                                         )
                                     },
-                                    onLongPress = {
-                                        UnitySendMessage(
-                                            "VRMAnimationController",
-                                            "TriggerTouchAnimation",
-                                            "",
-                                        )
-                                    },
+                                    onLongPress = { onEvent(HomeUiEvent.OnDisplayModelContentLongClick) },
                                 )
                             },
                     )
                 }
 
-                1 -> {
+                PagerContent.Widget.ordinal -> {
                     WidgetContent(
                         createWidgetView = createWidgetView,
                         uiState = uiState,
@@ -141,9 +128,7 @@ internal fun PagerContent(
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
-                                    onLongPress = {
-                                        onEvent(HomeUiEvent.EnterEditMode)
-                                    },
+                                    onLongPress = { onEvent(HomeUiEvent.OnWidgetContentLongClick) },
                                 )
                             },
                     )
@@ -154,12 +139,8 @@ internal fun PagerContent(
             pageCount = pagerState.pageCount,
             currentPage = pagerState.currentPage,
             isEditMode = uiState.isEditMode,
-            exitEditMode = {
-                onEvent(HomeUiEvent.ExitEditMode)
-            },
-            openWidgetList = {
-                onEvent(HomeUiEvent.OpenWidgetListBottomSheet)
-            },
+            exitEditMode = { onEvent(HomeUiEvent.OnCompleteEditButtonClick) },
+            openWidgetList = { onEvent(HomeUiEvent.OnAddWidgetButtonClick) },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -255,19 +236,14 @@ private fun DisplayModelContent(
         }
         if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
             WithmoIconButton(
-                onClick = {
-                    onEvent(HomeUiEvent.OnOpenDocumentButtonClick)
-                },
+                onClick = { onEvent(HomeUiEvent.OnOpenDocumentButtonClick) },
                 icon = Icons.Rounded.ChangeCircle,
                 modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
             )
         }
-        if (uiState.currentUserSettings.sideButtonSettings.isScaleSliderButtonShown) {
+        if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
             WithmoIconButton(
-                onClick = {
-                    UnitySendMessage("SliderManeger", "ShowObject", "")
-                    onEvent(HomeUiEvent.SetShowScaleSlider(true))
-                },
+                onClick = { onEvent(HomeUiEvent.OnShowScaleSliderButtonClick) },
                 icon = Icons.Rounded.Man,
                 modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
             )
@@ -299,10 +275,15 @@ private fun WidgetContent(
                     bottomPadding =
                     bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                     isEditMode = uiState.isEditMode,
-                    deleteWidget = { onEvent(HomeUiEvent.DeleteWidget(widgetInfo)) },
-                    resizeWidget = { onEvent(HomeUiEvent.ResizeWidget(widgetInfo)) },
+                    deleteWidget = { onEvent(HomeUiEvent.OnDeleteWidgetBadgeClick(widgetInfo)) },
+                    resizeWidget = { onEvent(HomeUiEvent.OnResizeWidgetBadgeClick(widgetInfo)) },
                 )
             }
         }
     }
+}
+
+enum class PagerContent {
+    DisplayModel,
+    Widget,
 }

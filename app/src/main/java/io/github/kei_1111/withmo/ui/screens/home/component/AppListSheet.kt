@@ -62,7 +62,7 @@ internal fun AppListSheet(
     }
 
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeUiEvent.HideAppListBottomSheet) },
+        onDismissRequest = { onEvent(HomeUiEvent.OnAppListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = appListSheetState,
         dragHandle = {},
@@ -87,7 +87,7 @@ internal fun AppListSheet(
                 WithmoSearchTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = uiState.appSearchQuery,
-                    onValueChange = { onEvent(HomeUiEvent.OnValueChangeAppSearchQuery(it)) },
+                    onValueChange = { onEvent(HomeUiEvent.OnAppSearchQueryChange(it)) },
                     action = {
                         resultAppList = appList.filter { appInfo ->
                             appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
@@ -145,8 +145,8 @@ private fun AppList(
                     items = launchableAppList,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.StartApp(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
+                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
+                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
                 )
             }
         }
@@ -161,8 +161,8 @@ private fun AppList(
                     items = settingApp,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.StartApp(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
+                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
+                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
                 )
             }
         }

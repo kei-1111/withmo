@@ -24,8 +24,8 @@ internal fun SideButtonSettingsScreenContent(
     ) {
         WithmoSettingItemWithSwitch(
             title = "スケールスライダー表示ボタンの表示",
-            checked = uiState.sideButtonSettings.isScaleSliderButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown(it)) },
+            checked = uiState.sideButtonSettings.isShowScaleSliderButtonShown,
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsShowScaleSliderButtonShown(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(

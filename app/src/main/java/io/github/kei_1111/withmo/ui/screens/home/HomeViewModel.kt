@@ -109,9 +109,9 @@ class HomeViewModel @Inject constructor(
         appWidgetHost.startListening()
     }
 
-    fun setShowScaleSlider(show: Boolean) {
+    fun setIsShowScaleSliderButtonShown(show: Boolean) {
         _uiState.update {
-            it.copy(isShowScaleSlider = show)
+            it.copy(isShowScaleSliderButtonShown = show)
         }
     }
 
@@ -163,13 +163,13 @@ class HomeViewModel @Inject constructor(
 
     fun changeIsAppListBottomSheetOpened(isAppListBottomSheetOpened: Boolean) {
         _uiState.update {
-            it.copy(isAppListBottomSheetOpened = isAppListBottomSheetOpened)
+            it.copy(isAppListSheetOpened = isAppListBottomSheetOpened)
         }
     }
 
     fun changeIsWidgetListBottomSheetOpened(isWidgetListBottomSheetOpened: Boolean) {
         _uiState.update {
-            it.copy(isWidgetListBottomSheetOpened = isWidgetListBottomSheetOpened)
+            it.copy(isWidgetListSheetOpened = isWidgetListBottomSheetOpened)
         }
     }
 

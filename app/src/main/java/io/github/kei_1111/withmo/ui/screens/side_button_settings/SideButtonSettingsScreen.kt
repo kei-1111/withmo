@@ -51,8 +51,8 @@ fun SideButtonSettingsScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown -> {
-                    viewModel.changeIsScaleSliderButtonShown(event.isScaleSliderButtonShown)
+                is SideButtonSettingsUiEvent.ChangeIsShowScaleSliderButtonShown -> {
+                    viewModel.changeIsShowScaleSliderButtonShown(event.isShowScaleSliderButtonShown)
                 }
 
                 is SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown -> {

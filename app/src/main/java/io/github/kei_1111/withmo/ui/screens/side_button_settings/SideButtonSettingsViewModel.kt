@@ -31,14 +31,14 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsScaleSliderButtonShown(isScaleSliderButtonShown: Boolean) {
+    fun changeIsShowScaleSliderButtonShown(isScaleSliderButtonShown: Boolean) {
         _uiState.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
-                    isScaleSliderButtonShown = isScaleSliderButtonShown,
+                    isShowScaleSliderButtonShown = isScaleSliderButtonShown,
                 ),
                 isSaveButtonEnabled =
-                isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
+                isScaleSliderButtonShown != it.initialSideButtonSettings.isShowScaleSliderButtonShown,
             )
         }
     }

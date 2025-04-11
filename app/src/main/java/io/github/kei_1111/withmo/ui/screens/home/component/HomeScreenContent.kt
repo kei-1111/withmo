@@ -18,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.unity3d.player.UnityPlayer.UnitySendMessage
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.toDateTimeInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
@@ -47,15 +46,12 @@ internal fun HomeScreenContent(
     Box(
         modifier = modifier,
     ) {
-        if (uiState.isShowScaleSlider) {
+        if (uiState.isShowScaleSliderButtonShown) {
             Column(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 WithmoIconButton(
-                    onClick = {
-                        UnitySendMessage("SliderManeger", "HideObject", "")
-                        onEvent(HomeUiEvent.SetShowScaleSlider(false))
-                    },
+                    onClick = { onEvent(HomeUiEvent.OnCloseScaleSliderButtonClick) },
                     icon = Icons.Rounded.Close,
                     modifier = Modifier.padding(start = Paddings.Medium),
                 )
@@ -75,7 +71,7 @@ internal fun HomeScreenContent(
                         detectVerticalDragGestures(
                             onVerticalDrag = { change, dragAmount ->
                                 if (dragAmount < BottomSheetShowDragHeight) {
-                                    onEvent(HomeUiEvent.OpenAppListBottomSheet)
+                                    onEvent(HomeUiEvent.OnAppListSheetSwipeUp)
                                 }
                             },
                         )
@@ -115,8 +111,8 @@ private fun RowAppList(
     ) {
         uiState.favoriteAppList.forEach {
             AppItem(
-                onClick = { onEvent(HomeUiEvent.StartApp(it)) },
-                onLongClick = { onEvent(HomeUiEvent.DeleteApp(it)) },
+                onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
+                onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
                 appInfo = it,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(

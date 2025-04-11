@@ -47,7 +47,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
         val SORT_TYPE = stringPreferencesKey("sort_type")
-        val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
+        val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
         val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
         val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
@@ -93,7 +93,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: SortType.ALPHABETICAL,
                 ),
                 sideButtonSettings = SideButtonSettings(
-                    isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
+                    isShowScaleSliderButtonShown = preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
                     isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
                 ),
@@ -147,8 +147,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveSideButtonSettings(sideButtonSettings: SideButtonSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] =
-                    sideButtonSettings.isScaleSliderButtonShown
+                preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] =
+                    sideButtonSettings.isShowScaleSliderButtonShown
                 preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] =
                     sideButtonSettings.isOpenDocumentButtonShown
                 preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] =

@@ -34,6 +34,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.unity3d.player.UnityPlayer.UnitySendMessage
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -147,7 +148,7 @@ fun HomeScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is HomeUiEvent.StartApp -> {
+                is HomeUiEvent.OnAppClick -> {
                     if (event.appInfo.packageName == context.packageName) {
                         latestNavigateToSettingsScreen()
                     } else {
@@ -155,14 +156,20 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.DeleteApp -> {
+                is HomeUiEvent.OnAppLongClick -> {
                     if (event.appInfo.packageName != context.packageName) {
                         event.appInfo.delete(context = context)
                     }
                 }
 
-                is HomeUiEvent.SetShowScaleSlider -> {
-                    viewModel.setShowScaleSlider(event.isShow)
+                is HomeUiEvent.OnShowScaleSliderButtonClick -> {
+                    UnitySendMessage("SliderManeger", "ShowObject", "")
+                    viewModel.setIsShowScaleSliderButtonShown(true)
+                }
+
+                is HomeUiEvent.OnCloseScaleSliderButtonClick -> {
+                    UnitySendMessage("SliderManeger", "HideObject", "")
+                    viewModel.setIsShowScaleSliderButtonShown(false)
                 }
 
                 is HomeUiEvent.OnSetDefaultModelButtonClick -> {
@@ -192,18 +199,18 @@ fun HomeScreen(
                     viewModel.setIsModelChangeWarningDialogShown(false)
                 }
 
-                is HomeUiEvent.OnValueChangeAppSearchQuery -> {
+                is HomeUiEvent.OnAppSearchQueryChange -> {
                     viewModel.setAppSearchQuery(event.query)
                 }
 
-                is HomeUiEvent.OpenAppListBottomSheet -> {
+                is HomeUiEvent.OnAppListSheetSwipeUp -> {
                     scope.launch {
                         viewModel.changeIsAppListBottomSheetOpened(true)
                         appListSheetState.show()
                     }
                 }
 
-                is HomeUiEvent.HideAppListBottomSheet -> {
+                is HomeUiEvent.OnAppListSheetSwipeDown -> {
                     scope.launch {
                         appListSheetState.hide()
                     }.invokeOnCompletion {
@@ -213,14 +220,14 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OpenWidgetListBottomSheet -> {
+                is HomeUiEvent.OnAddWidgetButtonClick -> {
                     scope.launch {
                         viewModel.changeIsWidgetListBottomSheetOpened(true)
                         widgetListSheetState.show()
                     }
                 }
 
-                is HomeUiEvent.HideWidgetListBottomSheet -> {
+                is HomeUiEvent.OnWidgetListSheetSwipeDown -> {
                     scope.launch {
                         widgetListSheetState.hide()
                     }.invokeOnCompletion {
@@ -230,43 +237,60 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnSelectWidget -> {
+                is HomeUiEvent.OnDisplayModelContentSwipeLeft -> {
+                    UnitySendMessage("IKAnimationController", "TriggerEnterScreenAnimation", "")
+                }
+                is HomeUiEvent.OnWidgetContentSwipeRight -> {
+                    UnitySendMessage("IKAnimationController", "TriggerExitScreenAnimation", "")
+                }
+
+                is HomeUiEvent.OnDisplayModelContentClick -> {
+                    UnitySendMessage("IKAnimationController", "MoveLookat", "${event.x},${event.y}")
+                }
+
+                is HomeUiEvent.OnDisplayModelContentLongClick -> {
+                    UnitySendMessage("VRMAnimationController", "TriggerTouchAnimation", "")
+                }
+
+                is HomeUiEvent.OnAllWidgetListWidgetClick -> {
                     viewModel.selectWidget(
                         widgetInfo = event.widgetInfo,
                         context = context,
                         configureWidgetLauncher = configureWidgetLauncher,
                         bindWidgetLauncher = bindWidgetLauncher,
                     )
-                    viewModel.onEvent(HomeUiEvent.HideWidgetListBottomSheet)
+                    scope.launch {
+                        widgetListSheetState.hide()
+                    }.invokeOnCompletion {
+                        if (!widgetListSheetState.isVisible) {
+                            viewModel.changeIsWidgetListBottomSheetOpened(false)
+                        }
+                    }
                 }
 
-                is HomeUiEvent.EnterEditMode -> {
+                is HomeUiEvent.OnWidgetContentLongClick -> {
                     viewModel.changeIsEditMode(true)
                 }
 
-                is HomeUiEvent.ExitEditMode -> {
+                is HomeUiEvent.OnCompleteEditButtonClick -> {
                     viewModel.saveWidgetList()
                     viewModel.changeIsEditMode(false)
                 }
 
-                is HomeUiEvent.DeleteWidget -> {
+                is HomeUiEvent.OnDeleteWidgetBadgeClick -> {
                     viewModel.deleteWidget(event.widgetInfo)
                 }
 
-                is HomeUiEvent.ResizeWidget -> {
+                is HomeUiEvent.OnResizeWidgetBadgeClick -> {
                     viewModel.changeIsWidgetResizing(true)
                     viewModel.changeResizingWidget(event.widgetInfo)
                     viewModel.deleteWidget(event.widgetInfo)
                 }
 
-                is HomeUiEvent.FinishResizeWidget -> {
+                is HomeUiEvent.OnWidgetResizeBottomSheetClose -> {
                     viewModel.changeIsWidgetResizing(false)
                     viewModel.addDisplayedWidgetList(event.widgetInfo)
                     viewModel.changeResizingWidget(null)
-                }
-
-                is HomeUiEvent.NavigateToSettingsScreen -> {
-                    latestNavigateToSettingsScreen()
                 }
             }
         }.launchIn(this)
@@ -302,7 +326,7 @@ private fun HomeScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    if (uiState.isAppListBottomSheetOpened) {
+    if (uiState.isAppListSheetOpened) {
         AppListSheet(
             appList = homeAppList,
             appListSheetState = appListSheetState,
@@ -311,7 +335,7 @@ private fun HomeScreen(
         )
     }
 
-    if (uiState.isWidgetListBottomSheetOpened) {
+    if (uiState.isWidgetListSheetOpened) {
         WidgetListSheet(
             widgetListSheetState = widgetListSheetState,
             groupedWidgetInfoMap = groupedWidgetInfoMap,
@@ -327,7 +351,7 @@ private fun HomeScreen(
             WidgetResizeBottomSheet(
                 widgetInfo = widgetInfo,
                 createWidgetView = createWidgetView,
-                close = { onEvent(HomeUiEvent.FinishResizeWidget(it)) },
+                close = { onEvent(HomeUiEvent.OnWidgetResizeBottomSheetClose(it)) },
             )
         }
     }

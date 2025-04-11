@@ -60,13 +60,13 @@ internal fun WidgetListSheet(
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeUiEvent.HideWidgetListBottomSheet) },
+        onDismissRequest = { onEvent(HomeUiEvent.OnWidgetListSheetSwipeDown) },
         sheetState = widgetListSheetState,
         modifier = modifier,
     ) {
         WidgetList(
             groupedWidgetInfoMap = groupedWidgetInfoMap,
-            selectWidget = { onEvent(HomeUiEvent.OnSelectWidget(it)) },
+            selectWidget = { onEvent(HomeUiEvent.OnAllWidgetListWidgetClick(it)) },
         )
     }
 }
