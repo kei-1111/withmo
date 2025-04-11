@@ -68,12 +68,12 @@ private fun FinishContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "はじめる",
-            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

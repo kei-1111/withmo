@@ -81,7 +81,9 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun navigateToNextPage() {
+    fun navigateToNextPage(
+        onFinish: () -> Unit,
+    ) {
         val currentPage = _uiState.value.currentPage
         val nextPage = currentPage.ordinal + 1
         if (nextPage < OnboardingPage.entries.size) {
@@ -89,7 +91,7 @@ class OnboardingViewModel @Inject constructor(
                 it.copy(currentPage = OnboardingPage.entries[nextPage])
             }
         } else {
-            onEvent(OnboardingUiEvent.OnboardingFinished)
+            onFinish()
         }
     }
 

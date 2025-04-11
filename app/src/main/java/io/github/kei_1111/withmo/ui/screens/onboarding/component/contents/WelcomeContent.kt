@@ -64,7 +64,7 @@ private fun WelcomeContentBottomAppBar(
 ) {
     OnboardingBottomAppBarNextButton(
         text = "次へ",
-        onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+        onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
         modifier = modifier,
     )
 }

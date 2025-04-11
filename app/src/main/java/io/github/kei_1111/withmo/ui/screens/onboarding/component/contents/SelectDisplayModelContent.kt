@@ -76,12 +76,12 @@ private fun SelectDisplayModelContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "次へ",
-            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

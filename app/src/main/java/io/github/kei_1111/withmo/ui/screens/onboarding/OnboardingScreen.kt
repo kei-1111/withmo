@@ -70,15 +70,15 @@ fun OnboardingScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is OnboardingUiEvent.AddSelectedAppList -> {
+                is OnboardingUiEvent.OnAllAppListAppClick -> {
                     viewModel.addSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.RemoveSelectedAppList -> {
+                is OnboardingUiEvent.OnFavoriteAppListAppClick -> {
                     viewModel.removeSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.OnValueChangeAppSearchQuery -> {
+                is OnboardingUiEvent.OnAppSearchQueryChange -> {
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
@@ -86,17 +86,17 @@ fun OnboardingScreen(
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
-                is OnboardingUiEvent.NavigateToNextPage -> {
-                    viewModel.navigateToNextPage()
+                is OnboardingUiEvent.OnNextButtonClick -> {
+                    viewModel.navigateToNextPage(
+                        onFinish = {
+                            viewModel.saveSetting()
+                            latestNavigateToHomeScreen()
+                        },
+                    )
                 }
 
-                is OnboardingUiEvent.NavigateToPreviousPage -> {
+                is OnboardingUiEvent.OnPreviousButtonClick -> {
                     viewModel.navigateToPreviousPage()
-                }
-
-                is OnboardingUiEvent.OnboardingFinished -> {
-                    viewModel.saveSetting()
-                    latestNavigateToHomeScreen()
                 }
             }
         }.launchIn(this)

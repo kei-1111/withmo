@@ -71,15 +71,15 @@ internal fun SelectFavoriteAppContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.appSearchQuery,
-                onValueChange = { onEvent(OnboardingUiEvent.OnValueChangeAppSearchQuery(it)) },
+                onValueChange = { onEvent(OnboardingUiEvent.OnAppSearchQueryChange(it)) },
                 action = { filterAppList(uiState.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
                     favoriteAppList = uiState.selectedAppList,
-                    addSelectedAppList = { onEvent(OnboardingUiEvent.AddSelectedAppList(it)) },
-                    removeSelectedAppList = { onEvent(OnboardingUiEvent.RemoveSelectedAppList(it)) },
+                    addSelectedAppList = { onEvent(OnboardingUiEvent.OnAllAppListAppClick(it)) },
+                    removeSelectedAppList = { onEvent(OnboardingUiEvent.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
@@ -93,7 +93,7 @@ internal fun SelectFavoriteAppContent(
         }
         FavoriteAppListRow(
             favoriteAppList = uiState.selectedAppList,
-            removeSelectedAppList = { onEvent(OnboardingUiEvent.RemoveSelectedAppList(it)) },
+            removeSelectedAppList = { onEvent(OnboardingUiEvent.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         SelectFavoriteAppContentBottomAppBar(
@@ -116,12 +116,12 @@ private fun SelectFavoriteAppContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.NavigateToPreviousPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "次へ",
-            onClick = { onEvent(OnboardingUiEvent.NavigateToNextPage) },
+            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
             enabled = uiState.selectedAppList.isNotEmpty(),
         )
