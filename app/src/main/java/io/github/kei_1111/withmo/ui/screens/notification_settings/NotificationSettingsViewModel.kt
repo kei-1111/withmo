@@ -52,7 +52,10 @@ class NotificationSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveNotificationSettings() {
+    fun saveNotificationSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -61,10 +64,10 @@ class NotificationSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveNotificationSettingsUseCase(_uiState.value.notificationSettings)
-                _uiEvent.emit(NotificationSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("NotificationSettingsViewModel", "Failed to save notification settings", e)
-                _uiEvent.emit(NotificationSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }

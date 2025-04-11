@@ -25,7 +25,7 @@ internal fun NotificationSettingsScreenContent(
         WithmoSettingItemWithSwitch(
             title = "通知の受け取り",
             checked = uiState.notificationSettings.isNotificationAnimationEnabled,
-            onCheckedChange = { onEvent(NotificationSettingsUiEvent.ChangeIsNotificationAnimationEnabled(it)) },
+            onCheckedChange = { onEvent(NotificationSettingsUiEvent.OnIsNotificationAnimationEnabledSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

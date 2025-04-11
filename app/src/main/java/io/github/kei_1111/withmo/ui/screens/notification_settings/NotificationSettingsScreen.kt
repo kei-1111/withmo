@@ -37,7 +37,7 @@ import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
-@Suppress("ModifierMissing")
+@Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun NotificationSettingsScreen(
     navigateToSettingsScreen: () -> Unit,
@@ -61,13 +61,13 @@ fun NotificationSettingsScreen(
     )
 
     BackHandler {
-        viewModel.onEvent(NotificationSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(NotificationSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is NotificationSettingsUiEvent.ChangeIsNotificationAnimationEnabled -> {
+                is NotificationSettingsUiEvent.OnIsNotificationAnimationEnabledSwitchChange -> {
                     if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)) {
                         viewModel.changeIsNotificationAnimationEnable(event.isNotificationAnimationEnabled)
                     } else {
@@ -76,30 +76,29 @@ fun NotificationSettingsScreen(
                     }
                 }
 
-                is NotificationSettingsUiEvent.NotificationPermissionDialogOnConfirm -> {
+                is NotificationSettingsUiEvent.OnNotificationPermissionDialogConfirm -> {
                     launcher.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
                     viewModel.changeIsNotificationPermissionDialogShown(false)
                 }
 
-                is NotificationSettingsUiEvent.NotificationPermissionDialogOnDismiss -> {
+                is NotificationSettingsUiEvent.OnNotificationPermissionDialogDismiss -> {
                     viewModel.changeIsNotificationPermissionDialogShown(false)
                     showToast(context, "通知アニメーションを有効にするには\n通知アクセスを許可してください")
                 }
 
-                is NotificationSettingsUiEvent.Save -> {
-                    viewModel.saveNotificationSettings()
+                is NotificationSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveNotificationSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is NotificationSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is NotificationSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is NotificationSettingsUiEvent.NavigateToSettingsScreen -> {
+                is NotificationSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -132,7 +131,7 @@ private fun NotificationSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "通知") },
-                navigateBack = { onEvent(NotificationSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(NotificationSettingsUiEvent.OnBackButtonClick) },
             )
             NotificationSettingsScreenContent(
                 uiState = uiState,
@@ -143,7 +142,7 @@ private fun NotificationSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(NotificationSettingsUiEvent.Save) },
+                onClick = { onEvent(NotificationSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -154,10 +153,10 @@ private fun NotificationSettingsScreen(
     if (uiState.isNotificationPermissionDialogShown) {
         NotificationPermissionDialog(
             onConfirm = {
-                onEvent(NotificationSettingsUiEvent.NotificationPermissionDialogOnConfirm)
+                onEvent(NotificationSettingsUiEvent.OnNotificationPermissionDialogConfirm)
             },
             onDismiss = {
-                onEvent(NotificationSettingsUiEvent.NotificationPermissionDialogOnDismiss)
+                onEvent(NotificationSettingsUiEvent.OnNotificationPermissionDialogDismiss)
             },
         )
     }
