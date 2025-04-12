@@ -45,30 +45,29 @@ fun ThemeSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(ThemeSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is ThemeSettingsUiEvent.ChangeThemeType -> {
+                is ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick -> {
                     viewModel.changeThemeType(event.themeType)
                 }
 
-                is ThemeSettingsUiEvent.Save -> {
-                    viewModel.saveThemeSettings()
+                is ThemeSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveThemeSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is ThemeSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is ThemeSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is ThemeSettingsUiEvent.NavigateToSettingsScreen -> {
+                is ThemeSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -101,7 +100,7 @@ private fun ThemeSettingsSceen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "テーマ") },
-                navigateBack = { onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(ThemeSettingsUiEvent.OnBackButtonClick) },
             )
             ThemeSettingsScreenContent(
                 uiState = uiState,
@@ -112,7 +111,7 @@ private fun ThemeSettingsSceen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ThemeSettingsUiEvent.Save) },
+                onClick = { onEvent(ThemeSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

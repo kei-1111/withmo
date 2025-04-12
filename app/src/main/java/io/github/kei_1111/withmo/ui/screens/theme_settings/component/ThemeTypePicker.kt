@@ -51,7 +51,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.TIME_BASED == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsUiEvent.ChangeThemeType(ThemeType.TIME_BASED)) },
+                onClick = { onEvent(ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick(ThemeType.TIME_BASED)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ThemeTypePickerDivider()
@@ -62,7 +62,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.LIGHT == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsUiEvent.ChangeThemeType(ThemeType.LIGHT)) },
+                onClick = { onEvent(ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick(ThemeType.LIGHT)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ThemeTypePickerDivider()
@@ -73,7 +73,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.DARK == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsUiEvent.ChangeThemeType(ThemeType.DARK)) },
+                onClick = { onEvent(ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick(ThemeType.DARK)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
