@@ -49,7 +49,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.ALPHABETICAL == selectedSortType,
-                onClick = { onEvent(SortSettingsUiEvent.ChangeSortType(SortType.ALPHABETICAL)) },
+                onClick = { onEvent(SortSettingsUiEvent.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             SortTypePickerDivider()
@@ -60,7 +60,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.USE_COUNT == selectedSortType,
-                onClick = { onEvent(SortSettingsUiEvent.ChangeSortType(SortType.USE_COUNT)) },
+                onClick = { onEvent(SortSettingsUiEvent.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

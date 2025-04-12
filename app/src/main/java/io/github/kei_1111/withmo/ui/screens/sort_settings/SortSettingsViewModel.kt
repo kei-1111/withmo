@@ -47,7 +47,10 @@ class SortSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveSortSettings() {
+    fun saveSortSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -57,10 +60,10 @@ class SortSettingsViewModel @Inject constructor(
             try {
                 val sortSettings = _uiState.value.sortSettings
                 saveSortSettingsUseCase(sortSettings)
-                _uiEvent.emit(SortSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("SortSettingsViewModel", "Failed to save sort settings", e)
-                _uiEvent.emit(SortSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }
