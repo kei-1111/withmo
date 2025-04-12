@@ -30,7 +30,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent
@@ -92,7 +91,7 @@ private fun HomeAppSettings(
                     },
                     itemName = "デフォルトホームアプリ",
                     onClick = {
-                        onEvent(SettingsUiEvent.SetDefaultHomeApp)
+                        onEvent(SettingsUiEvent.OnNavigateHomeAppSettingButtonClick)
                     },
                     itemColor = if (isDefaultHomeApp) {
                         MaterialTheme.colorScheme.onSurface
@@ -127,7 +126,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.AccessTime,
                     itemName = "時計",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.ClockSettings))
+                        onEvent(SettingsUiEvent.OnNavigateClockSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -135,7 +134,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Apps,
                     itemName = "アプリアイコン",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.AppIconSettings))
+                        onEvent(SettingsUiEvent.OnNavigateAppIconSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -143,7 +142,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Star,
                     itemName = "お気に入りアプリ",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.FavoriteAppSettings))
+                        onEvent(SettingsUiEvent.OnNavigateFavoriteAppSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -151,7 +150,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.RadioButtonChecked,
                     itemName = "サイドボタン",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.SideButtonSettings))
+                        onEvent(SettingsUiEvent.OnNavigateSideButtonSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -159,7 +158,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Tune,
                     itemName = "並び順",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.SortSettings))
+                        onEvent(SettingsUiEvent.OnNavigateSortSettingsButtonClick)
                     },
                 )
             }
@@ -189,7 +188,7 @@ private fun NotificationSettings(
                     icon = Icons.Rounded.Notifications,
                     itemName = "通知",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.NotificationSettings))
+                        onEvent(SettingsUiEvent.OnNavigateNotificationSettingsButtonClick)
                     },
                 )
             }
@@ -219,7 +218,7 @@ private fun ThemeSettings(
                     icon = Icons.Rounded.Palette,
                     itemName = "テーマ",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigate(Screen.ThemeSettings))
+                        onEvent(SettingsUiEvent.OnNavigateThemeSettingsButtonClick)
                     },
                 )
             }

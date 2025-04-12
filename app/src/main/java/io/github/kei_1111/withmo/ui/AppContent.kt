@@ -102,7 +102,14 @@ fun AppContent(
 
                     is Screen.Settings -> {
                         SettingsScreen(
-                            onNavigate = { screen -> currentScreen = screen },
+                            onNavigateClockSettingsButtonClick = { currentScreen = Screen.ClockSettings },
+                            onNavigateAppIconSettingsButtonClick = { currentScreen = Screen.AppIconSettings },
+                            onNavigateFavoriteAppSettingsButtonClick = { currentScreen = Screen.FavoriteAppSettings },
+                            onNavigateSideButtonSettingsButtonClick = { currentScreen = Screen.SideButtonSettings },
+                            onNavigateSortSettingsButtonClick = { currentScreen = Screen.SortSettings },
+                            onNavigateNotificationSettingsButtonClick = { currentScreen = Screen.NotificationSettings },
+                            onNavigateThemeSettingsButtonClick = { currentScreen = Screen.ThemeSettings },
+                            onBackButtonClick = { currentScreen = Screen.Home },
                         )
                     }
 

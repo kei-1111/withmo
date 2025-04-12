@@ -31,7 +31,6 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.R
-import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.screens.settings.component.SettingsScreenContent
@@ -44,17 +43,31 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun SettingsScreen(
-    onNavigate: (Screen) -> Unit,
+    onNavigateClockSettingsButtonClick: () -> Unit,
+    onNavigateAppIconSettingsButtonClick: () -> Unit,
+    onNavigateFavoriteAppSettingsButtonClick: () -> Unit,
+    onNavigateSideButtonSettingsButtonClick: () -> Unit,
+    onNavigateSortSettingsButtonClick: () -> Unit,
+    onNavigateNotificationSettingsButtonClick: () -> Unit,
+    onNavigateThemeSettingsButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestOnNavigate by rememberUpdatedState(onNavigate)
+    val currentOnNavigateClockSettingsButtonClick by rememberUpdatedState(onNavigateClockSettingsButtonClick)
+    val currentOnNavigateAppIconSettingsButtonClick by rememberUpdatedState(onNavigateAppIconSettingsButtonClick)
+    val currentOnNavigateFavoriteAppSettingsButtonClick by rememberUpdatedState(onNavigateFavoriteAppSettingsButtonClick)
+    val currentOnNavigateSideButtonSettingsButtonClick by rememberUpdatedState(onNavigateSideButtonSettingsButtonClick)
+    val currentOnNavigateSortSettingsButtonClick by rememberUpdatedState(onNavigateSortSettingsButtonClick)
+    val currentOnNavigateNotificationSettingsButtonClick by rememberUpdatedState(onNavigateNotificationSettingsButtonClick)
+    val currentOnNavigateThemeSettingsButtonClick by rememberUpdatedState(onNavigateThemeSettingsButtonClick)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
+        viewModel.onEvent(SettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(Unit) {
@@ -64,13 +77,41 @@ fun SettingsScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SettingsUiEvent.OnNavigate -> {
-                    latestOnNavigate(event.screen)
-                }
-
-                is SettingsUiEvent.SetDefaultHomeApp -> {
+                is SettingsUiEvent.OnNavigateHomeAppSettingButtonClick -> {
                     val intent = Intent(Settings.ACTION_HOME_SETTINGS)
                     context.startActivity(intent)
+                }
+
+                is SettingsUiEvent.OnNavigateClockSettingsButtonClick -> {
+                    currentOnNavigateClockSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateAppIconSettingsButtonClick -> {
+                    currentOnNavigateAppIconSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateFavoriteAppSettingsButtonClick -> {
+                    currentOnNavigateFavoriteAppSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateSideButtonSettingsButtonClick -> {
+                    currentOnNavigateSideButtonSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateSortSettingsButtonClick -> {
+                    currentOnNavigateSortSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateNotificationSettingsButtonClick -> {
+                    currentOnNavigateNotificationSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateThemeSettingsButtonClick -> {
+                    currentOnNavigateThemeSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnBackButtonClick -> {
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)
@@ -103,9 +144,7 @@ private fun SettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
-                navigateClose = {
-                    onEvent(SettingsUiEvent.OnNavigate(Screen.Home))
-                },
+                navigateClose = { onEvent(SettingsUiEvent.OnBackButtonClick) },
             )
             SettingsScreenContent(
                 modifier = Modifier
