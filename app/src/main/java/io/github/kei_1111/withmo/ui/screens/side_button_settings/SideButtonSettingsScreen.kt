@@ -45,38 +45,37 @@ fun SideButtonSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(SideButtonSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(SideButtonSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SideButtonSettingsUiEvent.ChangeIsShowScaleSliderButtonShown -> {
+                is SideButtonSettingsUiEvent.OnIsShowScaleSliderButtonShownSwitchChange -> {
                     viewModel.changeIsShowScaleSliderButtonShown(event.isShowScaleSliderButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown -> {
+                is SideButtonSettingsUiEvent.OnIsOpenDocumentButtonShownSwitchChange -> {
                     viewModel.changeIsOpenDocumentButtonShown(event.isOpenDocumentButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.ChangeIsSetDefaultModelButtonShown -> {
+                is SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange -> {
                     viewModel.changeIsSetDefaultModelButtonShown(event.isSetDefaultModelButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.Save -> {
-                    viewModel.saveSideButtonSettings()
+                is SideButtonSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveSideButtonSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is SideButtonSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is SideButtonSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is SideButtonSettingsUiEvent.NavigateToSettingsScreen -> {
+                is SideButtonSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -109,7 +108,7 @@ private fun SideButtonSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "サイドボタン") },
-                navigateBack = { onEvent(SideButtonSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(SideButtonSettingsUiEvent.OnBackButtonClick) },
             )
             SideButtonSettingsScreenContent(
                 uiState = uiState,
@@ -120,7 +119,7 @@ private fun SideButtonSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SideButtonSettingsUiEvent.Save) },
+                onClick = { onEvent(SideButtonSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

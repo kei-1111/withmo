@@ -25,19 +25,19 @@ internal fun SideButtonSettingsScreenContent(
         WithmoSettingItemWithSwitch(
             title = "スケールスライダー表示ボタンの表示",
             checked = uiState.sideButtonSettings.isShowScaleSliderButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsShowScaleSliderButtonShown(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsShowScaleSliderButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "表示モデル変更ボタンの表示",
             checked = uiState.sideButtonSettings.isOpenDocumentButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsOpenDocumentButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "デフォルトモデル設定ボタンの表示",
             checked = uiState.sideButtonSettings.isSetDefaultModelButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.ChangeIsSetDefaultModelButtonShown(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

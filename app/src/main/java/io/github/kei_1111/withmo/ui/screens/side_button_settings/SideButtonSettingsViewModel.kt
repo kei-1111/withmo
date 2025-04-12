@@ -67,7 +67,10 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveSideButtonSettings() {
+    fun saveSideButtonSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -76,10 +79,10 @@ class SideButtonSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveSideButtonSettingsUseCase(_uiState.value.sideButtonSettings)
-                _uiEvent.emit(SideButtonSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
                 Log.e("SideButtonSettingsViewModel", "Failed to save side button settings", e)
-                _uiEvent.emit(SideButtonSettingsUiEvent.SaveFailure)
+                onSaveFailure()
             }
         }
     }
