@@ -90,9 +90,13 @@ class AppIconSettingsViewModel @Inject constructor(
                 saveAppIconSettingsUseCase(uiState.value.appIconSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("AppIconSettingsViewModel", "Failed to save app icon settings", e)
+                Log.e(TAG, "Failed to save app icon settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "AppIconSettingsViewModel"
     }
 }

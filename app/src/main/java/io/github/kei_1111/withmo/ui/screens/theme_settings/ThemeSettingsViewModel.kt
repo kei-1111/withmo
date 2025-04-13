@@ -58,9 +58,13 @@ class ThemeSettingsViewModel @Inject constructor(
                 saveThemeSettingsUseCase(themeSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("ThemeSettingsViewModel", "Failed to save theme settings", e)
+                Log.e(TAG, "Failed to save theme settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "ThemeSettingsViewModel"
     }
 }

@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             else -> {
-                Log.d("HomeViewModel", "Unknown message from Unity: $message")
+                Log.d(TAG, "Unknown message from Unity: $message")
             }
         }
     }
@@ -216,7 +216,7 @@ class HomeViewModel @Inject constructor(
                     context.packageManager.getActivityInfo(widgetInfo.configure, 0)
                 } catch (e: PackageManager.NameNotFoundException) {
                     Log.e(
-                        "HomeViewModel",
+                        TAG,
                         "Failed to retrieve activity info for widget configuration: ${widgetInfo.configure}",
                         e,
                     )
@@ -339,8 +339,10 @@ class HomeViewModel @Inject constructor(
         appWidgetHost.deleteHost()
     }
 
-    companion object {
-        private const val TimeoutMillis = 5000L
+    private companion object {
+        const val TimeoutMillis = 5000L
+
+        const val TAG = "HomeViewModel"
     }
 }
 

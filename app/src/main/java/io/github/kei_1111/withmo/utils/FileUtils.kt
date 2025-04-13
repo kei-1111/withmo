@@ -42,7 +42,7 @@ object FileUtils {
                 FileOutputStream(tempFile).use { output -> inputStream.copyTo(output) }
                 tempFile
             } catch (e: IOException) {
-                Log.e("copyFile", "Failed to copy file: $uri", e)
+                Log.e(TAG, "Failed to copy file: $uri", e)
                 null
             }
         }
@@ -58,7 +58,7 @@ object FileUtils {
                 }
                 outputFile
             } catch (e: IOException) {
-                Log.e("copyVrmFromAssets", "Failed to copy $DefaultModelFileName from assets", e)
+                Log.e(TAG, "Failed to copy $DefaultModelFileName from assets", e)
                 null
             }
         }
@@ -75,4 +75,6 @@ object FileUtils {
             }
             return@withContext uri.lastPathSegment?.substringAfterLast('/')
         }
+
+    private const val TAG = "FileUtils"
 }

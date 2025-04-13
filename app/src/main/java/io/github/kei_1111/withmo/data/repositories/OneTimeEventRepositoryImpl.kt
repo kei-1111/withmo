@@ -21,16 +21,11 @@ class OneTimeEventRepositoryImpl @Inject constructor(
     @OneTimeEvent private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : OneTimeEventRepository {
-    private companion object {
-        val IS_ONBOARDING_FIRST_SHOWN = booleanPreferencesKey("is_onboarding_first_shown")
-        val IS_MODEL_CHANGE_WARNING_FIRST_SHOWN =
-            booleanPreferencesKey("is_model_change_warning_first_shown")
-    }
 
     override val isOnboardingFirstShown: Flow<Boolean> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e("OneTimeEventRepository", "Error reading is_onboarding_first_shown preferences", it)
+                Log.e(TAG, "Error reading is_onboarding_first_shown preferences", it)
                 emit(emptyPreferences())
             } else {
                 throw it
@@ -43,7 +38,7 @@ class OneTimeEventRepositoryImpl @Inject constructor(
     override val isModelChangeWarningFirstShown: Flow<Boolean> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e("OneTimeEventRepository", "Error reading is_model_change_warning_first_shown preferences", it)
+                Log.e(TAG, "Error reading is_model_change_warning_first_shown preferences", it)
                 emit(emptyPreferences())
             } else {
                 throw it
@@ -67,5 +62,13 @@ class OneTimeEventRepositoryImpl @Inject constructor(
                 preferences[IS_MODEL_CHANGE_WARNING_FIRST_SHOWN] = true
             }
         }
+    }
+
+    private companion object {
+        val IS_ONBOARDING_FIRST_SHOWN = booleanPreferencesKey("is_onboarding_first_shown")
+        val IS_MODEL_CHANGE_WARNING_FIRST_SHOWN =
+            booleanPreferencesKey("is_model_change_warning_first_shown")
+
+        const val TAG = "OneTimeEventRepository"
     }
 }

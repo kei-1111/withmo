@@ -128,13 +128,15 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                 appInfoRepository.updateAppInfoList(appsToUpdate)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("FavoriteAppSettingsViewModel", "お気に入りアプリの保存に失敗しました", e)
+                Log.e(TAG, "Failed to save favorite app settings", e)
                 onSaveFailure()
             }
         }
     }
 
-    companion object {
-        private const val TimeoutMillis = 5000L
+    private companion object {
+        const val TimeoutMillis = 5000L
+
+        const val TAG = "FavoriteAppSettingsViewModel"
     }
 }

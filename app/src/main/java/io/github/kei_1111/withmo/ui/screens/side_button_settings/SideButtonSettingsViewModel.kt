@@ -81,9 +81,13 @@ class SideButtonSettingsViewModel @Inject constructor(
                 saveSideButtonSettingsUseCase(_uiState.value.sideButtonSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("SideButtonSettingsViewModel", "Failed to save side button settings", e)
+                Log.e(TAG, "Failed to save side button settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "SideButtonSettingsViewModel"
     }
 }

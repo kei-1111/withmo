@@ -16,7 +16,7 @@ object WidgetUtils {
         return try {
             info.loadPreviewImage(context, 0)
         } catch (e: Exception) {
-            Log.e("loadWidgetPreview", "Failed to load widget preview image", e)
+            Log.e(TAG, "Failed to load widget preview image", e)
             null
         }
     }
@@ -59,7 +59,7 @@ object WidgetUtils {
 
             bitmap
         } catch (e: Exception) {
-            Log.e("generateWidgetPreview", "Failed to generate widget preview", e)
+            Log.e(TAG, "Failed to generate widget preview", e)
             null
         }
     }
@@ -69,7 +69,7 @@ object WidgetUtils {
             val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
             context.packageManager.getApplicationIcon(applicationInfo)
         } catch (e: Exception) {
-            Log.e("loadAppIcon", "Failed to load app icon", e)
+            Log.e(TAG, "Failed to load app icon", e)
             null
         }
     }
@@ -79,11 +79,13 @@ object WidgetUtils {
             val applicationInfo = context.packageManager.getApplicationInfo(packageName, 0)
             context.packageManager.getApplicationLabel(applicationInfo).toString()
         } catch (e: Exception) {
-            Log.e("loadAppName", "Failed to load app name", e)
+            Log.e(TAG, "Failed to load app name", e)
             null
         }
     }
 
     private const val PreviewImageSize = 500
     private const val PackageContextFlags = Context.CONTEXT_IGNORE_SECURITY or Context.CONTEXT_INCLUDE_CODE
+
+    private const val TAG = "WidgetUtils"
 }

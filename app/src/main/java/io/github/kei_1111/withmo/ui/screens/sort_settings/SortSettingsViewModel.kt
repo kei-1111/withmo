@@ -62,9 +62,13 @@ class SortSettingsViewModel @Inject constructor(
                 saveSortSettingsUseCase(sortSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("SortSettingsViewModel", "Failed to save sort settings", e)
+                Log.e(TAG, "Failed to save sort settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "SortSettingsViewModel"
     }
 }

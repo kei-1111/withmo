@@ -68,7 +68,7 @@ object AppUtils {
                 packageName = packageName,
             )
         } catch (e: PackageManager.NameNotFoundException) {
-            Log.e("getAppFromPackageName", "Failed to get app info", e)
+            Log.e(TAG, "Failed to get app info", e)
             null
         }
     }
@@ -100,4 +100,6 @@ object AppUtils {
 
         return resolveInfo?.activityInfo?.packageName
     }
+
+    private const val TAG = "AppUtils"
 }

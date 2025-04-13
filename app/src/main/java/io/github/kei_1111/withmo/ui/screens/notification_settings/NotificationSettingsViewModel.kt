@@ -21,7 +21,6 @@ class NotificationSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             getNotificationSettingsUseCase().collect { notificationSettings ->
-                Log.d("NotificationSettingsViewModel init", "notificationSettings: $notificationSettings")
                 _uiState.update {
                     it.copy(
                         notificationSettings = notificationSettings,
@@ -66,9 +65,13 @@ class NotificationSettingsViewModel @Inject constructor(
                 saveNotificationSettingsUseCase(_uiState.value.notificationSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("NotificationSettingsViewModel", "Failed to save notification settings", e)
+                Log.e(TAG, "Failed to save notification settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "NotificationSettingsViewModel"
     }
 }

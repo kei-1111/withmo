@@ -42,4 +42,8 @@ class WidgetInfoRepositoryImpl @Inject constructor(
             widgetInfoDao.delete(widgetInfoList.map { it.toEntity() })
         }
     }
+
+    private companion object {
+        const val TAG = "WidgetInfoRepository"
+    }
 }

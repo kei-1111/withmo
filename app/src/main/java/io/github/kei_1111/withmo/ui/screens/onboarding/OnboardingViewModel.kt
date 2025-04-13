@@ -124,7 +124,9 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val TimeoutMillis = 5000L
+    private companion object {
+        const val TimeoutMillis = 5000L
+
+        const val TAG = "OnboardingViewModel"
     }
 }

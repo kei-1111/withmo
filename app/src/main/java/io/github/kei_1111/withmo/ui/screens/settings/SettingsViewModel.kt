@@ -15,4 +15,8 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsUiState, S
             )
         }
     }
+
+    private companion object {
+        const val TAG = "SettingsViewModel"
+    }
 }

@@ -37,27 +37,11 @@ class UserSettingsRepositoryImpl @Inject constructor(
     @UserSetting private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
-    private companion object {
-        val IS_NOTIFICATION_ANIMATION_ENABLED =
-            booleanPreferencesKey("is_notification_animation_enabled")
-        val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
-        val CLOCK_TYPE = stringPreferencesKey("clock_type")
-        val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
-        val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
-        val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
-        val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
-        val SORT_TYPE = stringPreferencesKey("sort_type")
-        val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
-        val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
-        val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
-        val THEME_TYPE = stringPreferencesKey("theme_type")
-        val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
-    }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e("UseSettingsRepository", "Error reading preferences", it)
+                Log.e(TAG, "Error reading preferences", it)
                 emit(emptyPreferences())
             } else {
                 throw it
@@ -175,5 +159,24 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        val IS_NOTIFICATION_ANIMATION_ENABLED =
+            booleanPreferencesKey("is_notification_animation_enabled")
+        val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
+        val CLOCK_TYPE = stringPreferencesKey("clock_type")
+        val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
+        val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
+        val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
+        val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
+        val SORT_TYPE = stringPreferencesKey("sort_type")
+        val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
+        val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
+        val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
+        val THEME_TYPE = stringPreferencesKey("theme_type")
+        val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
+
+        const val TAG = "UserSettingsRepository"
     }
 }

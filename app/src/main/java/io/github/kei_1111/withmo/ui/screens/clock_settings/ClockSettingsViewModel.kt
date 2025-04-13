@@ -68,9 +68,13 @@ class ClockSettingsViewModel @Inject constructor(
                 saveClockSettingsUseCase(uiState.value.clockSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("ClockSettingsViewModel", "Failed to save clock settings", e)
+                Log.e(TAG, "Failed to save clock settings", e)
                 onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "ClockSettingsViewModel"
     }
 }

@@ -43,7 +43,9 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val SplashScreenDuration = 4000L
+    private companion object {
+        const val SplashScreenDuration = 4000L
+
+        const val TAG = "AppViewModel"
     }
 }
