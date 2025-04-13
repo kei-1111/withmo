@@ -32,7 +32,7 @@ internal fun SelectDisplayModelContent(
     Column(
         modifier = modifier,
     ) {
-        WithmoTopAppBar(content = { TitleLargeText("表示モデルしたいモデルは？") })
+        WithmoTopAppBar(content = { TitleLargeText("表示したいモデルは？") })
         Column(
             modifier = Modifier
                 .padding(Paddings.Medium)
