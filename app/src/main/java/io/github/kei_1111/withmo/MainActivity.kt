@@ -155,10 +155,6 @@ class MainActivity : ComponentActivity() {
                 WithmoTheme(
                     themeType = themeSettings.themeType,
                 ) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        window.isNavigationBarContrastEnforced = false
-                    }
-                    AlwaysShowNavigationBar()
                     App(
                         unityPlayer = unityPlayer,
                     )
@@ -221,21 +217,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun AlwaysShowNavigationBar() {
-    val view = LocalView.current
-
-    DisposableEffect(view) {
-        val insetsController = ViewCompat.getWindowInsetsController(view)
-        insetsController?.apply {
-            show(WindowInsetsCompat.Type.navigationBars()) // Show navigation bar
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-        }
-
-        onDispose { /* Clean up if necessary */ }
     }
 }
 
