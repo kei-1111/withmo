@@ -8,7 +8,8 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 // RadioButtonを用いて設定項目を作りたいときに使う
 // 設定項目はTextだけではないため、itemを@Composableで受け取るようにした
@@ -24,11 +25,11 @@ fun WithmoSettingItemWithRadioButton(
     Row(
         modifier = modifier
             .clickable { onClick() }
-            .padding(horizontal = UiConfig.MediumPadding),
+            .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item()
-        Spacer(modifier = Modifier.weight(UiConfig.DefaultWeight))
+        Spacer(modifier = Modifier.weight(Weights.Medium))
         RadioButton(
             selected = selected,
             onClick = onClick,

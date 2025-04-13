@@ -22,9 +22,13 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.AppIcon
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -33,7 +37,7 @@ fun AppItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
-    appIconSize: Float = UiConfig.DefaultAppIconSize,
+    appIconSize: Float = Constants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
 ) {
@@ -43,7 +47,7 @@ fun AppItem(
     ) {
         Column(
             modifier = Modifier
-                .size((appIconSize + UiConfig.AppIconPadding).dp),
+                .size((appIconSize + Paddings.AppIconPadding).dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -58,7 +62,7 @@ fun AppItem(
                     ),
             )
             if (isAppNameShown) {
-                Spacer(modifier = Modifier.weight(UiConfig.DefaultWeight))
+                Spacer(modifier = Modifier.weight(Weights.Medium))
                 LabelMediumText(text = appInfo.label)
             }
         }
@@ -76,11 +80,13 @@ fun AppItem(
     }
 }
 
+private const val AdaptiveIconScale = 1.5f
+
 @Composable
 private fun AppIcon(
     appIcon: AppIcon,
     modifier: Modifier = Modifier,
-    appIconSize: Float = UiConfig.DefaultAppIconSize,
+    appIconSize: Float = Constants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
 ) {
     when (appIcon.backgroundIcon) {
@@ -89,19 +95,19 @@ private fun AppIcon(
                 modifier = modifier.size(appIconSize.dp),
                 color = Color.White,
                 shape = appIconShape,
-                shadowElevation = UiConfig.ShadowElevation,
+                shadowElevation = ShadowElevations.Medium,
             ) {
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.backgroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.scale(UiConfig.AdaptiveIconScale),
+                    modifier = Modifier.scale(AdaptiveIconScale),
                 )
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.scale(UiConfig.AdaptiveIconScale),
+                    modifier = Modifier.scale(AdaptiveIconScale),
                 )
             }
         }
@@ -111,7 +117,7 @@ private fun AppIcon(
                 modifier = modifier.size(appIconSize.dp),
                 color = Color.White,
                 shape = CircleShape,
-                shadowElevation = UiConfig.ShadowElevation,
+                shadowElevation = ShadowElevations.Medium,
             ) {
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
@@ -130,7 +136,7 @@ private fun Badge(
 ) {
     Box(
         modifier = modifier
-            .size(UiConfig.BadgeSize)
+            .size(BadgeSizes.Medium)
             .background(MaterialTheme.colorScheme.primary, CircleShape),
     )
 }

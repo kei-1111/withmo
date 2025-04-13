@@ -16,7 +16,7 @@ import javax.inject.Inject
 class AppViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<AppUiState>(AppUiState())
+    private val _uiState = MutableStateFlow(AppUiState())
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     init {
@@ -43,7 +43,9 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    companion object {
-        private const val SplashScreenDuration = 4000L
+    private companion object {
+        const val SplashScreenDuration = 4000L
+
+        const val TAG = "AppViewModel"
     }
 }

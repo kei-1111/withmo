@@ -25,7 +25,9 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.sort_settings.component.SortSettingsScreenContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,30 +45,29 @@ fun SortSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(SortSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(SortSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SortSettingsUiEvent.ChangeSortType -> {
+                is SortSettingsUiEvent.OnSortTypeRadioButtonClick -> {
                     viewModel.changeSortType(event.sortType)
                 }
 
-                is SortSettingsUiEvent.Save -> {
-                    viewModel.saveSortSettings()
+                is SortSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveSortSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is SortSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is SortSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is SortSettingsUiEvent.NavigateToSettingsScreen -> {
+                is SortSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -99,22 +100,22 @@ private fun SortSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "並び順") },
-                navigateBack = { onEvent(SortSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(SortSettingsUiEvent.OnBackButtonClick) },
             )
             SortSettingsScreenContent(
                 uiState = uiState,
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight)
+                    .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SortSettingsUiEvent.Save) },
+                onClick = { onEvent(SortSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(UiConfig.MediumPadding),
+                    .padding(Paddings.Medium),
             )
         }
     }

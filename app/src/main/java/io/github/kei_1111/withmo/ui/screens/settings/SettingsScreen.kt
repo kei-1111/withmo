@@ -31,10 +31,10 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.R
-import io.github.kei_1111.withmo.domain.model.Screen
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.settings.component.SettingsScreenContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.utils.AppUtils
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,17 +43,31 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun SettingsScreen(
-    onNavigate: (Screen) -> Unit,
+    onNavigateClockSettingsButtonClick: () -> Unit,
+    onNavigateAppIconSettingsButtonClick: () -> Unit,
+    onNavigateFavoriteAppSettingsButtonClick: () -> Unit,
+    onNavigateSideButtonSettingsButtonClick: () -> Unit,
+    onNavigateSortSettingsButtonClick: () -> Unit,
+    onNavigateNotificationSettingsButtonClick: () -> Unit,
+    onNavigateThemeSettingsButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestOnNavigate by rememberUpdatedState(onNavigate)
+    val currentOnNavigateClockSettingsButtonClick by rememberUpdatedState(onNavigateClockSettingsButtonClick)
+    val currentOnNavigateAppIconSettingsButtonClick by rememberUpdatedState(onNavigateAppIconSettingsButtonClick)
+    val currentOnNavigateFavoriteAppSettingsButtonClick by rememberUpdatedState(onNavigateFavoriteAppSettingsButtonClick)
+    val currentOnNavigateSideButtonSettingsButtonClick by rememberUpdatedState(onNavigateSideButtonSettingsButtonClick)
+    val currentOnNavigateSortSettingsButtonClick by rememberUpdatedState(onNavigateSortSettingsButtonClick)
+    val currentOnNavigateNotificationSettingsButtonClick by rememberUpdatedState(onNavigateNotificationSettingsButtonClick)
+    val currentOnNavigateThemeSettingsButtonClick by rememberUpdatedState(onNavigateThemeSettingsButtonClick)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate(Screen.Home))
+        viewModel.onEvent(SettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(Unit) {
@@ -63,13 +77,41 @@ fun SettingsScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate -> {
-                    latestOnNavigate(event.screen)
-                }
-
-                is SettingsUiEvent.SetDefaultHomeApp -> {
+                is SettingsUiEvent.OnNavigateHomeAppSettingButtonClick -> {
                     val intent = Intent(Settings.ACTION_HOME_SETTINGS)
                     context.startActivity(intent)
+                }
+
+                is SettingsUiEvent.OnNavigateClockSettingsButtonClick -> {
+                    currentOnNavigateClockSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateAppIconSettingsButtonClick -> {
+                    currentOnNavigateAppIconSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateFavoriteAppSettingsButtonClick -> {
+                    currentOnNavigateFavoriteAppSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateSideButtonSettingsButtonClick -> {
+                    currentOnNavigateSideButtonSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateSortSettingsButtonClick -> {
+                    currentOnNavigateSortSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateNotificationSettingsButtonClick -> {
+                    currentOnNavigateNotificationSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnNavigateThemeSettingsButtonClick -> {
+                    currentOnNavigateThemeSettingsButtonClick()
+                }
+
+                is SettingsUiEvent.OnBackButtonClick -> {
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)
@@ -86,7 +128,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUiState,
-    onEvent: (io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent) -> Unit,
+    onEvent: (SettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -102,11 +144,7 @@ private fun SettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
-                navigateClose = {
-                    onEvent(
-                        io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent.OnNavigate(Screen.Home),
-                    )
-                },
+                navigateClose = { onEvent(SettingsUiEvent.OnBackButtonClick) },
             )
             SettingsScreenContent(
                 modifier = Modifier
@@ -134,10 +172,10 @@ private fun LogoWithText(
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
                 .padding(
-                    start = UiConfig.ExtraSmallPadding,
-                    end = UiConfig.ExtraSmallPadding,
-                    top = UiConfig.SmallPadding,
-                    bottom = UiConfig.ExtraSmallPadding,
+                    start = Paddings.ExtraSmall,
+                    end = Paddings.ExtraSmall,
+                    top = Paddings.Small,
+                    bottom = Paddings.ExtraSmall,
                 ),
         )
         TitleLargeText(text = text)

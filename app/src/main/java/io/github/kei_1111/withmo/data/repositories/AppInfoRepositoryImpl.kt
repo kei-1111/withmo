@@ -84,4 +84,8 @@ class AppInfoRepositoryImpl @Inject constructor(
             removedEntities.forEach { appInfoDao.deleteAppInfo(it) }
         }
     }
+
+    private companion object {
+        const val TAG = "AppInfoRepository"
+    }
 }

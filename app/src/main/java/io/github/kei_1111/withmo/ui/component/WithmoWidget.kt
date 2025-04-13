@@ -37,8 +37,11 @@ import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ktx.toDp
 import io.github.kei_1111.withmo.ktx.toInt
 import io.github.kei_1111.withmo.ktx.toPx
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlin.math.roundToInt
+
+private val BorderWidth = 1.dp
 
 @Suppress("LongMethod")
 @Composable
@@ -130,7 +133,7 @@ fun WithmoWidget(
                 )
             }
             .border(
-                width = UiConfig.BorderWidth,
+                width = BorderWidth,
                 color = MaterialTheme.colorScheme.primary,
                 shape = MaterialTheme.shapes.medium,
             )
@@ -154,11 +157,11 @@ fun WithmoWidget(
                 imageVector = Icons.Rounded.Close,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(UiConfig.TinyPadding)
+                    .padding(Paddings.Tiny)
                     .background(MaterialTheme.colorScheme.surface, CircleShape)
-                    .padding(UiConfig.TinyPadding)
+                    .padding(Paddings.Tiny)
                     .align(Alignment.TopEnd)
-                    .size(UiConfig.BadgeSize)
+                    .size(BadgeSizes.Medium)
                     .clickable { deleteWidget() },
                 tint = MaterialTheme.colorScheme.onSurface,
             )
@@ -166,11 +169,11 @@ fun WithmoWidget(
                 imageVector = Icons.Rounded.ZoomOutMap,
                 contentDescription = null,
                 modifier = Modifier
-                    .padding(UiConfig.TinyPadding)
+                    .padding(Paddings.Tiny)
                     .background(MaterialTheme.colorScheme.surface, CircleShape)
-                    .padding(UiConfig.TinyPadding)
+                    .padding(Paddings.Tiny)
                     .align(Alignment.BottomEnd)
-                    .size(UiConfig.BadgeSize)
+                    .size(BadgeSizes.Medium)
                     .clickable { resizeWidget() },
                 tint = MaterialTheme.colorScheme.onSurface,
             )

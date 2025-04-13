@@ -25,7 +25,9 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.side_button_settings.component.SideButtonSettingsScreenContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,38 +45,37 @@ fun SideButtonSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(SideButtonSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(SideButtonSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SideButtonSettingsUiEvent.ChangeIsScaleSliderButtonShown -> {
-                    viewModel.changeIsScaleSliderButtonShown(event.isScaleSliderButtonShown)
+                is SideButtonSettingsUiEvent.OnIsShowScaleSliderButtonShownSwitchChange -> {
+                    viewModel.changeIsShowScaleSliderButtonShown(event.isShowScaleSliderButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.ChangeIsOpenDocumentButtonShown -> {
+                is SideButtonSettingsUiEvent.OnIsOpenDocumentButtonShownSwitchChange -> {
                     viewModel.changeIsOpenDocumentButtonShown(event.isOpenDocumentButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.ChangeIsSetDefaultModelButtonShown -> {
+                is SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange -> {
                     viewModel.changeIsSetDefaultModelButtonShown(event.isSetDefaultModelButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.Save -> {
-                    viewModel.saveSideButtonSettings()
+                is SideButtonSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveSideButtonSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is SideButtonSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is SideButtonSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is SideButtonSettingsUiEvent.NavigateToSettingsScreen -> {
+                is SideButtonSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -107,22 +108,22 @@ private fun SideButtonSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "サイドボタン") },
-                navigateBack = { onEvent(SideButtonSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(SideButtonSettingsUiEvent.OnBackButtonClick) },
             )
             SideButtonSettingsScreenContent(
                 uiState = uiState,
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight)
+                    .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SideButtonSettingsUiEvent.Save) },
+                onClick = { onEvent(SideButtonSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(UiConfig.MediumPadding),
+                    .padding(Paddings.Medium),
             )
         }
     }

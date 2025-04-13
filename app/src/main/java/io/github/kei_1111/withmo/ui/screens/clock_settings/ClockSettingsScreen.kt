@@ -25,7 +25,9 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.clock_settings.component.ClockSettingsScreenContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,34 +45,33 @@ fun ClockSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(ClockSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(ClockSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is ClockSettingsUiEvent.ChangeIsClockShown -> {
+                is ClockSettingsUiEvent.OnIsClockShownSwitchChange -> {
                     viewModel.changeIsClockShown(event.isClockShown)
                 }
 
-                is ClockSettingsUiEvent.ChangeClockType -> {
+                is ClockSettingsUiEvent.OnClockTypeRadioButtonClick -> {
                     viewModel.changeClockType(event.clockType)
                 }
 
-                is ClockSettingsUiEvent.Save -> {
-                    viewModel.saveClockSettings()
+                is ClockSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveClockSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is ClockSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is ClockSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is ClockSettingsUiEvent.NavigateToSettingsScreen -> {
+                is ClockSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -86,7 +87,7 @@ fun ClockSettingsScreen(
 
 @Composable
 private fun ClockSettingsScreen(
-    uiState: io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState,
+    uiState: ClockSettingsUiState,
     onEvent: (ClockSettingsUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -103,22 +104,22 @@ private fun ClockSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "時計") },
-                navigateBack = { onEvent(ClockSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(ClockSettingsUiEvent.OnBackButtonClick) },
             )
             ClockSettingsScreenContent(
                 uiState = uiState,
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight)
+                    .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ClockSettingsUiEvent.Save) },
+                onClick = { onEvent(ClockSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(UiConfig.MediumPadding),
+                    .padding(Paddings.Medium),
             )
         }
     }

@@ -4,11 +4,9 @@ import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.base.UiEvent
 
 sealed interface FavoriteAppSettingsUiEvent : UiEvent {
-    data class AddFavoriteAppList(val appInfo: AppInfo) : FavoriteAppSettingsUiEvent
-    data class RemoveFavoriteAppList(val appInfo: AppInfo) : FavoriteAppSettingsUiEvent
-    data class OnValueChangeAppSearchQuery(val query: String) : FavoriteAppSettingsUiEvent
-    data object Save : FavoriteAppSettingsUiEvent
-    data object SaveSuccess : FavoriteAppSettingsUiEvent
-    data object SaveFailure : FavoriteAppSettingsUiEvent
-    data object NavigateToSettingsScreen : FavoriteAppSettingsUiEvent
+    data class OnAllAppListAppClick(val appInfo: AppInfo) : FavoriteAppSettingsUiEvent
+    data class OnFavoriteAppListAppClick(val appInfo: AppInfo) : FavoriteAppSettingsUiEvent
+    data class OnAppSearchQueryChange(val query: String) : FavoriteAppSettingsUiEvent
+    data object OnSaveButtonClick : FavoriteAppSettingsUiEvent
+    data object OnBackButtonClick : FavoriteAppSettingsUiEvent
 }

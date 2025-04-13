@@ -4,12 +4,12 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.common.Constants
 
 data class AppIconSettings(
-    val appIconSize: Float = UiConfig.DefaultAppIconSize,
+    val appIconSize: Float = Constants.DefaultAppIconSize,
     val appIconShape: AppIconShape = AppIconShape.Circle,
-    val roundedCornerPercent: Float = UiConfig.DefaultRoundedCornerPercent,
+    val roundedCornerPercent: Float = Constants.DefaultRoundedCornerPercent,
     val isAppNameShown: Boolean = true,
 )
 

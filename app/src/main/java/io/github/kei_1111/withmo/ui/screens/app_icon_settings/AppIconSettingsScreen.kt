@@ -26,7 +26,10 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.app_icon_settings.component.AppIconSettingsScreenContent
+import io.github.kei_1111.withmo.ui.screens.app_icon_settings.component.AppItemPreviewArea
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -44,42 +47,41 @@ fun AppIconSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(AppIconSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(AppIconSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is AppIconSettingsUiEvent.ChangeAppIconSize -> {
+                is AppIconSettingsUiEvent.OnAppIconSizeSliderChange -> {
                     viewModel.changeAppIconSize(event.appIconSize)
                 }
 
-                is AppIconSettingsUiEvent.ChangeAppIconShape -> {
+                is AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick -> {
                     viewModel.changeAppIconShape(event.appIconShape)
                 }
 
-                is AppIconSettingsUiEvent.ChangeRoundedCornerPercent -> {
+                is AppIconSettingsUiEvent.OnRoundedCornerPercentSliderChange -> {
                     viewModel.changeRoundedCornerPercent(event.roundedCornerPercent)
                 }
 
-                is AppIconSettingsUiEvent.ChangeIsAppNameShown -> {
+                is AppIconSettingsUiEvent.OnIsAppNameShownSwitchChange -> {
                     viewModel.changeIsAppNameShown(event.isAppNameShown)
                 }
 
-                is AppIconSettingsUiEvent.Save -> {
-                    viewModel.saveAppIconSettings()
+                is AppIconSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveAppIconSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is AppIconSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is AppIconSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is AppIconSettingsUiEvent.NavigateToSettingsScreen -> {
+                is AppIconSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -112,7 +114,7 @@ private fun AppIconSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "アプリアイコン") },
-                navigateBack = { onEvent(AppIconSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(AppIconSettingsUiEvent.OnBackButtonClick) },
             )
             AppItemPreviewArea(
                 appIconSettings = uiState.appIconSettings,
@@ -124,15 +126,15 @@ private fun AppIconSettingsScreen(
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight)
+                    .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(AppIconSettingsUiEvent.Save) },
+                onClick = { onEvent(AppIconSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(UiConfig.MediumPadding),
+                    .padding(Paddings.Medium),
             )
         }
     }

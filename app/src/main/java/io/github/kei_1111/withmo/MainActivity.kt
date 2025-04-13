@@ -12,15 +12,10 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalView
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
@@ -155,10 +150,6 @@ class MainActivity : ComponentActivity() {
                 WithmoTheme(
                     themeType = themeSettings.themeType,
                 ) {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                        window.isNavigationBarContrastEnforced = false
-                    }
-                    AlwaysShowNavigationBar()
                     App(
                         unityPlayer = unityPlayer,
                     )
@@ -221,21 +212,6 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-@Composable
-private fun AlwaysShowNavigationBar() {
-    val view = LocalView.current
-
-    DisposableEffect(view) {
-        val insetsController = ViewCompat.getWindowInsetsController(view)
-        insetsController?.apply {
-            show(WindowInsetsCompat.Type.navigationBars()) // Show navigation bar
-            systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_DEFAULT
-        }
-
-        onDispose { /* Clean up if necessary */ }
     }
 }
 

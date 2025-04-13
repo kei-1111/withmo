@@ -7,6 +7,6 @@ import javax.inject.Inject
 class GetThemeSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetThemeSettingsUseCase {
-    override suspend operator fun invoke() =
+    override operator fun invoke() =
         userSettingsRepository.userSettings.map { it.themeSettings }
 }

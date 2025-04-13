@@ -12,7 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+
+private val BorderWidth = 1.dp
 
 @Composable
 fun EmptyAppItem(
@@ -25,22 +29,22 @@ fun EmptyAppItem(
         Box(
             modifier = Modifier
                 .border(
-                    UiConfig.BorderWidth,
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
+                    BorderWidth,
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
                     shape = MaterialTheme.shapes.medium,
                 )
-                .padding(UiConfig.ExtraSmallPadding),
+                .padding(Paddings.ExtraSmall),
             contentAlignment = Alignment.Center,
         ) {
             Box(
                 modifier = Modifier
-                    .size((UiConfig.DefaultAppIconSize + UiConfig.AppIconPadding).dp),
+                    .size((Constants.DefaultAppIconSize + Paddings.AppIconPadding).dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
                 )
             }
         }

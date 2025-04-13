@@ -43,7 +43,10 @@ class ThemeSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveThemeSettings() {
+    fun saveThemeSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -53,11 +56,15 @@ class ThemeSettingsViewModel @Inject constructor(
             try {
                 val themeSettings = _uiState.value.themeSettings
                 saveThemeSettingsUseCase(themeSettings)
-                _uiEvent.emit(ThemeSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("ThemeSettingsViewModel", "Failed to save theme settings", e)
-                _uiEvent.emit(ThemeSettingsUiEvent.SaveFailure)
+                Log.e(TAG, "Failed to save theme settings", e)
+                onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "ThemeSettingsViewModel"
     }
 }

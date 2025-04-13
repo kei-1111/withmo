@@ -6,7 +6,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextOverflow
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 
 @Composable
 fun DisplayMediumText(
@@ -50,12 +49,14 @@ fun BodyMediumText(
     )
 }
 
+private const val AppIconTextMaxLines = 1
+
 @Composable
 fun LabelMediumText(
     text: String,
     modifier: Modifier = Modifier,
     color: Color = MaterialTheme.colorScheme.onSurface,
-    maxLines: Int = UiConfig.AppIconTextMaxLines,
+    maxLines: Int = AppIconTextMaxLines,
     overflow: TextOverflow = TextOverflow.Ellipsis,
 ) {
     Text(

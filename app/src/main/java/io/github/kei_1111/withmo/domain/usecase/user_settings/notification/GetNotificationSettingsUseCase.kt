@@ -4,5 +4,5 @@ import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
 import kotlinx.coroutines.flow.Flow
 
 interface GetNotificationSettingsUseCase {
-    suspend operator fun invoke(): Flow<NotificationSettings>
+    operator fun invoke(): Flow<NotificationSettings>
 }

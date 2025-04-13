@@ -6,7 +6,8 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+
+private const val AppInfoDefaultUseCount = 0
 
 @Stable
 data class AppInfo(
@@ -14,7 +15,7 @@ data class AppInfo(
     val label: String,
     val packageName: String,
     val notification: Boolean = false,
-    val useCount: Int = UiConfig.AppInfoDefaultUseCount,
+    val useCount: Int = AppInfoDefaultUseCount,
     val favoriteOrder: FavoriteOrder = FavoriteOrder.NotFavorite,
 ) {
     fun launch(context: Context) {

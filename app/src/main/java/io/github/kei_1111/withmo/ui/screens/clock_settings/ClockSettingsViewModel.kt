@@ -17,8 +17,7 @@ class ClockSettingsViewModel @Inject constructor(
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
 ) : BaseViewModel<ClockSettingsUiState, ClockSettingsUiEvent>() {
 
-    override fun createInitialState(): io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState =
-        io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiState()
+    override fun createInitialState(): ClockSettingsUiState = ClockSettingsUiState()
 
     init {
         viewModelScope.launch {
@@ -55,7 +54,10 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveClockSettings() {
+    fun saveClockSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -64,11 +66,15 @@ class ClockSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveClockSettingsUseCase(uiState.value.clockSettings)
-                _uiEvent.emit(ClockSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("ClockSettingsViewModel", "Failed to save clock settings", e)
-                _uiEvent.emit(ClockSettingsUiEvent.SaveFailure)
+                Log.e(TAG, "Failed to save clock settings", e)
+                onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "ClockSettingsViewModel"
     }
 }

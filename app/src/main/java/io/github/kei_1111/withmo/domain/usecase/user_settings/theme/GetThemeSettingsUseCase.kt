@@ -4,5 +4,5 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import kotlinx.coroutines.flow.Flow
 
 interface GetThemeSettingsUseCase {
-    suspend operator fun invoke(): Flow<ThemeSettings>
+    operator fun invoke(): Flow<ThemeSettings>
 }

@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.di.IoDispatcher
 import io.github.kei_1111.withmo.di.UserSetting
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
@@ -23,7 +24,6 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
-import io.github.kei_1111.withmo.ui.theme.UiConfig
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -37,27 +37,11 @@ class UserSettingsRepositoryImpl @Inject constructor(
     @UserSetting private val dataStore: DataStore<Preferences>,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
-    private companion object {
-        val IS_NOTIFICATION_ANIMATION_ENABLED =
-            booleanPreferencesKey("is_notification_animation_enabled")
-        val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
-        val CLOCK_TYPE = stringPreferencesKey("clock_type")
-        val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
-        val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
-        val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
-        val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
-        val SORT_TYPE = stringPreferencesKey("sort_type")
-        val IS_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_scale_slider_button_shown")
-        val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
-        val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
-        val THEME_TYPE = stringPreferencesKey("theme_type")
-        val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
-    }
 
     override val userSettings: Flow<UserSettings> = dataStore.data
         .catch {
             if (it is IOException) {
-                Log.e("UseSettingsRepository", "Error reading preferences", it)
+                Log.e(TAG, "Error reading preferences", it)
                 emit(emptyPreferences())
             } else {
                 throw it
@@ -75,7 +59,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: ClockType.TOP_DATE,
                 ),
                 appIconSettings = AppIconSettings(
-                    appIconSize = preferences[APP_ICON_SIZE] ?: UiConfig.DefaultAppIconSize,
+                    appIconSize = preferences[APP_ICON_SIZE] ?: Constants.DefaultAppIconSize,
                     appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
                         when (shape) {
                             AppIconShape.Circle.toString() -> AppIconShape.Circle
@@ -85,7 +69,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         }
                     } ?: AppIconShape.Circle,
                     roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT]
-                        ?: UiConfig.DefaultRoundedCornerPercent,
+                        ?: Constants.DefaultRoundedCornerPercent,
                     isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
                 ),
                 sortSettings = SortSettings(
@@ -93,7 +77,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: SortType.ALPHABETICAL,
                 ),
                 sideButtonSettings = SideButtonSettings(
-                    isScaleSliderButtonShown = preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
+                    isShowScaleSliderButtonShown = preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
                     isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
                 ),
@@ -147,8 +131,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveSideButtonSettings(sideButtonSettings: SideButtonSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[IS_SCALE_SLIDER_BUTTON_SHOWN] =
-                    sideButtonSettings.isScaleSliderButtonShown
+                preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] =
+                    sideButtonSettings.isShowScaleSliderButtonShown
                 preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] =
                     sideButtonSettings.isOpenDocumentButtonShown
                 preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] =
@@ -175,5 +159,24 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        val IS_NOTIFICATION_ANIMATION_ENABLED =
+            booleanPreferencesKey("is_notification_animation_enabled")
+        val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
+        val CLOCK_TYPE = stringPreferencesKey("clock_type")
+        val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")
+        val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
+        val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
+        val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
+        val SORT_TYPE = stringPreferencesKey("sort_type")
+        val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
+        val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
+        val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
+        val THEME_TYPE = stringPreferencesKey("theme_type")
+        val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
+
+        const val TAG = "UserSettingsRepository"
     }
 }

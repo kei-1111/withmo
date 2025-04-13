@@ -25,7 +25,9 @@ import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.theme_settings.component.ThemeSettingsScreenContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -43,30 +45,29 @@ fun ThemeSettingsScreen(
     val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
 
     BackHandler {
-        viewModel.onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen)
+        viewModel.onEvent(ThemeSettingsUiEvent.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is ThemeSettingsUiEvent.ChangeThemeType -> {
+                is ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick -> {
                     viewModel.changeThemeType(event.themeType)
                 }
 
-                is ThemeSettingsUiEvent.Save -> {
-                    viewModel.saveThemeSettings()
+                is ThemeSettingsUiEvent.OnSaveButtonClick -> {
+                    viewModel.saveThemeSettings(
+                        onSaveSuccess = {
+                            showToast(context, "保存しました")
+                            latestNavigateToSettingsScreen()
+                        },
+                        onSaveFailure = {
+                            showToast(context, "保存に失敗しました")
+                        },
+                    )
                 }
 
-                is ThemeSettingsUiEvent.SaveSuccess -> {
-                    showToast(context, "保存しました")
-                    latestNavigateToSettingsScreen()
-                }
-
-                is ThemeSettingsUiEvent.SaveFailure -> {
-                    showToast(context, "保存に失敗しました")
-                }
-
-                is ThemeSettingsUiEvent.NavigateToSettingsScreen -> {
+                is ThemeSettingsUiEvent.OnBackButtonClick -> {
                     latestNavigateToSettingsScreen()
                 }
             }
@@ -99,22 +100,22 @@ private fun ThemeSettingsSceen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "テーマ") },
-                navigateBack = { onEvent(ThemeSettingsUiEvent.NavigateToSettingsScreen) },
+                navigateBack = { onEvent(ThemeSettingsUiEvent.OnBackButtonClick) },
             )
             ThemeSettingsScreenContent(
                 uiState = uiState,
                 onEvent = onEvent,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .weight(UiConfig.DefaultWeight)
+                    .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ThemeSettingsUiEvent.Save) },
+                onClick = { onEvent(ThemeSettingsUiEvent.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(UiConfig.MediumPadding),
+                    .padding(Paddings.Medium),
             )
         }
     }

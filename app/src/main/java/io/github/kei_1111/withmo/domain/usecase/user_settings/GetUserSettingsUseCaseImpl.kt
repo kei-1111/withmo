@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetUserSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetUserSettingsUseCase {
-    override suspend operator fun invoke() = userSettingsRepository.userSettings
+    override operator fun invoke() = userSettingsRepository.userSettings
 }

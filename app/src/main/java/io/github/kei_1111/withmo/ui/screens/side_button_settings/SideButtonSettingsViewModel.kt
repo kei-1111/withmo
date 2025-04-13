@@ -31,14 +31,14 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsScaleSliderButtonShown(isScaleSliderButtonShown: Boolean) {
+    fun changeIsShowScaleSliderButtonShown(isScaleSliderButtonShown: Boolean) {
         _uiState.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
-                    isScaleSliderButtonShown = isScaleSliderButtonShown,
+                    isShowScaleSliderButtonShown = isScaleSliderButtonShown,
                 ),
                 isSaveButtonEnabled =
-                isScaleSliderButtonShown != it.initialSideButtonSettings.isScaleSliderButtonShown,
+                isScaleSliderButtonShown != it.initialSideButtonSettings.isShowScaleSliderButtonShown,
             )
         }
     }
@@ -67,7 +67,10 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveSideButtonSettings() {
+    fun saveSideButtonSettings(
+        onSaveSuccess: () -> Unit,
+        onSaveFailure: () -> Unit,
+    ) {
         _uiState.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -76,11 +79,15 @@ class SideButtonSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveSideButtonSettingsUseCase(_uiState.value.sideButtonSettings)
-                _uiEvent.emit(SideButtonSettingsUiEvent.SaveSuccess)
+                onSaveSuccess()
             } catch (e: Exception) {
-                Log.e("SideButtonSettingsViewModel", "Failed to save side button settings", e)
-                _uiEvent.emit(SideButtonSettingsUiEvent.SaveFailure)
+                Log.e(TAG, "Failed to save side button settings", e)
+                onSaveFailure()
             }
         }
+    }
+
+    private companion object {
+        const val TAG = "SideButtonSettingsViewModel"
     }
 }

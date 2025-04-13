@@ -8,12 +8,8 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -28,12 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.FinishContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectDisplayModelContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.SelectFavoriteAppContent
-import io.github.kei_1111.withmo.ui.screens.onboarding.content.WelcomeContent
-import io.github.kei_1111.withmo.ui.theme.UiConfig
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.FinishContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectDisplayModelContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectFavoriteAppContent
+import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.WelcomeContent
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -76,15 +70,15 @@ fun OnboardingScreen(
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is OnboardingUiEvent.AddSelectedAppList -> {
+                is OnboardingUiEvent.OnAllAppListAppClick -> {
                     viewModel.addSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.RemoveSelectedAppList -> {
+                is OnboardingUiEvent.OnFavoriteAppListAppClick -> {
                     viewModel.removeSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.OnValueChangeAppSearchQuery -> {
+                is OnboardingUiEvent.OnAppSearchQueryChange -> {
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
@@ -92,17 +86,17 @@ fun OnboardingScreen(
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
-                is OnboardingUiEvent.NavigateToNextPage -> {
-                    viewModel.navigateToNextPage()
+                is OnboardingUiEvent.OnNextButtonClick -> {
+                    viewModel.navigateToNextPage(
+                        onFinish = {
+                            viewModel.saveSetting()
+                            latestNavigateToHomeScreen()
+                        },
+                    )
                 }
 
-                is OnboardingUiEvent.NavigateToPreviousPage -> {
+                is OnboardingUiEvent.OnPreviousButtonClick -> {
                     viewModel.navigateToPreviousPage()
-                }
-
-                is OnboardingUiEvent.OnboardingFinished -> {
-                    viewModel.saveSetting()
-                    latestNavigateToHomeScreen()
                 }
             }
         }.launchIn(this)
@@ -167,43 +161,5 @@ private fun OnboardingScreen(
                 )
             }
         }
-    }
-}
-
-@Composable
-fun OnboardingBottomAppBarNextButton(
-    text: String,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    FilledTonalButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(UiConfig.SettingItemHeight),
-        enabled = enabled,
-    ) {
-        BodyMediumText(
-            text = text,
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = UiConfig.DisabledContentAlpha)
-            },
-        )
-    }
-}
-
-@Composable
-fun OnboardingBottomAppBarPreviousButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    OutlinedButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(UiConfig.SettingItemHeight),
-    ) {
-        BodyMediumText(text = "戻る")
     }
 }

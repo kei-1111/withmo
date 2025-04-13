@@ -30,7 +30,7 @@ object RepositoryModule {
     @Singleton
     fun provideUserSettingsRepository(
         @UserSetting dataStore: DataStore<Preferences>,
-        @io.github.kei_1111.withmo.di.IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): UserSettingsRepository = UserSettingsRepositoryImpl(dataStore, coroutineDispatcher)
 
     @Provides
@@ -45,7 +45,7 @@ object RepositoryModule {
     fun provideAppInfoRepository(
         appInfoDao: AppInfoDao,
         @ApplicationContext context: Context,
-        @io.github.kei_1111.withmo.di.IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): AppInfoRepository = AppInfoRepositoryImpl(appInfoDao, context, coroutineDispatcher)
 
     @Provides
@@ -53,6 +53,6 @@ object RepositoryModule {
     fun provideWidgetInfoRepository(
         widgetInfoDao: WidgetInfoDao,
         appWidgetManager: AppWidgetManager,
-        @io.github.kei_1111.withmo.di.IoDispatcher coroutineDispatcher: CoroutineDispatcher,
+        @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
     ): WidgetInfoRepository = WidgetInfoRepositoryImpl(widgetInfoDao, appWidgetManager, coroutineDispatcher)
 }
