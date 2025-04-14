@@ -136,7 +136,12 @@ fun HomeScreen(
                     showToast(context, "ファイルの読み込みに失敗しました")
                     viewModel.setIsModelLoading(false)
                 } else {
-                    viewModel.saveModelFilePath(ModelFilePath(filePath))
+                    if (filePath == uiState.currentUserSettings.modelFilePath.path) {
+                        showToast(context, "同じファイルが選択されています")
+                        viewModel.setIsModelLoading(false)
+                    } else {
+                        viewModel.saveModelFilePath(ModelFilePath(filePath))
+                    }
                 }
             }
         }

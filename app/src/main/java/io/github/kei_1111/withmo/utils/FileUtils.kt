@@ -34,8 +34,10 @@ object FileUtils {
         return copyFileFromUri(context, uri, fileName)
     }
 
-    private suspend fun copyFileFromUri(context: Context, uri: Uri, fileName: String): File? =
-        withContext(FileIoDispatcher) {
+    private suspend fun copyFileFromUri(context: Context, uri: Uri, fileName: String): File? {
+        if (fileExists("${context.cacheDir}/$fileName")) return File("${context.cacheDir}/$fileName")
+
+        return withContext(FileIoDispatcher) {
             try {
                 val inputStream = context.contentResolver.openInputStream(uri) ?: return@withContext null
                 val tempFile = File(context.cacheDir, fileName)
@@ -46,6 +48,7 @@ object FileUtils {
                 null
             }
         }
+    }
 
     suspend fun copyVrmFileFromAssets(context: Context): File? =
         withContext(FileIoDispatcher) {
