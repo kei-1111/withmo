@@ -20,7 +20,6 @@ class AppViewModel @Inject constructor(
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     init {
-        splashScreenDuration()
         isFirstLogin()
     }
 
@@ -34,18 +33,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun splashScreenDuration() {
-        viewModelScope.launch {
-            delay(SplashScreenDuration)
-            _uiState.update {
-                it.copy(isFinishSplashScreen = true)
-            }
-        }
-    }
-
     private companion object {
-        const val SplashScreenDuration = 4000L
-
         const val TAG = "AppViewModel"
     }
 }
