@@ -4,7 +4,6 @@ import android.os.Build
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
@@ -64,7 +63,7 @@ fun AppContent(
                 when {
                     initialState !in listOf(
                         Screen.Home,
-                        Screen.Settings
+                        Screen.Settings,
                     ) && targetState is Screen.Settings -> {
                         slideInHorizontally { -it }.togetherWith(slideOutHorizontally { it })
                     }
