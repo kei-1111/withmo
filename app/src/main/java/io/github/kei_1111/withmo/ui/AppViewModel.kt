@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -20,7 +19,6 @@ class AppViewModel @Inject constructor(
     val uiState: StateFlow<AppUiState> = _uiState.asStateFlow()
 
     init {
-        splashScreenDuration()
         isFirstLogin()
     }
 
@@ -34,18 +32,7 @@ class AppViewModel @Inject constructor(
         }
     }
 
-    private fun splashScreenDuration() {
-        viewModelScope.launch {
-            delay(SplashScreenDuration)
-            _uiState.update {
-                it.copy(isFinishSplashScreen = true)
-            }
-        }
-    }
-
     private companion object {
-        const val SplashScreenDuration = 4000L
-
         const val TAG = "AppViewModel"
     }
 }

@@ -4,7 +4,6 @@ import android.os.Build
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.slideInHorizontally
@@ -58,102 +57,115 @@ fun AppContent(
             )
         }
 
-        AnimatedVisibility(uiState.isFinishSplashScreen) {
-            AnimatedContent(
-                targetState = currentScreen,
-                transitionSpec = {
-                    when {
-                        initialState !in listOf(Screen.Home, Screen.Settings) && targetState is Screen.Settings -> {
-                            slideInHorizontally { -it }.togetherWith(slideOutHorizontally { it })
-                        }
-
-                        targetState is Screen.Home -> {
-                            fadeIn().togetherWith(slideOutVertically { it })
-                        }
-
-                        targetState is Screen.Settings -> {
-                            slideInVertically { it }.togetherWith(ExitTransition.None)
-                        }
-
-                        targetState is Screen.Onboarding -> {
-                            fadeIn().togetherWith(ExitTransition.None)
-                        }
-
-                        else -> {
-                            slideInHorizontally { it }.togetherWith(ExitTransition.KeepUntilTransitionsFinished)
-                        }
-                    }
-                },
-            ) { targetState ->
-                val navigateToSettingScreen = { currentScreen = Screen.Settings }
-
-                when (targetState) {
-                    is Screen.Onboarding -> {
-                        OnboardingScreen(
-                            navigateToHomeScreen = { currentScreen = Screen.Home },
-                        )
+        AnimatedContent(
+            targetState = currentScreen,
+            transitionSpec = {
+                when {
+                    initialState !in listOf(
+                        Screen.Home,
+                        Screen.Settings,
+                    ) && targetState is Screen.Settings -> {
+                        slideInHorizontally { -it }.togetherWith(slideOutHorizontally { it })
                     }
 
-                    is Screen.Home -> {
-                        HomeScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
+                    targetState is Screen.Home -> {
+                        fadeIn().togetherWith(slideOutVertically { it })
                     }
 
-                    is Screen.Settings -> {
-                        SettingsScreen(
-                            onNavigateClockSettingsButtonClick = { currentScreen = Screen.ClockSettings },
-                            onNavigateAppIconSettingsButtonClick = { currentScreen = Screen.AppIconSettings },
-                            onNavigateFavoriteAppSettingsButtonClick = { currentScreen = Screen.FavoriteAppSettings },
-                            onNavigateSideButtonSettingsButtonClick = { currentScreen = Screen.SideButtonSettings },
-                            onNavigateSortSettingsButtonClick = { currentScreen = Screen.SortSettings },
-                            onNavigateNotificationSettingsButtonClick = { currentScreen = Screen.NotificationSettings },
-                            onNavigateThemeSettingsButtonClick = { currentScreen = Screen.ThemeSettings },
-                            onBackButtonClick = { currentScreen = Screen.Home },
-                        )
+                    targetState is Screen.Settings -> {
+                        slideInVertically { it }.togetherWith(ExitTransition.None)
                     }
 
-                    is Screen.NotificationSettings -> {
-                        NotificationSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
+                    targetState is Screen.Onboarding -> {
+                        fadeIn().togetherWith(ExitTransition.None)
                     }
 
-                    is Screen.ClockSettings -> {
-                        ClockSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
+                    else -> {
+                        slideInHorizontally { it }.togetherWith(ExitTransition.KeepUntilTransitionsFinished)
                     }
+                }
+            },
+        ) { targetState ->
+            val navigateToSettingScreen = { currentScreen = Screen.Settings }
 
-                    is Screen.AppIconSettings -> {
-                        AppIconSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
+            when (targetState) {
+                is Screen.Onboarding -> {
+                    OnboardingScreen(
+                        navigateToHomeScreen = { currentScreen = Screen.Home },
+                    )
+                }
 
-                    is Screen.FavoriteAppSettings -> {
-                        FavoriteAppSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
+                is Screen.Home -> {
+                    HomeScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
 
-                    is Screen.SideButtonSettings -> {
-                        SideButtonSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
+                is Screen.Settings -> {
+                    SettingsScreen(
+                        onNavigateClockSettingsButtonClick = {
+                            currentScreen = Screen.ClockSettings
+                        },
+                        onNavigateAppIconSettingsButtonClick = {
+                            currentScreen = Screen.AppIconSettings
+                        },
+                        onNavigateFavoriteAppSettingsButtonClick = {
+                            currentScreen = Screen.FavoriteAppSettings
+                        },
+                        onNavigateSideButtonSettingsButtonClick = {
+                            currentScreen = Screen.SideButtonSettings
+                        },
+                        onNavigateSortSettingsButtonClick = { currentScreen = Screen.SortSettings },
+                        onNavigateNotificationSettingsButtonClick = {
+                            currentScreen = Screen.NotificationSettings
+                        },
+                        onNavigateThemeSettingsButtonClick = {
+                            currentScreen = Screen.ThemeSettings
+                        },
+                        onBackButtonClick = { currentScreen = Screen.Home },
+                    )
+                }
 
-                    is Screen.SortSettings -> {
-                        SortSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
+                is Screen.NotificationSettings -> {
+                    NotificationSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
 
-                    is Screen.ThemeSettings -> {
-                        ThemeSettingsScreen(
-                            navigateToSettingsScreen = navigateToSettingScreen,
-                        )
-                    }
+                is Screen.ClockSettings -> {
+                    ClockSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.AppIconSettings -> {
+                    AppIconSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.FavoriteAppSettings -> {
+                    FavoriteAppSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.SideButtonSettings -> {
+                    SideButtonSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.SortSettings -> {
+                    SortSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
+                }
+
+                is Screen.ThemeSettings -> {
+                    ThemeSettingsScreen(
+                        navigateToSettingsScreen = navigateToSettingScreen,
+                    )
                 }
             }
         }
