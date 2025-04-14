@@ -1,6 +1,7 @@
 package io.github.kei_1111.withmo.domain.usecase.user_settings.theme
 
 import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
@@ -8,5 +9,7 @@ class GetThemeSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetThemeSettingsUseCase {
     override operator fun invoke() =
-        userSettingsRepository.userSettings.map { it.themeSettings }
+        userSettingsRepository.userSettings
+            .map { it.themeSettings }
+            .distinctUntilChanged()
 }
