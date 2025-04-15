@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.utils
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.AdaptiveIconDrawable
@@ -99,6 +100,25 @@ object AppUtils {
             )
 
         return resolveInfo?.activityInfo?.packageName
+    }
+
+    fun isSystemApp(context: Context, packageName: String): Boolean {
+        val pm = context.packageManager
+        return try {
+            val appInfo = pm.getApplicationInfo(packageName, 0)
+            (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+        } catch (e: PackageManager.NameNotFoundException) {
+            Log.e(TAG, "Failed to get ApplicationInfo for package: $packageName", e)
+            false
+        }
+    }
+
+    fun isProtectedApp(context: Context, packageName: String): Boolean {
+        val protectedPackages = setOf(
+            context.packageName,
+        )
+
+        return protectedPackages.contains(packageName)
     }
 
     private const val TAG = "AppUtils"
