@@ -47,6 +47,7 @@ import io.github.kei_1111.withmo.ui.screens.home.component.PageContent
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.utils.AppUtils
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -163,7 +164,12 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnAppLongClick -> {
-                    if (event.appInfo.packageName != context.packageName) {
+                    val isSystemApp = AppUtils.isSystemApp(context, event.appInfo.packageName)
+                    val isProtectedApp = AppUtils.isProtectedApp(context, event.appInfo.packageName)
+
+                    if (isSystemApp || isProtectedApp) {
+                        showToast(context, "システムアプリは削除できません")
+                    } else {
                         event.appInfo.delete(context = context)
                     }
                 }
