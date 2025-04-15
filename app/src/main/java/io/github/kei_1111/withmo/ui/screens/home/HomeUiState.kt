@@ -7,6 +7,7 @@ import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.ui.base.UiState
+import io.github.kei_1111.withmo.ui.screens.home.component.PageContent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -26,5 +27,6 @@ data class HomeUiState(
     val isWidgetResizing: Boolean = false,
     val appSearchQuery: String = "",
     val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
+    val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
 ) : UiState

@@ -67,17 +67,20 @@ internal fun PagerContent(
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
 
-    val pagerState = rememberPagerState(pageCount = { PagerContent.entries.size })
+    val pagerState = rememberPagerState(
+        initialPage = uiState.currentPage.ordinal,
+        pageCount = { PageContent.entries.size },
+    )
 
     LaunchedEffect(pagerState, onEvent) {
         snapshotFlow { pagerState.currentPage }.collect { page ->
             when (page) {
-                PagerContent.DisplayModel.ordinal -> {
-                    onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
+                PageContent.DisplayModel.ordinal -> {
+                    onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
                 }
 
-                PagerContent.Widget.ordinal -> {
-                    onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
+                PageContent.Widget.ordinal -> {
+                    onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
                 }
             }
         }
@@ -93,7 +96,7 @@ internal fun PagerContent(
                 .weight(Weights.Medium),
         ) { page ->
             when (page) {
-                PagerContent.DisplayModel.ordinal -> {
+                PageContent.DisplayModel.ordinal -> {
                     DisplayModelContent(
                         uiState = uiState,
                         onEvent = onEvent,
@@ -119,7 +122,7 @@ internal fun PagerContent(
                     )
                 }
 
-                PagerContent.Widget.ordinal -> {
+                PageContent.Widget.ordinal -> {
                     WidgetContent(
                         createWidgetView = createWidgetView,
                         uiState = uiState,
@@ -283,7 +286,7 @@ private fun WidgetContent(
     }
 }
 
-enum class PagerContent {
+enum class PageContent {
     DisplayModel,
     Widget,
 }
