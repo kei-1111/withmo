@@ -28,7 +28,7 @@ object FileUtils {
     }
 
     suspend fun copyVrmFileFromUri(context: Context, uri: Uri): File? {
-        val fileName = getFileName(context, uri) ?: "model.vrm"
+        val fileName = getFileNameFromUri(context, uri) ?: "model.vrm"
         if (!fileName.endsWith(".vrm", ignoreCase = true)) return null
 
         return copyFileFromUri(context, uri, fileName)
@@ -66,7 +66,12 @@ object FileUtils {
             }
         }
 
-    private suspend fun getFileName(context: Context, uri: Uri): String? =
+    fun isDefaultModelFile(filePath: String): Boolean {
+        val file = File(filePath)
+        return file.name == DefaultModelFileName
+    }
+
+    private suspend fun getFileNameFromUri(context: Context, uri: Uri): String? =
         withContext(FileIoDispatcher) {
             if (uri.scheme == "content") {
                 context.contentResolver.query(uri, null, null, null, null)?.use { cursor ->

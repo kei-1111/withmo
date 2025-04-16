@@ -48,6 +48,7 @@ import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.utils.AppUtils
+import io.github.kei_1111.withmo.utils.FileUtils
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -186,9 +187,13 @@ fun HomeScreen(
 
                 is HomeUiEvent.OnSetDefaultModelButtonClick -> {
                     scope.launch {
-                        if (uiState.currentUserSettings.modelFilePath.path != null) {
+                        val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+                        val isDefaultModelFile =
+                            uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
+
+                        if (!isDefaultModelFile) {
                             viewModel.setIsModelLoading(true)
-                            viewModel.saveModelFilePath(ModelFilePath(null))
+                            viewModel.saveModelFilePath(ModelFilePath(defaultModelFilePath))
                         }
                     }
                 }
