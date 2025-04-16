@@ -10,12 +10,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,6 +57,8 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var appWidgetHost: AppWidgetHost
+
+    private val viewModel: MainViewModel by viewModels()
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
@@ -96,6 +100,11 @@ class MainActivity : ComponentActivity() {
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     @Suppress("LongMethod")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition {
+            viewModel.startScreen == null
+        }
+
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
@@ -150,9 +159,12 @@ class MainActivity : ComponentActivity() {
                 WithmoTheme(
                     themeType = themeSettings.themeType,
                 ) {
-                    App(
-                        unityPlayer = unityPlayer,
-                    )
+                    viewModel.startScreen?.let {
+                        App(
+                            unityPlayer = unityPlayer,
+                            startScreen = it,
+                        )
+                    }
                 }
             }
         }
@@ -207,8 +219,6 @@ class MainActivity : ComponentActivity() {
                     } else {
                         UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                     }
-                } else {
-                    UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
                 }
             }
         }

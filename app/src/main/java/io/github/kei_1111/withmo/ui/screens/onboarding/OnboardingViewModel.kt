@@ -9,6 +9,7 @@ import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import io.github.kei_1111.withmo.utils.FileUtils
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
+    private val oneTimeEventRepository: OneTimeEventRepository,
 ) : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
     override fun createInitialState(): OnboardingUiState = OnboardingUiState()
 
@@ -105,7 +107,7 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun saveSetting() {
+    fun saveSetting(context: Context) {
         val favoriteAppList = _uiState.value.selectedAppList.mapIndexed { index, appInfo ->
             appInfo.copy(
                 favoriteOrder = when (index) {
@@ -119,8 +121,15 @@ class OnboardingViewModel @Inject constructor(
         }.toPersistentList()
 
         viewModelScope.launch {
+            oneTimeEventRepository.markOnboardingFirstShown()
             appInfoRepository.updateAppInfoList(favoriteAppList)
-            saveModelFilePathUseCase(_uiState.value.modelFilePath)
+            val modelFilePath = _uiState.value.modelFilePath
+            if (modelFilePath.path != null) {
+                saveModelFilePathUseCase(modelFilePath)
+            } else {
+                val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+                saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
+            }
         }
     }
 

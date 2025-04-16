@@ -52,6 +52,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+import io.github.kei_1111.withmo.utils.FileUtils
 
 @Suppress("LongMethod")
 @Composable
@@ -220,7 +221,7 @@ private fun DisplayModelContent(
     ) {
         if (
             uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
-            uiState.currentUserSettings.modelFilePath.path != null
+            uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } == false
         ) {
             Surface(
                 modifier = Modifier

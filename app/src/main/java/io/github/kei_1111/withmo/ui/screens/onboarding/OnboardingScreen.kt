@@ -89,7 +89,7 @@ fun OnboardingScreen(
                 is OnboardingUiEvent.OnNextButtonClick -> {
                     viewModel.navigateToNextPage(
                         onFinish = {
-                            viewModel.saveSetting()
+                            viewModel.saveSetting(context)
                             latestNavigateToHomeScreen()
                         },
                     )
