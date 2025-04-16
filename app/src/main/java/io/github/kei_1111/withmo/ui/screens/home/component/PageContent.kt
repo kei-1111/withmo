@@ -74,14 +74,19 @@ internal fun PagerContent(
     )
 
     LaunchedEffect(pagerState, onEvent) {
+        var isFirstCollect = true
         snapshotFlow { pagerState.currentPage }.collect { page ->
-            when (page) {
-                PageContent.DisplayModel.ordinal -> {
-                    onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
-                }
+            if (isFirstCollect) {
+                isFirstCollect = false
+            } else {
+                when (page) {
+                    PageContent.DisplayModel.ordinal -> {
+                        onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
+                    }
 
-                PageContent.Widget.ordinal -> {
-                    onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
+                    PageContent.Widget.ordinal -> {
+                        onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
+                    }
                 }
             }
         }
