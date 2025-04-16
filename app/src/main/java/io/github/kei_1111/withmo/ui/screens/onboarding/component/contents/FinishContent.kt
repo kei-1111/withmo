@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -28,6 +29,10 @@ internal fun FinishContent(
     onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler {
+        onEvent(OnboardingUiEvent.OnPreviousButtonClick)
+    }
+
     Column(
         modifier = modifier,
     ) {
