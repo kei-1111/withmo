@@ -1,6 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
 
 import android.os.Build
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,10 @@ internal fun SelectDisplayModelContent(
     onEvent: (OnboardingUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    BackHandler {
+        onEvent(OnboardingUiEvent.OnPreviousButtonClick)
+    }
+
     Column(
         modifier = modifier,
     ) {
