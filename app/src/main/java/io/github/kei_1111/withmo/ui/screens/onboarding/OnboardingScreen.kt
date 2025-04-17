@@ -53,6 +53,7 @@ fun OnboardingScreen(
         ActivityResultContracts.OpenDocument(),
     ) { uri ->
         scope.launch {
+            viewModel.setIsModelLoading(true)
             if (uri == null) {
                 showToast(context, "ファイルが選択されませんでした")
             } else {
@@ -64,6 +65,7 @@ fun OnboardingScreen(
                     viewModel.setModelFileThumbnail(ModelFilePath(filePath))
                 }
             }
+            viewModel.setIsModelLoading(false)
         }
     }
 

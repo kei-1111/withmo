@@ -22,6 +22,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
@@ -76,6 +77,12 @@ class OnboardingViewModel @Inject constructor(
 
     suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
         return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
+    }
+
+    fun setIsModelLoading(isLoading: Boolean) {
+        _uiState.update {
+            it.copy(isModelLoading = isLoading)
+        }
     }
 
     fun setModelFilePath(modelFilePath: ModelFilePath) {

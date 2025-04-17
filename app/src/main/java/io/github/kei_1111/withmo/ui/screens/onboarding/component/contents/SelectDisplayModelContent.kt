@@ -219,6 +219,7 @@ private fun SelectDisplayModelContentBottomAppBar(
         )
         OnboardingBottomAppBarNextButton(
             text = if (isModelSelected) "次へ" else "スキップ",
+            enabled = !uiState.isModelLoading,
             onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
