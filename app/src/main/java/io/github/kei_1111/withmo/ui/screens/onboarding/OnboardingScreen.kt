@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.R)
-@Suppress("ModifierMissing")
+@Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun OnboardingScreen(
     navigateToHomeScreen: () -> Unit,
@@ -53,15 +53,19 @@ fun OnboardingScreen(
         ActivityResultContracts.OpenDocument(),
     ) { uri ->
         scope.launch {
+            viewModel.setIsModelLoading(true)
             if (uri == null) {
                 showToast(context, "ファイルが選択されませんでした")
             } else {
                 val filePath = viewModel.getVrmFilePath(context, uri)
                 if (filePath == null) {
                     showToast(context, "ファイルの読み込みに失敗しました")
+                } else {
+                    viewModel.setModelFilePath(ModelFilePath(filePath))
+                    viewModel.setModelFileThumbnail(ModelFilePath(filePath))
                 }
-                viewModel.setModelFilePath(ModelFilePath(filePath))
             }
+            viewModel.setIsModelLoading(false)
         }
     }
 
@@ -82,7 +86,7 @@ fun OnboardingScreen(
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is OnboardingUiEvent.OnOpenDocumentButtonClick -> {
+                is OnboardingUiEvent.OnSelectDisplayModelAreaClick -> {
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 

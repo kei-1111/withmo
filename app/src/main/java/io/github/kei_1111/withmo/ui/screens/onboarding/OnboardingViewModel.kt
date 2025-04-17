@@ -19,8 +19,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
@@ -77,9 +79,25 @@ class OnboardingViewModel @Inject constructor(
         return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
     }
 
+    fun setIsModelLoading(isLoading: Boolean) {
+        _uiState.update {
+            it.copy(isModelLoading = isLoading)
+        }
+    }
+
     fun setModelFilePath(modelFilePath: ModelFilePath) {
         _uiState.update {
             it.copy(modelFilePath = modelFilePath)
+        }
+    }
+
+    fun setModelFileThumbnail(modelFilePath: ModelFilePath) {
+        viewModelScope.launch {
+            val thumbnails = modelFilePath.path?.let { File(it) }
+                ?.let { FileUtils.getVrmThumbnail(it) }
+            _uiState.update {
+                it.copy(modelFileThumbnail = thumbnails)
+            }
         }
     }
 

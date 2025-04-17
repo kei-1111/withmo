@@ -4,4 +4,5 @@ import androidx.compose.ui.unit.dp
 
 data object BadgeSizes {
     val Medium = 15.dp
+    val Large = 25.dp
 }
