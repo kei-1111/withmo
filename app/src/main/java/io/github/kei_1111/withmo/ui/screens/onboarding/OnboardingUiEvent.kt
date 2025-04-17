@@ -7,7 +7,7 @@ sealed interface OnboardingUiEvent : UiEvent {
     data class OnAppSearchQueryChange(val query: String) : OnboardingUiEvent
     data class OnAllAppListAppClick(val appInfo: AppInfo) : OnboardingUiEvent
     data class OnFavoriteAppListAppClick(val appInfo: AppInfo) : OnboardingUiEvent
-    data object OnOpenDocumentButtonClick : OnboardingUiEvent
+    data object OnSelectDisplayModelAreaClick : OnboardingUiEvent
     data object OnNextButtonClick : OnboardingUiEvent
     data object OnPreviousButtonClick : OnboardingUiEvent
 }

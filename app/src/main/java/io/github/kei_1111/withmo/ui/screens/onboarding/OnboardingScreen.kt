@@ -82,7 +82,7 @@ fun OnboardingScreen(
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is OnboardingUiEvent.OnOpenDocumentButtonClick -> {
+                is OnboardingUiEvent.OnSelectDisplayModelAreaClick -> {
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
