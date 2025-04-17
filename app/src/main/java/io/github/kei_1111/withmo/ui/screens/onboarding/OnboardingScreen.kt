@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.R)
-@Suppress("ModifierMissing")
+@Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun OnboardingScreen(
     navigateToHomeScreen: () -> Unit,
@@ -59,8 +59,10 @@ fun OnboardingScreen(
                 val filePath = viewModel.getVrmFilePath(context, uri)
                 if (filePath == null) {
                     showToast(context, "ファイルの読み込みに失敗しました")
+                } else {
+                    viewModel.setModelFilePath(ModelFilePath(filePath))
+                    viewModel.setModelFileThumbnail(ModelFilePath(filePath))
                 }
-                viewModel.setModelFilePath(ModelFilePath(filePath))
             }
         }
     }

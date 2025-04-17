@@ -3,6 +3,7 @@ package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
@@ -71,6 +73,7 @@ internal fun SelectDisplayModelContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SelectDisplayModelArea(
+                uiState = uiState,
                 onClick = { onEvent(OnboardingUiEvent.OnSelectDisplayModelAreaClick) },
             )
             SelectedModelFileName(
@@ -93,11 +96,18 @@ internal fun SelectDisplayModelContent(
 
 @Composable
 private fun SelectDisplayModelArea(
+    uiState: OnboardingUiState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
-        modifier = modifier
+    val isModelFileThumbnail = uiState.modelFileThumbnail != null
+
+    val selectDisplayModelAreaModifier = if (isModelFileThumbnail) {
+        modifier
+            .size(OnboardingScreenDimensions.SelectDisplayModelAreaSize)
+            .clickable { onClick() }
+    } else {
+        modifier
             .size(OnboardingScreenDimensions.SelectDisplayModelAreaSize)
             .dashedBorder(
                 color = MaterialTheme.colorScheme.primary,
@@ -105,17 +115,32 @@ private fun SelectDisplayModelArea(
                 strokeWidth = OnboardingScreenDimensions.BorderWidth,
                 gapLength = OnboardingScreenDimensions.SelectDisplayModelAreaGapLength,
             )
-            .clickable { onClick() },
+            .clickable { onClick() }
+    }
+
+    Surface(
+        modifier = selectDisplayModelAreaModifier,
         shape = MaterialTheme.shapes.medium,
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            SelectDisplayModelAddBadge()
-            SelectDisplayModelDescription()
+        if (isModelFileThumbnail) {
+            Image(
+                bitmap = uiState.modelFileThumbnail!!.asImageBitmap(),
+                contentDescription = "Model Thumbnail",
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(
+                    Paddings.Medium,
+                    Alignment.CenterVertically,
+                ),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                SelectDisplayModelAddBadge()
+                SelectDisplayModelDescription()
+            }
         }
     }
 }
