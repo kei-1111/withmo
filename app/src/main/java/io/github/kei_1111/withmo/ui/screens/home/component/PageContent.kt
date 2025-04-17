@@ -100,6 +100,7 @@ internal fun PagerContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(Weights.Medium),
+            userScrollEnabled = !uiState.isEditMode,
         ) { page ->
             when (page) {
                 PageContent.DisplayModel.ordinal -> {
