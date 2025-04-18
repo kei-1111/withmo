@@ -67,6 +67,18 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
+    fun changeIsNavigateSettingsButtonShown(isNavigateSettingsButtonShown: Boolean) {
+        _uiState.update {
+            it.copy(
+                sideButtonSettings = it.sideButtonSettings.copy(
+                    isNavigateSettingsButtonShown = isNavigateSettingsButtonShown,
+                ),
+                isSaveButtonEnabled =
+                isNavigateSettingsButtonShown != it.initialSideButtonSettings.isNavigateSettingsButtonShown,
+            )
+        }
+    }
+
     fun saveSideButtonSettings(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,

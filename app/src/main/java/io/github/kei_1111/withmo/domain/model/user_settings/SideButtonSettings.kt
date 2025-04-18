@@ -4,4 +4,5 @@ data class SideButtonSettings(
     val isShowScaleSliderButtonShown: Boolean = true,
     val isOpenDocumentButtonShown: Boolean = true,
     val isSetDefaultModelButtonShown: Boolean = true,
+    val isNavigateSettingsButtonShown: Boolean = true,
 )

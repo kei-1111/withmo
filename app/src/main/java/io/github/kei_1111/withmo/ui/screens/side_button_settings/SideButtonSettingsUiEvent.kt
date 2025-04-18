@@ -6,6 +6,7 @@ sealed interface SideButtonSettingsUiEvent : UiEvent {
     data class OnIsShowScaleSliderButtonShownSwitchChange(val isShowScaleSliderButtonShown: Boolean) : SideButtonSettingsUiEvent
     data class OnIsOpenDocumentButtonShownSwitchChange(val isOpenDocumentButtonShown: Boolean) : SideButtonSettingsUiEvent
     data class OnIsSetDefaultModelButtonShownSwitchChange(val isSetDefaultModelButtonShown: Boolean) : SideButtonSettingsUiEvent
+    data class OnIsNavigateSettingsButtonShownSwitchChange(val isNavigateSettingsButtonShown: Boolean) : SideButtonSettingsUiEvent
     data object OnSaveButtonClick : SideButtonSettingsUiEvent
     data object OnBackButtonClick : SideButtonSettingsUiEvent
 }

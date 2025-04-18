@@ -80,6 +80,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     isShowScaleSliderButtonShown = preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
                     isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
                     isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
+                    isNavigateSettingsButtonShown = preferences[IS_NAVIGATE_SETTINGS_BUTTON_SHOWN] ?: true,
                 ),
                 themeSettings = ThemeSettings(
                     themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
@@ -137,6 +138,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     sideButtonSettings.isOpenDocumentButtonShown
                 preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] =
                     sideButtonSettings.isSetDefaultModelButtonShown
+                preferences[IS_NAVIGATE_SETTINGS_BUTTON_SHOWN] =
+                    sideButtonSettings.isNavigateSettingsButtonShown
             }
         }
     }
@@ -174,6 +177,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
         val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")
         val IS_SET_DEFAULT_MODEL_BUTTON_SHOWN = booleanPreferencesKey("is_set_default_model_button_shown")
+        val IS_NAVIGATE_SETTINGS_BUTTON_SHOWN = booleanPreferencesKey("is_navigate_settings_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
         val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
 

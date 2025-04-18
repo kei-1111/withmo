@@ -44,6 +44,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
+@Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppListSheet(
@@ -100,6 +101,8 @@ internal fun AppListSheet(
                         appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
                             uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
                         ),
+                        isNavigateSettingsButtonShown =
+                        uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
                         onEvent = onEvent,
                         modifier = Modifier.fillMaxSize(),
                     )
@@ -118,6 +121,7 @@ internal fun AppListSheet(
 private fun AppList(
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
+    isNavigateSettingsButtonShown: Boolean,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -150,7 +154,7 @@ private fun AppList(
                 )
             }
         }
-        if (settingApp.isNotEmpty()) {
+        if (settingApp.isNotEmpty() && !isNavigateSettingsButtonShown) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
             ) {

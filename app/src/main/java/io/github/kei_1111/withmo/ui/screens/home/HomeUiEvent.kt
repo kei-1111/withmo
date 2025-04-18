@@ -12,6 +12,7 @@ sealed interface HomeUiEvent : UiEvent {
     data object OnCloseScaleSliderButtonClick : HomeUiEvent
     data object OnSetDefaultModelButtonClick : HomeUiEvent
     data object OnOpenDocumentButtonClick : HomeUiEvent
+    data object OnNavigateSettingsButtonClick : HomeUiEvent
     data object OnModelChangeWarningDialogConfirm : HomeUiEvent
     data object OnModelChangeWarningDialogDismiss : HomeUiEvent
     data class OnAppSearchQueryChange(val query: String) : HomeUiEvent

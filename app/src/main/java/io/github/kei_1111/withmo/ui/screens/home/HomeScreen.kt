@@ -43,7 +43,6 @@ import io.github.kei_1111.withmo.ui.screens.home.component.AppListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.ui.screens.home.component.ModelLoading
-import io.github.kei_1111.withmo.ui.screens.home.component.PageContent
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -204,6 +203,10 @@ fun HomeScreen(
                     } else {
                         viewModel.setIsModelChangeWarningDialogShown(true)
                     }
+                }
+
+                is HomeUiEvent.OnNavigateSettingsButtonClick -> {
+                    latestNavigateToSettingsScreen()
                 }
 
                 is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
