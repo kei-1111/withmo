@@ -27,6 +27,7 @@ import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
