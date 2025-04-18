@@ -40,5 +40,11 @@ internal fun SideButtonSettingsScreenContent(
             onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
+        WithmoSettingItemWithSwitch(
+            title = "カスタマイズボタンの表示",
+            checked = uiState.sideButtonSettings.isNavigateSettingsButtonShown,
+            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsNavigateSettingsButtonShownSwitchChange(it)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

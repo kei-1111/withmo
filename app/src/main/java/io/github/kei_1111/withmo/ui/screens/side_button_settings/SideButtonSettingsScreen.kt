@@ -63,6 +63,10 @@ fun SideButtonSettingsScreen(
                     viewModel.changeIsSetDefaultModelButtonShown(event.isSetDefaultModelButtonShown)
                 }
 
+                is SideButtonSettingsUiEvent.OnIsNavigateSettingsButtonShownSwitchChange -> {
+                    viewModel.changeIsNavigateSettingsButtonShown(event.isNavigateSettingsButtonShown)
+                }
+
                 is SideButtonSettingsUiEvent.OnSaveButtonClick -> {
                     viewModel.saveSideButtonSettings(
                         onSaveSuccess = {

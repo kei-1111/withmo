@@ -42,9 +42,11 @@ internal fun DisplayModelContent(
         modifier = modifier,
         verticalAlignment = Alignment.Bottom,
     ) {
-        NavigateSettingsButton(
-            onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
-        )
+        if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
+            NavigateSettingsButton(
+                onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+            )
+        }
         Spacer(
             modifier = Modifier.weight(Weights.Medium),
         )
