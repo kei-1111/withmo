@@ -85,11 +85,13 @@ internal fun HomeScreenContent(
                         .fillMaxWidth()
                         .weight(Weights.Medium),
                 )
-                RowAppList(
-                    uiState = uiState,
-                    onEvent = onEvent,
-                    modifier = Modifier.fillMaxWidth(),
-                )
+                if (!uiState.isEditMode) {
+                    RowAppList(
+                        uiState = uiState,
+                        onEvent = onEvent,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                }
             }
         }
     }

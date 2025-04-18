@@ -3,11 +3,16 @@ package io.github.kei_1111.withmo.ui.screens.home.component
 import android.content.Context
 import android.view.View
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
@@ -26,6 +32,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
+@Suppress("LongMethod")
 @Composable
 internal fun WidgetResizeBottomSheet(
     widgetInfo: WidgetInfo,
@@ -60,13 +67,23 @@ internal fun WidgetResizeBottomSheet(
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Widget(
-                widgetInfo = widgetInfo.copy(
-                    width = widgetWidth.roundToInt(),
-                    height = widgetHeight.roundToInt(),
-                ),
-                createWidgetView = createWidgetView,
-            )
+            Box(
+                modifier = Modifier
+                    .width(widgetWidth.dp)
+                    .height(widgetHeight.dp),
+            ) {
+                Widget(
+                    widgetInfo = widgetInfo.copy(
+                        width = widgetWidth.roundToInt(),
+                        height = widgetHeight.roundToInt(),
+                    ),
+                    createWidgetView = createWidgetView,
+                )
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = Color.Transparent,
+                ) { }
+            }
             Column(
                 modifier = Modifier.padding(Paddings.Medium),
                 verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
