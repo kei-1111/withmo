@@ -105,6 +105,11 @@ private fun SelectDisplayModelArea(
     val selectDisplayModelAreaModifier = if (isModelFileThumbnail) {
         modifier
             .size(OnboardingScreenDimensions.SelectDisplayModelAreaSize)
+            .border(
+                color = MaterialTheme.colorScheme.primary,
+                shape = MaterialTheme.shapes.medium,
+                width = OnboardingScreenDimensions.BorderWidth,
+            )
             .clickable { onClick() }
     } else {
         modifier
