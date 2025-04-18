@@ -206,6 +206,10 @@ fun HomeScreen(
                     }
                 }
 
+                is HomeUiEvent.OnNavigateSettingsButtonClick -> {
+                    latestNavigateToSettingsScreen()
+                }
+
                 is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
                     viewModel.setIsModelChangeWarningDialogShown(false)
                     viewModel.markModelChangeWarningFirstShown()

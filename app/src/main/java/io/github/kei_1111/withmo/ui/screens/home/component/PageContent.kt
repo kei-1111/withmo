@@ -198,43 +198,63 @@ private fun DisplayModelContent(
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Column(
+    Row(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
-        horizontalAlignment = Alignment.End,
+        verticalAlignment = Alignment.Bottom,
     ) {
-        if (
-            uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
-            uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } == false
+        Surface(
+            modifier = Modifier
+                .size(Constants.DefaultAppIconSize.dp)
+                .clickable { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+            shape = CircleShape,
+            shadowElevation = ShadowElevations.Medium,
         ) {
-            Surface(
-                modifier = Modifier
-                    .size(Constants.DefaultAppIconSize.dp)
-                    .clickable { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
-                shape = CircleShape,
-                shadowElevation = ShadowElevations.Medium,
+            Image(
+                painter = painterResource(R.drawable.withmo_icon_wide),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+        }
+        Spacer(
+            modifier = Modifier.weight(Weights.Medium),
+        )
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
+        ) {
+            if (
+                uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+                uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } == false
             ) {
-                Image(
-                    painter = painterResource(R.drawable.alicia_icon),
-                    contentDescription = null,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
+                Surface(
+                    modifier = Modifier
+                        .size(Constants.DefaultAppIconSize.dp)
+                        .clickable { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
+                    shape = CircleShape,
+                    shadowElevation = ShadowElevations.Medium,
+                ) {
+                    Image(
+                        painter = painterResource(R.drawable.alicia_icon),
+                        contentDescription = null,
+                        modifier = Modifier.fillMaxSize(),
+                        contentScale = ContentScale.Crop,
+                    )
+                }
+            }
+            if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+                WithmoIconButton(
+                    onClick = { onEvent(HomeUiEvent.OnOpenDocumentButtonClick) },
+                    icon = Icons.Rounded.ChangeCircle,
+                    modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
                 )
             }
-        }
-        if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
-            WithmoIconButton(
-                onClick = { onEvent(HomeUiEvent.OnOpenDocumentButtonClick) },
-                icon = Icons.Rounded.ChangeCircle,
-                modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
-            )
-        }
-        if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
-            WithmoIconButton(
-                onClick = { onEvent(HomeUiEvent.OnShowScaleSliderButtonClick) },
-                icon = Icons.Rounded.Man,
-                modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
-            )
+            if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
+                WithmoIconButton(
+                    onClick = { onEvent(HomeUiEvent.OnShowScaleSliderButtonClick) },
+                    icon = Icons.Rounded.Man,
+                    modifier = Modifier.size(Constants.DefaultAppIconSize.dp),
+                )
+            }
         }
     }
 }
