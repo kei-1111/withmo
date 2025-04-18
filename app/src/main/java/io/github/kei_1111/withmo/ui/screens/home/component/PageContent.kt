@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,6 +25,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
+import androidx.compose.material.icons.rounded.Widgets
+import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -42,13 +48,14 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.common.Constants
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -145,14 +152,13 @@ internal fun PagerContent(
                 }
             }
         }
-        PageIndicator(
-            pageCount = pagerState.pageCount,
-            currentPage = pagerState.currentPage,
-            isEditMode = uiState.isEditMode,
-            exitEditMode = { onEvent(HomeUiEvent.OnCompleteEditButtonClick) },
-            openWidgetList = { onEvent(HomeUiEvent.OnAddWidgetButtonClick) },
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (!uiState.isEditMode) {
+            PageIndicator(
+                pageCount = pagerState.pageCount,
+                currentPage = pagerState.currentPage,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 
@@ -160,9 +166,6 @@ internal fun PagerContent(
 private fun PageIndicator(
     pageCount: Int,
     currentPage: Int,
-    isEditMode: Boolean,
-    exitEditMode: () -> Unit,
-    openWidgetList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -171,45 +174,20 @@ private fun PageIndicator(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (isEditMode) {
-            LabelMediumText(
-                text = "＋",
+        repeat(pageCount) { iteration ->
+            val color =
+                if (currentPage == iteration) {
+                    MaterialTheme.colorScheme.onSurface
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+                }
+            Box(
                 modifier = Modifier
                     .padding(horizontal = Paddings.Medium)
-                    .background(
-                        MaterialTheme.colorScheme.surface,
-                        CircleShape,
-                    )
-                    .clickable { openWidgetList() }
-                    .padding(horizontal = Paddings.Medium),
+                    .clip(CircleShape)
+                    .background(color)
+                    .size(HomeScreenDimensions.PageIndicatorSize),
             )
-            LabelMediumText(
-                text = "編集完了",
-                modifier = Modifier
-                    .padding(horizontal = Paddings.Medium)
-                    .background(
-                        MaterialTheme.colorScheme.surface,
-                        CircleShape,
-                    )
-                    .clickable { exitEditMode() }
-                    .padding(horizontal = Paddings.Medium),
-            )
-        } else {
-            repeat(pageCount) { iteration ->
-                val color =
-                    if (currentPage == iteration) {
-                        MaterialTheme.colorScheme.onSurface
-                    } else {
-                        MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-                    }
-                Box(
-                    modifier = Modifier
-                        .padding(horizontal = Paddings.Medium)
-                        .clip(CircleShape)
-                        .background(color)
-                        .size(HomeScreenDimensions.PageIndicatorSize),
-                )
-            }
         }
     }
 }
@@ -290,6 +268,81 @@ private fun WidgetContent(
                 )
             }
         }
+        if (uiState.isEditMode) {
+            EditWidgetContent(
+                onEvent = onEvent,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.BottomCenter)
+                    .padding(
+                        bottom = Paddings.ExtraSmall,
+                    )
+                    .padding(
+                        horizontal = Paddings.Medium,
+                    ),
+            )
+        }
+    }
+}
+
+@Composable
+private fun EditWidgetContent(
+    onEvent: (HomeUiEvent) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+    ) {
+        Spacer(
+            modifier = Modifier.weight(Weights.Medium),
+        )
+        AddWidgetButton(
+            onClick = { onEvent(HomeUiEvent.OnAddWidgetButtonClick) },
+        )
+        CompleteEditButton(
+            onClick = { onEvent(HomeUiEvent.OnCompleteEditButtonClick) },
+            modifier = Modifier.weight(Weights.Medium),
+        )
+    }
+}
+
+@Composable
+private fun AddWidgetButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    IconButton(
+        onClick = onClick,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.secondaryContainer,
+            contentColor = MaterialTheme.colorScheme.primary,
+        ),
+        modifier = modifier
+            .size(CommonDimensions.SettingItemHeight),
+    ) {
+        Icon(
+            imageVector = Icons.Rounded.Widgets,
+            contentDescription = null,
+        )
+    }
+}
+
+@Composable
+private fun CompleteEditButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    FilledTonalButton(
+        onClick = onClick,
+        modifier = modifier
+            .height(CommonDimensions.SettingItemHeight),
+    ) {
+        BodyMediumText(
+            text = "編集完了",
+            color = MaterialTheme.colorScheme.primary,
+        )
     }
 }
 
