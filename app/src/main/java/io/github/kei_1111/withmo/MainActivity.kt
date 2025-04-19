@@ -28,6 +28,7 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.ui.App
+import io.github.kei_1111.withmo.ui.UnityManager
 import io.github.kei_1111.withmo.ui.composition.CurrentTimeProvider
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.theme.WithmoTheme
@@ -42,7 +43,6 @@ import javax.inject.Inject
 @RequiresApi(Build.VERSION_CODES.R)
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private var unityPlayer: UnityPlayer? = null
 
     @Inject
     lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
@@ -108,7 +108,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        unityPlayer = UnityPlayer(this)
+        UnityManager.init(this)
 
         getDisplayModelSetting(this)
 
@@ -161,7 +161,6 @@ class MainActivity : ComponentActivity() {
                 ) {
                     viewModel.startScreen?.let {
                         App(
-                            unityPlayer = unityPlayer,
                             startScreen = it,
                         )
                     }
@@ -172,17 +171,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        unityPlayer?.windowFocusChanged(hasFocus)
+        UnityManager.focusGained(hasFocus)
     }
 
     override fun onResume() {
         super.onResume()
-        unityPlayer?.onResume()
+        UnityManager.resume()
     }
 
     override fun onPause() {
         super.onPause()
-        unityPlayer?.onPause()
+        UnityManager.pause()
     }
 
     override fun onStop() {
@@ -193,7 +192,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        unityPlayer?.destroy()
+        UnityManager.quit()
         unregisterReceiver(packageReceiver)
     }
 
