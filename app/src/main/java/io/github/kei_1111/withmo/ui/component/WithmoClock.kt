@@ -49,12 +49,14 @@ private fun ClockTopDate(
     modifier: Modifier = Modifier,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
-    val hourMinuteOffsetY = -7.dp
+    val dateOffset = 4.dp
+    val hourMinuteOffsetY = -4.dp
 
     Column(
         modifier = modifier,
     ) {
         Row(
+            modifier = Modifier.offset(y = dateOffset),
             horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
         ) {
             Text(
@@ -101,8 +103,11 @@ private fun ClockHorizontalDate(
     modifier: Modifier = Modifier,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
-    val dayOffsetY = -8.dp
-    val hourMinuteOffsetY = -10.dp
+    val yearOffsetY = 5.dp
+    val monthOffsetY = 4.dp
+    val dayOffsetY = -4.dp
+    val dayOfWeekOffsetY = 5.dp
+    val hourMinuteOffsetY = -5.dp
 
     Column(
         modifier = modifier,
@@ -113,11 +118,13 @@ private fun ClockHorizontalDate(
                     text = dateTimeInfo.year,
                     style = clockTextExtraSmallSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = yearOffsetY),
                 )
                 Text(
                     text = dateTimeInfo.month,
                     style = clockTextMediumSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = monthOffsetY),
                 )
                 Text(
                     text = dateTimeInfo.day,
@@ -132,6 +139,7 @@ private fun ClockHorizontalDate(
                     text = dateTimeInfo.dayOfWeek,
                     style = clockTextExtraSmallSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = dayOfWeekOffsetY),
                 )
                 Row(
                     modifier = Modifier.offset(y = hourMinuteOffsetY),
