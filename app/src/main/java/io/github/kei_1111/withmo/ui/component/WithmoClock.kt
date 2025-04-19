@@ -2,15 +2,18 @@ package io.github.kei_1111.withmo.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.domain.model.DateTimeInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.theme.clockTextExtraSmallSize
@@ -48,10 +51,15 @@ private fun ClockTopDate(
     modifier: Modifier = Modifier,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val dateOffset = 4.dp
+    val hourMinuteOffsetY = -4.dp
+
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .width(IntrinsicSize.Max),
     ) {
         Row(
+            modifier = Modifier.offset(y = dateOffset),
             horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
         ) {
             Text(
@@ -75,8 +83,12 @@ private fun ClockTopDate(
                 color = textColor,
             )
         }
-        Spacer(modifier = Modifier.height(Paddings.ExtraSmall))
-        Row {
+        Row(
+            modifier = Modifier
+                .offset(y = hourMinuteOffsetY)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
             Text(
                 text = "${dateTimeInfo.hour}:",
                 style = clockTextLargeSize,
@@ -97,6 +109,12 @@ private fun ClockHorizontalDate(
     modifier: Modifier = Modifier,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val yearOffsetY = 5.dp
+    val monthOffsetY = 4.dp
+    val dayOffsetY = -4.dp
+    val dayOfWeekOffsetY = 5.dp
+    val hourMinuteOffsetY = -5.dp
+
     Column(
         modifier = modifier,
     ) {
@@ -106,27 +124,32 @@ private fun ClockHorizontalDate(
                     text = dateTimeInfo.year,
                     style = clockTextExtraSmallSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = yearOffsetY),
                 )
                 Text(
                     text = dateTimeInfo.month,
                     style = clockTextMediumSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = monthOffsetY),
                 )
                 Text(
                     text = dateTimeInfo.day,
                     style = clockTextMediumSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = dayOffsetY),
                 )
             }
-            Spacer(modifier = Modifier.width(Paddings.Small))
+            Spacer(modifier = Modifier.width(Paddings.ExtraSmall))
             Column {
                 Text(
                     text = dateTimeInfo.dayOfWeek,
-                    style = clockTextSmallSize,
+                    style = clockTextExtraSmallSize,
                     color = textColor,
+                    modifier = Modifier.offset(y = dayOfWeekOffsetY),
                 )
-                Spacer(modifier = Modifier.height(Paddings.ExtraSmall))
-                Row {
+                Row(
+                    modifier = Modifier.offset(y = hourMinuteOffsetY),
+                ) {
                     Text(
                         text = "${dateTimeInfo.hour}:",
                         style = clockTextLargeSize,

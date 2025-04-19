@@ -18,8 +18,8 @@ val NotoSansJp = FontFamily(
     Font(R.font.noto_sans_jp_black, FontWeight.Black),
 )
 
-val BizUdGothic = FontFamily(
-    Font(R.font.biz_ud_gothic_bold, FontWeight.Bold),
+val OpenSans = FontFamily(
+    Font(R.font.open_sans_light, FontWeight.Light),
 )
 
 val Typography = Typography(
@@ -54,9 +54,10 @@ val Typography = Typography(
 )
 
 val clockTextExtraSmallSize = TextStyle(
-    fontFamily = BizUdGothic,
-    fontWeight = FontWeight.Bold,
+    fontFamily = OpenSans,
+    fontWeight = FontWeight.Light,
     fontSize = 10.sp,
+    lineHeight = 10.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false,
     ),
@@ -67,8 +68,10 @@ val clockTextExtraSmallSize = TextStyle(
 )
 
 val clockTextSmallSize = TextStyle(
-    fontFamily = BizUdGothic,
-    fontWeight = FontWeight.Bold,
+    fontFamily = OpenSans,
+    fontWeight = FontWeight.Light,
+    fontSize = 15.sp,
+    lineHeight = 15.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false,
     ),
@@ -79,9 +82,10 @@ val clockTextSmallSize = TextStyle(
 )
 
 val clockTextMediumSize = TextStyle(
-    fontFamily = BizUdGothic,
-    fontWeight = FontWeight.Bold,
-    fontSize = 22.8.sp,
+    fontFamily = OpenSans,
+    fontWeight = FontWeight.Light,
+    fontSize = 19.sp,
+    lineHeight = 19.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false,
     ),
@@ -92,9 +96,10 @@ val clockTextMediumSize = TextStyle(
 )
 
 val clockTextLargeSize = TextStyle(
-    fontFamily = BizUdGothic,
-    fontWeight = FontWeight.Bold,
-    fontSize = 37.sp,
+    fontFamily = OpenSans,
+    fontWeight = FontWeight.Light,
+    fontSize = 44.sp,
+    lineHeight = 44.sp,
     platformStyle = PlatformTextStyle(
         includeFontPadding = false,
     ),
