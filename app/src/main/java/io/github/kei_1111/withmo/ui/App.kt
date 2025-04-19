@@ -169,7 +169,7 @@ fun App(
 
 @Composable
 fun UnityView(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
 
@@ -182,21 +182,23 @@ fun UnityView(
         update = { host ->
             if (unityView.parent != host) {
                 (unityView.parent as? ViewGroup)?.removeView(unityView)
-                host.addView(unityView,
+                host.addView(
+                    unityView,
                     ViewGroup.LayoutParams(
-                        MATCH_PARENT, MATCH_PARENT
-                    )
+                        MATCH_PARENT,
+                        MATCH_PARENT,
+                    ),
                 )
             }
         },
-        modifier = modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize(),
     )
 }
 
 object UnityManager {
     private var _player: UnityPlayer? = null
     val player: UnityPlayer
-        get() = _player ?: throw IllegalStateException("UnityPlayer not initialized")
+        get() = _player ?: error("UnityPlayer not initialized")
 
     fun init(context: Context) {
         if (_player != null) return
@@ -205,8 +207,8 @@ object UnityManager {
         }
     }
 
-    fun resume()  = _player?.resume()
-    fun pause()   = _player?.pause()
-    fun quit()    = _player?.quit()
+    fun resume() = _player?.resume()
+    fun pause() = _player?.pause()
+    fun quit() = _player?.quit()
     fun focusGained(gained: Boolean) = _player?.windowFocusChanged(gained)
 }
