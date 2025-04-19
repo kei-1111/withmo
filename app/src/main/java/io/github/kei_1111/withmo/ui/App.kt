@@ -1,6 +1,9 @@
 package io.github.kei_1111.withmo.ui
 
+import android.content.Context
 import android.os.Build
+import android.view.ViewGroup
+import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.FrameLayout
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.AnimatedContent
@@ -19,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.unity3d.player.UnityPlayer
 import io.github.kei_1111.withmo.domain.model.Screen
@@ -37,7 +41,6 @@ import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsScreen
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
 @Composable
 fun App(
-    unityPlayer: UnityPlayer?,
     startScreen: Screen,
 ) {
     var currentScreen by remember { mutableStateOf(startScreen) }
@@ -45,12 +48,9 @@ fun App(
     Surface(
         modifier = Modifier.fillMaxSize(),
     ) {
-        unityPlayer?.let {
-            UnityScreen(
-                unityPlayer = unityPlayer,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+        UnityView(
+            modifier = Modifier.fillMaxSize(),
+        )
 
         AnimatedContent(
             targetState = currentScreen,
@@ -168,16 +168,45 @@ fun App(
 }
 
 @Composable
-private fun UnityScreen(
-    unityPlayer: UnityPlayer,
-    modifier: Modifier = Modifier,
+fun UnityView(
+    modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
+    val unityView = remember { UnityManager.player.view }
+
+    val container = remember { FrameLayout(context) }
+
     AndroidView(
-        modifier = modifier,
-        factory = { context ->
-            FrameLayout(context).apply {
-                addView(unityPlayer.rootView)
+        factory = { container },
+        update = { host ->
+            if (unityView.parent != host) {
+                (unityView.parent as? ViewGroup)?.removeView(unityView)
+                host.addView(unityView,
+                    ViewGroup.LayoutParams(
+                        MATCH_PARENT, MATCH_PARENT
+                    )
+                )
             }
         },
+        modifier = modifier.fillMaxSize()
     )
+}
+
+object UnityManager {
+    private var _player: UnityPlayer? = null
+    val player: UnityPlayer
+        get() = _player ?: throw IllegalStateException("UnityPlayer not initialized")
+
+    fun init(context: Context) {
+        if (_player != null) return
+        _player = UnityPlayer(context).apply {
+            init(settings.getInt("gles_mode", 1), false)
+        }
+    }
+
+    fun resume()  = _player?.resume()
+    fun pause()   = _player?.pause()
+    fun quit()    = _player?.quit()
+    fun focusGained(gained: Boolean) = _player?.windowFocusChanged(gained)
 }
