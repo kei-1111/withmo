@@ -2,13 +2,16 @@ package io.github.kei_1111.withmo.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
@@ -53,7 +56,8 @@ private fun ClockTopDate(
     val hourMinuteOffsetY = -4.dp
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .width(IntrinsicSize.Max),
     ) {
         Row(
             modifier = Modifier.offset(y = dateOffset),
@@ -81,7 +85,10 @@ private fun ClockTopDate(
             )
         }
         Row(
-            modifier = Modifier.offset(y = hourMinuteOffsetY),
+            modifier = Modifier
+                .offset(y = hourMinuteOffsetY)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
                 text = "${dateTimeInfo.hour}:",
