@@ -125,10 +125,13 @@ private fun SelectFavoriteAppContentBottomAppBar(
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
-            text = "次へ",
+            text = if (uiState.selectedAppList.isEmpty()) {
+                "スキップ"
+            } else {
+                "次へ"
+            },
             onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
-            enabled = uiState.selectedAppList.isNotEmpty(),
         )
     }
 }
