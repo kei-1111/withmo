@@ -75,10 +75,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 favoriteAppList = removedFavoriteAppList,
-                isSaveButtonEnabled = (
-                    it.initialFavoriteAppList != removedFavoriteAppList &&
-                        removedFavoriteAppList.size > 0
-                    ),
+                isSaveButtonEnabled = (it.initialFavoriteAppList != removedFavoriteAppList),
             )
         }
     }
