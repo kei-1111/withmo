@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.common.Constants
@@ -29,6 +30,8 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val AppItemLabelMaxLines = 1
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -63,7 +66,11 @@ fun AppItem(
             )
             if (isAppNameShown) {
                 Spacer(modifier = Modifier.weight(Weights.Medium))
-                LabelMediumText(text = appInfo.label)
+                LabelMediumText(
+                    text = appInfo.label,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = AppItemLabelMaxLines,
+                )
             }
         }
         if (appInfo.notification) {

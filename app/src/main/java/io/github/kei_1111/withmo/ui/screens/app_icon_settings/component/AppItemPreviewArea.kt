@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
@@ -24,6 +25,8 @@ import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val AppItemLabelMaxLines = 1
 
 @Composable
 internal fun AppItemPreviewArea(
@@ -80,7 +83,11 @@ private fun AppItemPreview(
         )
         if (appIconSettings.isAppNameShown) {
             Spacer(modifier = Modifier.weight(Weights.Medium))
-            LabelMediumText(text = previewAppLabel)
+            LabelMediumText(
+                text = previewAppLabel,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = AppItemLabelMaxLines,
+            )
         }
     }
 }
