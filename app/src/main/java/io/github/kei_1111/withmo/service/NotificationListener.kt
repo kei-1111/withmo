@@ -5,8 +5,10 @@ import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
-import com.unity3d.player.UnityPlayer.UnitySendMessage
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.UnityMethod
+import io.github.kei_1111.withmo.common.UnityObject
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,7 +34,7 @@ class NotificationListener : NotificationListenerService() {
                 val intent = Intent("notification_received")
                 intent.putExtra("package_name", sbn.packageName)
                 sendBroadcast(intent)
-                UnitySendMessage("Notification", "ShowObject", "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
             }
         }
     }

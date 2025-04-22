@@ -2,7 +2,9 @@ package io.github.kei_1111.withmo.domain.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.unity3d.player.UnityPlayer
+import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.UnityMethod
+import io.github.kei_1111.withmo.common.UnityObject
 import io.github.kei_1111.withmo.utils.isEvening
 import io.github.kei_1111.withmo.utils.isMorning
 import io.github.kei_1111.withmo.utils.isNight
@@ -16,17 +18,17 @@ class TimeBasedUnitySendMessageManager {
     private var hasSentNightMessage = false
 
     private fun sendMorningMessage() {
-        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeDay", "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeDay, "")
         hasSentMorningMessage = true
     }
 
     private fun sendEveningMessage() {
-        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeEvening", "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeEvening, "")
         hasSentEveningMessage = true
     }
 
     private fun sendNightMessage() {
-        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeNight", "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeNight, "")
         hasSentNightMessage = true
     }
 

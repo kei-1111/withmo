@@ -19,8 +19,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.UnityMethod
+import io.github.kei_1111.withmo.common.UnityObject
 import io.github.kei_1111.withmo.domain.model.TimeBasedUnitySendMessageManager
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
@@ -214,9 +216,11 @@ class MainActivity : ComponentActivity() {
                 if (modelFilePath.path != null) {
                     val path = modelFilePath.path
                     if (FileUtils.fileExists(path)) {
-                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", path)
+                        AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
                     } else {
-                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
+                        defaultModelFilePath?.let {
+                            AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
+                        }
                     }
                 }
             }
@@ -234,21 +238,21 @@ private fun UnitySendThemeMessage(themeType: ThemeType) {
             ThemeType.TIME_BASED -> {
                 when {
                     isMorning(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeDay", "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeDay, "")
                     }
                     isEvening(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeEvening", "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeEvening, "")
                     }
                     isNight(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeNight", "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeNight, "")
                     }
                 }
             }
             ThemeType.LIGHT -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetDayFixedMode", "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetDayFixedMode, "")
             }
             ThemeType.DARK -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetNightFixedMode", "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetNightFixedMode, "")
             }
         }
     }
