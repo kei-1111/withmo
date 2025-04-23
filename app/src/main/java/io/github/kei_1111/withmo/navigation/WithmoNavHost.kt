@@ -50,7 +50,7 @@ fun WithmoNavHost(
             exitTransition = { slideOutVertically { it } },
         ) {
             OnboardingScreen(
-                navigateToHomeScreen = { navController.navigate(Screen.Home) },
+                onFinishButtonClick = { navController.navigate(Screen.Home) },
             )
         }
         composable<Screen.Home>(
@@ -58,7 +58,7 @@ fun WithmoNavHost(
             exitTransition = { fadeOut() },
         ) {
             HomeScreen(
-                navigateToSettingsScreen = { navController.navigate(Screen.Settings) },
+                onNavigateSettingsButtonClick = { navController.navigate(Screen.Settings) },
             )
         }
         composable<Screen.Settings>(
@@ -86,37 +86,37 @@ fun WithmoNavHost(
         }
         composable<Screen.ClockSettings> {
             ClockSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.AppIconSettings> {
             AppIconSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.FavoriteAppSettings> {
             FavoriteAppSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.SideButtonSettings> {
             SideButtonSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.SortSettings> {
             SortSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.NotificationSettings> {
             NotificationSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
         composable<Screen.ThemeSettings> {
             ThemeSettingsScreen(
-                navigateToSettingsScreen = { navController.popBackStack() },
+                onBackButtonClick = { navController.popBackStack() },
             )
         }
     }

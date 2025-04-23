@@ -35,14 +35,14 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun SortSettingsScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: SortSettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
         viewModel.onEvent(SortSettingsUiEvent.OnBackButtonClick)
@@ -59,7 +59,7 @@ fun SortSettingsScreen(
                     viewModel.saveSortSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
-                            latestNavigateToSettingsScreen()
+                            currentOnBackButtonClick()
                         },
                         onSaveFailure = {
                             showToast(context, "保存に失敗しました")
@@ -68,7 +68,7 @@ fun SortSettingsScreen(
                 }
 
                 is SortSettingsUiEvent.OnBackButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)

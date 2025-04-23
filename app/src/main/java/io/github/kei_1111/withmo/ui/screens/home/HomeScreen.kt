@@ -63,7 +63,7 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onNavigateSettingsButtonClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -152,14 +152,14 @@ fun HomeScreen(
     }
     val isModelChangeWarningFirstShown by viewModel.isModelChangeWarningFirstShown.collectAsStateWithLifecycle()
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnNavigateSettingsButtonClick by rememberUpdatedState(onNavigateSettingsButtonClick)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
                 is HomeUiEvent.OnAppClick -> {
                     if (event.appInfo.packageName == context.packageName) {
-                        latestNavigateToSettingsScreen()
+                        currentOnNavigateSettingsButtonClick()
                     } else {
                         event.appInfo.launch(context = context)
                     }
@@ -208,7 +208,7 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnNavigateSettingsButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnNavigateSettingsButtonClick()
                 }
 
                 is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {

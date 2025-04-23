@@ -37,14 +37,14 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun AppIconSettingsScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: AppIconSettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
         viewModel.onEvent(AppIconSettingsUiEvent.OnBackButtonClick)
@@ -73,7 +73,7 @@ fun AppIconSettingsScreen(
                     viewModel.saveAppIconSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
-                            latestNavigateToSettingsScreen()
+                            currentOnBackButtonClick()
                         },
                         onSaveFailure = {
                             showToast(context, "保存に失敗しました")
@@ -82,7 +82,7 @@ fun AppIconSettingsScreen(
                 }
 
                 is AppIconSettingsUiEvent.OnBackButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)
