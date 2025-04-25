@@ -12,7 +12,6 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +22,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.common.UnityMethod
 import io.github.kei_1111.withmo.common.UnityObject
-import io.github.kei_1111.withmo.domain.model.TimeBasedUnitySendMessageManager
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
@@ -36,9 +34,7 @@ import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.theme.WithmoTheme
 import io.github.kei_1111.withmo.utils.AppUtils
 import io.github.kei_1111.withmo.utils.FileUtils
-import io.github.kei_1111.withmo.utils.isEvening
-import io.github.kei_1111.withmo.utils.isMorning
-import io.github.kei_1111.withmo.utils.isNight
+import io.github.kei_1111.withmo.utils.TimeUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -49,7 +45,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
     private var themeSettings by mutableStateOf(ThemeSettings())
-    private val timeBasedUnitySendMessageManager = TimeBasedUnitySendMessageManager()
 
     @Inject
     lateinit var getModelFilePathUseCase: GetModelFilePathUseCase
@@ -113,6 +108,7 @@ class MainActivity : ComponentActivity() {
         UnityManager.init(this)
 
         getDisplayModelSetting(this)
+        observeThemeSettings()
 
         lifecycleScope.launchWhenCreated {
             syncAppInfo()
@@ -142,19 +138,13 @@ class MainActivity : ComponentActivity() {
             RECEIVER_NOT_EXPORTED,
         )
 
-        lifecycleScope.launch {
-            getThemeSettingsUseCase().collect { themeSettings = it }
-        }
-
         setContent {
             CurrentTimeProvider {
                 val currentTime = LocalCurrentTime.current
 
-                UnitySendThemeMessage(themeSettings.themeType)
-
                 LaunchedEffect(currentTime) {
                     if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                        timeBasedUnitySendMessageManager.sendTimeBasedMessage(currentTime)
+                        TimeUtils.sendTimeBasedMessage(currentTime)
                     }
                 }
 
@@ -189,7 +179,7 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         appWidgetHost.stopListening()
-        timeBasedUnitySendMessageManager.resetFlags()
+        TimeUtils.resetFlags()
     }
 
     override fun onDestroy() {
@@ -226,33 +216,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-private fun UnitySendThemeMessage(themeType: ThemeType) {
-    val currentTime = LocalCurrentTime.current.toLocalTime()
-
-    LaunchedEffect(themeType) {
-        when (themeType) {
-            ThemeType.TIME_BASED -> {
-                when {
-                    isMorning(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeDay, "")
-                    }
-                    isEvening(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeEvening, "")
-                    }
-                    isNight(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeNight, "")
-                    }
-                }
-            }
-            ThemeType.LIGHT -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetDayFixedMode, "")
-            }
-            ThemeType.DARK -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetNightFixedMode, "")
+    private fun observeThemeSettings() {
+        lifecycleScope.launch {
+            getThemeSettingsUseCase().collect {
+                themeSettings = it
+                TimeUtils.themeMessage(themeSettings.themeType)
             }
         }
     }
