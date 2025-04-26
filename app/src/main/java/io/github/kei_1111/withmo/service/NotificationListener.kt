@@ -7,6 +7,7 @@ import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.IntentConstants
 import io.github.kei_1111.withmo.common.UnityMethod
 import io.github.kei_1111.withmo.common.UnityObject
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
@@ -31,8 +32,8 @@ class NotificationListener : NotificationListenerService() {
             val notificationSettings = getNotificationSettingsUseCase().first()
 
             if (notificationSettings.isNotificationAnimationEnabled) {
-                val intent = Intent("notification_received")
-                intent.putExtra("package_name", sbn.packageName)
+                val intent = Intent(IntentConstants.Action.NotificationReceived)
+                intent.putExtra(IntentConstants.ExtraKey.PackageName, sbn.packageName)
                 sendBroadcast(intent)
                 AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
             }

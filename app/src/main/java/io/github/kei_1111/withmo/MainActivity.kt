@@ -20,6 +20,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.IntentConstants
 import io.github.kei_1111.withmo.common.UnityMethod
 import io.github.kei_1111.withmo.common.UnityObject
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
@@ -59,10 +60,10 @@ class MainActivity : ComponentActivity() {
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val packageName = intent.getStringExtra("package_name")
+            val packageName = intent.getStringExtra(IntentConstants.ExtraKey.PackageName)
 
             when (intent.action) {
-                "notification_received" -> {
+                IntentConstants.Action.NotificationReceived -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
                             appInfoRepository.getAppInfoByPackageName(pkgName)
@@ -72,7 +73,7 @@ class MainActivity : ComponentActivity() {
                         appInfoRepository.updateAppInfo(updatedAppInfo)
                     }
                 }
-                "start_activity" -> {
+                IntentConstants.Action.StartActivity -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
                             appInfoRepository.getAppInfoByPackageName(pkgName)
@@ -116,13 +117,13 @@ class MainActivity : ComponentActivity() {
 
         registerReceiver(
             packageReceiver,
-            IntentFilter("notification_received"),
+            IntentFilter(IntentConstants.Action.NotificationReceived),
             RECEIVER_NOT_EXPORTED,
         )
 
         registerReceiver(
             packageReceiver,
-            IntentFilter("start_activity"),
+            IntentFilter(IntentConstants.Action.StartActivity),
             RECEIVER_NOT_EXPORTED,
         )
 
