@@ -2,9 +2,9 @@ package io.github.kei_1111.withmo.utils
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
-import io.github.kei_1111.withmo.common.UnityMethod
-import io.github.kei_1111.withmo.common.UnityObject
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.utils.TimeUtils.TimePeriods.EveningStartTime
 import io.github.kei_1111.withmo.utils.TimeUtils.TimePeriods.MorningStartTime

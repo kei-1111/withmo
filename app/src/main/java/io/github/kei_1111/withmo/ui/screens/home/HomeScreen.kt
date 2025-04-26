@@ -34,9 +34,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
-import io.github.kei_1111.withmo.common.UnityMethod
-import io.github.kei_1111.withmo.common.UnityObject
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath

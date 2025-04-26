@@ -6,10 +6,10 @@ import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.common.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.common.IntentConstants
-import io.github.kei_1111.withmo.common.UnityMethod
-import io.github.kei_1111.withmo.common.UnityObject
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers

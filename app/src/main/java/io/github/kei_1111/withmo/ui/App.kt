@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.ui
 
-import android.content.Context
 import android.os.Build
 import android.view.ViewGroup
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
@@ -10,9 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
@@ -20,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
-import com.unity3d.player.UnityPlayer
+import io.github.kei_1111.withmo.common.unity.UnityManager
 import io.github.kei_1111.withmo.navigation.Screen
 import io.github.kei_1111.withmo.navigation.WithmoNavHost
 
@@ -84,22 +81,4 @@ fun UnityView(
         },
         modifier = modifier.fillMaxSize(),
     )
-}
-
-object UnityManager {
-    private var _player: UnityPlayer? = null
-    val player: UnityPlayer
-        get() = _player ?: error("UnityPlayer not initialized")
-
-    fun init(context: Context) {
-        if (_player != null) return
-        _player = UnityPlayer(context).apply {
-            init(settings.getInt("gles_mode", 1), false)
-        }
-    }
-
-    fun resume() = _player?.resume()
-    fun pause() = _player?.pause()
-    fun quit() = _player?.quit()
-    fun focusGained(gained: Boolean) = _player?.windowFocusChanged(gained)
 }

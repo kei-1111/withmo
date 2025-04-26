@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.common
+package io.github.kei_1111.withmo.common.unity
 
 import com.unity3d.player.UnityPlayer
 

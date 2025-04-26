@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo
+package io.github.kei_1111.withmo.common.unity
 
 import java.lang.ref.WeakReference
 

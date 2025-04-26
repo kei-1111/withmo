@@ -16,7 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.UnityToAndroidMessenger
+import io.github.kei_1111.withmo.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
