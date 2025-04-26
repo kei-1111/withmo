@@ -19,6 +19,10 @@ class SideButtonSettingsViewModel @Inject constructor(
     override fun createInitialState(): SideButtonSettingsUiState = SideButtonSettingsUiState()
 
     init {
+        observeSideButtonSettings()
+    }
+
+    private fun observeSideButtonSettings() {
         viewModelScope.launch {
             getSideButtonSettingsUseCase().collect { sideButtonSettings ->
                 _uiState.update {

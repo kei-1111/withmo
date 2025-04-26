@@ -19,6 +19,10 @@ class NotificationSettingsViewModel @Inject constructor(
     override fun createInitialState(): NotificationSettingsUiState = NotificationSettingsUiState()
 
     init {
+        observeNotificationSettings()
+    }
+
+    private fun observeNotificationSettings() {
         viewModelScope.launch {
             getNotificationSettingsUseCase().collect { notificationSettings ->
                 _uiState.update {

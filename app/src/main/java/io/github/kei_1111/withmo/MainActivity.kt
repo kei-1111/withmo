@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
 
         UnityManager.init(this)
 
-        getDisplayModelSetting(this)
+        observeModelFilePath(this)
         observeThemeSettings()
 
         lifecycleScope.launchWhenCreated {
@@ -198,7 +198,7 @@ class MainActivity : ComponentActivity() {
         appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
-    private fun getDisplayModelSetting(context: Context) {
+    private fun observeModelFilePath(context: Context) {
         lifecycleScope.launch {
             val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
 

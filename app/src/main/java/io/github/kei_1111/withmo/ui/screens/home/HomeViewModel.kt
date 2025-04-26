@@ -80,6 +80,14 @@ class HomeViewModel @Inject constructor(
     init {
         UnityToAndroidMessenger.receiver = WeakReference(this)
 
+        observeUserSettings()
+        observeFavoriteAppList()
+        observeWidgetList()
+
+        appWidgetHost.startListening()
+    }
+
+    private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
                 _uiState.update {
@@ -87,6 +95,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 _uiState.update {
@@ -96,6 +107,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun observeWidgetList() {
         viewModelScope.launch {
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
                 _uiState.update {
@@ -106,7 +120,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-        appWidgetHost.startListening()
     }
 
     fun setIsShowScaleSliderButtonShown(show: Boolean) {

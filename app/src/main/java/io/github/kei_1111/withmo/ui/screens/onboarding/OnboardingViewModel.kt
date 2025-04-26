@@ -35,6 +35,10 @@ class OnboardingViewModel @Inject constructor(
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
 
     init {
+        observeFavoriteAppList()
+    }
+
+    private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 _uiState.update {

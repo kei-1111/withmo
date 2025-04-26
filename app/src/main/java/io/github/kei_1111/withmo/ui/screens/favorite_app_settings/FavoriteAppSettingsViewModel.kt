@@ -29,6 +29,12 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
 
     init {
+        observeFavoriteAppList()
+
+        observeAppIconSettings()
+    }
+
+    private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 val sortedFavoriteAppList = favoriteAppList.toPersistentList()
@@ -41,7 +47,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                 }
             }
         }
+    }
 
+    private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
                 _uiState.update {
