@@ -16,6 +16,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -59,6 +60,7 @@ fun AppItem(
                 appIconSize = appIconSize,
                 appIconShape = appIconShape,
                 modifier = Modifier
+                    .clip(CircleShape)
                     .combinedClickable(
                         onClick = onClick,
                         onLongClick = onLongClick,
