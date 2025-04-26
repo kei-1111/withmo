@@ -23,7 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppIcon
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
@@ -40,7 +40,7 @@ fun AppItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
-    appIconSize: Float = Constants.DefaultAppIconSize,
+    appIconSize: Float = AppConstants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
 ) {
@@ -93,7 +93,7 @@ private const val AdaptiveIconScale = 1.5f
 private fun AppIcon(
     appIcon: AppIcon,
     modifier: Modifier = Modifier,
-    appIconSize: Float = Constants.DefaultAppIconSize,
+    appIconSize: Float = AppConstants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
 ) {
     when (appIcon.backgroundIcon) {

@@ -8,7 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -42,7 +42,7 @@ fun FavoriteAppListRow(
             )
         }
 
-        repeat(Constants.FavoriteAppListMaxSize - favoriteAppList.size) {
+        repeat(AppConstants.FavoriteAppListMaxSize - favoriteAppList.size) {
             EmptyAppItem(
                 modifier = Modifier.weight(Weights.Medium),
             )

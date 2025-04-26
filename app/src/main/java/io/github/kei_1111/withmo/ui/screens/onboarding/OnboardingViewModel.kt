@@ -4,7 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -52,7 +52,7 @@ class OnboardingViewModel @Inject constructor(
 
     fun addSelectedAppList(appInfo: AppInfo) {
         _uiState.update { currentState ->
-            if (currentState.selectedAppList.size < Constants.FavoriteAppListMaxSize &&
+            if (currentState.selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
                 currentState.selectedAppList.none { it.packageName == appInfo.packageName }
             ) {
                 currentState.copy(
