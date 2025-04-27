@@ -91,7 +91,6 @@ internal fun PagerContent(
                         onEvent = onEvent,
                         modifier = Modifier
                             .fillMaxSize()
-                            .padding(horizontal = Paddings.Medium)
                             .pointerInput(Unit) {
                                 detectTapGestures(
                                     onTap = {
