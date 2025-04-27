@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -25,6 +26,8 @@ fun FavoriteAppSelector(
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
 ) {
+    val sortedAppList = appList.sortedBy(AppInfo::label)
+
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(DesignConstants.AppListGridColums),
@@ -35,22 +38,22 @@ fun FavoriteAppSelector(
             bottom = Paddings.Medium,
         ),
     ) {
-        items(appList.size) { index ->
+        items(sortedAppList) { appInfo ->
+            val isSelected = favoriteAppList
+                .any { it.packageName == appInfo.packageName }
+
             FavoriteAppSelectorItem(
-                appInfo = appList[index],
-                isSelected = favoriteAppList
-                    .any { it.packageName == appList[index].packageName },
-                addSelectedAppList = { addSelectedAppList(appList[index]) },
+                appInfo = appInfo,
+                isSelected = isSelected,
+                addSelectedAppList = { addSelectedAppList(appInfo) },
                 removeSelectedAppList = {
-                    removeSelectedAppList(appList[index])
+                    removeSelectedAppList(appInfo)
                 },
                 onClick = {
-                    if (favoriteAppList
-                            .any { it.packageName == appList[index].packageName }
-                    ) {
-                        removeSelectedAppList(appList[index])
+                    if (isSelected) {
+                        removeSelectedAppList(appInfo)
                     } else {
-                        addSelectedAppList(appList[index])
+                        addSelectedAppList(appInfo)
                     }
                 },
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
