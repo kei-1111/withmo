@@ -3,6 +3,7 @@ package io.github.kei_1111.withmo.ui.screens.home.component.page_content
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -44,15 +45,22 @@ internal fun DisplayModelContent(
         verticalAlignment = Alignment.Bottom,
     ) {
         if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
-            NavigateSettingsButton(
-                onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
-            )
+            Box(
+                modifier = Modifier.weight(Weights.Medium),
+                contentAlignment = Alignment.Center,
+            ) {
+                NavigateSettingsButton(
+                    onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+                )
+            }
         }
         Spacer(
-            modifier = Modifier.weight(Weights.Medium),
+            modifier = Modifier.weight(Weights.Large),
         )
         Column(
+            modifier = Modifier.weight(Weights.Medium),
             verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (
                 uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
