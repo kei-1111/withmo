@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
@@ -57,14 +55,10 @@ fun AppItem(
         ) {
             AppIcon(
                 appIcon = appInfo.appIcon,
+                onClick = onClick,
+                onLongClick = onLongClick,
                 appIconSize = appIconSize,
                 appIconShape = appIconShape,
-                modifier = Modifier
-                    .clip(CircleShape)
-                    .combinedClickable(
-                        onClick = onClick,
-                        onLongClick = onLongClick,
-                    ),
             )
             if (isAppNameShown) {
                 Spacer(modifier = Modifier.weight(Weights.Medium))
@@ -91,20 +85,34 @@ fun AppItem(
 
 private const val AdaptiveIconScale = 1.5f
 
+@Suppress("LongMethod")
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppIcon(
     appIcon: AppIcon,
+    onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
     appIconSize: Float = AppConstants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
 ) {
     when (appIcon.backgroundIcon) {
         is Drawable -> {
-            Surface(
-                modifier = modifier.size(appIconSize.dp),
-                color = Color.White,
-                shape = appIconShape,
-                shadowElevation = ShadowElevations.Medium,
+            Box(
+                modifier = modifier
+                    .size(appIconSize.dp)
+                    .shadow(
+                        elevation = ShadowElevations.Medium,
+                        shape = appIconShape,
+                    )
+                    .background(
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = appIconShape,
+                    )
+                    .combinedClickable(
+                        onClick = onClick,
+                        onLongClick = onLongClick,
+                    ),
             ) {
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.backgroundIcon),
@@ -122,11 +130,21 @@ private fun AppIcon(
         }
 
         else -> {
-            Surface(
-                modifier = modifier.size(appIconSize.dp),
-                color = Color.White,
-                shape = CircleShape,
-                shadowElevation = ShadowElevations.Medium,
+            Box(
+                modifier = modifier
+                    .size(appIconSize.dp)
+                    .shadow(
+                        elevation = ShadowElevations.Medium,
+                        shape = CircleShape,
+                    )
+                    .background(
+                        color = MaterialTheme.colorScheme.surface,
+                        shape = CircleShape,
+                    )
+                    .combinedClickable(
+                        onClick = onClick,
+                        onLongClick = onLongClick,
+                    ),
             ) {
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
