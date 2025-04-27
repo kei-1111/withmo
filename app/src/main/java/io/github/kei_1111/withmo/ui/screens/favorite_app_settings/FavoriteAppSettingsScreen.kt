@@ -36,7 +36,7 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun FavoriteAppSettingsScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: FavoriteAppSettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -45,7 +45,7 @@ fun FavoriteAppSettingsScreen(
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
         viewModel.onEvent(FavoriteAppSettingsUiEvent.OnBackButtonClick)
@@ -70,7 +70,7 @@ fun FavoriteAppSettingsScreen(
                     viewModel.saveFavoriteAppList(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
-                            latestNavigateToSettingsScreen()
+                            currentOnBackButtonClick()
                         },
                         onSaveFailure = {
                             showToast(context, "保存に失敗しました")
@@ -79,7 +79,7 @@ fun FavoriteAppSettingsScreen(
                 }
 
                 is FavoriteAppSettingsUiEvent.OnBackButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)

@@ -10,7 +10,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
-import io.github.kei_1111.withmo.utils.isNight
+import io.github.kei_1111.withmo.utils.TimeUtils
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
@@ -84,7 +84,7 @@ fun WithmoTheme(
 
     val colorScheme = when (themeType) {
         ThemeType.TIME_BASED -> {
-            if (isNight(currentTime.toLocalTime())) {
+            if (TimeUtils.isNight(currentTime.toLocalTime())) {
                 darkScheme
             } else {
                 lightScheme

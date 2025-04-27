@@ -39,7 +39,7 @@ import kotlinx.coroutines.launch
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun OnboardingScreen(
-    navigateToHomeScreen: () -> Unit,
+    onFinishButtonClick: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -69,7 +69,7 @@ fun OnboardingScreen(
         }
     }
 
-    val latestNavigateToHomeScreen by rememberUpdatedState(navigateToHomeScreen)
+    val currentOnFinishButtonClick by rememberUpdatedState(onFinishButtonClick)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
@@ -94,7 +94,7 @@ fun OnboardingScreen(
                     viewModel.navigateToNextPage(
                         onFinish = {
                             viewModel.saveSetting(context)
-                            latestNavigateToHomeScreen()
+                            currentOnFinishButtonClick()
                         },
                     )
                 }

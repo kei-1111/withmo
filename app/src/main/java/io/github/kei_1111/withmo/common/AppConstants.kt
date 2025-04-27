@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.common
 
 // dataモジュールやfeatureモジュールなど分離すべきモジュールで使用する定数を定義
-data object Constants {
+data object AppConstants {
     const val FavoriteAppListMaxSize = 4
 
     const val DefaultAppIconSize = 48f

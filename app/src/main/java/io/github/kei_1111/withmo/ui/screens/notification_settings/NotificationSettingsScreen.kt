@@ -40,14 +40,14 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun NotificationSettingsScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: NotificationSettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -90,7 +90,7 @@ fun NotificationSettingsScreen(
                     viewModel.saveNotificationSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
-                            latestNavigateToSettingsScreen()
+                            currentOnBackButtonClick()
                         },
                         onSaveFailure = {
                             showToast(context, "保存に失敗しました")
@@ -99,7 +99,7 @@ fun NotificationSettingsScreen(
                 }
 
                 is NotificationSettingsUiEvent.OnBackButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)

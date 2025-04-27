@@ -20,6 +20,10 @@ class ClockSettingsViewModel @Inject constructor(
     override fun createInitialState(): ClockSettingsUiState = ClockSettingsUiState()
 
     init {
+        observeClockSettings()
+    }
+
+    private fun observeClockSettings() {
         viewModelScope.launch {
             getClockSettingsUseCase().collect { clockSettings ->
                 _uiState.update {

@@ -35,14 +35,14 @@ import kotlinx.coroutines.flow.onEach
 @Suppress("ModifierMissing")
 @Composable
 fun SideButtonSettingsScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onBackButtonClick: () -> Unit,
     viewModel: SideButtonSettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
         viewModel.onEvent(SideButtonSettingsUiEvent.OnBackButtonClick)
@@ -71,7 +71,7 @@ fun SideButtonSettingsScreen(
                     viewModel.saveSideButtonSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
-                            latestNavigateToSettingsScreen()
+                            currentOnBackButtonClick()
                         },
                         onSaveFailure = {
                             showToast(context, "保存に失敗しました")
@@ -80,7 +80,7 @@ fun SideButtonSettingsScreen(
                 }
 
                 is SideButtonSettingsUiEvent.OnBackButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnBackButtonClick()
                 }
             }
         }.launchIn(this)

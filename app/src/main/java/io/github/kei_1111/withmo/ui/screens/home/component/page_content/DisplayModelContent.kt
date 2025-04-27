@@ -16,11 +16,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
@@ -82,7 +83,8 @@ private fun NavigateSettingsButton(
 ) {
     Surface(
         modifier = modifier
-            .size(Constants.DefaultAppIconSize.dp)
+            .clip(CircleShape)
+            .size(AppConstants.DefaultAppIconSize.dp)
             .clickable { onClick() },
         shape = CircleShape,
         shadowElevation = ShadowElevations.Medium,
@@ -103,7 +105,8 @@ private fun SetDefaultModelButton(
 ) {
     Surface(
         modifier = modifier
-            .size(Constants.DefaultAppIconSize.dp)
+            .clip(CircleShape)
+            .size(AppConstants.DefaultAppIconSize.dp)
             .clickable { onClick() },
         shape = CircleShape,
         shadowElevation = ShadowElevations.Medium,
@@ -125,7 +128,7 @@ private fun OpenDocumentButton(
     WithmoIconButton(
         onClick = { onClick() },
         icon = Icons.Rounded.ChangeCircle,
-        modifier = modifier.size(Constants.DefaultAppIconSize.dp),
+        modifier = modifier.size(AppConstants.DefaultAppIconSize.dp),
     )
 }
 
@@ -137,6 +140,6 @@ private fun ShowScaleSliderButton(
     WithmoIconButton(
         onClick = { onClick() },
         icon = Icons.Rounded.Man,
-        modifier = modifier.size(Constants.DefaultAppIconSize.dp),
+        modifier = modifier.size(AppConstants.DefaultAppIconSize.dp),
     )
 }

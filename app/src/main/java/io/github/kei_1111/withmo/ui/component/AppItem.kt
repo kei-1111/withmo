@@ -16,19 +16,23 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppIcon
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
+
+private const val AppItemLabelMaxLines = 1
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +41,7 @@ fun AppItem(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
-    appIconSize: Float = Constants.DefaultAppIconSize,
+    appIconSize: Float = AppConstants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
 ) {
@@ -56,6 +60,7 @@ fun AppItem(
                 appIconSize = appIconSize,
                 appIconShape = appIconShape,
                 modifier = Modifier
+                    .clip(CircleShape)
                     .combinedClickable(
                         onClick = onClick,
                         onLongClick = onLongClick,
@@ -63,7 +68,11 @@ fun AppItem(
             )
             if (isAppNameShown) {
                 Spacer(modifier = Modifier.weight(Weights.Medium))
-                LabelMediumText(text = appInfo.label)
+                LabelMediumText(
+                    text = appInfo.label,
+                    overflow = TextOverflow.Ellipsis,
+                    maxLines = AppItemLabelMaxLines,
+                )
             }
         }
         if (appInfo.notification) {
@@ -86,7 +95,7 @@ private const val AdaptiveIconScale = 1.5f
 private fun AppIcon(
     appIcon: AppIcon,
     modifier: Modifier = Modifier,
-    appIconSize: Float = Constants.DefaultAppIconSize,
+    appIconSize: Float = AppConstants.DefaultAppIconSize,
     appIconShape: Shape = CircleShape,
 ) {
     when (appIcon.backgroundIcon) {

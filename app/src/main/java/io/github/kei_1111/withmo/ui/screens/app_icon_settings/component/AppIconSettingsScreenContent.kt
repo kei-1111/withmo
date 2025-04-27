@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
@@ -29,7 +29,7 @@ internal fun AppIconSettingsScreenContent(
             title = "アプリアイコンの大きさ",
             value = uiState.appIconSettings.appIconSize,
             onValueChange = { onEvent(AppIconSettingsUiEvent.OnAppIconSizeSliderChange(it)) },
-            valueRange = Constants.MinAppIconSize..Constants.MaxAppIconSize,
+            valueRange = AppConstants.MinAppIconSize..AppConstants.MaxAppIconSize,
             modifier = Modifier.fillMaxWidth(),
         )
         AppIconShapePicker(
@@ -41,7 +41,7 @@ internal fun AppIconSettingsScreenContent(
             title = "角丸の大きさ",
             value = uiState.appIconSettings.roundedCornerPercent,
             onValueChange = { onEvent(AppIconSettingsUiEvent.OnRoundedCornerPercentSliderChange(it)) },
-            valueRange = Constants.MinRoundedCornerPercent..Constants.MaxRoundedCornerPercent,
+            valueRange = AppConstants.MinRoundedCornerPercent..AppConstants.MaxRoundedCornerPercent,
             enabled = uiState.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )

@@ -20,6 +20,10 @@ class AppIconSettingsViewModel @Inject constructor(
     override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
 
     init {
+        observeAppIconSettings()
+    }
+
+    private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
                 _uiState.update {

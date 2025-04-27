@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.common.Constants
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
@@ -38,7 +38,7 @@ fun EmptyAppItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size((Constants.DefaultAppIconSize + Paddings.AppIconPadding).dp),
+                    .size((AppConstants.DefaultAppIconSize + Paddings.AppIconPadding).dp),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(

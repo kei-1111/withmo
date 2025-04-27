@@ -20,6 +20,10 @@ class ThemeSettingsViewModel @Inject constructor(
     override fun createInitialState(): ThemeSettingsUiState = ThemeSettingsUiState()
 
     init {
+        observeThemeSettings()
+    }
+
+    private fun observeThemeSettings() {
         viewModelScope.launch {
             getThemeSettingsUseCase().collect { themeSettings ->
                 _uiState.update {

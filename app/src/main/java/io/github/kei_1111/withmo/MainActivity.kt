@@ -12,31 +12,30 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.unity3d.player.UnityPlayer
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.domain.model.TimeBasedUnitySendMessageManager
+import io.github.kei_1111.withmo.common.IntentConstants
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityManager
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.ui.App
-import io.github.kei_1111.withmo.ui.UnityManager
 import io.github.kei_1111.withmo.ui.composition.CurrentTimeProvider
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.theme.WithmoTheme
 import io.github.kei_1111.withmo.utils.AppUtils
 import io.github.kei_1111.withmo.utils.FileUtils
-import io.github.kei_1111.withmo.utils.isEvening
-import io.github.kei_1111.withmo.utils.isMorning
-import io.github.kei_1111.withmo.utils.isNight
+import io.github.kei_1111.withmo.utils.TimeUtils
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,7 +46,6 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var getThemeSettingsUseCase: GetThemeSettingsUseCase
     private var themeSettings by mutableStateOf(ThemeSettings())
-    private val timeBasedUnitySendMessageManager = TimeBasedUnitySendMessageManager()
 
     @Inject
     lateinit var getModelFilePathUseCase: GetModelFilePathUseCase
@@ -62,10 +60,10 @@ class MainActivity : ComponentActivity() {
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val packageName = intent.getStringExtra("package_name")
+            val packageName = intent.getStringExtra(IntentConstants.ExtraKey.PackageName)
 
             when (intent.action) {
-                "notification_received" -> {
+                IntentConstants.Action.NotificationReceived -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
                             appInfoRepository.getAppInfoByPackageName(pkgName)
@@ -75,7 +73,7 @@ class MainActivity : ComponentActivity() {
                         appInfoRepository.updateAppInfo(updatedAppInfo)
                     }
                 }
-                "start_activity" -> {
+                IntentConstants.Action.StartActivity -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
                             appInfoRepository.getAppInfoByPackageName(pkgName)
@@ -110,7 +108,8 @@ class MainActivity : ComponentActivity() {
 
         UnityManager.init(this)
 
-        getDisplayModelSetting(this)
+        observeModelFilePath(this)
+        observeThemeSettings()
 
         lifecycleScope.launchWhenCreated {
             syncAppInfo()
@@ -118,13 +117,13 @@ class MainActivity : ComponentActivity() {
 
         registerReceiver(
             packageReceiver,
-            IntentFilter("notification_received"),
+            IntentFilter(IntentConstants.Action.NotificationReceived),
             RECEIVER_NOT_EXPORTED,
         )
 
         registerReceiver(
             packageReceiver,
-            IntentFilter("start_activity"),
+            IntentFilter(IntentConstants.Action.StartActivity),
             RECEIVER_NOT_EXPORTED,
         )
 
@@ -140,19 +139,13 @@ class MainActivity : ComponentActivity() {
             RECEIVER_NOT_EXPORTED,
         )
 
-        lifecycleScope.launch {
-            getThemeSettingsUseCase().collect { themeSettings = it }
-        }
-
         setContent {
             CurrentTimeProvider {
                 val currentTime = LocalCurrentTime.current
 
-                UnitySendThemeMessage(themeSettings.themeType)
-
                 LaunchedEffect(currentTime) {
                     if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                        timeBasedUnitySendMessageManager.sendTimeBasedMessage(currentTime)
+                        TimeUtils.sendTimeBasedMessage(currentTime)
                     }
                 }
 
@@ -187,7 +180,7 @@ class MainActivity : ComponentActivity() {
     override fun onStop() {
         super.onStop()
         appWidgetHost.stopListening()
-        timeBasedUnitySendMessageManager.resetFlags()
+        TimeUtils.resetFlags()
     }
 
     override fun onDestroy() {
@@ -206,7 +199,7 @@ class MainActivity : ComponentActivity() {
         appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
-    private fun getDisplayModelSetting(context: Context) {
+    private fun observeModelFilePath(context: Context) {
         lifecycleScope.launch {
             val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
 
@@ -214,41 +207,22 @@ class MainActivity : ComponentActivity() {
                 if (modelFilePath.path != null) {
                     val path = modelFilePath.path
                     if (FileUtils.fileExists(path)) {
-                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", path)
+                        AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
                     } else {
-                        UnityPlayer.UnitySendMessage("VRMloader", "LoadVRM", defaultModelFilePath)
+                        defaultModelFilePath?.let {
+                            AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
+                        }
                     }
                 }
             }
         }
     }
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-@Composable
-private fun UnitySendThemeMessage(themeType: ThemeType) {
-    val currentTime = LocalCurrentTime.current.toLocalTime()
-
-    LaunchedEffect(themeType) {
-        when (themeType) {
-            ThemeType.TIME_BASED -> {
-                when {
-                    isMorning(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeDay", "")
-                    }
-                    isEvening(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeEvening", "")
-                    }
-                    isNight(currentTime) -> {
-                        UnityPlayer.UnitySendMessage("SkyBlend", "ChangeNight", "")
-                    }
-                }
-            }
-            ThemeType.LIGHT -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetDayFixedMode", "")
-            }
-            ThemeType.DARK -> {
-                UnityPlayer.UnitySendMessage("SkyBlend", "SetNightFixedMode", "")
+    private fun observeThemeSettings() {
+        lifecycleScope.launch {
+            getThemeSettingsUseCase().collect {
+                themeSettings = it
+                TimeUtils.themeMessage(themeSettings.themeType)
             }
         }
     }

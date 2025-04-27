@@ -16,7 +16,7 @@ import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.UnityToAndroidMessenger
+import io.github.kei_1111.withmo.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -80,6 +80,14 @@ class HomeViewModel @Inject constructor(
     init {
         UnityToAndroidMessenger.receiver = WeakReference(this)
 
+        observeUserSettings()
+        observeFavoriteAppList()
+        observeWidgetList()
+
+        appWidgetHost.startListening()
+    }
+
+    private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
                 _uiState.update {
@@ -87,6 +95,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 _uiState.update {
@@ -96,6 +107,9 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun observeWidgetList() {
         viewModelScope.launch {
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
                 _uiState.update {
@@ -106,7 +120,6 @@ class HomeViewModel @Inject constructor(
                 }
             }
         }
-        appWidgetHost.startListening()
     }
 
     fun setIsShowScaleSliderButtonShown(show: Boolean) {

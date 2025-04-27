@@ -34,7 +34,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.unity3d.player.UnityPlayer.UnitySendMessage
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -61,7 +63,7 @@ import kotlinx.coroutines.launch
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
-    navigateToSettingsScreen: () -> Unit,
+    onNavigateSettingsButtonClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -150,14 +152,14 @@ fun HomeScreen(
     }
     val isModelChangeWarningFirstShown by viewModel.isModelChangeWarningFirstShown.collectAsStateWithLifecycle()
 
-    val latestNavigateToSettingsScreen by rememberUpdatedState(navigateToSettingsScreen)
+    val currentOnNavigateSettingsButtonClick by rememberUpdatedState(onNavigateSettingsButtonClick)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
         viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
                 is HomeUiEvent.OnAppClick -> {
                     if (event.appInfo.packageName == context.packageName) {
-                        latestNavigateToSettingsScreen()
+                        currentOnNavigateSettingsButtonClick()
                     } else {
                         event.appInfo.launch(context = context)
                     }
@@ -175,12 +177,12 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnShowScaleSliderButtonClick -> {
-                    UnitySendMessage("SliderManeger", "ShowObject", "")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.ShowObject, "")
                     viewModel.setIsShowScaleSliderButtonShown(true)
                 }
 
                 is HomeUiEvent.OnCloseScaleSliderButtonClick -> {
-                    UnitySendMessage("SliderManeger", "HideObject", "")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.HideObject, "")
                     viewModel.setIsShowScaleSliderButtonShown(false)
                 }
 
@@ -206,7 +208,7 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnNavigateSettingsButtonClick -> {
-                    latestNavigateToSettingsScreen()
+                    currentOnNavigateSettingsButtonClick()
                 }
 
                 is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
@@ -258,21 +260,21 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnDisplayModelContentSwipeLeft -> {
-                    UnitySendMessage("IKAnimationController", "TriggerExitScreenAnimation", "")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
                     viewModel.setCurrentPage(PageContent.Widget)
                 }
 
                 is HomeUiEvent.OnWidgetContentSwipeRight -> {
-                    UnitySendMessage("IKAnimationController", "TriggerEnterScreenAnimation", "")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
                     viewModel.setCurrentPage(PageContent.DisplayModel)
                 }
 
                 is HomeUiEvent.OnDisplayModelContentClick -> {
-                    UnitySendMessage("IKAnimationController", "MoveLookat", "${event.x},${event.y}")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.MoveLookat, "${event.x},${event.y}")
                 }
 
                 is HomeUiEvent.OnDisplayModelContentLongClick -> {
-                    UnitySendMessage("VRMAnimationController", "TriggerTouchAnimation", "")
+                    AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
                 }
 
                 is HomeUiEvent.OnAllWidgetListWidgetClick -> {
