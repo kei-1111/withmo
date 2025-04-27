@@ -1,6 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.home.component.page_content
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,11 +14,11 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
-import androidx.compose.material3.Surface
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -89,13 +90,18 @@ private fun NavigateSettingsButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    Box(
         modifier = modifier
-            .clip(CircleShape)
             .size(AppConstants.DefaultAppIconSize.dp)
+            .shadow(
+                elevation = ShadowElevations.Medium,
+                shape = CircleShape,
+            )
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = CircleShape,
+            )
             .clickable { onClick() },
-        shape = CircleShape,
-        shadowElevation = ShadowElevations.Medium,
     ) {
         Image(
             painter = painterResource(R.drawable.withmo_icon_wide),
@@ -111,13 +117,18 @@ private fun SetDefaultModelButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Surface(
+    Box(
         modifier = modifier
-            .clip(CircleShape)
             .size(AppConstants.DefaultAppIconSize.dp)
+            .shadow(
+                elevation = ShadowElevations.Medium,
+                shape = CircleShape,
+            )
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = CircleShape,
+            )
             .clickable { onClick() },
-        shape = CircleShape,
-        shadowElevation = ShadowElevations.Medium,
     ) {
         Image(
             painter = painterResource(R.drawable.alicia_icon),
