@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Build
 import android.view.View
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,12 +13,17 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.toDateTimeInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
@@ -28,6 +34,7 @@ import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
@@ -53,9 +60,16 @@ internal fun HomeScreenContent(
             ) {
                 WithmoIconButton(
                     onClick = { onEvent(HomeUiEvent.OnCloseScaleSliderButtonClick) },
-                    icon = Icons.Rounded.Close,
-                    modifier = Modifier.padding(start = Paddings.Medium),
-                )
+                    modifier = Modifier
+                        .padding(start = Paddings.Medium)
+                        .size(AppConstants.DefaultAppIconSize.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Rounded.Close,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurface,
+                    )
+                }
             }
         } else {
             if (uiState.currentUserSettings.clockSettings.isClockShown) {
@@ -86,7 +100,7 @@ internal fun HomeScreenContent(
                         .fillMaxWidth()
                         .weight(Weights.Medium),
                 )
-                if (!uiState.isEditMode) {
+                if (!uiState.isEditMode && uiState.favoriteAppList.isNotEmpty()) {
                     RowAppList(
                         uiState = uiState,
                         onEvent = onEvent,
@@ -108,7 +122,14 @@ private fun RowAppList(
 
     Row(
         modifier = modifier
-            .padding(vertical = Paddings.ExtraSmall),
+            .padding(vertical = Paddings.ExtraSmall)
+            .padding(horizontal = Paddings.Medium)
+            .background(
+                color = MaterialTheme.colorScheme.surfaceVariant
+                    .copy(alpha = Alphas.Medium),
+                shape = MaterialTheme.shapes.medium,
+            )
+            .padding(vertical = Paddings.Small),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {

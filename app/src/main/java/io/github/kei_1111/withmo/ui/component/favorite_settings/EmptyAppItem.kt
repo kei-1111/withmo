@@ -38,7 +38,7 @@ fun EmptyAppItem(
         ) {
             Box(
                 modifier = Modifier
-                    .size((AppConstants.DefaultAppIconSize + Paddings.AppIconPadding).dp),
+                    .size(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
                 contentAlignment = Alignment.Center,
             ) {
                 Icon(
