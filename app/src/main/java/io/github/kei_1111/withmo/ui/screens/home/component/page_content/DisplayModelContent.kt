@@ -1,34 +1,32 @@
 package io.github.kei_1111.withmo.ui.screens.home.component.page_content
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.FileUtils
 
@@ -42,24 +40,19 @@ internal fun DisplayModelContent(
         uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
 
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.Bottom,
     ) {
         if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
-            Box(
-                modifier = Modifier.weight(Weights.Medium),
-                contentAlignment = Alignment.Center,
-            ) {
-                NavigateSettingsButton(
-                    onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
-                )
-            }
+            NavigateSettingsButton(
+                onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+            )
         }
         Spacer(
-            modifier = Modifier.weight(Weights.Large),
+            modifier = Modifier.weight(Weights.Medium),
         )
         Column(
-            modifier = Modifier.weight(Weights.Medium),
             verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -90,25 +83,21 @@ private fun NavigateSettingsButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .size(AppConstants.DefaultAppIconSize.dp)
-            .shadow(
-                elevation = ShadowElevations.Medium,
-                shape = CircleShape,
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = CircleShape,
-            )
-            .clickable { onClick() },
+    SideButtonContainer(
+        label = "アプリ設定",
+        modifier = modifier,
     ) {
-        Image(
-            painter = painterResource(R.drawable.withmo_icon_wide),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
-        )
+        WithmoIconButton(
+            onClick = onClick,
+            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+        ) {
+            Image(
+                painter = painterResource(R.drawable.withmo_icon_wide),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+        }
     }
 }
 
@@ -117,25 +106,21 @@ private fun SetDefaultModelButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
-        modifier = modifier
-            .size(AppConstants.DefaultAppIconSize.dp)
-            .shadow(
-                elevation = ShadowElevations.Medium,
-                shape = CircleShape,
-            )
-            .background(
-                color = MaterialTheme.colorScheme.surface,
-                shape = CircleShape,
-            )
-            .clickable { onClick() },
+    SideButtonContainer(
+        label = "デフォルト",
+        modifier = modifier,
     ) {
-        Image(
-            painter = painterResource(R.drawable.alicia_icon),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
-        )
+        WithmoIconButton(
+            onClick = onClick,
+            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+        ) {
+            Image(
+                painter = painterResource(R.drawable.alicia_icon),
+                contentDescription = null,
+                modifier = Modifier.fillMaxSize(),
+                contentScale = ContentScale.Crop,
+            )
+        }
     }
 }
 
@@ -144,11 +129,21 @@ private fun OpenDocumentButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    WithmoIconButton(
-        onClick = { onClick() },
-        icon = Icons.Rounded.ChangeCircle,
-        modifier = modifier.size(AppConstants.DefaultAppIconSize.dp),
-    )
+    SideButtonContainer(
+        label = "モデル変更",
+        modifier = modifier,
+    ) {
+        WithmoIconButton(
+            onClick = onClick,
+            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.ChangeCircle,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
 }
 
 @Composable
@@ -156,9 +151,39 @@ private fun ShowScaleSliderButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    WithmoIconButton(
-        onClick = { onClick() },
-        icon = Icons.Rounded.Man,
-        modifier = modifier.size(AppConstants.DefaultAppIconSize.dp),
-    )
+    SideButtonContainer(
+        label = "サイズ変更",
+        modifier = modifier,
+    ) {
+        WithmoIconButton(
+            onClick = onClick,
+            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Man,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@Composable
+private fun SideButtonContainer(
+    label: String,
+    modifier: Modifier = Modifier,
+    content: @Composable () -> Unit,
+) {
+    Column(
+        modifier = modifier
+            .height(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        content()
+        Spacer(modifier = Modifier.weight(Weights.Medium))
+        LabelSmallText(
+            text = label,
+            color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
 }

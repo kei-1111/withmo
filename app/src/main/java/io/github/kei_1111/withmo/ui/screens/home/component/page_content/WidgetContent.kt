@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.FilledTonalButton
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
+import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
@@ -116,7 +118,10 @@ private fun AddWidgetButton(
             contentColor = MaterialTheme.colorScheme.primary,
         ),
         modifier = modifier
-            .size(CommonDimensions.SettingItemHeight),
+            .size(CommonDimensions.SettingItemHeight)
+            .withmoShadow(
+                shape = CircleShape,
+            ),
     ) {
         Icon(
             imageVector = Icons.Rounded.Widgets,
@@ -133,7 +138,10 @@ private fun CompleteEditButton(
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
+            .height(CommonDimensions.SettingItemHeight)
+            .withmoShadow(
+                shape = CircleShape,
+            ),
     ) {
         BodyMediumText(
             text = "編集完了",

@@ -69,7 +69,7 @@ private fun AppItemPreview(
 
     Column(
         modifier = modifier
-            .size((appIconSettings.appIconSize + Paddings.AppIconPadding).dp),
+            .size(appIconSettings.appIconSize.dp + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

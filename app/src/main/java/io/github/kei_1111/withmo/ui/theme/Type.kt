@@ -51,6 +51,13 @@ val Typography = Typography(
         letterSpacing = 0.5.sp,
         lineHeight = 16.sp,
     ),
+    labelSmall = TextStyle(
+        fontFamily = NotoSansJp,
+        fontWeight = FontWeight.SemiBold,
+        fontSize = 10.sp,
+        letterSpacing = 0.5.sp,
+        lineHeight = 12.sp,
+    ),
 )
 
 val clockTextExtraSmallSize = TextStyle(

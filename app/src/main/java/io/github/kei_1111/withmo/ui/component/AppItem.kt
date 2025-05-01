@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
@@ -25,14 +25,13 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppIcon
 import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 private const val AppItemLabelMaxLines = 1
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AppItem(
     appInfo: AppInfo,
@@ -49,7 +48,7 @@ fun AppItem(
     ) {
         Column(
             modifier = Modifier
-                .size((appIconSize + Paddings.AppIconPadding).dp),
+                .size(appIconSize.dp + Paddings.Large),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
@@ -62,7 +61,7 @@ fun AppItem(
             )
             if (isAppNameShown) {
                 Spacer(modifier = Modifier.weight(Weights.Medium))
-                LabelMediumText(
+                LabelSmallText(
                     text = appInfo.label,
                     overflow = TextOverflow.Ellipsis,
                     maxLines = AppItemLabelMaxLines,
@@ -101,8 +100,7 @@ private fun AppIcon(
             Box(
                 modifier = modifier
                     .size(appIconSize.dp)
-                    .shadow(
-                        elevation = ShadowElevations.Medium,
+                    .withmoShadow(
                         shape = appIconShape,
                     )
                     .background(
@@ -133,12 +131,11 @@ private fun AppIcon(
             Box(
                 modifier = modifier
                     .size(appIconSize.dp)
-                    .shadow(
-                        elevation = ShadowElevations.Medium,
+                    .withmoShadow(
                         shape = CircleShape,
                     )
                     .background(
-                        color = MaterialTheme.colorScheme.surface,
+                        color = Color.White,
                         shape = CircleShape,
                     )
                     .combinedClickable(
