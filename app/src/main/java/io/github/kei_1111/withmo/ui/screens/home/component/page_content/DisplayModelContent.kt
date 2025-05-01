@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Man
@@ -175,7 +177,7 @@ private fun SideButtonContainer(
 ) {
     Column(
         modifier = modifier
-            .size(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
+            .height(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()
