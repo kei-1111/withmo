@@ -9,6 +9,7 @@ import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -20,9 +21,11 @@ class WidgetInfoRepositoryImpl @Inject constructor(
 ) : WidgetInfoRepository {
 
     override fun getAllWidgetList(): Flow<List<WidgetInfo>> {
-        return widgetInfoDao.getAllWidgets().map { entities ->
-            entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
-        }
+        return widgetInfoDao.getAllWidgets()
+            .map { entities ->
+                entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
+            }
+            .flowOn(ioDispatcher)
     }
 
     override suspend fun insertWidget(widgetInfoList: List<WidgetInfo>) {
