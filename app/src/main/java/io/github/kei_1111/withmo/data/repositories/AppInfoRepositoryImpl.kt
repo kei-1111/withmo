@@ -12,6 +12,7 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -24,18 +25,22 @@ class AppInfoRepositoryImpl @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getAllAppInfoList(): Flow<List<AppInfo>> {
-        return appInfoDao.getAllAppInfoList().map { entities ->
-            entities.mapNotNull { entity -> entity.toAppInfo(context) }
-        }
+        return appInfoDao.getAllAppInfoList()
+            .map { entities ->
+                entities.mapNotNull { entity -> entity.toAppInfo(context) }
+            }
+            .flowOn(ioDispatcher)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun getFavoriteAppInfoList(): Flow<List<AppInfo>> {
-        return appInfoDao.getFavoriteAppInfoList().map { entities ->
-            entities
-                .mapNotNull { entity -> entity.toAppInfo(context) }
-                .sortedBy { it.favoriteOrder.ordinal }
-        }
+        return appInfoDao.getFavoriteAppInfoList()
+            .map { entities ->
+                entities
+                    .mapNotNull { entity -> entity.toAppInfo(context) }
+                    .sortedBy { it.favoriteOrder.ordinal }
+            }
+            .flowOn(ioDispatcher)
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
