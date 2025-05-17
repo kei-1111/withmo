@@ -11,6 +11,7 @@ data class AppIconSettings(
     val appIconShape: AppIconShape = AppIconShape.Circle,
     val roundedCornerPercent: Float = AppConstants.DefaultRoundedCornerPercent,
     val isAppNameShown: Boolean = true,
+    val isFavoriteAppBackgroundShown: Boolean = true,
 )
 
 sealed class AppIconShape {

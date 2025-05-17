@@ -51,5 +51,11 @@ internal fun AppIconSettingsScreenContent(
             onCheckedChange = { onEvent(AppIconSettingsUiEvent.OnIsAppNameShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
+        WithmoSettingItemWithSwitch(
+            title = "お気に入りアプリの背景を表示",
+            checked = uiState.appIconSettings.isFavoriteAppBackgroundShown,
+            onCheckedChange = { onEvent(AppIconSettingsUiEvent.OnIsFavoriteAppBackgroundShownSwitchChange(it)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
