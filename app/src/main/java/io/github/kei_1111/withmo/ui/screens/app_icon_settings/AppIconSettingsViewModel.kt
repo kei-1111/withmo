@@ -80,6 +80,17 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
+    fun changeIsFavoriteAppBackgroundShown(isFavoriteAppBackgroundShown: Boolean) {
+        _uiState.update {
+            it.copy(
+                appIconSettings = it.appIconSettings.copy(
+                    isFavoriteAppBackgroundShown = isFavoriteAppBackgroundShown,
+                ),
+                isSaveButtonEnabled = isFavoriteAppBackgroundShown != it.initialAppIconSettings.isFavoriteAppBackgroundShown,
+            )
+        }
+    }
+
     fun saveAppIconSettings(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,

@@ -8,6 +8,7 @@ sealed interface AppIconSettingsUiEvent : UiEvent {
     data class OnAppIconShapeRadioButtonClick(val appIconShape: AppIconShape) : AppIconSettingsUiEvent
     data class OnRoundedCornerPercentSliderChange(val roundedCornerPercent: Float) : AppIconSettingsUiEvent
     data class OnIsAppNameShownSwitchChange(val isAppNameShown: Boolean) : AppIconSettingsUiEvent
+    data class OnIsFavoriteAppBackgroundShownSwitchChange(val isFavoriteAppBackgroundShown: Boolean) : AppIconSettingsUiEvent
     data object OnSaveButtonClick : AppIconSettingsUiEvent
     data object OnBackButtonClick : AppIconSettingsUiEvent
 }

@@ -1,19 +1,22 @@
 package io.github.kei_1111.withmo.ui.screens.app_icon_settings.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -23,10 +26,12 @@ import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenDimensions
+import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 private const val AppItemLabelMaxLines = 1
+private const val PreviewAppItemSize = 4
 
 @Composable
 internal fun AppItemPreviewArea(
@@ -36,25 +41,31 @@ internal fun AppItemPreviewArea(
     Box(
         modifier = modifier
             .height(AppIconSettingsScreenDimensions.PreviewHeight),
+        contentAlignment = Alignment.BottomCenter,
     ) {
         Row(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(Paddings.Medium),
-            verticalAlignment = Alignment.Bottom,
+                .fillMaxWidth()
+                .padding(Paddings.Medium)
+                .background(
+                    color = if (appIconSettings.isFavoriteAppBackgroundShown) {
+                        MaterialTheme.colorScheme.surfaceVariant
+                            .copy(alpha = Alphas.Medium)
+                    } else {
+                        Color.Transparent
+                    },
+                    shape = MaterialTheme.shapes.medium,
+                )
+                .padding(vertical = Paddings.Small),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            AppItemPreview(
-                appIconSettings = appIconSettings,
-                modifier = Modifier.weight(Weights.Medium),
-            )
-            AppItemPreview(
-                appIconSettings = appIconSettings,
-                modifier = Modifier.weight(Weights.Medium),
-            )
-            AppItemPreview(
-                appIconSettings = appIconSettings,
-                modifier = Modifier.weight(Weights.Medium),
-            )
+            repeat(PreviewAppItemSize) {
+                AppItemPreview(
+                    appIconSettings = appIconSettings,
+                    modifier = Modifier.weight(Weights.Medium),
+                )
+            }
         }
     }
 }

@@ -71,6 +71,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                     roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT]
                         ?: AppConstants.DefaultRoundedCornerPercent,
                     isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
+                    isFavoriteAppBackgroundShown = preferences[IS_FAVORITE_APP_BACKGROUND_SHOWN] ?: true,
                 ),
                 sortSettings = SortSettings(
                     sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
@@ -116,6 +117,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 preferences[APP_ICON_SHAPE] = appIconSettings.appIconShape.toString()
                 preferences[ROUNDED_CORNER_PERCENT] = appIconSettings.roundedCornerPercent
                 preferences[IS_APP_NAME_SHOWN] = appIconSettings.isAppNameShown
+                preferences[IS_FAVORITE_APP_BACKGROUND_SHOWN] = appIconSettings.isFavoriteAppBackgroundShown
             }
         }
     }
@@ -173,6 +175,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val APP_ICON_SHAPE = stringPreferencesKey("app_icon_shape")
         val ROUNDED_CORNER_PERCENT = floatPreferencesKey("rounded_corner_percent")
         val IS_APP_NAME_SHOWN = booleanPreferencesKey("is_app_name_shown")
+        val IS_FAVORITE_APP_BACKGROUND_SHOWN = booleanPreferencesKey("is_favorite_app_background_shown")
         val SORT_TYPE = stringPreferencesKey("sort_type")
         val IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN = booleanPreferencesKey("is_show_scale_slider_button_shown")
         val IS_OPEN_DOCUMENT_BUTTON_SHOWN = booleanPreferencesKey("is_open_document_button_shown")

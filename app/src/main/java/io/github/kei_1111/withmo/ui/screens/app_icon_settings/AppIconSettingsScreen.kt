@@ -69,6 +69,10 @@ fun AppIconSettingsScreen(
                     viewModel.changeIsAppNameShown(event.isAppNameShown)
                 }
 
+                is AppIconSettingsUiEvent.OnIsFavoriteAppBackgroundShownSwitchChange -> {
+                    viewModel.changeIsFavoriteAppBackgroundShown(event.isFavoriteAppBackgroundShown)
+                }
+
                 is AppIconSettingsUiEvent.OnSaveButtonClick -> {
                     viewModel.saveAppIconSettings(
                         onSaveSuccess = {
