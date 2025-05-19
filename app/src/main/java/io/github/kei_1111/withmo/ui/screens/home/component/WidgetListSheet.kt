@@ -39,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetManager
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
@@ -50,23 +51,29 @@ import io.github.kei_1111.withmo.utils.WidgetUtils
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.collections.immutable.toPersistentMap
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun WidgetListSheet(
     widgetListSheetState: SheetState,
-    groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val appWidgetManager = LocalAppWidgetManager.current
+    val groupedWidgetInfoMaps = appWidgetManager
+        .installedProviders
+        .groupBy { it.provider.packageName }
+        .toPersistentMap()
+
     ModalBottomSheet(
         onDismissRequest = { onEvent(HomeUiEvent.OnWidgetListSheetSwipeDown) },
         sheetState = widgetListSheetState,
         modifier = modifier,
     ) {
         WidgetList(
-            groupedWidgetInfoMap = groupedWidgetInfoMap,
-            selectWidget = { onEvent(HomeUiEvent.OnAllWidgetListWidgetClick(it)) },
+            groupedWidgetInfoMaps = groupedWidgetInfoMaps,
+            selectWidget = { onEvent(HomeUiEvent.OnWidgetListSheetItemClick(it)) },
         )
     }
 }
@@ -74,7 +81,7 @@ internal fun WidgetListSheet(
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 private fun WidgetList(
-    groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
+    groupedWidgetInfoMaps: ImmutableMap<String, List<AppWidgetProviderInfo>>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -83,7 +90,7 @@ private fun WidgetList(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
         contentPadding = PaddingValues(Paddings.Medium),
     ) {
-        groupedWidgetInfoMap.forEach { (packageName, widgetInfoList) ->
+        groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
             item {
                 WidgetContainer(
                     packageName = packageName,

@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.ui.screens.home.component.page_content
 
-import android.content.Context
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -26,7 +24,6 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
@@ -39,7 +36,6 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WidgetContent(
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -51,18 +47,17 @@ internal fun WidgetContent(
     Box(
         modifier = modifier,
     ) {
-        uiState.widgetList.forEach { widgetInfo ->
-            key(widgetInfo.id) {
+        uiState.widgetList.forEach { withmoWidgetInfo ->
+            key(withmoWidgetInfo.widgetInfo.id) {
                 WithmoWidget(
-                    widgetInfo = widgetInfo,
-                    createWidgetView = createWidgetView,
+                    withmoWidgetInfo = withmoWidgetInfo,
                     startPadding = Paddings.Medium,
                     endPadding = Paddings.Medium,
                     bottomPadding =
                     bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                     isEditMode = uiState.isEditMode,
-                    deleteWidget = { onEvent(HomeUiEvent.OnDeleteWidgetBadgeClick(widgetInfo)) },
-                    resizeWidget = { onEvent(HomeUiEvent.OnResizeWidgetBadgeClick(widgetInfo)) },
+                    deleteWidget = { onEvent(HomeUiEvent.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
+                    resizeWidget = { onEvent(HomeUiEvent.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
                 )
             }
         }

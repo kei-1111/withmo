@@ -1,6 +1,7 @@
 package io.github.kei_1111.withmo
 
 import android.appwidget.AppWidgetHost
+import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
@@ -30,6 +31,7 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.ui.App
+import io.github.kei_1111.withmo.ui.composition.AppWidgetHostsProvider
 import io.github.kei_1111.withmo.ui.composition.CurrentTimeProvider
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.theme.WithmoTheme
@@ -55,6 +57,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var appWidgetHost: AppWidgetHost
+
+    @Inject
+    lateinit var appWidgetManager: AppWidgetManager
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -140,22 +145,27 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
-            CurrentTimeProvider {
-                val currentTime = LocalCurrentTime.current
+            AppWidgetHostsProvider(
+                appWidgetHost = appWidgetHost,
+                appWidgetManager = appWidgetManager,
+            ) {
+                CurrentTimeProvider {
+                    val currentTime = LocalCurrentTime.current
 
-                LaunchedEffect(currentTime) {
-                    if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                        TimeUtils.sendTimeBasedMessage(currentTime)
+                    LaunchedEffect(currentTime) {
+                        if (themeSettings.themeType == ThemeType.TIME_BASED) {
+                            TimeUtils.sendTimeBasedMessage(currentTime)
+                        }
                     }
-                }
 
-                WithmoTheme(
-                    themeType = themeSettings.themeType,
-                ) {
-                    viewModel.startScreen?.let {
-                        App(
-                            startScreen = it,
-                        )
+                    WithmoTheme(
+                        themeType = themeSettings.themeType,
+                    ) {
+                        viewModel.startScreen?.let {
+                            App(
+                                startScreen = it,
+                            )
+                        }
                     }
                 }
             }
@@ -179,7 +189,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onStop() {
         super.onStop()
-        appWidgetHost.stopListening()
         TimeUtils.resetFlags()
     }
 

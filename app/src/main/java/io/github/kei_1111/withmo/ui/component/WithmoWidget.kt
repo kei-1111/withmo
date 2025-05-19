@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.ui.component
 
-import android.content.Context
-import android.view.View
+import android.appwidget.AppWidgetManager
+import android.os.Bundle
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -31,15 +31,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ktx.toDp
 import io.github.kei_1111.withmo.ktx.toInt
 import io.github.kei_1111.withmo.ktx.toPx
+import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetHost
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlin.math.roundToInt
@@ -49,8 +51,7 @@ private val BorderWidth = 1.dp
 @Suppress("LongMethod")
 @Composable
 fun WithmoWidget(
-    widgetInfo: WidgetInfo,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
+    withmoWidgetInfo: WithmoWidgetInfo,
     modifier: Modifier = Modifier,
     isEditMode: Boolean = false,
     deleteWidget: () -> Unit = {},
@@ -77,22 +78,22 @@ fun WithmoWidget(
     val draggedSpaceHeight = screenHeight.dp - topPadding - bottomPadding
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
-    if (widgetInfo.width == 0) {
-        widgetInfo.width = calculateWidgetWidth(
-            widgetWidth = widgetInfo.info.minWidth.toDp(),
+    if (withmoWidgetInfo.width == 0) {
+        withmoWidgetInfo.width = calculateWidgetWidth(
+            widgetWidth = withmoWidgetInfo.widgetInfo.info.minWidth.toDp(),
             minDraggedSpaceDimension = minDraggedSpaceDimension,
         )
     }
 
-    if (widgetInfo.height == 0) {
-        widgetInfo.height = calculateWidgetHeight(
-            widgetHeight = widgetInfo.info.minHeight.toDp(),
+    if (withmoWidgetInfo.height == 0) {
+        withmoWidgetInfo.height = calculateWidgetHeight(
+            widgetHeight = withmoWidgetInfo.widgetInfo.info.minHeight.toDp(),
             minDraggedSpaceDimension = screenWidth.dp - startPadding - endPadding,
         )
     }
 
-    val widgetWidthPx = widgetInfo.width.toPx()
-    val widgetHeightPx = widgetInfo.height.toPx()
+    val widgetWidthPx = withmoWidgetInfo.width.toPx()
+    val widgetHeightPx = withmoWidgetInfo.height.toPx()
 
     val availableWidthPx = screenWidthPx - endPaddingPx
     val availableHeightPx = screenHeightPx - bottomPaddingPx
@@ -100,7 +101,7 @@ fun WithmoWidget(
     var position by remember {
         mutableStateOf(
             calculateWidgetPosition(
-                widgetPosition = widgetInfo.position,
+                widgetPosition = withmoWidgetInfo.position,
                 widgetWidthPx = widgetWidthPx,
                 widgetHeightPx = widgetHeightPx,
                 availableWidthPx = availableWidthPx,
@@ -113,8 +114,8 @@ fun WithmoWidget(
 
     val widgetModifier = if (isEditMode) {
         modifier
-            .width(widgetInfo.width.dp)
-            .height(widgetInfo.height.dp)
+            .width(withmoWidgetInfo.width.dp)
+            .height(withmoWidgetInfo.height.dp)
             .offset { IntOffset(position.x.roundToInt(), position.y.roundToInt()) }
             .pointerInput(Unit) {
                 detectDragGestures(
@@ -131,7 +132,7 @@ fun WithmoWidget(
                         )
 
                         position = Offset(newOffsetX, newOffsetY)
-                        widgetInfo.position = position
+                        withmoWidgetInfo.position = position
                     },
                 )
             }
@@ -142,8 +143,8 @@ fun WithmoWidget(
             )
     } else {
         modifier
-            .width(widgetInfo.width.dp)
-            .height(widgetInfo.height.dp)
+            .width(withmoWidgetInfo.width.dp)
+            .height(withmoWidgetInfo.height.dp)
             .offset { IntOffset(position.x.roundToInt(), position.y.roundToInt()) }
     }
 
@@ -151,8 +152,7 @@ fun WithmoWidget(
         modifier = widgetModifier,
     ) {
         Widget(
-            widgetInfo = widgetInfo,
-            createWidgetView = createWidgetView,
+            withmoWidgetInfo = withmoWidgetInfo,
             modifier = Modifier.align(Alignment.Center),
         )
         if (isEditMode) {
@@ -231,17 +231,39 @@ private fun WidgetBadge(
 
 @Composable
 fun Widget(
-    widgetInfo: WidgetInfo,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
+    withmoWidgetInfo: WithmoWidgetInfo,
     modifier: Modifier = Modifier,
 ) {
+    val appWidgetHost = LocalAppWidgetHost.current
+    val context = LocalContext.current
+
+    val hostView = remember(withmoWidgetInfo.widgetInfo.id) {
+        appWidgetHost.createView(
+            context.applicationContext,
+            withmoWidgetInfo.widgetInfo.id,
+            withmoWidgetInfo.widgetInfo.info,
+        ).apply {
+            val widgetSizeBundle = Bundle().apply {
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, withmoWidgetInfo.width)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, withmoWidgetInfo.height)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, withmoWidgetInfo.width)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, withmoWidgetInfo.height)
+            }
+
+            updateAppWidgetSize(
+                widgetSizeBundle,
+                withmoWidgetInfo.width,
+                withmoWidgetInfo.height,
+                withmoWidgetInfo.width,
+                withmoWidgetInfo.height,
+            )
+        }
+    }
+
     AndroidView(
-        factory = { context ->
-            createWidgetView(context.applicationContext, widgetInfo, widgetInfo.width, widgetInfo.height)
-        },
+        factory = { hostView },
         modifier = modifier
-            .width(widgetInfo.width.dp)
-            .height(widgetInfo.height.dp),
+            .size(withmoWidgetInfo.width.dp, withmoWidgetInfo.height.dp),
     )
 }
 
@@ -255,9 +277,11 @@ fun calculateWidgetWidth(
         widgetWidth <= minDraggedSpaceDimension / SizeDivisor -> {
             (minDraggedSpaceDimension / SizeDivisor).toInt()
         }
+
         widgetWidth <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
             (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
         }
+
         else -> {
             minDraggedSpaceDimension.toInt()
         }
@@ -272,9 +296,11 @@ fun calculateWidgetHeight(
         widgetHeight <= minDraggedSpaceDimension / SizeDivisor -> {
             (minDraggedSpaceDimension / SizeDivisor).toInt()
         }
+
         widgetHeight <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
             (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
         }
+
         else -> {
             minDraggedSpaceDimension.toInt()
         }

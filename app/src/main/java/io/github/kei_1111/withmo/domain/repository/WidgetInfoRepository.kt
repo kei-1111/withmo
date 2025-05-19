@@ -1,14 +1,14 @@
 package io.github.kei_1111.withmo.domain.repository
 
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import kotlinx.coroutines.flow.Flow
 
 interface WidgetInfoRepository {
-    fun getAllWidgetList(): Flow<List<WidgetInfo>>
+    fun getAllWidgetList(): Flow<List<WithmoWidgetInfo>>
 
-    suspend fun insertWidget(widgetInfoList: List<WidgetInfo>)
+    suspend fun insertWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>)
 
-    suspend fun updateWidget(widgetInfoList: List<WidgetInfo>)
+    suspend fun updateWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>)
 
-    suspend fun deleteWidget(widgetInfoList: List<WidgetInfo>)
+    suspend fun deleteWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>)
 }

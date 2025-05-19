@@ -2,11 +2,10 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import android.app.Activity.RESULT_OK
 import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProviderInfo
-import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
-import android.view.View
+import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -30,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.os.bundleOf
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -39,8 +39,11 @@ import io.github.kei_1111.withmo.common.unity.UnityMethod
 import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
+import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetHost
+import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetManager
 import io.github.kei_1111.withmo.ui.screens.home.component.AppListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDialog
@@ -52,7 +55,6 @@ import io.github.kei_1111.withmo.utils.AppUtils
 import io.github.kei_1111.withmo.utils.FileUtils
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -76,6 +78,9 @@ fun HomeScreen(
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
 
+    val appWidgetHost = LocalAppWidgetHost.current
+    val appWidgetManager = LocalAppWidgetManager.current
+
     val homeAppList by remember(appList, uiState.currentUserSettings.sortSettings.sortType) {
         derivedStateOf {
             when (uiState.currentUserSettings.sortSettings.sortType) {
@@ -88,41 +93,31 @@ fun HomeScreen(
     val configureWidgetLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
     ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            uiState.pendingWidgetInfo?.let {
-                viewModel.addDisplayedWidgetList(
-                    WidgetInfo(
-                        id = uiState.pendingWidgetId,
-                        info = it,
-                    ),
-                )
+        uiState.pendingWidgetInfo?.let { widgetInfo ->
+            if (result.resultCode == RESULT_OK) {
+                viewModel.addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+            } else {
+                appWidgetHost.deleteAppWidgetId(widgetInfo.id)
             }
-        } else {
-            viewModel.deleteWidgetId(uiState.pendingWidgetId)
         }
     }
 
     val bindWidgetLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
     ) { result ->
-        if (result.resultCode == RESULT_OK) {
-            uiState.pendingWidgetInfo?.let { widgetInfo ->
-                if (widgetInfo.configure != null) {
+        uiState.pendingWidgetInfo?.let { widgetInfo ->
+            if (result.resultCode == RESULT_OK) {
+                if (widgetInfo.info.configure != null) {
                     val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE)
-                    intent.component = widgetInfo.configure
-                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, uiState.pendingWidgetId)
+                    intent.component = widgetInfo.info.configure
+                    intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetInfo.id)
                     configureWidgetLauncher.launch(intent)
                 } else {
-                    viewModel.addDisplayedWidgetList(
-                        WidgetInfo(
-                            id = uiState.pendingWidgetId,
-                            info = widgetInfo,
-                        ),
-                    )
+                    viewModel.addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
                 }
+            } else {
+                appWidgetHost.deleteAppWidgetId(widgetInfo.id)
             }
-        } else {
-            viewModel.deleteWidgetId(uiState.pendingWidgetId)
         }
     }
 
@@ -277,13 +272,49 @@ fun HomeScreen(
                     AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
                 }
 
-                is HomeUiEvent.OnAllWidgetListWidgetClick -> {
-                    viewModel.selectWidget(
-                        widgetInfo = event.widgetInfo,
-                        context = context,
-                        configureWidgetLauncher = configureWidgetLauncher,
-                        bindWidgetLauncher = bindWidgetLauncher,
+                is HomeUiEvent.OnWidgetListSheetItemClick -> {
+                    val widgetId = appWidgetHost.allocateAppWidgetId()
+                    val provider = event.widgetInfo.provider
+                    val options = bundleOf(
+                        AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH to event.widgetInfo.minWidth,
+                        AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH to event.widgetInfo.minWidth,
+                        AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT to event.widgetInfo.minHeight,
+                        AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT to event.widgetInfo.minHeight,
                     )
+                    val success = appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, provider, options)
+
+                    val widgetInfo = WidgetInfo(widgetId, event.widgetInfo)
+                    viewModel.setPendingWidget(widgetInfo)
+
+                    if (success) {
+                        if (event.widgetInfo.configure != null) {
+                            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
+                                component = event.widgetInfo.configure
+                                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                            }
+
+                            val activityInfo = try {
+                                context.packageManager.getActivityInfo(event.widgetInfo.configure, 0)
+                            } catch (e: PackageManager.NameNotFoundException) {
+                                Log.e("HomeScreen", "Failed to retrieve activity info for widget configuration: ${event.widgetInfo.configure}", e)
+                                null
+                            }
+
+                            if (activityInfo != null && activityInfo.exported) {
+                                configureWidgetLauncher.launch(intent)
+                            } else {
+                                viewModel.addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                            }
+                        } else {
+                            viewModel.addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                        }
+                    } else {
+                        val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND).apply {
+                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
+                            putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
+                        }
+                        bindWidgetLauncher.launch(intent)
+                    }
                     scope.launch {
                         widgetListSheetState.hide()
                     }.invokeOnCompletion {
@@ -303,18 +334,18 @@ fun HomeScreen(
                 }
 
                 is HomeUiEvent.OnDeleteWidgetBadgeClick -> {
-                    viewModel.deleteWidget(event.widgetInfo)
+                    viewModel.deleteWidget(event.withmoWidgetInfo)
                 }
 
                 is HomeUiEvent.OnResizeWidgetBadgeClick -> {
                     viewModel.changeIsWidgetResizing(true)
-                    viewModel.changeResizingWidget(event.widgetInfo)
-                    viewModel.deleteWidget(event.widgetInfo)
+                    viewModel.changeResizingWidget(event.withmoWidgetInfo)
+                    viewModel.deleteWidget(event.withmoWidgetInfo)
                 }
 
                 is HomeUiEvent.OnWidgetResizeBottomSheetClose -> {
                     viewModel.changeIsWidgetResizing(false)
-                    viewModel.addDisplayedWidgetList(event.widgetInfo)
+                    viewModel.addDisplayedWidgetList(event.withmoWidgetInfo)
                     viewModel.changeResizingWidget(null)
                 }
             }
@@ -327,8 +358,6 @@ fun HomeScreen(
         homeAppList = homeAppList,
         appListSheetState = appListSheetState,
         widgetListSheetState = widgetListSheetState,
-        groupedWidgetInfoMap = viewModel.getGroupedWidgetInfoMap(),
-        createWidgetView = viewModel::createWidgetView,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -342,8 +371,6 @@ private fun HomeScreen(
     homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     widgetListSheetState: SheetState,
-    groupedWidgetInfoMap: ImmutableMap<String, List<AppWidgetProviderInfo>>,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     modifier: Modifier = Modifier,
 ) {
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
@@ -363,7 +390,6 @@ private fun HomeScreen(
     if (uiState.isWidgetListSheetOpened) {
         WidgetListSheet(
             widgetListSheetState = widgetListSheetState,
-            groupedWidgetInfoMap = groupedWidgetInfoMap,
             onEvent = onEvent,
             modifier = Modifier.padding(
                 top = topPaddingValue,
@@ -374,8 +400,7 @@ private fun HomeScreen(
     if (uiState.isWidgetResizing) {
         uiState.resizeWidget?.let { widgetInfo ->
             WidgetResizeBottomSheet(
-                widgetInfo = widgetInfo,
-                createWidgetView = createWidgetView,
+                withmoWidgetInfo = widgetInfo,
                 close = { onEvent(HomeUiEvent.OnWidgetResizeBottomSheetClose(it)) },
             )
         }
@@ -391,7 +416,6 @@ private fun HomeScreen(
         HomeScreenContent(
             uiState = uiState,
             onEvent = onEvent,
-            createWidgetView = createWidgetView,
             modifier = Modifier.fillMaxSize(),
         )
     }
