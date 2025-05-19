@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.ui.screens.home.component.page_content
 
-import android.content.Context
-import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -27,7 +25,6 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
@@ -39,7 +36,6 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 @Suppress("LongMethod")
 @Composable
 internal fun PagerContent(
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -112,7 +108,6 @@ internal fun PagerContent(
 
                 PageContent.Widget.ordinal -> {
                     WidgetContent(
-                        createWidgetView = createWidgetView,
                         uiState = uiState,
                         onEvent = onEvent,
                         modifier = Modifier

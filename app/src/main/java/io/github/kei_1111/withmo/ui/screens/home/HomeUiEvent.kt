@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import android.appwidget.AppWidgetProviderInfo
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ui.base.UiEvent
 
 sealed interface HomeUiEvent : UiEvent {
@@ -24,10 +24,10 @@ sealed interface HomeUiEvent : UiEvent {
     data object OnWidgetContentSwipeRight : HomeUiEvent
     data class OnDisplayModelContentClick(val x: Float, val y: Float) : HomeUiEvent
     data object OnDisplayModelContentLongClick : HomeUiEvent
-    data class OnAllWidgetListWidgetClick(val widgetInfo: AppWidgetProviderInfo) : HomeUiEvent
+    data class OnWidgetListSheetItemClick(val widgetInfo: AppWidgetProviderInfo) : HomeUiEvent
     data object OnWidgetContentLongClick : HomeUiEvent
     data object OnCompleteEditButtonClick : HomeUiEvent
-    data class OnDeleteWidgetBadgeClick(val widgetInfo: WidgetInfo) : HomeUiEvent
-    data class OnResizeWidgetBadgeClick(val widgetInfo: WidgetInfo) : HomeUiEvent
-    data class OnWidgetResizeBottomSheetClose(val widgetInfo: WidgetInfo) : HomeUiEvent
+    data class OnDeleteWidgetBadgeClick(val withmoWidgetInfo: WithmoWidgetInfo) : HomeUiEvent
+    data class OnResizeWidgetBadgeClick(val withmoWidgetInfo: WithmoWidgetInfo) : HomeUiEvent
+    data class OnWidgetResizeBottomSheetClose(val withmoWidgetInfo: WithmoWidgetInfo) : HomeUiEvent
 }

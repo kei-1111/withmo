@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.ui.screens.home.component
 
-import android.content.Context
-import android.view.View
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ui.component.Widget
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -35,9 +33,8 @@ import kotlin.math.roundToInt
 @Suppress("LongMethod")
 @Composable
 internal fun WidgetResizeBottomSheet(
-    widgetInfo: WidgetInfo,
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
-    close: (WidgetInfo) -> Unit,
+    withmoWidgetInfo: WithmoWidgetInfo,
+    close: (WithmoWidgetInfo) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
 
@@ -48,14 +45,14 @@ internal fun WidgetResizeBottomSheet(
     val draggedSpaceHeight = screenHeight.dp - Paddings.Medium - Paddings.Medium
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
-    var widgetWidth by remember { mutableFloatStateOf(widgetInfo.width.toFloat()) }
-    var widgetHeight by remember { mutableFloatStateOf(widgetInfo.height.toFloat()) }
+    var widgetWidth by remember { mutableFloatStateOf(withmoWidgetInfo.width.toFloat()) }
+    var widgetHeight by remember { mutableFloatStateOf(withmoWidgetInfo.height.toFloat()) }
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = {
             close(
-                widgetInfo.copy(
+                withmoWidgetInfo.copy(
                     width = widgetWidth.roundToInt(),
                     height = widgetHeight.roundToInt(),
                 ),
@@ -73,11 +70,10 @@ internal fun WidgetResizeBottomSheet(
                     .height(widgetHeight.dp),
             ) {
                 Widget(
-                    widgetInfo = widgetInfo.copy(
+                    withmoWidgetInfo = withmoWidgetInfo.copy(
                         width = widgetWidth.roundToInt(),
                         height = widgetHeight.roundToInt(),
                     ),
-                    createWidgetView = createWidgetView,
                 )
                 Surface(
                     modifier = Modifier.fillMaxSize(),

@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.home.component
 
-import android.content.Context
 import android.os.Build
-import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
@@ -25,7 +23,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.common.AppConstants
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.toDateTimeInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.AppItem
@@ -45,7 +42,6 @@ private const val BottomSheetShowDragHeight = -50f
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
-    createWidgetView: (Context, WidgetInfo, Int, Int) -> View,
     uiState: HomeUiState,
     onEvent: (HomeUiEvent) -> Unit,
     modifier: Modifier = Modifier,
@@ -94,7 +90,6 @@ internal fun HomeScreenContent(
                     },
             ) {
                 PagerContent(
-                    createWidgetView = createWidgetView,
                     uiState = uiState,
                     onEvent = onEvent,
                     modifier = Modifier

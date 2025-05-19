@@ -5,7 +5,7 @@ import io.github.kei_1111.withmo.data.local.dao.WidgetInfoDao
 import io.github.kei_1111.withmo.data.mapper.toEntity
 import io.github.kei_1111.withmo.data.mapper.toWidgetInfo
 import io.github.kei_1111.withmo.di.IoDispatcher
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -20,7 +20,7 @@ class WidgetInfoRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : WidgetInfoRepository {
 
-    override fun getAllWidgetList(): Flow<List<WidgetInfo>> {
+    override fun getAllWidgetList(): Flow<List<WithmoWidgetInfo>> {
         return widgetInfoDao.getAllWidgets()
             .map { entities ->
                 entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
@@ -28,21 +28,21 @@ class WidgetInfoRepositoryImpl @Inject constructor(
             .flowOn(ioDispatcher)
     }
 
-    override suspend fun insertWidget(widgetInfoList: List<WidgetInfo>) {
+    override suspend fun insertWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.insert(widgetInfoList.map { it.toEntity() })
+            widgetInfoDao.insert(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun updateWidget(widgetInfoList: List<WidgetInfo>) {
+    override suspend fun updateWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.update(widgetInfoList.map { it.toEntity() })
+            widgetInfoDao.update(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun deleteWidget(widgetInfoList: List<WidgetInfo>) {
+    override suspend fun deleteWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.delete(widgetInfoList.map { it.toEntity() })
+            widgetInfoDao.delete(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 

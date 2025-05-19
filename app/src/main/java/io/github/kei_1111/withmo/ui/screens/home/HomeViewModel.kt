@@ -1,24 +1,16 @@
 package io.github.kei_1111.withmo.ui.screens.home
 
-import android.appwidget.AppWidgetHost
-import android.appwidget.AppWidgetManager
-import android.appwidget.AppWidgetProviderInfo
 import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.activity.result.ActivityResultLauncher
 import androidx.annotation.RequiresApi
-import androidx.core.os.bundleOf
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
@@ -27,9 +19,7 @@ import io.github.kei_1111.withmo.domain.usecase.user_settings.GetUserSettingsUse
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import io.github.kei_1111.withmo.utils.FileUtils
-import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
@@ -43,8 +33,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val appWidgetManager: AppWidgetManager,
-    private val appWidgetHost: AppWidgetHost,
     private val appInfoRepository: AppInfoRepository,
     private val widgetInfoRepository: WidgetInfoRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
@@ -83,8 +71,6 @@ class HomeViewModel @Inject constructor(
         observeUserSettings()
         observeFavoriteAppList()
         observeWidgetList()
-
-        appWidgetHost.startListening()
     }
 
     private fun observeUserSettings() {
@@ -186,127 +172,26 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun getGroupedWidgetInfoMap(): ImmutableMap<String, List<AppWidgetProviderInfo>> {
-        return appWidgetManager
-            .installedProviders
-            .groupBy { it.provider.packageName }
-            .toPersistentMap()
-    }
-
-    fun selectWidget(
-        widgetInfo: AppWidgetProviderInfo,
-        context: Context,
-        configureWidgetLauncher: ActivityResultLauncher<Intent>,
-        bindWidgetLauncher: ActivityResultLauncher<Intent>,
-    ) {
-        val widgetId = appWidgetHost.allocateAppWidgetId()
-        val provider = widgetInfo.provider
-
-        val options = bundleOf(
-            AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH to widgetInfo.minWidth,
-            AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH to widgetInfo.minWidth,
-            AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT to widgetInfo.minHeight,
-            AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT to widgetInfo.minHeight,
-        )
-
-        val success = appWidgetManager.bindAppWidgetIdIfAllowed(widgetId, provider, options)
-
+    fun setPendingWidget(widgetInfo: WidgetInfo) {
         _uiState.update {
             it.copy(
-                pendingWidgetId = widgetId,
                 pendingWidgetInfo = widgetInfo,
             )
         }
-
-        if (success) {
-            if (widgetInfo.configure != null) {
-                val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_CONFIGURE).apply {
-                    component = widgetInfo.configure
-                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                }
-
-                val activityInfo = try {
-                    context.packageManager.getActivityInfo(widgetInfo.configure, 0)
-                } catch (e: PackageManager.NameNotFoundException) {
-                    Log.e(
-                        TAG,
-                        "Failed to retrieve activity info for widget configuration: ${widgetInfo.configure}",
-                        e,
-                    )
-                    null
-                }
-
-                if (activityInfo != null && activityInfo.exported) {
-                    configureWidgetLauncher.launch(intent)
-                } else {
-                    addDisplayedWidgetList(
-                        WidgetInfo(
-                            id = widgetId,
-                            info = widgetInfo,
-                        ),
-                    )
-                }
-            } else {
-                addDisplayedWidgetList(
-                    WidgetInfo(
-                        id = widgetId,
-                        info = widgetInfo,
-                    ),
-                )
-            }
-        } else {
-            val intent = Intent(AppWidgetManager.ACTION_APPWIDGET_BIND).apply {
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, widgetId)
-                putExtra(AppWidgetManager.EXTRA_APPWIDGET_PROVIDER, provider)
-            }
-            bindWidgetLauncher.launch(intent)
-        }
     }
 
-    fun addDisplayedWidgetList(widgetInfo: WidgetInfo) {
+    fun addDisplayedWidgetList(withmoWidgetInfo: WithmoWidgetInfo) {
         _uiState.update { currentState ->
             currentState.copy(
-                widgetList = (currentState.widgetList + widgetInfo).toPersistentList(),
+                widgetList = (currentState.widgetList + withmoWidgetInfo).toPersistentList(),
             )
         }
     }
 
-    fun deleteWidgetId(pendingWidgetId: Int) {
-        appWidgetHost.deleteAppWidgetId(pendingWidgetId)
-    }
-
-    fun createWidgetView(
-        context: Context,
-        widgetInfo: WidgetInfo,
-        adjustWidgetWidth: Int,
-        adjustWidgetHeight: Int,
-    ): View {
-        return appWidgetHost.createView(
-            context.applicationContext,
-            widgetInfo.id,
-            widgetInfo.info,
-        ).apply {
-            val widgetSizeBundle = Bundle().apply {
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, adjustWidgetWidth)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, adjustWidgetHeight)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, adjustWidgetWidth)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, adjustWidgetHeight)
-            }
-
-            updateAppWidgetSize(
-                widgetSizeBundle,
-                adjustWidgetWidth,
-                adjustWidgetHeight,
-                adjustWidgetWidth,
-                adjustWidgetHeight,
-            )
-        }
-    }
-
-    fun deleteWidget(widgetInfo: WidgetInfo) {
+    fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
         _uiState.update { currentState ->
             currentState.copy(
-                widgetList = currentState.widgetList.filterNot { it.id == widgetInfo.id }
+                widgetList = currentState.widgetList.filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
                     .toPersistentList(),
             )
         }
@@ -317,15 +202,15 @@ class HomeViewModel @Inject constructor(
         val initialWidgetList = _uiState.value.initialWidgetList
 
         val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
-            initialWidgetList.any { initialWidget -> initialWidget.id == currentWidget.id }
+            initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
         }
 
         val updatedWidgetList = currentWidgetList.filter { currentWidget ->
-            initialWidgetList.any { initialWidget -> initialWidget.id == currentWidget.id }
+            initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
         }
 
         val deletedWidgetList = initialWidgetList.filterNot { initialWidget ->
-            currentWidgetList.any { currentWidget -> initialWidget.id == currentWidget.id }
+            currentWidgetList.any { currentWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
         }
 
         viewModelScope.launch {
@@ -335,9 +220,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun changeResizingWidget(widgetInfo: WidgetInfo?) {
+    fun changeResizingWidget(withmoWidgetInfo: WithmoWidgetInfo?) {
         _uiState.update {
-            it.copy(resizeWidget = widgetInfo)
+            it.copy(resizeWidget = withmoWidgetInfo)
         }
     }
 
@@ -351,11 +236,6 @@ class HomeViewModel @Inject constructor(
         _uiState.update {
             it.copy(currentPage = page)
         }
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        appWidgetHost.deleteHost()
     }
 
     private companion object {

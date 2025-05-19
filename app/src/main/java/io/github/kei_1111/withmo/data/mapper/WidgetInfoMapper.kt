@@ -6,11 +6,12 @@ import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import io.github.kei_1111.withmo.data.local.entity.WidgetInfoEntity
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
+import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 
-fun WidgetInfo.toEntity(): WidgetInfoEntity {
+fun WithmoWidgetInfo.toEntity(): WidgetInfoEntity {
     return WidgetInfoEntity(
-        id = id,
-        appWidgetProviderClassName = info.provider.className,
+        id = widgetInfo.id,
+        appWidgetProviderClassName = widgetInfo.info.provider.className,
         positionX = position.x,
         positionY = position.y,
         width = width,
@@ -18,16 +19,15 @@ fun WidgetInfo.toEntity(): WidgetInfoEntity {
     )
 }
 
-fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WidgetInfo? {
+fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WithmoWidgetInfo? {
     val info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
     if (info == null) {
         Log.e("toWidgetInfo", "AppWidgetProviderInfo not found: $appWidgetProviderClassName")
         return null
     }
 
-    return WidgetInfo(
-        id = id,
-        info = info,
+    return WithmoWidgetInfo(
+        widgetInfo = WidgetInfo(id, info),
         position = Offset(positionX, positionY),
         width = width,
         height = height,
