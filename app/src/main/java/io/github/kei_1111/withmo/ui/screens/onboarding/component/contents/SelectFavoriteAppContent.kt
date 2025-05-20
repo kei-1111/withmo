@@ -22,7 +22,7 @@ import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -34,7 +34,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun SelectFavoriteAppContent(
     appList: ImmutableList<AppInfo>,
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -111,7 +111,7 @@ internal fun SelectFavoriteAppContent(
 
 @Composable
 private fun SelectFavoriteAppContentBottomAppBar(
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

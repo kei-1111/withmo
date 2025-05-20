@@ -30,7 +30,7 @@ import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -42,7 +42,7 @@ private const val BottomSheetShowDragHeight = -50f
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -110,7 +110,7 @@ internal fun HomeScreenContent(
 
 @Composable
 private fun RowAppList(
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

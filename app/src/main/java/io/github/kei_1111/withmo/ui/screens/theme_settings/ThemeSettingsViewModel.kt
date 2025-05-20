@@ -15,9 +15,9 @@ import javax.inject.Inject
 class ThemeSettingsViewModel @Inject constructor(
     private val getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val saveThemeSettingsUseCase: SaveThemeSettingsUseCase,
-) : BaseViewModel<ThemeSettingsUiState, ThemeSettingsAction>() {
+) : BaseViewModel<ThemeSettingsState, ThemeSettingsAction>() {
 
-    override fun createInitialState(): ThemeSettingsUiState = ThemeSettingsUiState()
+    override fun createInitialState(): ThemeSettingsState = ThemeSettingsState()
 
     init {
         observeThemeSettings()
@@ -26,7 +26,7 @@ class ThemeSettingsViewModel @Inject constructor(
     private fun observeThemeSettings() {
         viewModelScope.launch {
             getThemeSettingsUseCase().collect { themeSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         themeSettings = themeSettings,
                         initialThemeSettings = themeSettings,
@@ -37,7 +37,7 @@ class ThemeSettingsViewModel @Inject constructor(
     }
 
     fun changeThemeType(themeType: ThemeType) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 themeSettings = it.themeSettings.copy(
                     themeType = themeType,
@@ -51,14 +51,14 @@ class ThemeSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                val themeSettings = _uiState.value.themeSettings
+                val themeSettings = _state.value.themeSettings
                 saveThemeSettingsUseCase(themeSettings)
                 onSaveSuccess()
             } catch (e: Exception) {

@@ -53,7 +53,7 @@ fun SettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -127,7 +127,7 @@ fun SettingsScreen(
 @Suppress("LongMethod")
 @Composable
 private fun SettingsScreen(
-    uiState: SettingsUiState,
+    uiState: SettingsState,
     onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

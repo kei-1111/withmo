@@ -14,9 +14,9 @@ import javax.inject.Inject
 class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
-) : BaseViewModel<NotificationSettingsUiState, NotificationSettingsAction>() {
+) : BaseViewModel<NotificationSettingsState, NotificationSettingsAction>() {
 
-    override fun createInitialState(): NotificationSettingsUiState = NotificationSettingsUiState()
+    override fun createInitialState(): NotificationSettingsState = NotificationSettingsState()
 
     init {
         observeNotificationSettings()
@@ -25,7 +25,7 @@ class NotificationSettingsViewModel @Inject constructor(
     private fun observeNotificationSettings() {
         viewModelScope.launch {
             getNotificationSettingsUseCase().collect { notificationSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         notificationSettings = notificationSettings,
                         initialNotificationSettings = notificationSettings,
@@ -36,10 +36,10 @@ class NotificationSettingsViewModel @Inject constructor(
     }
 
     fun changeIsNotificationAnimationEnable(isNotificationAnimationEnabled: Boolean) {
-        val newNotificationSettings = _uiState.value.notificationSettings.copy(
+        val newNotificationSettings = _state.value.notificationSettings.copy(
             isNotificationAnimationEnabled = isNotificationAnimationEnabled,
         )
-        _uiState.update {
+        _state.update {
             it.copy(
                 notificationSettings = newNotificationSettings,
                 isSaveButtonEnabled = newNotificationSettings != it.initialNotificationSettings,
@@ -48,7 +48,7 @@ class NotificationSettingsViewModel @Inject constructor(
     }
 
     fun changeIsNotificationPermissionDialogShown(isNotificationPermissionDialogShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isNotificationPermissionDialogShown = isNotificationPermissionDialogShown,
             )
@@ -59,14 +59,14 @@ class NotificationSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                saveNotificationSettingsUseCase(_uiState.value.notificationSettings)
+                saveNotificationSettingsUseCase(_state.value.notificationSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save notification settings", e)

@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsAction
-import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SortSettingsScreenContent(
-    uiState: SortSettingsUiState,
+    uiState: SortSettingsState,
     onEvent: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

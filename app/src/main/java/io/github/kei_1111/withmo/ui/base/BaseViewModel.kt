@@ -10,9 +10,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 @Suppress("VariableNaming")
-abstract class BaseViewModel<S : UiState, A : Action> : ViewModel() {
-    protected val _uiState = MutableStateFlow<S>(createInitialState())
-    val uiState: StateFlow<S> = _uiState.asStateFlow()
+abstract class BaseViewModel<S : State, A : Action> : ViewModel() {
+    protected val _state = MutableStateFlow<S>(createInitialState())
+    val state: StateFlow<S> = _state.asStateFlow()
 
     protected val _action = MutableSharedFlow<A>()
     val action: SharedFlow<A> = _action

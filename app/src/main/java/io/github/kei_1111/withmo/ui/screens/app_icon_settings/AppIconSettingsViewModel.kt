@@ -15,9 +15,9 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsAction>() {
+) : BaseViewModel<AppIconSettingsState, AppIconSettingsAction>() {
 
-    override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
+    override fun createInitialState(): AppIconSettingsState = AppIconSettingsState()
 
     init {
         observeAppIconSettings()
@@ -26,7 +26,7 @@ class AppIconSettingsViewModel @Inject constructor(
     private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         appIconSettings = appIconSettings,
                         initialAppIconSettings = appIconSettings,
@@ -37,7 +37,7 @@ class AppIconSettingsViewModel @Inject constructor(
     }
 
     fun changeAppIconSize(appIconSize: Float) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
                     appIconSize = appIconSize,
@@ -48,7 +48,7 @@ class AppIconSettingsViewModel @Inject constructor(
     }
 
     fun changeAppIconShape(appIconShape: AppIconShape) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
                     appIconShape = appIconShape,
@@ -59,7 +59,7 @@ class AppIconSettingsViewModel @Inject constructor(
     }
 
     fun changeRoundedCornerPercent(roundedCornerPercent: Float) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
                     roundedCornerPercent = roundedCornerPercent,
@@ -70,7 +70,7 @@ class AppIconSettingsViewModel @Inject constructor(
     }
 
     fun changeIsAppNameShown(isAppNameShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
                     isAppNameShown = isAppNameShown,
@@ -81,7 +81,7 @@ class AppIconSettingsViewModel @Inject constructor(
     }
 
     fun changeIsFavoriteAppBackgroundShown(isFavoriteAppBackgroundShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
                     isFavoriteAppBackgroundShown = isFavoriteAppBackgroundShown,
@@ -95,14 +95,14 @@ class AppIconSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                saveAppIconSettingsUseCase(uiState.value.appIconSettings)
+                saveAppIconSettingsUseCase(state.value.appIconSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save app icon settings", e)

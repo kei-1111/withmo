@@ -40,7 +40,7 @@ fun AppIconSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: AppIconSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -101,7 +101,7 @@ fun AppIconSettingsScreen(
 
 @Composable
 private fun AppIconSettingsScreen(
-    uiState: AppIconSettingsUiState,
+    uiState: AppIconSettingsState,
     onEvent: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

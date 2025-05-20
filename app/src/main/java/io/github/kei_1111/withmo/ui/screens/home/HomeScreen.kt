@@ -68,7 +68,7 @@ fun HomeScreen(
     onNavigateSettingsButtonClick: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -366,7 +366,7 @@ fun HomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun HomeScreen(
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,

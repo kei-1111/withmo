@@ -38,7 +38,7 @@ fun ClockSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: ClockSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -87,7 +87,7 @@ fun ClockSettingsScreen(
 
 @Composable
 private fun ClockSettingsScreen(
-    uiState: ClockSettingsUiState,
+    uiState: ClockSettingsState,
     onEvent: (ClockSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

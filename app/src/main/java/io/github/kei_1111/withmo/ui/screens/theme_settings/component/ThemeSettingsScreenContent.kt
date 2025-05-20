@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsAction
-import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ThemeSettingsScreenContent(
-    uiState: ThemeSettingsUiState,
+    uiState: ThemeSettingsState,
     onEvent: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

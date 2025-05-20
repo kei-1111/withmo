@@ -25,14 +25,14 @@ import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.FileUtils
 
 @Composable
 internal fun DisplayModelContent(
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

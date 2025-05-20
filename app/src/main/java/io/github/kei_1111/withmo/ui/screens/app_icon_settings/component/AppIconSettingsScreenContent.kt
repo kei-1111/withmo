@@ -11,12 +11,12 @@ import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsAction
-import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun AppIconSettingsScreenContent(
-    uiState: AppIconSettingsUiState,
+    uiState: AppIconSettingsState,
     onEvent: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

@@ -43,7 +43,7 @@ fun NotificationSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: NotificationSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -114,7 +114,7 @@ fun NotificationSettingsScreen(
 
 @Composable
 private fun NotificationSettingsScreen(
-    uiState: NotificationSettingsUiState,
+    uiState: NotificationSettingsState,
     onEvent: (NotificationSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

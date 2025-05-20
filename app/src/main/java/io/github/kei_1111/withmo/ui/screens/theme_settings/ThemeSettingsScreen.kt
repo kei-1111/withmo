@@ -38,7 +38,7 @@ fun ThemeSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: ThemeSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -83,7 +83,7 @@ fun ThemeSettingsScreen(
 
 @Composable
 private fun ThemeSettingsSceen(
-    uiState: ThemeSettingsUiState,
+    uiState: ThemeSettingsState,
     onEvent: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

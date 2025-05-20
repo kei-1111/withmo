@@ -14,9 +14,9 @@ import javax.inject.Inject
 class SideButtonSettingsViewModel @Inject constructor(
     private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
-) : BaseViewModel<SideButtonSettingsUiState, SideButtonSettingsAction>() {
+) : BaseViewModel<SideButtonSettingsState, SideButtonSettingsAction>() {
 
-    override fun createInitialState(): SideButtonSettingsUiState = SideButtonSettingsUiState()
+    override fun createInitialState(): SideButtonSettingsState = SideButtonSettingsState()
 
     init {
         observeSideButtonSettings()
@@ -25,7 +25,7 @@ class SideButtonSettingsViewModel @Inject constructor(
     private fun observeSideButtonSettings() {
         viewModelScope.launch {
             getSideButtonSettingsUseCase().collect { sideButtonSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         sideButtonSettings = sideButtonSettings,
                         initialSideButtonSettings = sideButtonSettings,
@@ -36,7 +36,7 @@ class SideButtonSettingsViewModel @Inject constructor(
     }
 
     fun changeIsShowScaleSliderButtonShown(isScaleSliderButtonShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isShowScaleSliderButtonShown = isScaleSliderButtonShown,
@@ -48,7 +48,7 @@ class SideButtonSettingsViewModel @Inject constructor(
     }
 
     fun changeIsOpenDocumentButtonShown(isOpenDocumentButtonShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isOpenDocumentButtonShown = isOpenDocumentButtonShown,
@@ -60,7 +60,7 @@ class SideButtonSettingsViewModel @Inject constructor(
     }
 
     fun changeIsSetDefaultModelButtonShown(isSetDefaultModelButtonShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isSetDefaultModelButtonShown = isSetDefaultModelButtonShown,
@@ -72,7 +72,7 @@ class SideButtonSettingsViewModel @Inject constructor(
     }
 
     fun changeIsNavigateSettingsButtonShown(isNavigateSettingsButtonShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 sideButtonSettings = it.sideButtonSettings.copy(
                     isNavigateSettingsButtonShown = isNavigateSettingsButtonShown,
@@ -87,14 +87,14 @@ class SideButtonSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                saveSideButtonSettingsUseCase(_uiState.value.sideButtonSettings)
+                saveSideButtonSettingsUseCase(_state.value.sideButtonSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save side button settings", e)

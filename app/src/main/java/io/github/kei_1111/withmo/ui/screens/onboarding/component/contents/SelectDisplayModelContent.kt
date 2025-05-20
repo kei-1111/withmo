@@ -41,7 +41,7 @@ import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
@@ -52,7 +52,7 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun SelectDisplayModelContent(
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -96,7 +96,7 @@ internal fun SelectDisplayModelContent(
 
 @Composable
 private fun SelectDisplayModelArea(
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -208,7 +208,7 @@ private fun SelectedModelFileName(
 
 @Composable
 private fun SelectDisplayModelContentBottomAppBar(
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

@@ -15,9 +15,9 @@ import javax.inject.Inject
 class ClockSettingsViewModel @Inject constructor(
     private val getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
-) : BaseViewModel<ClockSettingsUiState, ClockSettingsAction>() {
+) : BaseViewModel<ClockSettingsState, ClockSettingsAction>() {
 
-    override fun createInitialState(): ClockSettingsUiState = ClockSettingsUiState()
+    override fun createInitialState(): ClockSettingsState = ClockSettingsState()
 
     init {
         observeClockSettings()
@@ -26,7 +26,7 @@ class ClockSettingsViewModel @Inject constructor(
     private fun observeClockSettings() {
         viewModelScope.launch {
             getClockSettingsUseCase().collect { clockSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         clockSettings = clockSettings,
                         initialClockSettings = clockSettings,
@@ -37,7 +37,7 @@ class ClockSettingsViewModel @Inject constructor(
     }
 
     fun changeIsClockShown(isClockShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 clockSettings = it.clockSettings.copy(
                     isClockShown = isClockShown,
@@ -48,7 +48,7 @@ class ClockSettingsViewModel @Inject constructor(
     }
 
     fun changeClockType(clockType: ClockType) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 clockSettings = it.clockSettings.copy(
                     clockType = clockType,
@@ -62,14 +62,14 @@ class ClockSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                saveClockSettingsUseCase(uiState.value.clockSettings)
+                saveClockSettingsUseCase(state.value.clockSettings)
                 onSaveSuccess()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save clock settings", e)

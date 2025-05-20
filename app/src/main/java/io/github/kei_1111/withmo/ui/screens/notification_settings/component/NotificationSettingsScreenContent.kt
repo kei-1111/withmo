@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsAction
-import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun NotificationSettingsScreenContent(
-    uiState: NotificationSettingsUiState,
+    uiState: NotificationSettingsState,
     onEvent: (NotificationSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

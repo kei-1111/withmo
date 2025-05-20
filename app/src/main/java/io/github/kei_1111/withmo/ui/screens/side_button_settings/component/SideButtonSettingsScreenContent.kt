@@ -8,12 +8,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsAction
-import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SideButtonSettingsScreenContent(
-    uiState: SideButtonSettingsUiState,
+    uiState: SideButtonSettingsState,
     onEvent: (SideButtonSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

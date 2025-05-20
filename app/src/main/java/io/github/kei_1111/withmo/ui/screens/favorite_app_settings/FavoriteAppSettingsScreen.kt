@@ -39,7 +39,7 @@ fun FavoriteAppSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: FavoriteAppSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -96,7 +96,7 @@ fun FavoriteAppSettingsScreen(
 @Composable
 private fun FavoriteAppSettingsScreen(
     appList: ImmutableList<AppInfo>,
-    uiState: FavoriteAppSettingsUiState,
+    uiState: FavoriteAppSettingsState,
     onEvent: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

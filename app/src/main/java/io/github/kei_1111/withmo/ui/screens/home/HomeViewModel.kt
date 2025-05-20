@@ -37,19 +37,19 @@ class HomeViewModel @Inject constructor(
     private val widgetInfoRepository: WidgetInfoRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
-) : BaseViewModel<HomeUiState, HomeAction>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+) : BaseViewModel<HomeState, HomeAction>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
-    override fun createInitialState(): HomeUiState = HomeUiState()
+    override fun createInitialState(): HomeState = HomeState()
 
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
             ModelLoadState.LoadingSuccess.name -> {
-                _uiState.update {
+                _state.update {
                     it.copy(isModelLoading = false)
                 }
             }
             ModelLoadState.LoadingFailure.name -> {
-                _uiState.update {
+                _state.update {
                     it.copy(isModelLoading = false)
                 }
             }
@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
     private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(currentUserSettings = userSettings)
                 }
             }
@@ -86,7 +86,7 @@ class HomeViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         favoriteAppList = favoriteAppList.toPersistentList(),
                     )
@@ -98,7 +98,7 @@ class HomeViewModel @Inject constructor(
     private fun observeWidgetList() {
         viewModelScope.launch {
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         widgetList = widgetList.toPersistentList(),
                         initialWidgetList = widgetList.toPersistentList(),
@@ -109,7 +109,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setIsShowScaleSliderButtonShown(show: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isShowScaleSliderButtonShown = show)
         }
     }
@@ -125,7 +125,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
         }
     }
@@ -143,37 +143,37 @@ class HomeViewModel @Inject constructor(
     }
 
     fun setIsModelLoading(isModelLoading: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isModelLoading = isModelLoading)
         }
     }
 
     fun setAppSearchQuery(query: String) {
-        _uiState.update {
+        _state.update {
             it.copy(appSearchQuery = query)
         }
     }
 
     fun changeIsEditMode(isEditMode: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isEditMode = isEditMode)
         }
     }
 
     fun changeIsAppListBottomSheetOpened(isAppListBottomSheetOpened: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isAppListSheetOpened = isAppListBottomSheetOpened)
         }
     }
 
     fun changeIsWidgetListBottomSheetOpened(isWidgetListBottomSheetOpened: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isWidgetListSheetOpened = isWidgetListBottomSheetOpened)
         }
     }
 
     fun setPendingWidget(widgetInfo: WidgetInfo) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 pendingWidgetInfo = widgetInfo,
             )
@@ -181,7 +181,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun addDisplayedWidgetList(withmoWidgetInfo: WithmoWidgetInfo) {
-        _uiState.update { currentState ->
+        _state.update { currentState ->
             currentState.copy(
                 widgetList = (currentState.widgetList + withmoWidgetInfo).toPersistentList(),
             )
@@ -189,7 +189,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
-        _uiState.update { currentState ->
+        _state.update { currentState ->
             currentState.copy(
                 widgetList = currentState.widgetList.filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
                     .toPersistentList(),
@@ -198,8 +198,8 @@ class HomeViewModel @Inject constructor(
     }
 
     fun saveWidgetList() {
-        val currentWidgetList = _uiState.value.widgetList
-        val initialWidgetList = _uiState.value.initialWidgetList
+        val currentWidgetList = _state.value.widgetList
+        val initialWidgetList = _state.value.initialWidgetList
 
         val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
             initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
@@ -221,19 +221,19 @@ class HomeViewModel @Inject constructor(
     }
 
     fun changeResizingWidget(withmoWidgetInfo: WithmoWidgetInfo?) {
-        _uiState.update {
+        _state.update {
             it.copy(resizeWidget = withmoWidgetInfo)
         }
     }
 
     fun changeIsWidgetResizing(isWidgetResizing: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(isWidgetResizing = isWidgetResizing)
         }
     }
 
     fun setCurrentPage(page: PageContent) {
-        _uiState.update {
+        _state.update {
             it.copy(currentPage = page)
         }
     }

@@ -29,14 +29,14 @@ import io.github.kei_1111.withmo.ui.component.WithmoWidget
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WidgetContent(
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

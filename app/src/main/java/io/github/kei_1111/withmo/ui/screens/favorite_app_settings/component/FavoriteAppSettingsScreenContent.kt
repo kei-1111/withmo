@@ -19,7 +19,7 @@ import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsAction
-import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
@@ -28,7 +28,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun FavoriteAppSettingsScreenContent(
     appList: ImmutableList<AppInfo>,
-    uiState: FavoriteAppSettingsUiState,
+    uiState: FavoriteAppSettingsState,
     onEvent: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

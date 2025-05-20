@@ -36,7 +36,7 @@ import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
 import io.github.kei_1111.withmo.ui.theme.DesignConstants
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -50,7 +50,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun AppListSheet(
     appList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
-    uiState: HomeUiState,
+    uiState: HomeState,
     onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

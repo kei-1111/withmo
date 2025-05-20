@@ -15,9 +15,9 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
-) : BaseViewModel<SortSettingsUiState, SortSettingsAction>() {
+) : BaseViewModel<SortSettingsState, SortSettingsAction>() {
 
-    override fun createInitialState(): SortSettingsUiState = SortSettingsUiState()
+    override fun createInitialState(): SortSettingsState = SortSettingsState()
 
     init {
         observerSortSettings()
@@ -26,7 +26,7 @@ class SortSettingsViewModel @Inject constructor(
     private fun observerSortSettings() {
         viewModelScope.launch {
             getSortSettingsUseCase().collect { sortSettings ->
-                _uiState.update {
+                _state.update {
                     it.copy(
                         sortSettings = sortSettings,
                         initialSortSettings = sortSettings,
@@ -37,7 +37,7 @@ class SortSettingsViewModel @Inject constructor(
     }
 
     fun changeSortType(sortType: SortType) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 sortSettings = it.sortSettings.copy(
                     sortType = sortType,
@@ -51,14 +51,14 @@ class SortSettingsViewModel @Inject constructor(
         onSaveSuccess: () -> Unit,
         onSaveFailure: () -> Unit,
     ) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
             )
         }
         viewModelScope.launch {
             try {
-                val sortSettings = _uiState.value.sortSettings
+                val sortSettings = _state.value.sortSettings
                 saveSortSettingsUseCase(sortSettings)
                 onSaveSuccess()
             } catch (e: Exception) {

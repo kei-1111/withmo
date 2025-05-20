@@ -42,7 +42,7 @@ fun OnboardingScreen(
     onFinishButtonClick: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -118,7 +118,7 @@ fun OnboardingScreen(
 @Composable
 private fun OnboardingScreen(
     appList: ImmutableList<AppInfo>,
-    uiState: OnboardingUiState,
+    uiState: OnboardingState,
     onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

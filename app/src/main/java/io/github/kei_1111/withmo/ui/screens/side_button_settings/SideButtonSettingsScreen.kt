@@ -38,7 +38,7 @@ fun SideButtonSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: SideButtonSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -95,7 +95,7 @@ fun SideButtonSettingsScreen(
 
 @Composable
 private fun SideButtonSettingsScreen(
-    uiState: SideButtonSettingsUiState,
+    uiState: SideButtonSettingsState,
     onEvent: (SideButtonSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

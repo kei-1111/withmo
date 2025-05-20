@@ -33,7 +33,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsAction
-import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiState
+import io.github.kei_1111.withmo.ui.screens.settings.SettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -41,7 +41,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun SettingsScreenContent(
-    uiState: SettingsUiState,
+    uiState: SettingsState,
     onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {

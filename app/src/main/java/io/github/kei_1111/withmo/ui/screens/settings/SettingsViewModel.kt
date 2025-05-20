@@ -4,12 +4,12 @@ import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsUiState, SettingsAction>() {
+class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction>() {
 
-    override fun createInitialState(): SettingsUiState = SettingsUiState()
+    override fun createInitialState(): SettingsState = SettingsState()
 
     fun changeIsDefaultHomeApp(isDefaultHomeApp: Boolean) {
-        _uiState.update {
+        _state.update {
             it.copy(
                 isDefaultHomeApp = isDefaultHomeApp,
             )
