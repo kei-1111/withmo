@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ThemeSettingsViewModel @Inject constructor(
     private val getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val saveThemeSettingsUseCase: SaveThemeSettingsUseCase,
-) : BaseViewModel<ThemeSettingsState, ThemeSettingsAction>() {
+) : BaseViewModel<ThemeSettingsState, ThemeSettingsAction, ThemeSettingsEffect>() {
 
     override fun createInitialState(): ThemeSettingsState = ThemeSettingsState()
 

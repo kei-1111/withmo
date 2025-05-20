@@ -4,7 +4,7 @@ import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
-class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction>() {
+class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
 
     override fun createInitialState(): SettingsState = SettingsState()
 

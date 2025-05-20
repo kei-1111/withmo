@@ -21,7 +21,7 @@ import javax.inject.Inject
 class FavoriteAppSettingsViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
-) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction>() {
+) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
     override fun createInitialState(): FavoriteAppSettingsState = FavoriteAppSettingsState()
 

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ClockSettingsViewModel @Inject constructor(
     private val getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
-) : BaseViewModel<ClockSettingsState, ClockSettingsAction>() {
+) : BaseViewModel<ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 
     override fun createInitialState(): ClockSettingsState = ClockSettingsState()
 

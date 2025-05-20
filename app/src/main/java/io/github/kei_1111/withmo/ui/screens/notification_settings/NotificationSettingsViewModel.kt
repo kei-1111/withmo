@@ -14,7 +14,7 @@ import javax.inject.Inject
 class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
-) : BaseViewModel<NotificationSettingsState, NotificationSettingsAction>() {
+) : BaseViewModel<NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
 
     override fun createInitialState(): NotificationSettingsState = NotificationSettingsState()
 

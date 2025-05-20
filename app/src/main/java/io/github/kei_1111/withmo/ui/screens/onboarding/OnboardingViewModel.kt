@@ -12,6 +12,7 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
+import io.github.kei_1111.withmo.ui.base.Effect
 import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
@@ -28,7 +29,7 @@ class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val oneTimeEventRepository: OneTimeEventRepository,
-) : BaseViewModel<OnboardingState, OnboardingAction>() {
+) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
     override fun createInitialState(): OnboardingState = OnboardingState()
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
