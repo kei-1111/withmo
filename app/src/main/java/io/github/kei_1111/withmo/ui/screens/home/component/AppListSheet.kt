@@ -35,7 +35,7 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
 import io.github.kei_1111.withmo.ui.theme.DesignConstants
@@ -51,7 +51,7 @@ internal fun AppListSheet(
     appList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -63,7 +63,7 @@ internal fun AppListSheet(
     }
 
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeUiEvent.OnAppListSheetSwipeDown) },
+        onDismissRequest = { onEvent(HomeAction.OnAppListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = appListSheetState,
         dragHandle = {},
@@ -88,7 +88,7 @@ internal fun AppListSheet(
                 WithmoSearchTextField(
                     modifier = Modifier.fillMaxWidth(),
                     value = uiState.appSearchQuery,
-                    onValueChange = { onEvent(HomeUiEvent.OnAppSearchQueryChange(it)) },
+                    onValueChange = { onEvent(HomeAction.OnAppSearchQueryChange(it)) },
                     action = {
                         resultAppList = appList.filter { appInfo ->
                             appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
@@ -122,7 +122,7 @@ private fun AppList(
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
     isNavigateSettingsButtonShown: Boolean,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -149,8 +149,8 @@ private fun AppList(
                     items = launchableAppList,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                    onClick = { onEvent(HomeAction.OnAppClick(it)) },
+                    onLongClick = { onEvent(HomeAction.OnAppLongClick(it)) },
                 )
             }
         }
@@ -165,8 +165,8 @@ private fun AppList(
                     items = settingApp,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                    onClick = { onEvent(HomeAction.OnAppClick(it)) },
+                    onLongClick = { onEvent(HomeAction.OnAppLongClick(it)) },
                 )
             }
         }

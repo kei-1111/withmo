@@ -28,7 +28,7 @@ class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val oneTimeEventRepository: OneTimeEventRepository,
-) : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
+) : BaseViewModel<OnboardingUiState, OnboardingAction>() {
     override fun createInitialState(): OnboardingUiState = OnboardingUiState()
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()

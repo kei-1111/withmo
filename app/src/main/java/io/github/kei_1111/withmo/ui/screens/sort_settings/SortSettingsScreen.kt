@@ -45,17 +45,17 @@ fun SortSettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(SortSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(SortSettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SortSettingsUiEvent.OnSortTypeRadioButtonClick -> {
+                is SortSettingsAction.OnSortTypeRadioButtonClick -> {
                     viewModel.changeSortType(event.sortType)
                 }
 
-                is SortSettingsUiEvent.OnSaveButtonClick -> {
+                is SortSettingsAction.OnSaveButtonClick -> {
                     viewModel.saveSortSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
@@ -67,7 +67,7 @@ fun SortSettingsScreen(
                     )
                 }
 
-                is SortSettingsUiEvent.OnBackButtonClick -> {
+                is SortSettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -76,7 +76,7 @@ fun SortSettingsScreen(
 
     SortSettingsScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -84,7 +84,7 @@ fun SortSettingsScreen(
 @Composable
 private fun SortSettingsScreen(
     uiState: SortSettingsUiState,
-    onEvent: (SortSettingsUiEvent) -> Unit,
+    onEvent: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -100,7 +100,7 @@ private fun SortSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "並び順") },
-                navigateBack = { onEvent(SortSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onEvent(SortSettingsAction.OnBackButtonClick) },
             )
             SortSettingsScreenContent(
                 uiState = uiState,
@@ -111,7 +111,7 @@ private fun SortSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SortSettingsUiEvent.OnSaveButtonClick) },
+                onClick = { onEvent(SortSettingsAction.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

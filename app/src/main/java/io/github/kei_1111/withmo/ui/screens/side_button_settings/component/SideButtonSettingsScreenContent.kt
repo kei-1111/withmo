@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
-import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsAction
 import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SideButtonSettingsScreenContent(
     uiState: SideButtonSettingsUiState,
-    onEvent: (SideButtonSettingsUiEvent) -> Unit,
+    onEvent: (SideButtonSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -25,25 +25,25 @@ internal fun SideButtonSettingsScreenContent(
         WithmoSettingItemWithSwitch(
             title = "スケールスライダー表示ボタンの表示",
             checked = uiState.sideButtonSettings.isShowScaleSliderButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsShowScaleSliderButtonShownSwitchChange(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsAction.OnIsShowScaleSliderButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "表示モデル変更ボタンの表示",
             checked = uiState.sideButtonSettings.isOpenDocumentButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsOpenDocumentButtonShownSwitchChange(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsAction.OnIsOpenDocumentButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "デフォルトモデル設定ボタンの表示",
             checked = uiState.sideButtonSettings.isSetDefaultModelButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsAction.OnIsSetDefaultModelButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "カスタマイズボタンの表示",
             checked = uiState.sideButtonSettings.isNavigateSettingsButtonShown,
-            onCheckedChange = { onEvent(SideButtonSettingsUiEvent.OnIsNavigateSettingsButtonShownSwitchChange(it)) },
+            onCheckedChange = { onEvent(SideButtonSettingsAction.OnIsNavigateSettingsButtonShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

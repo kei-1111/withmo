@@ -26,7 +26,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.screens.home.PageContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
@@ -37,7 +37,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 @Composable
 internal fun PagerContent(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -59,11 +59,11 @@ internal fun PagerContent(
             } else {
                 when (page) {
                     PageContent.DisplayModel.ordinal -> {
-                        onEvent(HomeUiEvent.OnWidgetContentSwipeRight)
+                        onEvent(HomeAction.OnWidgetContentSwipeRight)
                     }
 
                     PageContent.Widget.ordinal -> {
-                        onEvent(HomeUiEvent.OnDisplayModelContentSwipeLeft)
+                        onEvent(HomeAction.OnDisplayModelContentSwipeLeft)
                     }
                 }
             }
@@ -94,13 +94,13 @@ internal fun PagerContent(
                                         val normalizedY = it.y / screenHeightPx
 
                                         onEvent(
-                                            HomeUiEvent.OnDisplayModelContentClick(
+                                            HomeAction.OnDisplayModelContentClick(
                                                 x = normalizedX,
                                                 y = normalizedY,
                                             ),
                                         )
                                     },
-                                    onLongPress = { onEvent(HomeUiEvent.OnDisplayModelContentLongClick) },
+                                    onLongPress = { onEvent(HomeAction.OnDisplayModelContentLongClick) },
                                 )
                             },
                     )
@@ -114,7 +114,7 @@ internal fun PagerContent(
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
-                                    onLongPress = { onEvent(HomeUiEvent.OnWidgetContentLongClick) },
+                                    onLongPress = { onEvent(HomeAction.OnWidgetContentLongClick) },
                                 )
                             },
                     )

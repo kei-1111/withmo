@@ -37,7 +37,7 @@ class HomeViewModel @Inject constructor(
     private val widgetInfoRepository: WidgetInfoRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
-) : BaseViewModel<HomeUiState, HomeUiEvent>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+) : BaseViewModel<HomeUiState, HomeAction>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     override fun createInitialState(): HomeUiState = HomeUiState()
 

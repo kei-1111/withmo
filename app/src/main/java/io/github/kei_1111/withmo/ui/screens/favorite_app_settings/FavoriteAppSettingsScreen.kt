@@ -48,25 +48,25 @@ fun FavoriteAppSettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(FavoriteAppSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(FavoriteAppSettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is FavoriteAppSettingsUiEvent.OnAllAppListAppClick -> {
+                is FavoriteAppSettingsAction.OnAllAppListAppClick -> {
                     viewModel.addFavoriteAppList(event.appInfo)
                 }
 
-                is FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick -> {
+                is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> {
                     viewModel.removeFavoriteAppList(event.appInfo)
                 }
 
-                is FavoriteAppSettingsUiEvent.OnAppSearchQueryChange -> {
+                is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is FavoriteAppSettingsUiEvent.OnSaveButtonClick -> {
+                is FavoriteAppSettingsAction.OnSaveButtonClick -> {
                     viewModel.saveFavoriteAppList(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
@@ -78,7 +78,7 @@ fun FavoriteAppSettingsScreen(
                     )
                 }
 
-                is FavoriteAppSettingsUiEvent.OnBackButtonClick -> {
+                is FavoriteAppSettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -88,7 +88,7 @@ fun FavoriteAppSettingsScreen(
     FavoriteAppSettingsScreen(
         appList = appList.toPersistentList(),
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -97,7 +97,7 @@ fun FavoriteAppSettingsScreen(
 private fun FavoriteAppSettingsScreen(
     appList: ImmutableList<AppInfo>,
     uiState: FavoriteAppSettingsUiState,
-    onEvent: (FavoriteAppSettingsUiEvent) -> Unit,
+    onEvent: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -113,7 +113,7 @@ private fun FavoriteAppSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "お気に入りアプリ") },
-                navigateBack = { onEvent(FavoriteAppSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onEvent(FavoriteAppSettingsAction.OnBackButtonClick) },
             )
             FavoriteAppSettingsScreenContent(
                 appList = appList,
@@ -124,7 +124,7 @@ private fun FavoriteAppSettingsScreen(
                     .weight(Weights.Medium),
             )
             WithmoSaveButton(
-                onClick = { onEvent(FavoriteAppSettingsUiEvent.OnSaveButtonClick) },
+                onClick = { onEvent(FavoriteAppSettingsAction.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

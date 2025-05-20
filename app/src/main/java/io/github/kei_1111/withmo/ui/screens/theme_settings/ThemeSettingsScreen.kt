@@ -45,17 +45,17 @@ fun ThemeSettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(ThemeSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(ThemeSettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is ThemeSettingsUiEvent.OnThemeTypeRadioButtonClick -> {
+                is ThemeSettingsAction.OnThemeTypeRadioButtonClick -> {
                     viewModel.changeThemeType(event.themeType)
                 }
 
-                is ThemeSettingsUiEvent.OnSaveButtonClick -> {
+                is ThemeSettingsAction.OnSaveButtonClick -> {
                     viewModel.saveThemeSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
@@ -67,7 +67,7 @@ fun ThemeSettingsScreen(
                     )
                 }
 
-                is ThemeSettingsUiEvent.OnBackButtonClick -> {
+                is ThemeSettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -76,7 +76,7 @@ fun ThemeSettingsScreen(
 
     ThemeSettingsSceen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -84,7 +84,7 @@ fun ThemeSettingsScreen(
 @Composable
 private fun ThemeSettingsSceen(
     uiState: ThemeSettingsUiState,
-    onEvent: (ThemeSettingsUiEvent) -> Unit,
+    onEvent: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -100,7 +100,7 @@ private fun ThemeSettingsSceen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "テーマ") },
-                navigateBack = { onEvent(ThemeSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onEvent(ThemeSettingsAction.OnBackButtonClick) },
             )
             ThemeSettingsScreenContent(
                 uiState = uiState,
@@ -111,7 +111,7 @@ private fun ThemeSettingsSceen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ThemeSettingsUiEvent.OnSaveButtonClick) },
+                onClick = { onEvent(ThemeSettingsAction.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

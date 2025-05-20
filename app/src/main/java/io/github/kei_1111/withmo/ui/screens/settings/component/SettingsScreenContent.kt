@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.settings.SettingsAction
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
@@ -42,7 +42,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 @Composable
 internal fun SettingsScreenContent(
     uiState: SettingsUiState,
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -62,7 +62,7 @@ internal fun SettingsScreenContent(
 
 @Composable
 private fun HomeAppSettings(
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     isDefaultHomeApp: Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -91,7 +91,7 @@ private fun HomeAppSettings(
                     },
                     itemName = "デフォルトホームアプリ",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateHomeAppSettingButtonClick)
+                        onEvent(SettingsAction.OnNavigateHomeAppSettingButtonClick)
                     },
                     itemColor = if (isDefaultHomeApp) {
                         MaterialTheme.colorScheme.onSurface
@@ -106,7 +106,7 @@ private fun HomeAppSettings(
 
 @Composable
 private fun HomeScreenSettings(
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -126,7 +126,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.AccessTime,
                     itemName = "時計",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateClockSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateClockSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -134,7 +134,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Apps,
                     itemName = "アプリアイコン",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateAppIconSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateAppIconSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -142,7 +142,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Star,
                     itemName = "お気に入りアプリ",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateFavoriteAppSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateFavoriteAppSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -150,7 +150,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.RadioButtonChecked,
                     itemName = "サイドボタン",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateSideButtonSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateSideButtonSettingsButtonClick)
                     },
                 )
                 SettingItemDivider()
@@ -158,7 +158,7 @@ private fun HomeScreenSettings(
                     icon = Icons.Rounded.Tune,
                     itemName = "並び順",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateSortSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateSortSettingsButtonClick)
                     },
                 )
             }
@@ -168,7 +168,7 @@ private fun HomeScreenSettings(
 
 @Composable
 private fun NotificationSettings(
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -188,7 +188,7 @@ private fun NotificationSettings(
                     icon = Icons.Rounded.Notifications,
                     itemName = "通知",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateNotificationSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateNotificationSettingsButtonClick)
                     },
                 )
             }
@@ -198,7 +198,7 @@ private fun NotificationSettings(
 
 @Composable
 private fun ThemeSettings(
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -218,7 +218,7 @@ private fun ThemeSettings(
                     icon = Icons.Rounded.Palette,
                     itemName = "テーマ",
                     onClick = {
-                        onEvent(SettingsUiEvent.OnNavigateThemeSettingsButtonClick)
+                        onEvent(SettingsAction.OnNavigateThemeSettingsButtonClick)
                     },
                 )
             }

@@ -45,29 +45,29 @@ fun SideButtonSettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(SideButtonSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(SideButtonSettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SideButtonSettingsUiEvent.OnIsShowScaleSliderButtonShownSwitchChange -> {
+                is SideButtonSettingsAction.OnIsShowScaleSliderButtonShownSwitchChange -> {
                     viewModel.changeIsShowScaleSliderButtonShown(event.isShowScaleSliderButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.OnIsOpenDocumentButtonShownSwitchChange -> {
+                is SideButtonSettingsAction.OnIsOpenDocumentButtonShownSwitchChange -> {
                     viewModel.changeIsOpenDocumentButtonShown(event.isOpenDocumentButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.OnIsSetDefaultModelButtonShownSwitchChange -> {
+                is SideButtonSettingsAction.OnIsSetDefaultModelButtonShownSwitchChange -> {
                     viewModel.changeIsSetDefaultModelButtonShown(event.isSetDefaultModelButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.OnIsNavigateSettingsButtonShownSwitchChange -> {
+                is SideButtonSettingsAction.OnIsNavigateSettingsButtonShownSwitchChange -> {
                     viewModel.changeIsNavigateSettingsButtonShown(event.isNavigateSettingsButtonShown)
                 }
 
-                is SideButtonSettingsUiEvent.OnSaveButtonClick -> {
+                is SideButtonSettingsAction.OnSaveButtonClick -> {
                     viewModel.saveSideButtonSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
@@ -79,7 +79,7 @@ fun SideButtonSettingsScreen(
                     )
                 }
 
-                is SideButtonSettingsUiEvent.OnBackButtonClick -> {
+                is SideButtonSettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -88,7 +88,7 @@ fun SideButtonSettingsScreen(
 
     SideButtonSettingsScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -96,7 +96,7 @@ fun SideButtonSettingsScreen(
 @Composable
 private fun SideButtonSettingsScreen(
     uiState: SideButtonSettingsUiState,
-    onEvent: (SideButtonSettingsUiEvent) -> Unit,
+    onEvent: (SideButtonSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -112,7 +112,7 @@ private fun SideButtonSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "サイドボタン") },
-                navigateBack = { onEvent(SideButtonSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onEvent(SideButtonSettingsAction.OnBackButtonClick) },
             )
             SideButtonSettingsScreenContent(
                 uiState = uiState,
@@ -123,7 +123,7 @@ private fun SideButtonSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SideButtonSettingsUiEvent.OnSaveButtonClick) },
+                onClick = { onEvent(SideButtonSettingsAction.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -15,7 +15,7 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsUiEvent>() {
+) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsAction>() {
 
     override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
 

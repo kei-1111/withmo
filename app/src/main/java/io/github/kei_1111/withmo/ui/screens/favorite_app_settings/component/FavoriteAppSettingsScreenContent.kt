@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun FavoriteAppSettingsScreenContent(
     appList: ImmutableList<AppInfo>,
     uiState: FavoriteAppSettingsUiState,
-    onEvent: (FavoriteAppSettingsUiEvent) -> Unit,
+    onEvent: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -67,16 +67,16 @@ internal fun FavoriteAppSettingsScreenContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.appSearchQuery,
-                onValueChange = { onEvent(FavoriteAppSettingsUiEvent.OnAppSearchQueryChange(it)) },
+                onValueChange = { onEvent(FavoriteAppSettingsAction.OnAppSearchQueryChange(it)) },
                 action = { filterAppList(uiState.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
                     favoriteAppList = uiState.favoriteAppList,
-                    addSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnAllAppListAppClick(it)) },
+                    addSelectedAppList = { onEvent(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = {
-                        onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it))
+                        onEvent(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it))
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -92,7 +92,7 @@ internal fun FavoriteAppSettingsScreenContent(
         }
         FavoriteAppListRow(
             favoriteAppList = uiState.favoriteAppList,
-            removeSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it)) },
+            removeSelectedAppList = { onEvent(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
         )

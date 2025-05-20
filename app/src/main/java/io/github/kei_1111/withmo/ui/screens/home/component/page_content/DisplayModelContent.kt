@@ -24,7 +24,7 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
@@ -33,7 +33,7 @@ import io.github.kei_1111.withmo.utils.FileUtils
 @Composable
 internal fun DisplayModelContent(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isDefaultModelFile =
@@ -46,7 +46,7 @@ internal fun DisplayModelContent(
     ) {
         if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             NavigateSettingsButton(
-                onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+                onClick = { onEvent(HomeAction.OnNavigateSettingsButtonClick) },
             )
         }
         Spacer(
@@ -61,17 +61,17 @@ internal fun DisplayModelContent(
                 isDefaultModelFile == false
             ) {
                 SetDefaultModelButton(
-                    onClick = { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
+                    onClick = { onEvent(HomeAction.OnSetDefaultModelButtonClick) },
                 )
             }
             if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
                 OpenDocumentButton(
-                    onClick = { onEvent(HomeUiEvent.OnOpenDocumentButtonClick) },
+                    onClick = { onEvent(HomeAction.OnOpenDocumentButtonClick) },
                 )
             }
             if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
                 ShowScaleSliderButton(
-                    onClick = { onEvent(HomeUiEvent.OnShowScaleSliderButtonClick) },
+                    onClick = { onEvent(HomeAction.OnShowScaleSliderButtonClick) },
                 )
             }
         }

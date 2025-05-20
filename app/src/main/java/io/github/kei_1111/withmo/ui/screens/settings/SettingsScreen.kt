@@ -67,7 +67,7 @@ fun SettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(SettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(SettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(Unit) {
@@ -75,42 +75,42 @@ fun SettingsScreen(
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is SettingsUiEvent.OnNavigateHomeAppSettingButtonClick -> {
+                is SettingsAction.OnNavigateHomeAppSettingButtonClick -> {
                     val intent = Intent(Settings.ACTION_HOME_SETTINGS)
                     context.startActivity(intent)
                 }
 
-                is SettingsUiEvent.OnNavigateClockSettingsButtonClick -> {
+                is SettingsAction.OnNavigateClockSettingsButtonClick -> {
                     currentOnNavigateClockSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateAppIconSettingsButtonClick -> {
+                is SettingsAction.OnNavigateAppIconSettingsButtonClick -> {
                     currentOnNavigateAppIconSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateFavoriteAppSettingsButtonClick -> {
+                is SettingsAction.OnNavigateFavoriteAppSettingsButtonClick -> {
                     currentOnNavigateFavoriteAppSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateSideButtonSettingsButtonClick -> {
+                is SettingsAction.OnNavigateSideButtonSettingsButtonClick -> {
                     currentOnNavigateSideButtonSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateSortSettingsButtonClick -> {
+                is SettingsAction.OnNavigateSortSettingsButtonClick -> {
                     currentOnNavigateSortSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateNotificationSettingsButtonClick -> {
+                is SettingsAction.OnNavigateNotificationSettingsButtonClick -> {
                     currentOnNavigateNotificationSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnNavigateThemeSettingsButtonClick -> {
+                is SettingsAction.OnNavigateThemeSettingsButtonClick -> {
                     currentOnNavigateThemeSettingsButtonClick()
                 }
 
-                is SettingsUiEvent.OnBackButtonClick -> {
+                is SettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -119,7 +119,7 @@ fun SettingsScreen(
 
     SettingsScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -128,7 +128,7 @@ fun SettingsScreen(
 @Composable
 private fun SettingsScreen(
     uiState: SettingsUiState,
-    onEvent: (SettingsUiEvent) -> Unit,
+    onEvent: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -144,7 +144,7 @@ private fun SettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
-                navigateClose = { onEvent(SettingsUiEvent.OnBackButtonClick) },
+                navigateClose = { onEvent(SettingsAction.OnBackButtonClick) },
             )
             SettingsScreenContent(
                 modifier = Modifier

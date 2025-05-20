@@ -21,7 +21,7 @@ import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
@@ -35,7 +35,7 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun SelectFavoriteAppContent(
     appList: ImmutableList<AppInfo>,
     uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -50,7 +50,7 @@ internal fun SelectFavoriteAppContent(
     }
 
     BackHandler {
-        onEvent(OnboardingUiEvent.OnPreviousButtonClick)
+        onEvent(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -76,15 +76,15 @@ internal fun SelectFavoriteAppContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = uiState.appSearchQuery,
-                onValueChange = { onEvent(OnboardingUiEvent.OnAppSearchQueryChange(it)) },
+                onValueChange = { onEvent(OnboardingAction.OnAppSearchQueryChange(it)) },
                 action = { filterAppList(uiState.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
                     favoriteAppList = uiState.selectedAppList,
-                    addSelectedAppList = { onEvent(OnboardingUiEvent.OnAllAppListAppClick(it)) },
-                    removeSelectedAppList = { onEvent(OnboardingUiEvent.OnFavoriteAppListAppClick(it)) },
+                    addSelectedAppList = { onEvent(OnboardingAction.OnAllAppListAppClick(it)) },
+                    removeSelectedAppList = { onEvent(OnboardingAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
@@ -98,7 +98,7 @@ internal fun SelectFavoriteAppContent(
         }
         FavoriteAppListRow(
             favoriteAppList = uiState.selectedAppList,
-            removeSelectedAppList = { onEvent(OnboardingUiEvent.OnFavoriteAppListAppClick(it)) },
+            removeSelectedAppList = { onEvent(OnboardingAction.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         SelectFavoriteAppContentBottomAppBar(
@@ -112,7 +112,7 @@ internal fun SelectFavoriteAppContent(
 @Composable
 private fun SelectFavoriteAppContentBottomAppBar(
     uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -121,7 +121,7 @@ private fun SelectFavoriteAppContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
+            onClick = { onEvent(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
@@ -130,7 +130,7 @@ private fun SelectFavoriteAppContentBottomAppBar(
             } else {
                 "次へ"
             },
-            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
+            onClick = { onEvent(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

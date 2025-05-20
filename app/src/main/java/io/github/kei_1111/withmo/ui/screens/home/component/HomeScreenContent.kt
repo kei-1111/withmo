@@ -29,7 +29,7 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
 import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
@@ -43,7 +43,7 @@ private const val BottomSheetShowDragHeight = -50f
 @Composable
 internal fun HomeScreenContent(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentTime = LocalCurrentTime.current
@@ -56,7 +56,7 @@ internal fun HomeScreenContent(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 WithmoIconButton(
-                    onClick = { onEvent(HomeUiEvent.OnCloseScaleSliderButtonClick) },
+                    onClick = { onEvent(HomeAction.OnCloseScaleSliderButtonClick) },
                     modifier = Modifier
                         .padding(start = Paddings.Medium)
                         .size(AppConstants.DefaultAppIconSize.dp),
@@ -83,7 +83,7 @@ internal fun HomeScreenContent(
                         detectVerticalDragGestures(
                             onVerticalDrag = { change, dragAmount ->
                                 if (dragAmount < BottomSheetShowDragHeight) {
-                                    onEvent(HomeUiEvent.OnAppListSheetSwipeUp)
+                                    onEvent(HomeAction.OnAppListSheetSwipeUp)
                                 }
                             },
                         )
@@ -111,7 +111,7 @@ internal fun HomeScreenContent(
 @Composable
 private fun RowAppList(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appIconSettings = uiState.currentUserSettings.appIconSettings
@@ -135,8 +135,8 @@ private fun RowAppList(
     ) {
         uiState.favoriteAppList.forEach {
             AppItem(
-                onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                onClick = { onEvent(HomeAction.OnAppClick(it)) },
+                onLongClick = { onEvent(HomeAction.OnAppLongClick(it)) },
                 appInfo = it,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(

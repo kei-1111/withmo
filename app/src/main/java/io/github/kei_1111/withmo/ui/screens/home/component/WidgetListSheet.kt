@@ -41,7 +41,7 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetManager
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
@@ -57,7 +57,7 @@ import kotlinx.collections.immutable.toPersistentMap
 @Composable
 internal fun WidgetListSheet(
     widgetListSheetState: SheetState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
@@ -67,13 +67,13 @@ internal fun WidgetListSheet(
         .toPersistentMap()
 
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeUiEvent.OnWidgetListSheetSwipeDown) },
+        onDismissRequest = { onEvent(HomeAction.OnWidgetListSheetSwipeDown) },
         sheetState = widgetListSheetState,
         modifier = modifier,
     ) {
         WidgetList(
             groupedWidgetInfoMaps = groupedWidgetInfoMaps,
-            selectWidget = { onEvent(HomeUiEvent.OnWidgetListSheetItemClick(it)) },
+            selectWidget = { onEvent(HomeAction.OnWidgetListSheetItemClick(it)) },
         )
     }
 }

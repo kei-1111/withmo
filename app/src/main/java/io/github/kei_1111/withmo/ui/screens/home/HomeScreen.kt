@@ -150,9 +150,9 @@ fun HomeScreen(
     val currentOnNavigateSettingsButtonClick by rememberUpdatedState(onNavigateSettingsButtonClick)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is HomeUiEvent.OnAppClick -> {
+                is HomeAction.OnAppClick -> {
                     if (event.appInfo.packageName == context.packageName) {
                         currentOnNavigateSettingsButtonClick()
                     } else {
@@ -160,7 +160,7 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnAppLongClick -> {
+                is HomeAction.OnAppLongClick -> {
                     val isSystemApp = AppUtils.isSystemApp(context, event.appInfo.packageName)
                     val isProtectedApp = AppUtils.isProtectedApp(context, event.appInfo.packageName)
 
@@ -171,17 +171,17 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnShowScaleSliderButtonClick -> {
+                is HomeAction.OnShowScaleSliderButtonClick -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.ShowObject, "")
                     viewModel.setIsShowScaleSliderButtonShown(true)
                 }
 
-                is HomeUiEvent.OnCloseScaleSliderButtonClick -> {
+                is HomeAction.OnCloseScaleSliderButtonClick -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.HideObject, "")
                     viewModel.setIsShowScaleSliderButtonShown(false)
                 }
 
-                is HomeUiEvent.OnSetDefaultModelButtonClick -> {
+                is HomeAction.OnSetDefaultModelButtonClick -> {
                     scope.launch {
                         val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
                         val isDefaultModelFile =
@@ -194,7 +194,7 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnOpenDocumentButtonClick -> {
+                is HomeAction.OnOpenDocumentButtonClick -> {
                     if (isModelChangeWarningFirstShown) {
                         openDocumentLauncher.launch(arrayOf("*/*"))
                     } else {
@@ -202,32 +202,32 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnNavigateSettingsButtonClick -> {
+                is HomeAction.OnNavigateSettingsButtonClick -> {
                     currentOnNavigateSettingsButtonClick()
                 }
 
-                is HomeUiEvent.OnModelChangeWarningDialogConfirm -> {
+                is HomeAction.OnModelChangeWarningDialogConfirm -> {
                     viewModel.setIsModelChangeWarningDialogShown(false)
                     viewModel.markModelChangeWarningFirstShown()
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
-                is HomeUiEvent.OnModelChangeWarningDialogDismiss -> {
+                is HomeAction.OnModelChangeWarningDialogDismiss -> {
                     viewModel.setIsModelChangeWarningDialogShown(false)
                 }
 
-                is HomeUiEvent.OnAppSearchQueryChange -> {
+                is HomeAction.OnAppSearchQueryChange -> {
                     viewModel.setAppSearchQuery(event.query)
                 }
 
-                is HomeUiEvent.OnAppListSheetSwipeUp -> {
+                is HomeAction.OnAppListSheetSwipeUp -> {
                     scope.launch {
                         viewModel.changeIsAppListBottomSheetOpened(true)
                         appListSheetState.show()
                     }
                 }
 
-                is HomeUiEvent.OnAppListSheetSwipeDown -> {
+                is HomeAction.OnAppListSheetSwipeDown -> {
                     scope.launch {
                         appListSheetState.hide()
                     }.invokeOnCompletion {
@@ -237,14 +237,14 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnAddWidgetButtonClick -> {
+                is HomeAction.OnAddWidgetButtonClick -> {
                     scope.launch {
                         viewModel.changeIsWidgetListBottomSheetOpened(true)
                         widgetListSheetState.show()
                     }
                 }
 
-                is HomeUiEvent.OnWidgetListSheetSwipeDown -> {
+                is HomeAction.OnWidgetListSheetSwipeDown -> {
                     scope.launch {
                         widgetListSheetState.hide()
                     }.invokeOnCompletion {
@@ -254,25 +254,25 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnDisplayModelContentSwipeLeft -> {
+                is HomeAction.OnDisplayModelContentSwipeLeft -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
                     viewModel.setCurrentPage(PageContent.Widget)
                 }
 
-                is HomeUiEvent.OnWidgetContentSwipeRight -> {
+                is HomeAction.OnWidgetContentSwipeRight -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
                     viewModel.setCurrentPage(PageContent.DisplayModel)
                 }
 
-                is HomeUiEvent.OnDisplayModelContentClick -> {
+                is HomeAction.OnDisplayModelContentClick -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.MoveLookat, "${event.x},${event.y}")
                 }
 
-                is HomeUiEvent.OnDisplayModelContentLongClick -> {
+                is HomeAction.OnDisplayModelContentLongClick -> {
                     AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
                 }
 
-                is HomeUiEvent.OnWidgetListSheetItemClick -> {
+                is HomeAction.OnWidgetListSheetItemClick -> {
                     val widgetId = appWidgetHost.allocateAppWidgetId()
                     val provider = event.widgetInfo.provider
                     val options = bundleOf(
@@ -324,26 +324,26 @@ fun HomeScreen(
                     }
                 }
 
-                is HomeUiEvent.OnWidgetContentLongClick -> {
+                is HomeAction.OnWidgetContentLongClick -> {
                     viewModel.changeIsEditMode(true)
                 }
 
-                is HomeUiEvent.OnCompleteEditButtonClick -> {
+                is HomeAction.OnCompleteEditButtonClick -> {
                     viewModel.saveWidgetList()
                     viewModel.changeIsEditMode(false)
                 }
 
-                is HomeUiEvent.OnDeleteWidgetBadgeClick -> {
+                is HomeAction.OnDeleteWidgetBadgeClick -> {
                     viewModel.deleteWidget(event.withmoWidgetInfo)
                 }
 
-                is HomeUiEvent.OnResizeWidgetBadgeClick -> {
+                is HomeAction.OnResizeWidgetBadgeClick -> {
                     viewModel.changeIsWidgetResizing(true)
                     viewModel.changeResizingWidget(event.withmoWidgetInfo)
                     viewModel.deleteWidget(event.withmoWidgetInfo)
                 }
 
-                is HomeUiEvent.OnWidgetResizeBottomSheetClose -> {
+                is HomeAction.OnWidgetResizeBottomSheetClose -> {
                     viewModel.changeIsWidgetResizing(false)
                     viewModel.addDisplayedWidgetList(event.withmoWidgetInfo)
                     viewModel.changeResizingWidget(null)
@@ -354,7 +354,7 @@ fun HomeScreen(
 
     HomeScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         homeAppList = homeAppList,
         appListSheetState = appListSheetState,
         widgetListSheetState = widgetListSheetState,
@@ -367,7 +367,7 @@ fun HomeScreen(
 @Composable
 private fun HomeScreen(
     uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     widgetListSheetState: SheetState,
@@ -401,7 +401,7 @@ private fun HomeScreen(
         uiState.resizeWidget?.let { widgetInfo ->
             WidgetResizeBottomSheet(
                 withmoWidgetInfo = widgetInfo,
-                close = { onEvent(HomeUiEvent.OnWidgetResizeBottomSheetClose(it)) },
+                close = { onEvent(HomeAction.OnWidgetResizeBottomSheetClose(it)) },
             )
         }
     }
@@ -422,8 +422,8 @@ private fun HomeScreen(
 
     if (uiState.isModelChangeWarningDialogShown) {
         ModelChangeWarningDialog(
-            onConfirm = { onEvent(HomeUiEvent.OnModelChangeWarningDialogConfirm) },
-            onDismiss = { onEvent(HomeUiEvent.OnModelChangeWarningDialogDismiss) },
+            onConfirm = { onEvent(HomeAction.OnModelChangeWarningDialogConfirm) },
+            onDismiss = { onEvent(HomeAction.OnModelChangeWarningDialogDismiss) },
         )
     }
 

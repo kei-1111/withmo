@@ -14,7 +14,7 @@ import javax.inject.Inject
 class SideButtonSettingsViewModel @Inject constructor(
     private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
-) : BaseViewModel<SideButtonSettingsUiState, SideButtonSettingsUiEvent>() {
+) : BaseViewModel<SideButtonSettingsUiState, SideButtonSettingsAction>() {
 
     override fun createInitialState(): SideButtonSettingsUiState = SideButtonSettingsUiState()
 

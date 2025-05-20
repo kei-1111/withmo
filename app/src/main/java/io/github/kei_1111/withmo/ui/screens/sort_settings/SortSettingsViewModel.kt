@@ -15,7 +15,7 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
-) : BaseViewModel<SortSettingsUiState, SortSettingsUiEvent>() {
+) : BaseViewModel<SortSettingsUiState, SortSettingsAction>() {
 
     override fun createInitialState(): SortSettingsUiState = SortSettingsUiState()
 

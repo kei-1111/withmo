@@ -47,33 +47,33 @@ fun AppIconSettingsScreen(
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(AppIconSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(AppIconSettingsAction.OnBackButtonClick)
     }
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is AppIconSettingsUiEvent.OnAppIconSizeSliderChange -> {
+                is AppIconSettingsAction.OnAppIconSizeSliderChange -> {
                     viewModel.changeAppIconSize(event.appIconSize)
                 }
 
-                is AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick -> {
+                is AppIconSettingsAction.OnAppIconShapeRadioButtonClick -> {
                     viewModel.changeAppIconShape(event.appIconShape)
                 }
 
-                is AppIconSettingsUiEvent.OnRoundedCornerPercentSliderChange -> {
+                is AppIconSettingsAction.OnRoundedCornerPercentSliderChange -> {
                     viewModel.changeRoundedCornerPercent(event.roundedCornerPercent)
                 }
 
-                is AppIconSettingsUiEvent.OnIsAppNameShownSwitchChange -> {
+                is AppIconSettingsAction.OnIsAppNameShownSwitchChange -> {
                     viewModel.changeIsAppNameShown(event.isAppNameShown)
                 }
 
-                is AppIconSettingsUiEvent.OnIsFavoriteAppBackgroundShownSwitchChange -> {
+                is AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange -> {
                     viewModel.changeIsFavoriteAppBackgroundShown(event.isFavoriteAppBackgroundShown)
                 }
 
-                is AppIconSettingsUiEvent.OnSaveButtonClick -> {
+                is AppIconSettingsAction.OnSaveButtonClick -> {
                     viewModel.saveAppIconSettings(
                         onSaveSuccess = {
                             showToast(context, "保存しました")
@@ -85,7 +85,7 @@ fun AppIconSettingsScreen(
                     )
                 }
 
-                is AppIconSettingsUiEvent.OnBackButtonClick -> {
+                is AppIconSettingsAction.OnBackButtonClick -> {
                     currentOnBackButtonClick()
                 }
             }
@@ -94,7 +94,7 @@ fun AppIconSettingsScreen(
 
     AppIconSettingsScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -102,7 +102,7 @@ fun AppIconSettingsScreen(
 @Composable
 private fun AppIconSettingsScreen(
     uiState: AppIconSettingsUiState,
-    onEvent: (AppIconSettingsUiEvent) -> Unit,
+    onEvent: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -118,7 +118,7 @@ private fun AppIconSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "アプリアイコン") },
-                navigateBack = { onEvent(AppIconSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onEvent(AppIconSettingsAction.OnBackButtonClick) },
             )
             AppItemPreviewArea(
                 appIconSettings = uiState.appIconSettings,
@@ -134,7 +134,7 @@ private fun AppIconSettingsScreen(
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(AppIconSettingsUiEvent.OnSaveButtonClick) },
+                onClick = { onEvent(AppIconSettingsAction.OnSaveButtonClick) },
                 enabled = uiState.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()

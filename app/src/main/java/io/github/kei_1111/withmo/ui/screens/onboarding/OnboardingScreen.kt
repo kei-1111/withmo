@@ -72,25 +72,25 @@ fun OnboardingScreen(
     val currentOnFinishButtonClick by rememberUpdatedState(onFinishButtonClick)
 
     LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
+        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
             when (event) {
-                is OnboardingUiEvent.OnAllAppListAppClick -> {
+                is OnboardingAction.OnAllAppListAppClick -> {
                     viewModel.addSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.OnFavoriteAppListAppClick -> {
+                is OnboardingAction.OnFavoriteAppListAppClick -> {
                     viewModel.removeSelectedAppList(event.appInfo)
                 }
 
-                is OnboardingUiEvent.OnAppSearchQueryChange -> {
+                is OnboardingAction.OnAppSearchQueryChange -> {
                     viewModel.onValueChangeAppSearchQuery(event.query)
                 }
 
-                is OnboardingUiEvent.OnSelectDisplayModelAreaClick -> {
+                is OnboardingAction.OnSelectDisplayModelAreaClick -> {
                     openDocumentLauncher.launch(arrayOf("*/*"))
                 }
 
-                is OnboardingUiEvent.OnNextButtonClick -> {
+                is OnboardingAction.OnNextButtonClick -> {
                     viewModel.navigateToNextPage(
                         onFinish = {
                             viewModel.saveSetting(context)
@@ -99,7 +99,7 @@ fun OnboardingScreen(
                     )
                 }
 
-                is OnboardingUiEvent.OnPreviousButtonClick -> {
+                is OnboardingAction.OnPreviousButtonClick -> {
                     viewModel.navigateToPreviousPage()
                 }
             }
@@ -109,7 +109,7 @@ fun OnboardingScreen(
     OnboardingScreen(
         appList = appList.toPersistentList(),
         uiState = uiState,
-        onEvent = viewModel::onEvent,
+        onEvent = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -119,7 +119,7 @@ fun OnboardingScreen(
 private fun OnboardingScreen(
     appList: ImmutableList<AppInfo>,
     uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onEvent: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
