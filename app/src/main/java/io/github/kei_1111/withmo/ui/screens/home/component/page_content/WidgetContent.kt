@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
+import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings

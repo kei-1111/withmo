@@ -15,8 +15,8 @@ import androidx.compose.ui.res.painterResource
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights

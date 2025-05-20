@@ -40,8 +40,8 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetManager
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
+import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes

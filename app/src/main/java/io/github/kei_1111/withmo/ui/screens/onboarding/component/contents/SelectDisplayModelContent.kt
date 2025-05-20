@@ -39,8 +39,8 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
