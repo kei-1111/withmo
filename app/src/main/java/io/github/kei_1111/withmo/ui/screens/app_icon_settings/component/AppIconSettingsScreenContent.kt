@@ -34,7 +34,7 @@ internal fun AppIconSettingsScreenContent(
         )
         AppIconShapePicker(
             selectedAppIconShape = state.appIconSettings.appIconShape,
-            onEvent = onAction,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSlider(

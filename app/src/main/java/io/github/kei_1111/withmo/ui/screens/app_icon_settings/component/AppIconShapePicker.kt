@@ -29,7 +29,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 @Composable
 internal fun AppIconShapePicker(
     selectedAppIconShape: AppIconShape,
-    onEvent: (AppIconSettingsAction) -> Unit,
+    onAction: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -56,7 +56,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Circle == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Circle)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Circle)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -68,7 +68,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.RoundedCorner == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.RoundedCorner)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.RoundedCorner)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -80,7 +80,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Square == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Square)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Square)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
