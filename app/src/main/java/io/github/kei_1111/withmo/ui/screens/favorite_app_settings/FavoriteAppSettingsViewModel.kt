@@ -9,6 +9,7 @@ import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
+import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -59,7 +60,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    fun addFavoriteAppList(appInfo: AppInfo) {
+    private fun addFavoriteAppList(appInfo: AppInfo) {
         val addedFavoriteAppList = (_state.value.favoriteAppList + appInfo).toPersistentList()
 
         _state.update { currentState ->
@@ -76,7 +77,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    fun removeFavoriteAppList(appInfo: AppInfo) {
+    private fun removeFavoriteAppList(appInfo: AppInfo) {
         val removedFavoriteAppList = _state.value.favoriteAppList.filterNot { it.packageName == appInfo.packageName }
             .toPersistentList()
 
@@ -88,16 +89,13 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    fun onValueChangeAppSearchQuery(query: String) {
+    private fun onValueChangeAppSearchQuery(query: String) {
         _state.update {
             it.copy(appSearchQuery = query)
         }
     }
 
-    fun saveFavoriteAppList(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
+    private fun saveFavoriteAppList() {
         val currentFavoriteAppList = _state.value.favoriteAppList
         val initialFavoriteAppList = _state.value.initialFavoriteAppList
 
@@ -131,17 +129,26 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 appInfoRepository.updateAppInfoList(appsToUpdate)
-                onSaveSuccess()
+                sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
+                sendEffect(FavoriteAppSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save favorite app settings", e)
-                onSaveFailure()
+                sendEffect(FavoriteAppSettingsEffect.ShowToast("保存に失敗しました"))
             }
         }
     }
 
     override fun onAction(action: FavoriteAppSettingsAction) {
-        viewModelScope.launch {
-            _action.emit(action)
+        when (action) {
+            is FavoriteAppSettingsAction.OnAllAppListAppClick -> addFavoriteAppList(action.appInfo)
+
+            is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.appInfo)
+
+            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> onValueChangeAppSearchQuery(action.query)
+
+            is FavoriteAppSettingsAction.OnSaveButtonClick -> saveFavoriteAppList()
+
+            is FavoriteAppSettingsAction.OnBackButtonClick -> sendEffect(FavoriteAppSettingsEffect.NavigateBack)
         }
     }
 
