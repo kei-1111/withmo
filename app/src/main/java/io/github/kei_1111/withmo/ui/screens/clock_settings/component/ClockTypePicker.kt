@@ -21,7 +21,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 internal fun ClockTypePicker(
     isClockShown: Boolean,
     selectedClockType: ClockType,
-    onEvent: (ClockSettingsAction) -> Unit,
+    onAction: (ClockSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -44,7 +44,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.TOP_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.TOP_DATE)) },
+                onClick = { onAction(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.TOP_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ClockTypePickerDivider()
@@ -58,7 +58,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.HORIZONTAL_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.HORIZONTAL_DATE)) },
+                onClick = { onAction(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.HORIZONTAL_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

@@ -19,9 +19,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
@@ -29,8 +27,6 @@ import io.github.kei_1111.withmo.ui.screens.clock_settings.component.ClockSettin
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @Suppress("ModifierMissing")
 @Composable
@@ -38,57 +34,35 @@ fun ClockSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: ClockSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
         viewModel.onAction(ClockSettingsAction.OnBackButtonClick)
     }
 
-    LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
-            when (event) {
-                is ClockSettingsAction.OnIsClockShownSwitchChange -> {
-                    viewModel.changeIsClockShown(event.isClockShown)
-                }
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ClockSettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
-                is ClockSettingsAction.OnClockTypeRadioButtonClick -> {
-                    viewModel.changeClockType(event.clockType)
-                }
-
-                is ClockSettingsAction.OnSaveButtonClick -> {
-                    viewModel.saveClockSettings(
-                        onSaveSuccess = {
-                            showToast(context, "保存しました")
-                            currentOnBackButtonClick()
-                        },
-                        onSaveFailure = {
-                            showToast(context, "保存に失敗しました")
-                        },
-                    )
-                }
-
-                is ClockSettingsAction.OnBackButtonClick -> {
-                    currentOnBackButtonClick()
-                }
+                is ClockSettingsEffect.ShowToast -> showToast(context, effect.message)
             }
-        }.launchIn(this)
+        }
     }
 
     ClockSettingsScreen(
-        uiState = uiState,
-        onEvent = viewModel::onAction,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
 
 @Composable
 private fun ClockSettingsScreen(
-    uiState: ClockSettingsState,
-    onEvent: (ClockSettingsAction) -> Unit,
+    state: ClockSettingsState,
+    onAction: (ClockSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -104,19 +78,19 @@ private fun ClockSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "時計") },
-                navigateBack = { onEvent(ClockSettingsAction.OnBackButtonClick) },
+                navigateBack = { onAction(ClockSettingsAction.OnBackButtonClick) },
             )
             ClockSettingsScreenContent(
-                uiState = uiState,
-                onEvent = onEvent,
+                state = state,
+                onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(ClockSettingsAction.OnSaveButtonClick) },
-                enabled = uiState.isSaveButtonEnabled,
+                onClick = { onAction(ClockSettingsAction.OnSaveButtonClick) },
+                enabled = state.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(Paddings.Medium),

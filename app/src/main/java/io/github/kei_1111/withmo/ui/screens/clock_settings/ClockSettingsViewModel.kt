@@ -36,7 +36,7 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsClockShown(isClockShown: Boolean) {
+    private fun changeIsClockShown(isClockShown: Boolean) {
         _state.update {
             it.copy(
                 clockSettings = it.clockSettings.copy(
@@ -47,7 +47,7 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeClockType(clockType: ClockType) {
+    private fun changeClockType(clockType: ClockType) {
         _state.update {
             it.copy(
                 clockSettings = it.clockSettings.copy(
@@ -58,10 +58,7 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveClockSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
+    private fun saveClockSettings() {
         _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -70,17 +67,24 @@ class ClockSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveClockSettingsUseCase(state.value.clockSettings)
-                onSaveSuccess()
+                sendEffect(ClockSettingsEffect.NavigateBack)
+                sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save clock settings", e)
-                onSaveFailure()
+                sendEffect(ClockSettingsEffect.ShowToast("保存に失敗しました"))
             }
         }
     }
 
     override fun onAction(action: ClockSettingsAction) {
-        viewModelScope.launch {
-            _action.emit(action)
+        when (action) {
+            is ClockSettingsAction.OnIsClockShownSwitchChange -> changeIsClockShown(action.isClockShown)
+
+            is ClockSettingsAction.OnClockTypeRadioButtonClick -> changeClockType(action.clockType)
+
+            is ClockSettingsAction.OnSaveButtonClick -> saveClockSettings()
+
+            is ClockSettingsAction.OnBackButtonClick -> sendEffect(ClockSettingsEffect.NavigateBack)
         }
     }
 
