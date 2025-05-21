@@ -139,6 +139,12 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(action: FavoriteAppSettingsAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
+
     private companion object {
         const val TimeoutMillis = 5000L
 

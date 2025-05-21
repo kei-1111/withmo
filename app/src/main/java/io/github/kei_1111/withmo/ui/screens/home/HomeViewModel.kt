@@ -243,6 +243,12 @@ class HomeViewModel @Inject constructor(
 
         const val TAG = "HomeViewModel"
     }
+
+    override fun onAction(action: HomeAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
 }
 
 enum class ModelLoadState {

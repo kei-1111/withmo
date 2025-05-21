@@ -78,6 +78,12 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(action: ClockSettingsAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
+
     private companion object {
         const val TAG = "ClockSettingsViewModel"
     }

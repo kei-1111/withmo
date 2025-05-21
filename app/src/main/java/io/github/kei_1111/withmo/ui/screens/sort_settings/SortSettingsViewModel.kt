@@ -68,6 +68,12 @@ class SortSettingsViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(action: SortSettingsAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
+
     private companion object {
         const val TAG = "SortSettingsViewModel"
     }

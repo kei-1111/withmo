@@ -1,7 +1,9 @@
 package io.github.kei_1111.withmo.ui.screens.settings
 
+import androidx.lifecycle.viewModelScope
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
@@ -13,6 +15,12 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, Set
             it.copy(
                 isDefaultHomeApp = isDefaultHomeApp,
             )
+        }
+    }
+
+    override fun onAction(action: SettingsAction) {
+        viewModelScope.launch {
+            _action.emit(action)
         }
     }
 

@@ -36,7 +36,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeAppIconSize(appIconSize: Float) {
+    private fun changeAppIconSize(appIconSize: Float) {
         _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
@@ -47,7 +47,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeAppIconShape(appIconShape: AppIconShape) {
+    private fun changeAppIconShape(appIconShape: AppIconShape) {
         _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
@@ -58,7 +58,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeRoundedCornerPercent(roundedCornerPercent: Float) {
+    private fun changeRoundedCornerPercent(roundedCornerPercent: Float) {
         _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
@@ -69,7 +69,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsAppNameShown(isAppNameShown: Boolean) {
+    private fun changeIsAppNameShown(isAppNameShown: Boolean) {
         _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
@@ -80,7 +80,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsFavoriteAppBackgroundShown(isFavoriteAppBackgroundShown: Boolean) {
+    private fun changeIsFavoriteAppBackgroundShown(isFavoriteAppBackgroundShown: Boolean) {
         _state.update {
             it.copy(
                 appIconSettings = it.appIconSettings.copy(
@@ -91,10 +91,7 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun saveAppIconSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
+    private fun saveAppIconSettings() {
         _state.update {
             it.copy(
                 isSaveButtonEnabled = false,
@@ -103,11 +100,31 @@ class AppIconSettingsViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 saveAppIconSettingsUseCase(state.value.appIconSettings)
-                onSaveSuccess()
+                sendEffect(AppIconSettingsEffect.ShowToast("保存しました"))
+                sendEffect(AppIconSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save app icon settings", e)
-                onSaveFailure()
+                sendEffect(AppIconSettingsEffect.ShowToast("保存に失敗しました"))
             }
+        }
+    }
+
+    override fun onAction(action: AppIconSettingsAction) {
+        when (action) {
+            is AppIconSettingsAction.OnAppIconSizeSliderChange -> changeAppIconSize(action.appIconSize)
+
+            is AppIconSettingsAction.OnAppIconShapeRadioButtonClick -> changeAppIconShape(action.appIconShape)
+
+            is AppIconSettingsAction.OnRoundedCornerPercentSliderChange -> changeRoundedCornerPercent(action.roundedCornerPercent)
+
+            is AppIconSettingsAction.OnIsAppNameShownSwitchChange -> changeIsAppNameShown(action.isAppNameShown)
+
+            is AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange ->
+                changeIsFavoriteAppBackgroundShown(action.isFavoriteAppBackgroundShown)
+
+            is AppIconSettingsAction.OnSaveButtonClick -> saveAppIconSettings()
+
+            is AppIconSettingsAction.OnBackButtonClick -> sendEffect(AppIconSettingsEffect.NavigateBack)
         }
     }
 

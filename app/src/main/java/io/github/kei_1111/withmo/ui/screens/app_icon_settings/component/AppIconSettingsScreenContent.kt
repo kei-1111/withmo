@@ -16,8 +16,8 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun AppIconSettingsScreenContent(
-    uiState: AppIconSettingsState,
-    onEvent: (AppIconSettingsAction) -> Unit,
+    state: AppIconSettingsState,
+    onAction: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -27,34 +27,34 @@ internal fun AppIconSettingsScreenContent(
     ) {
         WithmoSettingItemWithSlider(
             title = "アプリアイコンの大きさ",
-            value = uiState.appIconSettings.appIconSize,
-            onValueChange = { onEvent(AppIconSettingsAction.OnAppIconSizeSliderChange(it)) },
+            value = state.appIconSettings.appIconSize,
+            onValueChange = { onAction(AppIconSettingsAction.OnAppIconSizeSliderChange(it)) },
             valueRange = AppConstants.MinAppIconSize..AppConstants.MaxAppIconSize,
             modifier = Modifier.fillMaxWidth(),
         )
         AppIconShapePicker(
-            selectedAppIconShape = uiState.appIconSettings.appIconShape,
-            onEvent = onEvent,
+            selectedAppIconShape = state.appIconSettings.appIconShape,
+            onEvent = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSlider(
             title = "角丸の大きさ",
-            value = uiState.appIconSettings.roundedCornerPercent,
-            onValueChange = { onEvent(AppIconSettingsAction.OnRoundedCornerPercentSliderChange(it)) },
+            value = state.appIconSettings.roundedCornerPercent,
+            onValueChange = { onAction(AppIconSettingsAction.OnRoundedCornerPercentSliderChange(it)) },
             valueRange = AppConstants.MinRoundedCornerPercent..AppConstants.MaxRoundedCornerPercent,
-            enabled = uiState.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
+            enabled = state.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "アプリ名の表示",
-            checked = uiState.appIconSettings.isAppNameShown,
-            onCheckedChange = { onEvent(AppIconSettingsAction.OnIsAppNameShownSwitchChange(it)) },
+            checked = state.appIconSettings.isAppNameShown,
+            onCheckedChange = { onAction(AppIconSettingsAction.OnIsAppNameShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         WithmoSettingItemWithSwitch(
             title = "お気に入りアプリの背景を表示",
-            checked = uiState.appIconSettings.isFavoriteAppBackgroundShown,
-            onCheckedChange = { onEvent(AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange(it)) },
+            checked = state.appIconSettings.isFavoriteAppBackgroundShown,
+            onCheckedChange = { onAction(AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

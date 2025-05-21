@@ -103,6 +103,12 @@ class SideButtonSettingsViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(action: SideButtonSettingsAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
+
     private companion object {
         const val TAG = "SideButtonSettingsViewModel"
     }

@@ -155,6 +155,12 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
+    override fun onAction(action: OnboardingAction) {
+        viewModelScope.launch {
+            _action.emit(action)
+        }
+    }
+
     private companion object {
         const val TimeoutMillis = 5000L
 
