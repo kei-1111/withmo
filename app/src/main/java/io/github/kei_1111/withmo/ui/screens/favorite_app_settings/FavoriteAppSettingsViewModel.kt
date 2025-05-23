@@ -9,7 +9,6 @@ import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
