@@ -8,4 +8,6 @@ sealed interface NotificationSettingsAction : Action {
     data object OnNotificationPermissionDialogDismiss : NotificationSettingsAction
     data object OnSaveButtonClick : NotificationSettingsAction
     data object OnBackButtonClick : NotificationSettingsAction
+
+    data object OnNotificationListenerPermissionResult : NotificationSettingsAction
 }

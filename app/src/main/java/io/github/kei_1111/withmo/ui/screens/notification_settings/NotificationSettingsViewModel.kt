@@ -1,12 +1,13 @@
 package io.github.kei_1111.withmo.ui.screens.notification_settings
 
+import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,6 +15,7 @@ import javax.inject.Inject
 class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
+    private val permissionChecker: PermissionChecker,
 ) : BaseViewModel<NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
 
     override fun createInitialState(): NotificationSettingsState = NotificationSettingsState()
@@ -25,8 +27,8 @@ class NotificationSettingsViewModel @Inject constructor(
     private fun observeNotificationSettings() {
         viewModelScope.launch {
             getNotificationSettingsUseCase().collect { notificationSettings ->
-                _state.update {
-                    it.copy(
+                updateState {
+                    copy(
                         notificationSettings = notificationSettings,
                         initialNotificationSettings = notificationSettings,
                     )
@@ -35,49 +37,73 @@ class NotificationSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeIsNotificationAnimationEnable(isNotificationAnimationEnabled: Boolean) {
-        val newNotificationSettings = _state.value.notificationSettings.copy(
-            isNotificationAnimationEnabled = isNotificationAnimationEnabled,
-        )
-        _state.update {
-            it.copy(
-                notificationSettings = newNotificationSettings,
-                isSaveButtonEnabled = newNotificationSettings != it.initialNotificationSettings,
-            )
-        }
-    }
-
-    fun changeIsNotificationPermissionDialogShown(isNotificationPermissionDialogShown: Boolean) {
-        _state.update {
-            it.copy(
-                isNotificationPermissionDialogShown = isNotificationPermissionDialogShown,
-            )
-        }
-    }
-
-    fun saveNotificationSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
-        _state.update {
-            it.copy(
-                isSaveButtonEnabled = false,
-            )
-        }
+    private fun saveNotificationSettings() {
+        updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
-                saveNotificationSettingsUseCase(_state.value.notificationSettings)
-                onSaveSuccess()
+                saveNotificationSettingsUseCase(state.value.notificationSettings)
+                sendEffect(NotificationSettingsEffect.ShowToast("保存しました"))
+                sendEffect(NotificationSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save notification settings", e)
-                onSaveFailure()
+                sendEffect(NotificationSettingsEffect.ShowToast("保存に失敗しました"))
             }
         }
     }
 
     override fun onAction(action: NotificationSettingsAction) {
-        viewModelScope.launch {
-            _action.emit(action)
+        when (action) {
+            is NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange -> {
+                if (permissionChecker.isNotificationListenerEnabled()) {
+                    updateState {
+                        copy(
+                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = action.isNotificationAnimationEnabled),
+                            isSaveButtonEnabled = action.isNotificationAnimationEnabled != initialNotificationSettings.isNotificationAnimationEnabled,
+                        )
+                    }
+                } else {
+                    updateState {
+                        copy(
+                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false),
+                            isNotificationPermissionDialogShown = true,
+                            isSaveButtonEnabled = initialNotificationSettings.isNotificationAnimationEnabled,
+                        )
+                    }
+                }
+            }
+
+            is NotificationSettingsAction.OnNotificationPermissionDialogConfirm -> {
+                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
+                sendEffect(NotificationSettingsEffect.RequestNotificationListenerPermission(intent))
+                updateState { copy(isNotificationPermissionDialogShown = false) }
+            }
+
+            is NotificationSettingsAction.OnNotificationPermissionDialogDismiss -> {
+                updateState { copy(isNotificationPermissionDialogShown = false) }
+                sendEffect(NotificationSettingsEffect.ShowToast("通知アニメーションを有効にするには\n通知アクセスを許可してください"))
+            }
+
+            is NotificationSettingsAction.OnSaveButtonClick -> saveNotificationSettings()
+
+            is NotificationSettingsAction.OnBackButtonClick -> sendEffect(NotificationSettingsEffect.NavigateBack)
+
+            is NotificationSettingsAction.OnNotificationListenerPermissionResult -> {
+                if (permissionChecker.isNotificationListenerEnabled()) {
+                    updateState {
+                        copy(
+                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = true),
+                            isSaveButtonEnabled = !initialNotificationSettings.isNotificationAnimationEnabled,
+                        )
+                    }
+                } else {
+                    updateState {
+                        copy(
+                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false),
+                            isSaveButtonEnabled = initialNotificationSettings.isNotificationAnimationEnabled,
+                        )
+                    }
+                }
+            }
         }
     }
 
