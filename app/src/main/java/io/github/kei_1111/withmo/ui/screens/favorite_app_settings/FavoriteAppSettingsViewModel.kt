@@ -39,8 +39,8 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 val sortedFavoriteAppList = favoriteAppList.toPersistentList()
 
-                _state.update {
-                    it.copy(
+                updateState {
+                    copy(
                         favoriteAppList = sortedFavoriteAppList,
                         initialFavoriteAppList = sortedFavoriteAppList,
                     )
@@ -52,26 +52,24 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
-                _state.update {
-                    it.copy(appIconSettings = appIconSettings)
-                }
+                updateState { copy(appIconSettings = appIconSettings) }
             }
         }
     }
 
     private fun addFavoriteAppList(appInfo: AppInfo) {
-        val addedFavoriteAppList = (_state.value.favoriteAppList + appInfo).toPersistentList()
+        val addedFavoriteAppList = (state.value.favoriteAppList + appInfo).toPersistentList()
 
-        _state.update { currentState ->
-            if (currentState.favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                currentState.favoriteAppList.none { it.packageName == appInfo.packageName }
+        updateState {
+            if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                favoriteAppList.none { it.packageName == appInfo.packageName }
             ) {
-                currentState.copy(
+                copy(
                     favoriteAppList = addedFavoriteAppList,
-                    isSaveButtonEnabled = currentState.initialFavoriteAppList != addedFavoriteAppList,
+                    isSaveButtonEnabled = initialFavoriteAppList != addedFavoriteAppList,
                 )
             } else {
-                currentState
+                this
             }
         }
     }
@@ -80,23 +78,17 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         val removedFavoriteAppList = _state.value.favoriteAppList.filterNot { it.packageName == appInfo.packageName }
             .toPersistentList()
 
-        _state.update {
-            it.copy(
+        updateState {
+            copy(
                 favoriteAppList = removedFavoriteAppList,
-                isSaveButtonEnabled = (it.initialFavoriteAppList != removedFavoriteAppList),
+                isSaveButtonEnabled = (initialFavoriteAppList != removedFavoriteAppList),
             )
         }
     }
 
-    private fun onValueChangeAppSearchQuery(query: String) {
-        _state.update {
-            it.copy(appSearchQuery = query)
-        }
-    }
-
     private fun saveFavoriteAppList() {
-        val currentFavoriteAppList = _state.value.favoriteAppList
-        val initialFavoriteAppList = _state.value.initialFavoriteAppList
+        val currentFavoriteAppList = state.value.favoriteAppList
+        val initialFavoriteAppList = state.value.initialFavoriteAppList
 
         val favoriteOrders = listOf(
             FavoriteOrder.First,
@@ -121,9 +113,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
         val appsToUpdate = appsToUpdateFavorites + appsToRemoveFromFavorites
 
-        _state.update {
-            it.copy(isSaveButtonEnabled = false)
-        }
+        updateState { copy(isSaveButtonEnabled = false) }
 
         viewModelScope.launch {
             try {
@@ -143,7 +133,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
             is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.appInfo)
 
-            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> onValueChangeAppSearchQuery(action.query)
+            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
 
             is FavoriteAppSettingsAction.OnSaveButtonClick -> saveFavoriteAppList()
 
