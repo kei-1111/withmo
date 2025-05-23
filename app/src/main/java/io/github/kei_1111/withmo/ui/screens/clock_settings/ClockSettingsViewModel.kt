@@ -3,11 +3,9 @@ package io.github.kei_1111.withmo.ui.screens.clock_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
 import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.GetClockSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.clock.SaveClockSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,8 +24,8 @@ class ClockSettingsViewModel @Inject constructor(
     private fun observeClockSettings() {
         viewModelScope.launch {
             getClockSettingsUseCase().collect { clockSettings ->
-                _state.update {
-                    it.copy(
+                updateState {
+                    copy(
                         clockSettings = clockSettings,
                         initialClockSettings = clockSettings,
                     )
@@ -36,34 +34,8 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun changeIsClockShown(isClockShown: Boolean) {
-        _state.update {
-            it.copy(
-                clockSettings = it.clockSettings.copy(
-                    isClockShown = isClockShown,
-                ),
-                isSaveButtonEnabled = isClockShown != it.initialClockSettings.isClockShown,
-            )
-        }
-    }
-
-    private fun changeClockType(clockType: ClockType) {
-        _state.update {
-            it.copy(
-                clockSettings = it.clockSettings.copy(
-                    clockType = clockType,
-                ),
-                isSaveButtonEnabled = clockType != it.initialClockSettings.clockType,
-            )
-        }
-    }
-
     private fun saveClockSettings() {
-        _state.update {
-            it.copy(
-                isSaveButtonEnabled = false,
-            )
-        }
+        updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
                 saveClockSettingsUseCase(state.value.clockSettings)
@@ -78,9 +50,23 @@ class ClockSettingsViewModel @Inject constructor(
 
     override fun onAction(action: ClockSettingsAction) {
         when (action) {
-            is ClockSettingsAction.OnIsClockShownSwitchChange -> changeIsClockShown(action.isClockShown)
+            is ClockSettingsAction.OnIsClockShownSwitchChange -> {
+                updateState {
+                    copy(
+                        clockSettings = clockSettings.copy(isClockShown = action.isClockShown),
+                        isSaveButtonEnabled = action.isClockShown != initialClockSettings.isClockShown,
+                    )
+                }
+            }
 
-            is ClockSettingsAction.OnClockTypeRadioButtonClick -> changeClockType(action.clockType)
+            is ClockSettingsAction.OnClockTypeRadioButtonClick -> {
+                updateState {
+                    copy(
+                        clockSettings = clockSettings.copy(clockType = action.clockType),
+                        isSaveButtonEnabled = action.clockType != initialClockSettings.clockType,
+                    )
+                }
+            }
 
             is ClockSettingsAction.OnSaveButtonClick -> saveClockSettings()
 
