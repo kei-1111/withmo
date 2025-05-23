@@ -36,43 +36,38 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WidgetContent(
-    uiState: HomeState,
-    onEvent: (HomeAction) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appIconSpaceHeight =
-        (uiState.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
+        (state.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(
         modifier = modifier,
     ) {
-        uiState.widgetList.forEach { withmoWidgetInfo ->
+        state.widgetList.forEach { withmoWidgetInfo ->
             key(withmoWidgetInfo.widgetInfo.id) {
                 WithmoWidget(
                     withmoWidgetInfo = withmoWidgetInfo,
                     startPadding = Paddings.Medium,
                     endPadding = Paddings.Medium,
-                    bottomPadding =
-                    bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
-                    isEditMode = uiState.isEditMode,
-                    deleteWidget = { onEvent(HomeAction.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
-                    resizeWidget = { onEvent(HomeAction.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
+                    bottomPadding = bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                    isEditMode = state.isEditMode,
+                    deleteWidget = { onAction(HomeAction.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
+                    resizeWidget = { onAction(HomeAction.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
                 )
             }
         }
-        if (uiState.isEditMode) {
+        if (state.isEditMode) {
             EditWidgetContent(
-                onEvent = onEvent,
+                onEvent = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(
-                        bottom = Paddings.ExtraSmall,
-                    )
-                    .padding(
-                        horizontal = Paddings.Medium,
-                    ),
+                    .padding(bottom = Paddings.ExtraSmall)
+                    .padding(horizontal = Paddings.Medium),
             )
         }
     }

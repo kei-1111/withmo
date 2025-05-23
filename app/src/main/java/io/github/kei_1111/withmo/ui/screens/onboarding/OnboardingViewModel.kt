@@ -1,10 +1,10 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
-import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -12,7 +12,6 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +27,7 @@ class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val oneTimeEventRepository: OneTimeEventRepository,
+    private val modelFileManager: ModelFileManager,
 ) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
     override fun createInitialState(): OnboardingState = OnboardingState()
 
@@ -79,8 +79,8 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
+    suspend fun getVrmFilePath(uri: Uri): String? {
+        return modelFileManager.copyVrmFileFromUri(uri)?.absolutePath
     }
 
     fun setIsModelLoading(isLoading: Boolean) {
@@ -98,7 +98,7 @@ class OnboardingViewModel @Inject constructor(
     fun setModelFileThumbnail(modelFilePath: ModelFilePath) {
         viewModelScope.launch {
             val thumbnails = modelFilePath.path?.let { File(it) }
-                ?.let { FileUtils.getVrmThumbnail(it) }
+                ?.let { modelFileManager.getVrmThumbnail(it) }
             _state.update {
                 it.copy(modelFileThumbnail = thumbnails)
             }
@@ -129,7 +129,7 @@ class OnboardingViewModel @Inject constructor(
         }
     }
 
-    fun saveSetting(context: Context) {
+    fun saveSetting() {
         val favoriteAppList = _state.value.selectedAppList.mapIndexed { index, appInfo ->
             appInfo.copy(
                 favoriteOrder = when (index) {
@@ -149,7 +149,7 @@ class OnboardingViewModel @Inject constructor(
             if (modelFilePath.path != null) {
                 saveModelFilePathUseCase(modelFilePath)
             } else {
-                val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+                val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
                 saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
             }
         }

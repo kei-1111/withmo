@@ -32,21 +32,21 @@ import io.github.kei_1111.withmo.utils.FileUtils
 
 @Composable
 internal fun DisplayModelContent(
-    uiState: HomeState,
-    onEvent: (HomeAction) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isDefaultModelFile =
-        uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
+        state.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
 
     Row(
         modifier = modifier
             .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.Bottom,
     ) {
-        if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
+        if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             NavigateSettingsButton(
-                onClick = { onEvent(HomeAction.OnNavigateSettingsButtonClick) },
+                onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
             )
         }
         Spacer(
@@ -57,21 +57,21 @@ internal fun DisplayModelContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (
-                uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+                state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
                 isDefaultModelFile == false
             ) {
                 SetDefaultModelButton(
-                    onClick = { onEvent(HomeAction.OnSetDefaultModelButtonClick) },
+                    onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
                 )
             }
-            if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+            if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
                 OpenDocumentButton(
-                    onClick = { onEvent(HomeAction.OnOpenDocumentButtonClick) },
+                    onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
                 )
             }
-            if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
+            if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
                 ShowScaleSliderButton(
-                    onClick = { onEvent(HomeAction.OnShowScaleSliderButtonClick) },
+                    onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
                 )
             }
         }

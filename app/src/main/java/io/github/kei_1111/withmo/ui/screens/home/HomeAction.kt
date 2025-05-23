@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.ui.screens.home
 
 import android.appwidget.AppWidgetProviderInfo
+import android.net.Uri
+import androidx.activity.result.ActivityResult
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ui.base.Action
@@ -30,4 +32,8 @@ sealed interface HomeAction : Action {
     data class OnDeleteWidgetBadgeClick(val withmoWidgetInfo: WithmoWidgetInfo) : HomeAction
     data class OnResizeWidgetBadgeClick(val withmoWidgetInfo: WithmoWidgetInfo) : HomeAction
     data class OnWidgetResizeBottomSheetClose(val withmoWidgetInfo: WithmoWidgetInfo) : HomeAction
+
+    data class OnOpenDocumentLauncherResult(val uri: Uri?) : HomeAction
+    data class OnConfigureWidgetLauncherResult(val result: ActivityResult) : HomeAction
+    data class OnBindWidgetLauncherResult(val result: ActivityResult) : HomeAction
 }

@@ -36,8 +36,8 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 @Suppress("LongMethod")
 @Composable
 internal fun PagerContent(
-    uiState: HomeState,
-    onEvent: (HomeAction) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val density = LocalDensity.current
@@ -47,11 +47,11 @@ internal fun PagerContent(
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
 
     val pagerState = rememberPagerState(
-        initialPage = uiState.currentPage.ordinal,
+        initialPage = state.currentPage.ordinal,
         pageCount = { PageContent.entries.size },
     )
 
-    LaunchedEffect(pagerState, onEvent) {
+    LaunchedEffect(pagerState, onAction) {
         var isFirstCollect = true
         snapshotFlow { pagerState.currentPage }.collect { page ->
             if (isFirstCollect) {
@@ -59,11 +59,11 @@ internal fun PagerContent(
             } else {
                 when (page) {
                     PageContent.DisplayModel.ordinal -> {
-                        onEvent(HomeAction.OnWidgetContentSwipeRight)
+                        onAction(HomeAction.OnWidgetContentSwipeRight)
                     }
 
                     PageContent.Widget.ordinal -> {
-                        onEvent(HomeAction.OnDisplayModelContentSwipeLeft)
+                        onAction(HomeAction.OnDisplayModelContentSwipeLeft)
                     }
                 }
             }
@@ -78,13 +78,13 @@ internal fun PagerContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(Weights.Medium),
-            userScrollEnabled = !uiState.isEditMode,
+            userScrollEnabled = !state.isEditMode,
         ) { page ->
             when (page) {
                 PageContent.DisplayModel.ordinal -> {
                     DisplayModelContent(
-                        uiState = uiState,
-                        onEvent = onEvent,
+                        state = state,
+                        onAction = onAction,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
@@ -93,14 +93,9 @@ internal fun PagerContent(
                                         val normalizedX = it.x / screenWidthPx
                                         val normalizedY = it.y / screenHeightPx
 
-                                        onEvent(
-                                            HomeAction.OnDisplayModelContentClick(
-                                                x = normalizedX,
-                                                y = normalizedY,
-                                            ),
-                                        )
+                                        onAction(HomeAction.OnDisplayModelContentClick(normalizedX, normalizedY))
                                     },
-                                    onLongPress = { onEvent(HomeAction.OnDisplayModelContentLongClick) },
+                                    onLongPress = { onAction(HomeAction.OnDisplayModelContentLongClick) },
                                 )
                             },
                     )
@@ -108,20 +103,20 @@ internal fun PagerContent(
 
                 PageContent.Widget.ordinal -> {
                     WidgetContent(
-                        uiState = uiState,
-                        onEvent = onEvent,
+                        state = state,
+                        onAction = onAction,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
-                                    onLongPress = { onEvent(HomeAction.OnWidgetContentLongClick) },
+                                    onLongPress = { onAction(HomeAction.OnWidgetContentLongClick) },
                                 )
                             },
                     )
                 }
             }
         }
-        if (!uiState.isEditMode) {
+        if (!state.isEditMode) {
             PageIndicator(
                 pageCount = pagerState.pageCount,
                 currentPage = pagerState.currentPage,
@@ -144,12 +139,11 @@ private fun PageIndicator(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         repeat(pageCount) { iteration ->
-            val color =
-                if (currentPage == iteration) {
-                    MaterialTheme.colorScheme.onSurface
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-                }
+            val color = if (currentPage == iteration) {
+                MaterialTheme.colorScheme.onSurface
+            } else {
+                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+            }
             Box(
                 modifier = Modifier
                     .padding(horizontal = Paddings.Medium)

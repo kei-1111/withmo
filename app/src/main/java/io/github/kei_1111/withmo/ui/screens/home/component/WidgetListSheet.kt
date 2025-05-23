@@ -57,7 +57,7 @@ import kotlinx.collections.immutable.toPersistentMap
 @Composable
 internal fun WidgetListSheet(
     widgetListSheetState: SheetState,
-    onEvent: (HomeAction) -> Unit,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
@@ -67,13 +67,13 @@ internal fun WidgetListSheet(
         .toPersistentMap()
 
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeAction.OnWidgetListSheetSwipeDown) },
+        onDismissRequest = { onAction(HomeAction.OnWidgetListSheetSwipeDown) },
         sheetState = widgetListSheetState,
         modifier = modifier,
     ) {
         WidgetList(
             groupedWidgetInfoMaps = groupedWidgetInfoMaps,
-            selectWidget = { onEvent(HomeAction.OnWidgetListSheetItemClick(it)) },
+            selectWidget = { onAction(HomeAction.OnWidgetListSheetItemClick(it)) },
         )
     }
 }

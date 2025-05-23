@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeState(
-    val isShowScaleSliderButtonShown: Boolean = false,
+    val isCloseScaleSliderButtonShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,
     val isModelLoading: Boolean = true,
     val isAppListSheetOpened: Boolean = false,
@@ -21,7 +21,7 @@ data class HomeState(
     val initialWidgetList: ImmutableList<WithmoWidgetInfo> = persistentListOf(),
     val pendingWidgetInfo: WidgetInfo? = null,
     val isEditMode: Boolean = false,
-    val resizeWidget: WithmoWidgetInfo? = null,
+    val resizingWidget: WithmoWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
     val appSearchQuery: String = "",
     val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),

@@ -57,7 +57,7 @@ fun OnboardingScreen(
             if (uri == null) {
                 showToast(context, "ファイルが選択されませんでした")
             } else {
-                val filePath = viewModel.getVrmFilePath(context, uri)
+                val filePath = viewModel.getVrmFilePath(uri)
                 if (filePath == null) {
                     showToast(context, "ファイルの読み込みに失敗しました")
                 } else {
@@ -93,7 +93,7 @@ fun OnboardingScreen(
                 is OnboardingAction.OnNextButtonClick -> {
                     viewModel.navigateToNextPage(
                         onFinish = {
-                            viewModel.saveSetting(context)
+                            viewModel.saveSetting()
                             currentOnFinishButtonClick()
                         },
                     )
