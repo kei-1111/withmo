@@ -65,7 +65,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             ) {
                 copy(
                     favoriteAppList = addedFavoriteAppList,
-                    isSaveButtonEnabled = initialFavoriteAppList != addedFavoriteAppList,
+                    isSaveButtonEnabled = !addedFavoriteAppList.isSameAs(initialFavoriteAppList),
                 )
             } else {
                 this
@@ -74,7 +74,8 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     }
 
     private fun removeFavoriteAppList(appInfo: AppInfo) {
-        val removedFavoriteAppList = _state.value.favoriteAppList.filterNot { it.packageName == appInfo.packageName }
+        val removedFavoriteAppList = state.value.favoriteAppList
+            .filterNot { it.packageName == appInfo.packageName }
             .toPersistentList()
 
         updateState {
@@ -138,6 +139,11 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
             is FavoriteAppSettingsAction.OnBackButtonClick -> sendEffect(FavoriteAppSettingsEffect.NavigateBack)
         }
+    }
+
+    private fun List<AppInfo>.isSameAs(other: List<AppInfo>): Boolean {
+        return this.size == other.size &&
+                this.zip(other).all { (a, b) -> a.packageName == b.packageName }
     }
 
     private companion object {

@@ -52,18 +52,20 @@ class ClockSettingsViewModel @Inject constructor(
         when (action) {
             is ClockSettingsAction.OnIsClockShownSwitchChange -> {
                 updateState {
+                    val updatedClockSettings = clockSettings.copy(isClockShown = action.isClockShown)
                     copy(
-                        clockSettings = clockSettings.copy(isClockShown = action.isClockShown),
-                        isSaveButtonEnabled = action.isClockShown != initialClockSettings.isClockShown,
+                        clockSettings = updatedClockSettings,
+                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
                     )
                 }
             }
 
             is ClockSettingsAction.OnClockTypeRadioButtonClick -> {
                 updateState {
+                    val updatedClockSettings = clockSettings.copy(clockType = action.clockType)
                     copy(
-                        clockSettings = clockSettings.copy(clockType = action.clockType),
-                        isSaveButtonEnabled = action.clockType != initialClockSettings.clockType,
+                        clockSettings = updatedClockSettings,
+                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
                     )
                 }
             }

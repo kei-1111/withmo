@@ -56,17 +56,19 @@ class NotificationSettingsViewModel @Inject constructor(
             is NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange -> {
                 if (permissionChecker.isNotificationListenerEnabled()) {
                     updateState {
+                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = action.isNotificationAnimationEnabled)
                         copy(
-                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = action.isNotificationAnimationEnabled),
-                            isSaveButtonEnabled = action.isNotificationAnimationEnabled != initialNotificationSettings.isNotificationAnimationEnabled,
+                            notificationSettings = updatedNotificationSettings,
+                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
                         )
                     }
                 } else {
                     updateState {
+                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false)
                         copy(
-                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false),
+                            notificationSettings = updatedNotificationSettings,
                             isNotificationPermissionDialogShown = true,
-                            isSaveButtonEnabled = initialNotificationSettings.isNotificationAnimationEnabled,
+                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
                         )
                     }
                 }
@@ -90,16 +92,18 @@ class NotificationSettingsViewModel @Inject constructor(
             is NotificationSettingsAction.OnNotificationListenerPermissionResult -> {
                 if (permissionChecker.isNotificationListenerEnabled()) {
                     updateState {
+                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = true)
                         copy(
-                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = true),
-                            isSaveButtonEnabled = !initialNotificationSettings.isNotificationAnimationEnabled,
+                            notificationSettings = updatedNotificationSettings,
+                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
                         )
                     }
                 } else {
                     updateState {
+                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false)
                         copy(
-                            notificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false),
-                            isSaveButtonEnabled = initialNotificationSettings.isNotificationAnimationEnabled,
+                            notificationSettings = updatedNotificationSettings,
+                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
                         )
                     }
                 }
