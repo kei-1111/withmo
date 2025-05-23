@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import javax.inject.Inject
@@ -83,7 +82,7 @@ class HomeViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                updateState { copy(favoriteAppList = favoriteAppList.toPersistentList(),) }
+                updateState { copy(favoriteAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
