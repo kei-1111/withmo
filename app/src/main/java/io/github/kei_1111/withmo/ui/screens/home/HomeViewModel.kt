@@ -33,7 +33,6 @@ import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -51,14 +50,10 @@ class HomeViewModel @Inject constructor(
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
             ModelLoadState.LoadingSuccess.name -> {
-                _state.update {
-                    it.copy(isModelLoading = false)
-                }
+                updateState { copy(isModelLoading = false) }
             }
             ModelLoadState.LoadingFailure.name -> {
-                _state.update {
-                    it.copy(isModelLoading = false)
-                }
+                updateState { copy(isModelLoading = false) }
             }
             else -> {
                 Log.d(TAG, "Unknown message from Unity: $message")
@@ -80,9 +75,7 @@ class HomeViewModel @Inject constructor(
     private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
-                _state.update {
-                    it.copy(currentUserSettings = userSettings)
-                }
+                updateState { copy(currentUserSettings = userSettings) }
             }
         }
     }
@@ -90,11 +83,7 @@ class HomeViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                _state.update {
-                    it.copy(
-                        favoriteAppList = favoriteAppList.toPersistentList(),
-                    )
-                }
+                updateState { copy(favoriteAppList = favoriteAppList.toPersistentList(),) }
             }
         }
     }
@@ -102,8 +91,8 @@ class HomeViewModel @Inject constructor(
     private fun observeWidgetList() {
         viewModelScope.launch {
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
-                _state.update {
-                    it.copy(
+                updateState {
+                    copy(
                         widgetList = widgetList.toPersistentList(),
                         initialWidgetList = widgetList.toPersistentList(),
                     )
@@ -112,74 +101,23 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun setIsShowScaleSliderButtonShown(show: Boolean) {
-        _state.update {
-            it.copy(isCloseScaleSliderButtonShown = show)
-        }
-    }
-
-    private fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
-        _state.update {
-            it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
-        }
-    }
-
-    private fun setIsModelLoading(isModelLoading: Boolean) {
-        _state.update {
-            it.copy(isModelLoading = isModelLoading)
-        }
-    }
-
-    private fun setAppSearchQuery(query: String) {
-        _state.update {
-            it.copy(appSearchQuery = query)
-        }
-    }
-
-    private fun setIsEditMode(isEditMode: Boolean) {
-        _state.update {
-            it.copy(isEditMode = isEditMode)
-        }
-    }
-
-    private fun setIsAppListBottomSheetOpened(isAppListBottomSheetOpened: Boolean) {
-        _state.update {
-            it.copy(isAppListSheetOpened = isAppListBottomSheetOpened)
-        }
-    }
-
-    private fun setIsWidgetListBottomSheetOpened(isWidgetListBottomSheetOpened: Boolean) {
-        _state.update {
-            it.copy(isWidgetListSheetOpened = isWidgetListBottomSheetOpened)
-        }
-    }
-
-    private fun setPendingWidget(widgetInfo: WidgetInfo) {
-        _state.update {
-            it.copy(pendingWidgetInfo = widgetInfo)
-        }
-    }
-
-    private fun addDisplayedWidgetList(withmoWidgetInfo: WithmoWidgetInfo) {
-        _state.update { currentState ->
-            currentState.copy(
-                widgetList = (currentState.widgetList + withmoWidgetInfo).toPersistentList(),
-            )
-        }
+    private fun addWidget(withmoWidgetInfo: WithmoWidgetInfo) {
+        updateState { copy(widgetList = (widgetList + withmoWidgetInfo).toPersistentList()) }
     }
 
     private fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
-        _state.update { currentState ->
-            currentState.copy(
-                widgetList = currentState.widgetList.filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
+        updateState {
+            copy(
+                widgetList = widgetList
+                    .filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
                     .toPersistentList(),
             )
         }
     }
 
     private fun saveWidgetList() {
-        val currentWidgetList = _state.value.widgetList
-        val initialWidgetList = _state.value.initialWidgetList
+        val currentWidgetList = state.value.widgetList
+        val initialWidgetList = state.value.initialWidgetList
 
         val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
             initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
@@ -200,24 +138,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun setResizingWidget(withmoWidgetInfo: WithmoWidgetInfo?) {
-        _state.update {
-            it.copy(resizingWidget = withmoWidgetInfo)
-        }
-    }
-
-    private fun setIsWidgetResizing(isWidgetResizing: Boolean) {
-        _state.update {
-            it.copy(isWidgetResizing = isWidgetResizing)
-        }
-    }
-
-    private fun setCurrentPage(page: PageContent) {
-        _state.update {
-            it.copy(currentPage = page)
-        }
-    }
-
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     override fun onAction(action: HomeAction) {
         when (action) {
@@ -227,12 +147,12 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnShowScaleSliderButtonClick -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.ShowObject, "")
-                setIsShowScaleSliderButtonShown(true)
+                updateState { copy(isCloseScaleSliderButtonShown = true) }
             }
 
             is HomeAction.OnCloseScaleSliderButtonClick -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.HideObject, "")
-                setIsShowScaleSliderButtonShown(false)
+                updateState { copy(isCloseScaleSliderButtonShown = false) }
             }
 
             is HomeAction.OnSetDefaultModelButtonClick -> {
@@ -242,7 +162,7 @@ class HomeViewModel @Inject constructor(
                         state.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
 
                     if (!isDefaultModelFile) {
-                        setIsModelLoading(true)
+                        updateState { copy(isModelLoading = true) }
                         saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
                     }
                 }
@@ -254,7 +174,7 @@ class HomeViewModel @Inject constructor(
                     if (isModelChangeWarningFirstShown) {
                         sendEffect(HomeEffect.OpenDocument)
                     } else {
-                        setIsModelChangeWarningDialogShown(true)
+                        updateState { copy(isModelChangeWarningDialogShown = true) }
                     }
                 }
             }
@@ -264,43 +184,43 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnModelChangeWarningDialogConfirm -> {
                 viewModelScope.launch {
                     oneTimeEventRepository.markModelChangeWarningFirstShown()
-                    setIsModelChangeWarningDialogShown(false)
+                    updateState { copy(isModelChangeWarningDialogShown = false) }
                     sendEffect(HomeEffect.OpenDocument)
                 }
             }
 
-            is HomeAction.OnModelChangeWarningDialogDismiss -> setIsModelChangeWarningDialogShown(false)
+            is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
 
-            is HomeAction.OnAppSearchQueryChange -> setAppSearchQuery(action.query)
+            is HomeAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
 
             is HomeAction.OnAppListSheetSwipeUp -> {
                 sendEffect(HomeEffect.ShowAppListSheet)
-                setIsAppListBottomSheetOpened(true)
+                updateState { copy(isAppListSheetOpened = true) }
             }
 
             is HomeAction.OnAppListSheetSwipeDown -> {
                 sendEffect(HomeEffect.HideAppListSheet)
-                setIsAppListBottomSheetOpened(false)
+                updateState { copy(isAppListSheetOpened = false) }
             }
 
             is HomeAction.OnAddWidgetButtonClick -> {
                 sendEffect(HomeEffect.ShowWidgetListSheet)
-                setIsWidgetListBottomSheetOpened(true)
+                updateState { copy(isWidgetListSheetOpened = true) }
             }
 
             is HomeAction.OnWidgetListSheetSwipeDown -> {
                 sendEffect(HomeEffect.HideWidgetListSheet)
-                setIsWidgetListBottomSheetOpened(false)
+                updateState { copy(isWidgetListSheetOpened = false) }
             }
 
             is HomeAction.OnDisplayModelContentSwipeLeft -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
-                setCurrentPage(PageContent.Widget)
+                updateState { copy(currentPage = PageContent.Widget) }
             }
 
             is HomeAction.OnWidgetContentSwipeRight -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
-                setCurrentPage(PageContent.DisplayModel)
+                updateState { copy(currentPage = PageContent.DisplayModel) }
             }
 
             is HomeAction.OnDisplayModelContentClick -> {
@@ -317,7 +237,7 @@ class HomeViewModel @Inject constructor(
                 val result = widgetManager.bindAppWidgetId(widgetId, provider, action.widgetInfo.minWidth, action.widgetInfo.minHeight)
 
                 val widgetInfo = WidgetInfo(widgetId, action.widgetInfo)
-                setPendingWidget(widgetInfo)
+                updateState { copy(pendingWidgetInfo = widgetInfo) }
 
                 if (result) {
                     if (action.widgetInfo.configure != null) {
@@ -327,38 +247,46 @@ class HomeViewModel @Inject constructor(
                         if (activityInfo != null && activityInfo.exported) {
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                            addWidget(WithmoWidgetInfo(widgetInfo))
                         }
                     } else {
-                        addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                        addWidget(WithmoWidgetInfo(widgetInfo))
                     }
                 } else {
                     val intent = widgetManager.buildBindIntent(widgetId, provider)
                     sendEffect(HomeEffect.BindWidget(intent))
                 }
                 sendEffect(HomeEffect.HideWidgetListSheet)
-                setIsWidgetListBottomSheetOpened(false)
+                updateState { copy(isWidgetListSheetOpened = false) }
             }
 
-            is HomeAction.OnWidgetContentLongClick -> setIsEditMode(true)
+            is HomeAction.OnWidgetContentLongClick -> updateState { copy(isEditMode = true) }
 
             is HomeAction.OnCompleteEditButtonClick -> {
                 saveWidgetList()
-                setIsEditMode(false)
+                updateState { copy(isEditMode = false) }
             }
 
             is HomeAction.OnDeleteWidgetBadgeClick -> deleteWidget(action.withmoWidgetInfo)
 
             is HomeAction.OnResizeWidgetBadgeClick -> {
-                setIsWidgetResizing(true)
-                setResizingWidget(action.withmoWidgetInfo)
+                updateState {
+                    copy(
+                        isWidgetResizing = true,
+                        resizingWidget = action.withmoWidgetInfo,
+                    )
+                }
                 deleteWidget(action.withmoWidgetInfo)
             }
 
             is HomeAction.OnWidgetResizeBottomSheetClose -> {
-                setIsWidgetResizing(false)
-                addDisplayedWidgetList(action.withmoWidgetInfo)
-                setResizingWidget(null)
+                updateState {
+                    copy(
+                        isWidgetResizing = false,
+                        resizingWidget = null,
+                    )
+                }
+                addWidget(action.withmoWidgetInfo)
             }
 
             is HomeAction.OnOpenDocumentLauncherResult -> {
@@ -366,16 +294,16 @@ class HomeViewModel @Inject constructor(
                     if (action.uri == null) {
                         sendEffect(HomeEffect.ShowToast("ファイルが選択されませんでした"))
                     } else {
-                        setIsModelLoading(true)
+                        updateState { copy(isModelLoading = true) }
                         modelFileManager.deleteCopiedCacheFiles()
                         val filePath = modelFileManager.copyVrmFileFromUri(action.uri)?.absolutePath
                         if (filePath == null) {
                             sendEffect(HomeEffect.ShowToast("ファイルの読み込みに失敗しました"))
-                            setIsModelLoading(false)
+                            updateState { copy(isModelLoading = false) }
                         } else {
                             if (filePath == state.value.currentUserSettings.modelFilePath.path) {
                                 sendEffect(HomeEffect.ShowToast("同じファイルが選択されています"))
-                                setIsModelLoading(false)
+                                updateState { copy(isModelLoading = false) }
                             } else {
                                 saveModelFilePathUseCase(ModelFilePath(filePath))
                             }
@@ -387,7 +315,7 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnConfigureWidgetLauncherResult -> {
                 state.value.pendingWidgetInfo?.let { widgetInfo ->
                     if (action.result.resultCode == RESULT_OK) {
-                        addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                        addWidget(WithmoWidgetInfo(widgetInfo))
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
                     }
@@ -401,7 +329,7 @@ class HomeViewModel @Inject constructor(
                             val intent = widgetManager.buildConfigureIntent(widgetInfo.id, widgetInfo.info.configure)
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addDisplayedWidgetList(WithmoWidgetInfo(widgetInfo))
+                            addWidget(WithmoWidgetInfo(widgetInfo))
                         }
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
