@@ -34,8 +34,8 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun SelectFavoriteAppContent(
     appList: ImmutableList<AppInfo>,
-    uiState: OnboardingState,
-    onEvent: (OnboardingAction) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -46,11 +46,11 @@ internal fun SelectFavoriteAppContent(
     }
 
     LaunchedEffect(appList) {
-        filterAppList(uiState.appSearchQuery)
+        filterAppList(state.appSearchQuery)
     }
 
     BackHandler {
-        onEvent(OnboardingAction.OnPreviousButtonClick)
+        onAction(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -75,16 +75,16 @@ internal fun SelectFavoriteAppContent(
         ) {
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = uiState.appSearchQuery,
-                onValueChange = { onEvent(OnboardingAction.OnAppSearchQueryChange(it)) },
-                action = { filterAppList(uiState.appSearchQuery) },
+                value = state.appSearchQuery,
+                onValueChange = { onAction(OnboardingAction.OnAppSearchQueryChange(it)) },
+                action = { filterAppList(state.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
-                    favoriteAppList = uiState.selectedAppList,
-                    addSelectedAppList = { onEvent(OnboardingAction.OnAllAppListAppClick(it)) },
-                    removeSelectedAppList = { onEvent(OnboardingAction.OnFavoriteAppListAppClick(it)) },
+                    favoriteAppList = state.selectedAppList,
+                    addSelectedAppList = { onAction(OnboardingAction.OnAllAppListAppClick(it)) },
+                    removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
@@ -97,13 +97,13 @@ internal fun SelectFavoriteAppContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = uiState.selectedAppList,
-            removeSelectedAppList = { onEvent(OnboardingAction.OnFavoriteAppListAppClick(it)) },
+            favoriteAppList = state.selectedAppList,
+            removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
         SelectFavoriteAppContentBottomAppBar(
-            uiState = uiState,
-            onEvent = onEvent,
+            state = state,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -111,8 +111,8 @@ internal fun SelectFavoriteAppContent(
 
 @Composable
 private fun SelectFavoriteAppContentBottomAppBar(
-    uiState: OnboardingState,
-    onEvent: (OnboardingAction) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -121,16 +121,16 @@ private fun SelectFavoriteAppContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingAction.OnPreviousButtonClick) },
+            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
-            text = if (uiState.selectedAppList.isEmpty()) {
+            text = if (state.selectedAppList.isEmpty()) {
                 "スキップ"
             } else {
                 "次へ"
             },
-            onClick = { onEvent(OnboardingAction.OnNextButtonClick) },
+            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

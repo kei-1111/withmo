@@ -23,7 +23,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WelcomeContent(
-    onEvent: (OnboardingAction) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -49,7 +49,7 @@ internal fun WelcomeContent(
             BodyMediumText("今すぐwithmoを始めよう！")
         }
         WelcomeContentBottomAppBar(
-            onEvent = onEvent,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -59,12 +59,12 @@ internal fun WelcomeContent(
 
 @Composable
 private fun WelcomeContentBottomAppBar(
-    onEvent: (OnboardingAction) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OnboardingBottomAppBarNextButton(
         text = "次へ",
-        onClick = { onEvent(OnboardingAction.OnNextButtonClick) },
+        onClick = { onAction(OnboardingAction.OnNextButtonClick) },
         modifier = modifier,
     )
 }

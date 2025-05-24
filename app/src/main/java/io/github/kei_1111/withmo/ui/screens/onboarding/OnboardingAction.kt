@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
+import android.net.Uri
+import androidx.activity.result.ActivityResult
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.base.Action
 
@@ -10,4 +12,5 @@ sealed interface OnboardingAction : Action {
     data object OnSelectDisplayModelAreaClick : OnboardingAction
     data object OnNextButtonClick : OnboardingAction
     data object OnPreviousButtonClick : OnboardingAction
+    data class OnOpenDocumentLauncherResult(val uri: Uri?): OnboardingAction
 }

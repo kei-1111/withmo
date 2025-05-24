@@ -26,11 +26,11 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun FinishContent(
-    onEvent: (OnboardingAction) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BackHandler {
-        onEvent(OnboardingAction.OnPreviousButtonClick)
+        onAction(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -55,7 +55,7 @@ internal fun FinishContent(
             BodyMediumText("設定が完了しました！")
         }
         FinishContentBottomAppBar(
-            onEvent = onEvent,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -65,7 +65,7 @@ internal fun FinishContent(
 
 @Composable
 private fun FinishContentBottomAppBar(
-    onEvent: (OnboardingAction) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -73,12 +73,12 @@ private fun FinishContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingAction.OnPreviousButtonClick) },
+            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "はじめる",
-            onClick = { onEvent(OnboardingAction.OnNextButtonClick) },
+            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

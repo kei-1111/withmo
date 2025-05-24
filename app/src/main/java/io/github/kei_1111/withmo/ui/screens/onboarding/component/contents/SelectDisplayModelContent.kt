@@ -52,12 +52,12 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun SelectDisplayModelContent(
-    uiState: OnboardingState,
-    onEvent: (OnboardingAction) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BackHandler {
-        onEvent(OnboardingAction.OnPreviousButtonClick)
+        onAction(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -73,20 +73,20 @@ internal fun SelectDisplayModelContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SelectDisplayModelArea(
-                uiState = uiState,
-                onClick = { onEvent(OnboardingAction.OnSelectDisplayModelAreaClick) },
+                state = state,
+                onClick = { onAction(OnboardingAction.OnSelectDisplayModelAreaClick) },
             )
             SelectedModelFileName(
-                fileName = if (uiState.modelFilePath.path != null) {
-                    File(uiState.modelFilePath.path).name
+                fileName = if (state.modelFilePath.path != null) {
+                    File(state.modelFilePath.path).name
                 } else {
                     "デフォルトモデル"
                 },
             )
         }
         SelectDisplayModelContentBottomAppBar(
-            uiState = uiState,
-            onEvent = onEvent,
+            state = state,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -96,11 +96,11 @@ internal fun SelectDisplayModelContent(
 
 @Composable
 private fun SelectDisplayModelArea(
-    uiState: OnboardingState,
+    state: OnboardingState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isModelFileThumbnail = uiState.modelFileThumbnail != null
+    val isModelFileThumbnail = state.modelFileThumbnail != null
 
     val selectDisplayModelAreaModifier = if (isModelFileThumbnail) {
         modifier
@@ -129,7 +129,7 @@ private fun SelectDisplayModelArea(
     ) {
         if (isModelFileThumbnail) {
             Image(
-                bitmap = uiState.modelFileThumbnail!!.asImageBitmap(),
+                bitmap = state.modelFileThumbnail!!.asImageBitmap(),
                 contentDescription = "Model Thumbnail",
                 modifier = Modifier.fillMaxSize(),
             )
@@ -208,24 +208,24 @@ private fun SelectedModelFileName(
 
 @Composable
 private fun SelectDisplayModelContentBottomAppBar(
-    uiState: OnboardingState,
-    onEvent: (OnboardingAction) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isModelSelected = uiState.modelFilePath.path != null
+    val isModelSelected = state.modelFilePath.path != null
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingAction.OnPreviousButtonClick) },
+            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = if (isModelSelected) "次へ" else "スキップ",
-            enabled = !uiState.isModelLoading,
-            onClick = { onEvent(OnboardingAction.OnNextButtonClick) },
+            enabled = !state.isModelLoading,
+            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }
