@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.common.AppConstants
@@ -12,7 +11,6 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -86,7 +84,7 @@ class OnboardingViewModel @Inject constructor(
         val currentPage = _state.value.currentPage
         val nextPage = currentPage.ordinal + 1
         if (nextPage < OnboardingPage.entries.size) {
-            updateState{ copy(currentPage = OnboardingPage.entries[nextPage]) }
+            updateState { copy(currentPage = OnboardingPage.entries[nextPage]) }
         } else {
             saveSetting()
             sendEffect(OnboardingEffect.NavigateHome)

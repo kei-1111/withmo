@@ -143,7 +143,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     private fun List<AppInfo>.isSameAs(other: List<AppInfo>): Boolean {
         return this.size == other.size &&
-                this.zip(other).all { (a, b) -> a.packageName == b.packageName }
+            this.zip(other).all { (a, b) -> a.packageName == b.packageName }
     }
 
     private companion object {

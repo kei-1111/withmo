@@ -56,7 +56,9 @@ class NotificationSettingsViewModel @Inject constructor(
             is NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange -> {
                 if (permissionChecker.isNotificationListenerEnabled()) {
                     updateState {
-                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = action.isNotificationAnimationEnabled)
+                        val updatedNotificationSettings = notificationSettings.copy(
+                            isNotificationAnimationEnabled = action.isNotificationAnimationEnabled,
+                        )
                         copy(
                             notificationSettings = updatedNotificationSettings,
                             isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,

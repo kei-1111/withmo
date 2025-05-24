@@ -50,7 +50,7 @@ fun OnboardingScreen(
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
-            when(effect) {
+            when (effect) {
                 is OnboardingEffect.OpenDocument -> openDocumentLauncher.launch(arrayOf("*/*"))
 
                 is OnboardingEffect.NavigateHome -> currentOnFinishButtonClick()
