@@ -23,7 +23,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 @Composable
 internal fun SortTypePicker(
     selectedSortType: SortType,
-    onEvent: (SortSettingsAction) -> Unit,
+    onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -49,7 +49,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.ALPHABETICAL == selectedSortType,
-                onClick = { onEvent(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             SortTypePickerDivider()
@@ -60,7 +60,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.USE_COUNT == selectedSortType,
-                onClick = { onEvent(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

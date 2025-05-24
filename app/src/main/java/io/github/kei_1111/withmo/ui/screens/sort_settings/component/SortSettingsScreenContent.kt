@@ -12,8 +12,8 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SortSettingsScreenContent(
-    uiState: SortSettingsState,
-    onEvent: (SortSettingsAction) -> Unit,
+    state: SortSettingsState,
+    onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -22,8 +22,8 @@ internal fun SortSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         SortTypePicker(
-            selectedSortType = uiState.sortSettings.sortType,
-            onEvent = onEvent,
+            selectedSortType = state.sortSettings.sortType,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
     }
