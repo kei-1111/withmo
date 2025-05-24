@@ -12,8 +12,8 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ThemeSettingsScreenContent(
-    uiState: ThemeSettingsState,
-    onEvent: (ThemeSettingsAction) -> Unit,
+    state: ThemeSettingsState,
+    onAction: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -22,8 +22,8 @@ internal fun ThemeSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         ThemeTypePicker(
-            selectedThemeType = uiState.themeSettings.themeType,
-            onEvent = onEvent,
+            selectedThemeType = state.themeSettings.themeType,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
     }

@@ -25,7 +25,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 @Composable
 internal fun ThemeTypePicker(
     selectedThemeType: ThemeType,
-    onEvent: (ThemeSettingsAction) -> Unit,
+    onAction: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -51,7 +51,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.TIME_BASED == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.TIME_BASED)) },
+                onClick = { onAction(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.TIME_BASED)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ThemeTypePickerDivider()
@@ -62,7 +62,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.LIGHT == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.LIGHT)) },
+                onClick = { onAction(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.LIGHT)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ThemeTypePickerDivider()
@@ -73,7 +73,7 @@ internal fun ThemeTypePicker(
                     )
                 },
                 selected = ThemeType.DARK == selectedThemeType,
-                onClick = { onEvent(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.DARK)) },
+                onClick = { onAction(ThemeSettingsAction.OnThemeTypeRadioButtonClick(ThemeType.DARK)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

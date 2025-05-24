@@ -3,11 +3,9 @@ package io.github.kei_1111.withmo.ui.screens.theme_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.SaveThemeSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,8 +24,8 @@ class ThemeSettingsViewModel @Inject constructor(
     private fun observeThemeSettings() {
         viewModelScope.launch {
             getThemeSettingsUseCase().collect { themeSettings ->
-                _state.update {
-                    it.copy(
+                updateState {
+                    copy(
                         themeSettings = themeSettings,
                         initialThemeSettings = themeSettings,
                     )
@@ -36,41 +34,36 @@ class ThemeSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeThemeType(themeType: ThemeType) {
-        _state.update {
-            it.copy(
-                themeSettings = it.themeSettings.copy(
-                    themeType = themeType,
-                ),
-                isSaveButtonEnabled = themeType != it.initialThemeSettings.themeType,
-            )
-        }
-    }
-
-    fun saveThemeSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
-        _state.update {
-            it.copy(
-                isSaveButtonEnabled = false,
-            )
-        }
+    private fun saveThemeSettings() {
+        updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
-                val themeSettings = _state.value.themeSettings
+                val themeSettings = state.value.themeSettings
                 saveThemeSettingsUseCase(themeSettings)
-                onSaveSuccess()
+                sendEffect(ThemeSettingsEffect.ShowToast("保存しました"))
+                sendEffect(ThemeSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save theme settings", e)
-                onSaveFailure()
+                sendEffect(ThemeSettingsEffect.ShowToast("保存に失敗しました"))
             }
         }
     }
 
     override fun onAction(action: ThemeSettingsAction) {
-        viewModelScope.launch {
-            _action.emit(action)
+        when (action) {
+            is ThemeSettingsAction.OnThemeTypeRadioButtonClick -> {
+                updateState {
+                    val updatedThemeSettings = themeSettings.copy(themeType = action.themeType)
+                    copy(
+                        themeSettings = updatedThemeSettings,
+                        isSaveButtonEnabled = updatedThemeSettings != initialThemeSettings,
+                    )
+                }
+            }
+
+            is ThemeSettingsAction.OnSaveButtonClick -> saveThemeSettings()
+
+            is ThemeSettingsAction.OnBackButtonClick -> sendEffect(ThemeSettingsEffect.NavigateBack)
         }
     }
 
