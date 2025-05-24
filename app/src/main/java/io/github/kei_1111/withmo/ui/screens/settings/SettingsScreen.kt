@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.settings
 
-import android.content.Intent
 import android.os.Build
-import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
@@ -18,6 +16,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
@@ -27,17 +26,17 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.screens.settings.component.SettingsScreenContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.utils.AppUtils
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import io.github.kei_1111.withmo.utils.showToast
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing")
@@ -53,7 +52,7 @@ fun SettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.state.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
@@ -70,56 +69,51 @@ fun SettingsScreen(
         viewModel.onAction(SettingsAction.OnBackButtonClick)
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.changeIsDefaultHomeApp(context.packageName == AppUtils.getHomeAppName(context))
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            when (event) {
+                Lifecycle.Event.ON_START -> viewModel.onAction(
+                    SettingsAction.OnSettingsScreenLifecycleChanged(context.packageName == AppUtils.getHomeAppName(context)),
+                )
+                Lifecycle.Event.ON_STOP -> viewModel.onAction(
+                    SettingsAction.OnSettingsScreenLifecycleChanged(context.packageName == AppUtils.getHomeAppName(context)),
+                )
+                else -> Unit
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
     }
 
-    LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.action.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
-            when (event) {
-                is SettingsAction.OnNavigateHomeAppSettingButtonClick -> {
-                    val intent = Intent(Settings.ACTION_HOME_SETTINGS)
-                    context.startActivity(intent)
-                }
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SettingsEffect.OpenHomeAppSettings -> context.startActivity(effect.intent)
 
-                is SettingsAction.OnNavigateClockSettingsButtonClick -> {
-                    currentOnNavigateClockSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateClockSettings -> currentOnNavigateClockSettingsButtonClick()
 
-                is SettingsAction.OnNavigateAppIconSettingsButtonClick -> {
-                    currentOnNavigateAppIconSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateAppIconSettings -> currentOnNavigateAppIconSettingsButtonClick()
 
-                is SettingsAction.OnNavigateFavoriteAppSettingsButtonClick -> {
-                    currentOnNavigateFavoriteAppSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateFavoriteAppSettings -> currentOnNavigateFavoriteAppSettingsButtonClick()
 
-                is SettingsAction.OnNavigateSideButtonSettingsButtonClick -> {
-                    currentOnNavigateSideButtonSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateSideButtonSettings -> currentOnNavigateSideButtonSettingsButtonClick()
 
-                is SettingsAction.OnNavigateSortSettingsButtonClick -> {
-                    currentOnNavigateSortSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateSortSettings -> currentOnNavigateSortSettingsButtonClick()
 
-                is SettingsAction.OnNavigateNotificationSettingsButtonClick -> {
-                    currentOnNavigateNotificationSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateNotificationSettings -> currentOnNavigateNotificationSettingsButtonClick()
 
-                is SettingsAction.OnNavigateThemeSettingsButtonClick -> {
-                    currentOnNavigateThemeSettingsButtonClick()
-                }
+                is SettingsEffect.NavigateThemeSettings -> currentOnNavigateThemeSettingsButtonClick()
 
-                is SettingsAction.OnBackButtonClick -> {
-                    currentOnBackButtonClick()
-                }
+                is SettingsEffect.NavigateBack -> currentOnBackButtonClick()
+
+                is SettingsEffect.ShowToast -> showToast(context, effect.message)
             }
-        }.launchIn(this)
+        }
     }
 
     SettingsScreen(
-        uiState = uiState,
-        onEvent = viewModel::onAction,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -127,8 +121,8 @@ fun SettingsScreen(
 @Suppress("LongMethod")
 @Composable
 private fun SettingsScreen(
-    uiState: SettingsState,
-    onEvent: (SettingsAction) -> Unit,
+    state: SettingsState,
+    onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -144,14 +138,14 @@ private fun SettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { LogoWithText("の設定") },
-                navigateClose = { onEvent(SettingsAction.OnBackButtonClick) },
+                navigateClose = { onAction(SettingsAction.OnBackButtonClick) },
             )
             SettingsScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
-                uiState = uiState,
-                onEvent = onEvent,
+                state = state,
+                onAction = onAction,
             )
         }
     }
