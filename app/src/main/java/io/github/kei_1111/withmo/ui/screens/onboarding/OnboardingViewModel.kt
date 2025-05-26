@@ -40,33 +40,30 @@ class OnboardingViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                _state.update {
-                    it.copy(
-                        selectedAppList = favoriteAppList.toPersistentList(),
-                    )
-                }
+                updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
 
     private fun addSelectedAppList(appInfo: AppInfo) {
-        _state.update { currentState ->
-            if (currentState.selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                currentState.selectedAppList.none { it.packageName == appInfo.packageName }
+        updateState {
+            if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                selectedAppList.none { it.packageName == appInfo.packageName }
             ) {
-                currentState.copy(
-                    selectedAppList = (currentState.selectedAppList + appInfo).toPersistentList(),
+                copy(
+                    selectedAppList = (selectedAppList + appInfo).toPersistentList(),
                 )
             } else {
-                currentState
+                this
             }
         }
     }
 
     private fun removeSelectedAppList(appInfo: AppInfo) {
-        _state.update {
-            it.copy(
-                selectedAppList = it.selectedAppList.filterNot { it.packageName == appInfo.packageName }
+        updateState {
+            copy(
+                selectedAppList = selectedAppList
+                    .filterNot { it.packageName == appInfo.packageName }
                     .toPersistentList(),
             )
         }
@@ -81,7 +78,7 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private fun navigateToNextPage() {
-        val currentPage = _state.value.currentPage
+        val currentPage = state.value.currentPage
         val nextPage = currentPage.ordinal + 1
         if (nextPage < OnboardingPage.entries.size) {
             updateState { copy(currentPage = OnboardingPage.entries[nextPage]) }

@@ -38,7 +38,7 @@ class SortSettingsViewModel @Inject constructor(
         updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
-                val sortSettings = _state.value.sortSettings
+                val sortSettings = state.value.sortSettings
                 saveSortSettingsUseCase(sortSettings)
                 sendEffect(SortSettingsEffect.ShowToast("保存しました"))
                 sendEffect(SortSettingsEffect.NavigateBack)
