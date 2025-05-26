@@ -5,9 +5,6 @@
 [![Slide](https://img.shields.io/badge/Slide-GoogleSlides-blue?style=for-the-badge&logo=google-slides&logoColor=white)](https://docs.google.com/presentation/d/1P8pJtk8YnazgKQcsffUqSHlIYSe43K1r/edit?slide=id.p1#slide=id.p1)
 [![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=for-the-badge&logo=android&logoColor=white)](https://drive.google.com/drive/u/2/folders/1OUCGfjTxtSnUwp8x5HOG94MYGUsn2uIL)
 
-**デジタルフィギュアと暮らす、新しいホーム画面体験**  
-お気に入りの3Dキャラクターと一緒に、あなたのスマホライフをもっと楽しく。
-
 
 ## withmoとは
 wihtmoは、デジタルフィギュア × ランチャーをコンセプトにした、お気に入りの3Dモデルをホーム画面に表示することができるランチャーアプリです！  
