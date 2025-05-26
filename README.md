@@ -32,7 +32,6 @@ withmoは、時間帯に応じて背景が変化します！
 | 言語    | Kotlin   | 型安全でシンプルな記述が可能    |
 | UIフレームワーク    | Jetpack Compose     | モダンなUIフレームワーク |
 | Unity    | Unity as a Library     | Unityプロジェクトとの連携 |
-| デプロイ    | GitHub Pages   | GitHub Actions を活用して自動デプロイを実施     |
 | CI    | GitHub Actions    | Pull Request 時に自動でコード解析    |
 | 静的解析ツール    | detekt   | コードの品質維持に活用    |
 
