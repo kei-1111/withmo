@@ -19,9 +19,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
@@ -29,8 +27,6 @@ import io.github.kei_1111.withmo.ui.screens.sort_settings.component.SortSettings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @Suppress("ModifierMissing")
 @Composable
@@ -38,53 +34,36 @@ fun SortSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: SortSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
-        viewModel.onEvent(SortSettingsUiEvent.OnBackButtonClick)
+        viewModel.onAction(SortSettingsAction.OnBackButtonClick)
     }
 
-    LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
-            when (event) {
-                is SortSettingsUiEvent.OnSortTypeRadioButtonClick -> {
-                    viewModel.changeSortType(event.sortType)
-                }
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is SortSettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
-                is SortSettingsUiEvent.OnSaveButtonClick -> {
-                    viewModel.saveSortSettings(
-                        onSaveSuccess = {
-                            showToast(context, "保存しました")
-                            currentOnBackButtonClick()
-                        },
-                        onSaveFailure = {
-                            showToast(context, "保存に失敗しました")
-                        },
-                    )
-                }
-
-                is SortSettingsUiEvent.OnBackButtonClick -> {
-                    currentOnBackButtonClick()
-                }
+                is SortSettingsEffect.ShowToast -> showToast(context, effect.message)
             }
-        }.launchIn(this)
+        }
     }
 
     SortSettingsScreen(
-        uiState = uiState,
-        onEvent = viewModel::onEvent,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
 
 @Composable
 private fun SortSettingsScreen(
-    uiState: SortSettingsUiState,
-    onEvent: (SortSettingsUiEvent) -> Unit,
+    state: SortSettingsState,
+    onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -100,19 +79,19 @@ private fun SortSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "並び順") },
-                navigateBack = { onEvent(SortSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onAction(SortSettingsAction.OnBackButtonClick) },
             )
             SortSettingsScreenContent(
-                uiState = uiState,
-                onEvent = onEvent,
+                state = state,
+                onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(SortSettingsUiEvent.OnSaveButtonClick) },
-                enabled = uiState.isSaveButtonEnabled,
+                onClick = { onAction(SortSettingsAction.OnSaveButtonClick) },
+                enabled = state.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(Paddings.Medium),

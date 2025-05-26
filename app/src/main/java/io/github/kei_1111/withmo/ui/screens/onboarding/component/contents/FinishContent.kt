@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -26,11 +26,11 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun FinishContent(
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BackHandler {
-        onEvent(OnboardingUiEvent.OnPreviousButtonClick)
+        onAction(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -55,7 +55,7 @@ internal fun FinishContent(
             BodyMediumText("設定が完了しました！")
         }
         FinishContentBottomAppBar(
-            onEvent = onEvent,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -65,7 +65,7 @@ internal fun FinishContent(
 
 @Composable
 private fun FinishContentBottomAppBar(
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -73,12 +73,12 @@ private fun FinishContentBottomAppBar(
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
+            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = "はじめる",
-            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
+            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

@@ -14,14 +14,14 @@ import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsAction
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ClockTypePicker(
     isClockShown: Boolean,
     selectedClockType: ClockType,
-    onEvent: (ClockSettingsUiEvent) -> Unit,
+    onAction: (ClockSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -44,7 +44,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.TOP_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.OnClockTypeRadioButtonClick(ClockType.TOP_DATE)) },
+                onClick = { onAction(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.TOP_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             ClockTypePickerDivider()
@@ -58,7 +58,7 @@ internal fun ClockTypePicker(
                 },
                 selected = ClockType.HORIZONTAL_DATE == selectedClockType,
                 enabled = isClockShown,
-                onClick = { onEvent(ClockSettingsUiEvent.OnClockTypeRadioButtonClick(ClockType.HORIZONTAL_DATE)) },
+                onClick = { onAction(ClockSettingsAction.OnClockTypeRadioButtonClick(ClockType.HORIZONTAL_DATE)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

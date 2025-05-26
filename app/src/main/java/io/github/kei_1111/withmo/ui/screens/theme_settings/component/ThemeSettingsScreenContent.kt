@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsUiEvent
-import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsAction
+import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ThemeSettingsScreenContent(
-    uiState: ThemeSettingsUiState,
-    onEvent: (ThemeSettingsUiEvent) -> Unit,
+    state: ThemeSettingsState,
+    onAction: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -22,8 +22,8 @@ internal fun ThemeSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         ThemeTypePicker(
-            selectedThemeType = uiState.themeSettings.themeType,
-            onEvent = onEvent,
+            selectedThemeType = state.themeSettings.themeType,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
     }

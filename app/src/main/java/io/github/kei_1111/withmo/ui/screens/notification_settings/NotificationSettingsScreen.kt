@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.ui.screens.notification_settings
 
-import android.content.Intent
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -21,11 +20,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.app.NotificationManagerCompat
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
@@ -34,8 +30,6 @@ import io.github.kei_1111.withmo.ui.screens.notification_settings.component.Noti
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.showToast
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
@@ -43,79 +37,45 @@ fun NotificationSettingsScreen(
     onBackButtonClick: () -> Unit,
     viewModel: NotificationSettingsViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)) {
-                viewModel.changeIsNotificationAnimationEnable(true)
-            } else {
-                viewModel.changeIsNotificationAnimationEnable(false)
-            }
-        },
-    )
-
-    BackHandler {
-        viewModel.onEvent(NotificationSettingsUiEvent.OnBackButtonClick)
+    val notificationListenerPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        viewModel.onAction(NotificationSettingsAction.OnNotificationListenerPermissionResult)
     }
 
-    LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
-            when (event) {
-                is NotificationSettingsUiEvent.OnIsNotificationAnimationEnabledSwitchChange -> {
-                    if (NotificationManagerCompat.getEnabledListenerPackages(context).contains(context.packageName)) {
-                        viewModel.changeIsNotificationAnimationEnable(event.isNotificationAnimationEnabled)
-                    } else {
-                        viewModel.changeIsNotificationAnimationEnable(false)
-                        viewModel.changeIsNotificationPermissionDialogShown(true)
-                    }
-                }
+    BackHandler {
+        viewModel.onAction(NotificationSettingsAction.OnBackButtonClick)
+    }
 
-                is NotificationSettingsUiEvent.OnNotificationPermissionDialogConfirm -> {
-                    launcher.launch(Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS"))
-                    viewModel.changeIsNotificationPermissionDialogShown(false)
-                }
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is NotificationSettingsEffect.RequestNotificationListenerPermission ->
+                    notificationListenerPermissionLauncher.launch(effect.intent)
 
-                is NotificationSettingsUiEvent.OnNotificationPermissionDialogDismiss -> {
-                    viewModel.changeIsNotificationPermissionDialogShown(false)
-                    showToast(context, "通知アニメーションを有効にするには\n通知アクセスを許可してください")
-                }
+                is NotificationSettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
-                is NotificationSettingsUiEvent.OnSaveButtonClick -> {
-                    viewModel.saveNotificationSettings(
-                        onSaveSuccess = {
-                            showToast(context, "保存しました")
-                            currentOnBackButtonClick()
-                        },
-                        onSaveFailure = {
-                            showToast(context, "保存に失敗しました")
-                        },
-                    )
-                }
-
-                is NotificationSettingsUiEvent.OnBackButtonClick -> {
-                    currentOnBackButtonClick()
-                }
+                is NotificationSettingsEffect.ShowToast -> showToast(context, effect.message)
             }
-        }.launchIn(this)
+        }
     }
 
     NotificationSettingsScreen(
-        uiState = uiState,
-        onEvent = viewModel::onEvent,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
 
 @Composable
 private fun NotificationSettingsScreen(
-    uiState: NotificationSettingsUiState,
-    onEvent: (NotificationSettingsUiEvent) -> Unit,
+    state: NotificationSettingsState,
+    onAction: (NotificationSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -131,32 +91,32 @@ private fun NotificationSettingsScreen(
         ) {
             WithmoTopAppBar(
                 content = { TitleLargeText(text = "通知") },
-                navigateBack = { onEvent(NotificationSettingsUiEvent.OnBackButtonClick) },
+                navigateBack = { onAction(NotificationSettingsAction.OnBackButtonClick) },
             )
             NotificationSettingsScreenContent(
-                uiState = uiState,
-                onEvent = onEvent,
+                state = state,
+                onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(Weights.Medium)
                     .verticalScroll(rememberScrollState()),
             )
             WithmoSaveButton(
-                onClick = { onEvent(NotificationSettingsUiEvent.OnSaveButtonClick) },
-                enabled = uiState.isSaveButtonEnabled,
+                onClick = { onAction(NotificationSettingsAction.OnSaveButtonClick) },
+                enabled = state.isSaveButtonEnabled,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(Paddings.Medium),
             )
         }
     }
-    if (uiState.isNotificationPermissionDialogShown) {
+    if (state.isNotificationPermissionDialogShown) {
         NotificationPermissionDialog(
             onConfirm = {
-                onEvent(NotificationSettingsUiEvent.OnNotificationPermissionDialogConfirm)
+                onAction(NotificationSettingsAction.OnNotificationPermissionDialogConfirm)
             },
             onDismiss = {
-                onEvent(NotificationSettingsUiEvent.OnNotificationPermissionDialogDismiss)
+                onAction(NotificationSettingsAction.OnNotificationPermissionDialogDismiss)
             },
         )
     }

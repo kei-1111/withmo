@@ -39,9 +39,9 @@ import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.TitleLargeText
 import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiState
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
@@ -52,12 +52,12 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun SelectDisplayModelContent(
-    uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     BackHandler {
-        onEvent(OnboardingUiEvent.OnPreviousButtonClick)
+        onAction(OnboardingAction.OnPreviousButtonClick)
     }
 
     Column(
@@ -73,20 +73,20 @@ internal fun SelectDisplayModelContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             SelectDisplayModelArea(
-                uiState = uiState,
-                onClick = { onEvent(OnboardingUiEvent.OnSelectDisplayModelAreaClick) },
+                state = state,
+                onClick = { onAction(OnboardingAction.OnSelectDisplayModelAreaClick) },
             )
             SelectedModelFileName(
-                fileName = if (uiState.modelFilePath.path != null) {
-                    File(uiState.modelFilePath.path).name
+                fileName = if (state.modelFilePath.path != null) {
+                    File(state.modelFilePath.path).name
                 } else {
                     "デフォルトモデル"
                 },
             )
         }
         SelectDisplayModelContentBottomAppBar(
-            uiState = uiState,
-            onEvent = onEvent,
+            state = state,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -96,11 +96,11 @@ internal fun SelectDisplayModelContent(
 
 @Composable
 private fun SelectDisplayModelArea(
-    uiState: OnboardingUiState,
+    state: OnboardingState,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isModelFileThumbnail = uiState.modelFileThumbnail != null
+    val isModelFileThumbnail = state.modelFileThumbnail != null
 
     val selectDisplayModelAreaModifier = if (isModelFileThumbnail) {
         modifier
@@ -129,7 +129,7 @@ private fun SelectDisplayModelArea(
     ) {
         if (isModelFileThumbnail) {
             Image(
-                bitmap = uiState.modelFileThumbnail!!.asImageBitmap(),
+                bitmap = state.modelFileThumbnail!!.asImageBitmap(),
                 contentDescription = "Model Thumbnail",
                 modifier = Modifier.fillMaxSize(),
             )
@@ -208,24 +208,24 @@ private fun SelectedModelFileName(
 
 @Composable
 private fun SelectDisplayModelContentBottomAppBar(
-    uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isModelSelected = uiState.modelFilePath.path != null
+    val isModelSelected = state.modelFilePath.path != null
 
     Row(
         modifier = modifier,
         horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         OnboardingBottomAppBarPreviousButton(
-            onClick = { onEvent(OnboardingUiEvent.OnPreviousButtonClick) },
+            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
         OnboardingBottomAppBarNextButton(
             text = if (isModelSelected) "次へ" else "スキップ",
-            enabled = !uiState.isModelLoading,
-            onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
+            enabled = !state.isModelLoading,
+            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

@@ -13,7 +13,6 @@ import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,9 +20,9 @@ import javax.inject.Inject
 class FavoriteAppSettingsViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
-) : BaseViewModel<FavoriteAppSettingsUiState, FavoriteAppSettingsUiEvent>() {
+) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
-    override fun createInitialState(): FavoriteAppSettingsUiState = FavoriteAppSettingsUiState()
+    override fun createInitialState(): FavoriteAppSettingsState = FavoriteAppSettingsState()
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
@@ -39,8 +38,8 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
                 val sortedFavoriteAppList = favoriteAppList.toPersistentList()
 
-                _uiState.update {
-                    it.copy(
+                updateState {
+                    copy(
                         favoriteAppList = sortedFavoriteAppList,
                         initialFavoriteAppList = sortedFavoriteAppList,
                     )
@@ -52,54 +51,44 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
-                _uiState.update {
-                    it.copy(appIconSettings = appIconSettings)
-                }
+                updateState { copy(appIconSettings = appIconSettings) }
             }
         }
     }
 
-    fun addFavoriteAppList(appInfo: AppInfo) {
-        val addedFavoriteAppList = (_uiState.value.favoriteAppList + appInfo).toPersistentList()
+    private fun addFavoriteAppList(appInfo: AppInfo) {
+        val addedFavoriteAppList = (state.value.favoriteAppList + appInfo).toPersistentList()
 
-        _uiState.update { currentState ->
-            if (currentState.favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                currentState.favoriteAppList.none { it.packageName == appInfo.packageName }
+        updateState {
+            if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                favoriteAppList.none { it.packageName == appInfo.packageName }
             ) {
-                currentState.copy(
+                copy(
                     favoriteAppList = addedFavoriteAppList,
-                    isSaveButtonEnabled = currentState.initialFavoriteAppList != addedFavoriteAppList,
+                    isSaveButtonEnabled = !addedFavoriteAppList.isSameAs(initialFavoriteAppList),
                 )
             } else {
-                currentState
+                this
             }
         }
     }
 
-    fun removeFavoriteAppList(appInfo: AppInfo) {
-        val removedFavoriteAppList = _uiState.value.favoriteAppList.filterNot { it.packageName == appInfo.packageName }
+    private fun removeFavoriteAppList(appInfo: AppInfo) {
+        val removedFavoriteAppList = state.value.favoriteAppList
+            .filterNot { it.packageName == appInfo.packageName }
             .toPersistentList()
 
-        _uiState.update {
-            it.copy(
+        updateState {
+            copy(
                 favoriteAppList = removedFavoriteAppList,
-                isSaveButtonEnabled = (it.initialFavoriteAppList != removedFavoriteAppList),
+                isSaveButtonEnabled = (initialFavoriteAppList != removedFavoriteAppList),
             )
         }
     }
 
-    fun onValueChangeAppSearchQuery(query: String) {
-        _uiState.update {
-            it.copy(appSearchQuery = query)
-        }
-    }
-
-    fun saveFavoriteAppList(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
-        val currentFavoriteAppList = _uiState.value.favoriteAppList
-        val initialFavoriteAppList = _uiState.value.initialFavoriteAppList
+    private fun saveFavoriteAppList() {
+        val currentFavoriteAppList = state.value.favoriteAppList
+        val initialFavoriteAppList = state.value.initialFavoriteAppList
 
         val favoriteOrders = listOf(
             FavoriteOrder.First,
@@ -124,19 +113,37 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
         val appsToUpdate = appsToUpdateFavorites + appsToRemoveFromFavorites
 
-        _uiState.update {
-            it.copy(isSaveButtonEnabled = false)
-        }
+        updateState { copy(isSaveButtonEnabled = false) }
 
         viewModelScope.launch {
             try {
                 appInfoRepository.updateAppInfoList(appsToUpdate)
-                onSaveSuccess()
+                sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
+                sendEffect(FavoriteAppSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save favorite app settings", e)
-                onSaveFailure()
+                sendEffect(FavoriteAppSettingsEffect.ShowToast("保存に失敗しました"))
             }
         }
+    }
+
+    override fun onAction(action: FavoriteAppSettingsAction) {
+        when (action) {
+            is FavoriteAppSettingsAction.OnAllAppListAppClick -> addFavoriteAppList(action.appInfo)
+
+            is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.appInfo)
+
+            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+
+            is FavoriteAppSettingsAction.OnSaveButtonClick -> saveFavoriteAppList()
+
+            is FavoriteAppSettingsAction.OnBackButtonClick -> sendEffect(FavoriteAppSettingsEffect.NavigateBack)
+        }
+    }
+
+    private fun List<AppInfo>.isSameAs(other: List<AppInfo>): Boolean {
+        return this.size == other.size &&
+            this.zip(other).all { (a, b) -> a.packageName == b.packageName }
     }
 
     private companion object {

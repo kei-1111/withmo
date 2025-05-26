@@ -1,13 +1,17 @@
 package io.github.kei_1111.withmo.ui.screens.home
 
-import android.content.Context
-import android.net.Uri
+import android.app.Activity.RESULT_OK
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.common.unity.UnityMethod
+import io.github.kei_1111.withmo.common.unity.UnityObject
 import io.github.kei_1111.withmo.common.unity.UnityToAndroidMessenger
+import io.github.kei_1111.withmo.domain.manager.ModelFileManager
+import io.github.kei_1111.withmo.domain.manager.WidgetManager
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
@@ -22,13 +26,12 @@ import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
-@Suppress("TooManyFunctions")
 @RequiresApi(Build.VERSION_CODES.O)
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -36,22 +39,20 @@ class HomeViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val widgetInfoRepository: WidgetInfoRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
+    private val modelFileManager: ModelFileManager,
+    private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
-) : BaseViewModel<HomeUiState, HomeUiEvent>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
-    override fun createInitialState(): HomeUiState = HomeUiState()
+    override fun createInitialState(): HomeState = HomeState()
 
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
             ModelLoadState.LoadingSuccess.name -> {
-                _uiState.update {
-                    it.copy(isModelLoading = false)
-                }
+                updateState { copy(isModelLoading = false) }
             }
             ModelLoadState.LoadingFailure.name -> {
-                _uiState.update {
-                    it.copy(isModelLoading = false)
-                }
+                updateState { copy(isModelLoading = false) }
             }
             else -> {
                 Log.d(TAG, "Unknown message from Unity: $message")
@@ -61,9 +62,6 @@ class HomeViewModel @Inject constructor(
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
-
-    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown
-        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = false)
 
     init {
         UnityToAndroidMessenger.receiver = WeakReference(this)
@@ -76,9 +74,7 @@ class HomeViewModel @Inject constructor(
     private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
-                _uiState.update {
-                    it.copy(currentUserSettings = userSettings)
-                }
+                updateState { copy(currentUserSettings = userSettings) }
             }
         }
     }
@@ -86,11 +82,7 @@ class HomeViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                _uiState.update {
-                    it.copy(
-                        favoriteAppList = favoriteAppList.toPersistentList(),
-                    )
-                }
+                updateState { copy(favoriteAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
@@ -98,8 +90,8 @@ class HomeViewModel @Inject constructor(
     private fun observeWidgetList() {
         viewModelScope.launch {
             widgetInfoRepository.getAllWidgetList().collect { widgetList ->
-                _uiState.update {
-                    it.copy(
+                updateState {
+                    copy(
                         widgetList = widgetList.toPersistentList(),
                         initialWidgetList = widgetList.toPersistentList(),
                     )
@@ -108,98 +100,23 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun setIsShowScaleSliderButtonShown(show: Boolean) {
-        _uiState.update {
-            it.copy(isShowScaleSliderButtonShown = show)
-        }
+    private fun addWidget(withmoWidgetInfo: WithmoWidgetInfo) {
+        updateState { copy(widgetList = (widgetList + withmoWidgetInfo).toPersistentList()) }
     }
 
-    suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
-    }
-
-    fun deleteCopiedCacheFiles(context: Context) {
-        viewModelScope.launch {
-            FileUtils.deleteCopiedCacheFiles(context)
-        }
-    }
-
-    fun setIsModelChangeWarningDialogShown(isModelChangeWarningDialogShown: Boolean) {
-        _uiState.update {
-            it.copy(isModelChangeWarningDialogShown = isModelChangeWarningDialogShown)
-        }
-    }
-
-    fun markModelChangeWarningFirstShown() {
-        viewModelScope.launch {
-            oneTimeEventRepository.markModelChangeWarningFirstShown()
-        }
-    }
-
-    fun saveModelFilePath(modelFilePath: ModelFilePath) {
-        viewModelScope.launch {
-            saveModelFilePathUseCase(modelFilePath)
-        }
-    }
-
-    fun setIsModelLoading(isModelLoading: Boolean) {
-        _uiState.update {
-            it.copy(isModelLoading = isModelLoading)
-        }
-    }
-
-    fun setAppSearchQuery(query: String) {
-        _uiState.update {
-            it.copy(appSearchQuery = query)
-        }
-    }
-
-    fun changeIsEditMode(isEditMode: Boolean) {
-        _uiState.update {
-            it.copy(isEditMode = isEditMode)
-        }
-    }
-
-    fun changeIsAppListBottomSheetOpened(isAppListBottomSheetOpened: Boolean) {
-        _uiState.update {
-            it.copy(isAppListSheetOpened = isAppListBottomSheetOpened)
-        }
-    }
-
-    fun changeIsWidgetListBottomSheetOpened(isWidgetListBottomSheetOpened: Boolean) {
-        _uiState.update {
-            it.copy(isWidgetListSheetOpened = isWidgetListBottomSheetOpened)
-        }
-    }
-
-    fun setPendingWidget(widgetInfo: WidgetInfo) {
-        _uiState.update {
-            it.copy(
-                pendingWidgetInfo = widgetInfo,
-            )
-        }
-    }
-
-    fun addDisplayedWidgetList(withmoWidgetInfo: WithmoWidgetInfo) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                widgetList = (currentState.widgetList + withmoWidgetInfo).toPersistentList(),
-            )
-        }
-    }
-
-    fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                widgetList = currentState.widgetList.filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
+    private fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
+        updateState {
+            copy(
+                widgetList = widgetList
+                    .filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
                     .toPersistentList(),
             )
         }
     }
 
-    fun saveWidgetList() {
-        val currentWidgetList = _uiState.value.widgetList
-        val initialWidgetList = _uiState.value.initialWidgetList
+    private fun saveWidgetList() {
+        val currentWidgetList = state.value.widgetList
+        val initialWidgetList = state.value.initialWidgetList
 
         val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
             initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
@@ -220,21 +137,204 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun changeResizingWidget(withmoWidgetInfo: WithmoWidgetInfo?) {
-        _uiState.update {
-            it.copy(resizeWidget = withmoWidgetInfo)
-        }
-    }
+    @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
+    override fun onAction(action: HomeAction) {
+        when (action) {
+            is HomeAction.OnAppClick -> sendEffect(HomeEffect.LaunchApp(action.appInfo))
 
-    fun changeIsWidgetResizing(isWidgetResizing: Boolean) {
-        _uiState.update {
-            it.copy(isWidgetResizing = isWidgetResizing)
-        }
-    }
+            is HomeAction.OnAppLongClick -> sendEffect(HomeEffect.DeleteApp(action.appInfo))
 
-    fun setCurrentPage(page: PageContent) {
-        _uiState.update {
-            it.copy(currentPage = page)
+            is HomeAction.OnShowScaleSliderButtonClick -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.ShowObject, "")
+                updateState { copy(isCloseScaleSliderButtonShown = true) }
+            }
+
+            is HomeAction.OnCloseScaleSliderButtonClick -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.HideObject, "")
+                updateState { copy(isCloseScaleSliderButtonShown = false) }
+            }
+
+            is HomeAction.OnSetDefaultModelButtonClick -> {
+                viewModelScope.launch {
+                    val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
+                    val isDefaultModelFile =
+                        state.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
+
+                    if (!isDefaultModelFile) {
+                        updateState { copy(isModelLoading = true) }
+                        saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
+                    }
+                }
+            }
+
+            is HomeAction.OnOpenDocumentButtonClick -> {
+                viewModelScope.launch {
+                    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown.first()
+                    if (isModelChangeWarningFirstShown) {
+                        sendEffect(HomeEffect.OpenDocument)
+                    } else {
+                        updateState { copy(isModelChangeWarningDialogShown = true) }
+                    }
+                }
+            }
+
+            is HomeAction.OnNavigateSettingsButtonClick -> sendEffect(HomeEffect.NavigateSettings)
+
+            is HomeAction.OnModelChangeWarningDialogConfirm -> {
+                viewModelScope.launch {
+                    oneTimeEventRepository.markModelChangeWarningFirstShown()
+                    updateState { copy(isModelChangeWarningDialogShown = false) }
+                    sendEffect(HomeEffect.OpenDocument)
+                }
+            }
+
+            is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
+
+            is HomeAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+
+            is HomeAction.OnAppListSheetSwipeUp -> {
+                sendEffect(HomeEffect.ShowAppListSheet)
+                updateState { copy(isAppListSheetOpened = true) }
+            }
+
+            is HomeAction.OnAppListSheetSwipeDown -> {
+                sendEffect(HomeEffect.HideAppListSheet)
+                updateState { copy(isAppListSheetOpened = false) }
+            }
+
+            is HomeAction.OnAddWidgetButtonClick -> {
+                sendEffect(HomeEffect.ShowWidgetListSheet)
+                updateState { copy(isWidgetListSheetOpened = true) }
+            }
+
+            is HomeAction.OnWidgetListSheetSwipeDown -> {
+                sendEffect(HomeEffect.HideWidgetListSheet)
+                updateState { copy(isWidgetListSheetOpened = false) }
+            }
+
+            is HomeAction.OnDisplayModelContentSwipeLeft -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
+                updateState { copy(currentPage = PageContent.Widget) }
+            }
+
+            is HomeAction.OnWidgetContentSwipeRight -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
+                updateState { copy(currentPage = PageContent.DisplayModel) }
+            }
+
+            is HomeAction.OnDisplayModelContentClick -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.MoveLookat, "${action.x},${action.y}")
+            }
+
+            is HomeAction.OnDisplayModelContentLongClick -> {
+                AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
+            }
+
+            is HomeAction.OnWidgetListSheetItemClick -> {
+                val widgetId = widgetManager.allocateId()
+                val provider = action.widgetInfo.provider
+                val result = widgetManager.bindAppWidgetId(widgetId, provider, action.widgetInfo.minWidth, action.widgetInfo.minHeight)
+
+                val widgetInfo = WidgetInfo(widgetId, action.widgetInfo)
+                updateState { copy(pendingWidgetInfo = widgetInfo) }
+
+                if (result) {
+                    if (action.widgetInfo.configure != null) {
+                        val intent = widgetManager.buildConfigureIntent(widgetId, action.widgetInfo.configure)
+                        val activityInfo = widgetManager.getActivityInfo(action.widgetInfo.configure)
+
+                        if (activityInfo != null && activityInfo.exported) {
+                            sendEffect(HomeEffect.ConfigureWidget(intent))
+                        } else {
+                            addWidget(WithmoWidgetInfo(widgetInfo))
+                        }
+                    } else {
+                        addWidget(WithmoWidgetInfo(widgetInfo))
+                    }
+                } else {
+                    val intent = widgetManager.buildBindIntent(widgetId, provider)
+                    sendEffect(HomeEffect.BindWidget(intent))
+                }
+                sendEffect(HomeEffect.HideWidgetListSheet)
+                updateState { copy(isWidgetListSheetOpened = false) }
+            }
+
+            is HomeAction.OnWidgetContentLongClick -> updateState { copy(isEditMode = true) }
+
+            is HomeAction.OnCompleteEditButtonClick -> {
+                saveWidgetList()
+                updateState { copy(isEditMode = false) }
+            }
+
+            is HomeAction.OnDeleteWidgetBadgeClick -> deleteWidget(action.withmoWidgetInfo)
+
+            is HomeAction.OnResizeWidgetBadgeClick -> {
+                updateState {
+                    copy(
+                        isWidgetResizing = true,
+                        resizingWidget = action.withmoWidgetInfo,
+                    )
+                }
+                deleteWidget(action.withmoWidgetInfo)
+            }
+
+            is HomeAction.OnWidgetResizeBottomSheetClose -> {
+                updateState {
+                    copy(
+                        isWidgetResizing = false,
+                        resizingWidget = null,
+                    )
+                }
+                addWidget(action.withmoWidgetInfo)
+            }
+
+            is HomeAction.OnOpenDocumentLauncherResult -> {
+                viewModelScope.launch {
+                    if (action.uri == null) {
+                        sendEffect(HomeEffect.ShowToast("ファイルが選択されませんでした"))
+                    } else {
+                        updateState { copy(isModelLoading = true) }
+                        modelFileManager.deleteCopiedCacheFiles()
+                        val filePath = modelFileManager.copyVrmFileFromUri(action.uri)?.absolutePath
+                        if (filePath == null) {
+                            sendEffect(HomeEffect.ShowToast("ファイルの読み込みに失敗しました"))
+                            updateState { copy(isModelLoading = false) }
+                        } else {
+                            if (filePath == state.value.currentUserSettings.modelFilePath.path) {
+                                sendEffect(HomeEffect.ShowToast("同じファイルが選択されています"))
+                                updateState { copy(isModelLoading = false) }
+                            } else {
+                                saveModelFilePathUseCase(ModelFilePath(filePath))
+                            }
+                        }
+                    }
+                }
+            }
+
+            is HomeAction.OnConfigureWidgetLauncherResult -> {
+                state.value.pendingWidgetInfo?.let { widgetInfo ->
+                    if (action.result.resultCode == RESULT_OK) {
+                        addWidget(WithmoWidgetInfo(widgetInfo))
+                    } else {
+                        widgetManager.deleteWidgetId(widgetInfo.id)
+                    }
+                }
+            }
+
+            is HomeAction.OnBindWidgetLauncherResult -> {
+                state.value.pendingWidgetInfo?.let { widgetInfo ->
+                    if (action.result.resultCode == RESULT_OK) {
+                        if (widgetInfo.info.configure != null) {
+                            val intent = widgetManager.buildConfigureIntent(widgetInfo.id, widgetInfo.info.configure)
+                            sendEffect(HomeEffect.ConfigureWidget(intent))
+                        } else {
+                            addWidget(WithmoWidgetInfo(widgetInfo))
+                        }
+                    } else {
+                        widgetManager.deleteWidgetId(widgetInfo.id)
+                    }
+                }
+            }
         }
     }
 

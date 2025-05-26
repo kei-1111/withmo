@@ -14,16 +14,12 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.FinishContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectDisplayModelContent
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.SelectFavoriteAppContent
@@ -31,9 +27,6 @@ import io.github.kei_1111.withmo.ui.screens.onboarding.component.contents.Welcom
 import io.github.kei_1111.withmo.utils.showToast
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "LongMethod")
@@ -42,74 +35,35 @@ fun OnboardingScreen(
     onFinishButtonClick: () -> Unit,
     viewModel: OnboardingViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
 
     val appList by viewModel.appList.collectAsStateWithLifecycle()
 
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
     ) { uri ->
-        scope.launch {
-            viewModel.setIsModelLoading(true)
-            if (uri == null) {
-                showToast(context, "ファイルが選択されませんでした")
-            } else {
-                val filePath = viewModel.getVrmFilePath(context, uri)
-                if (filePath == null) {
-                    showToast(context, "ファイルの読み込みに失敗しました")
-                } else {
-                    viewModel.setModelFilePath(ModelFilePath(filePath))
-                    viewModel.setModelFileThumbnail(ModelFilePath(filePath))
-                }
-            }
-            viewModel.setIsModelLoading(false)
-        }
+        viewModel.onAction(OnboardingAction.OnOpenDocumentLauncherResult(uri))
     }
 
     val currentOnFinishButtonClick by rememberUpdatedState(onFinishButtonClick)
 
-    LaunchedEffect(lifecycleOwner, viewModel) {
-        viewModel.uiEvent.flowWithLifecycle(lifecycleOwner.lifecycle).onEach { event ->
-            when (event) {
-                is OnboardingUiEvent.OnAllAppListAppClick -> {
-                    viewModel.addSelectedAppList(event.appInfo)
-                }
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is OnboardingEffect.OpenDocument -> openDocumentLauncher.launch(arrayOf("*/*"))
 
-                is OnboardingUiEvent.OnFavoriteAppListAppClick -> {
-                    viewModel.removeSelectedAppList(event.appInfo)
-                }
+                is OnboardingEffect.NavigateHome -> currentOnFinishButtonClick()
 
-                is OnboardingUiEvent.OnAppSearchQueryChange -> {
-                    viewModel.onValueChangeAppSearchQuery(event.query)
-                }
-
-                is OnboardingUiEvent.OnSelectDisplayModelAreaClick -> {
-                    openDocumentLauncher.launch(arrayOf("*/*"))
-                }
-
-                is OnboardingUiEvent.OnNextButtonClick -> {
-                    viewModel.navigateToNextPage(
-                        onFinish = {
-                            viewModel.saveSetting(context)
-                            currentOnFinishButtonClick()
-                        },
-                    )
-                }
-
-                is OnboardingUiEvent.OnPreviousButtonClick -> {
-                    viewModel.navigateToPreviousPage()
-                }
+                is OnboardingEffect.ShowToast -> showToast(context, effect.message)
             }
-        }.launchIn(this)
+        }
     }
 
     OnboardingScreen(
         appList = appList.toPersistentList(),
-        uiState = uiState,
-        onEvent = viewModel::onEvent,
+        state = state,
+        onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -118,8 +72,8 @@ fun OnboardingScreen(
 @Composable
 private fun OnboardingScreen(
     appList: ImmutableList<AppInfo>,
-    uiState: OnboardingUiState,
-    onEvent: (OnboardingUiEvent) -> Unit,
+    state: OnboardingState,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -128,10 +82,10 @@ private fun OnboardingScreen(
     Surface(
         modifier = modifier,
     ) {
-        when (uiState.currentPage) {
+        when (state.currentPage) {
             OnboardingPage.Welcome -> {
                 WelcomeContent(
-                    onEvent = onEvent,
+                    onAction = onAction,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = bottomPaddingValue),
@@ -140,8 +94,8 @@ private fun OnboardingScreen(
             OnboardingPage.SelectFavoriteApp -> {
                 SelectFavoriteAppContent(
                     appList = appList,
-                    uiState = uiState,
-                    onEvent = onEvent,
+                    state = state,
+                    onAction = onAction,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = bottomPaddingValue),
@@ -149,8 +103,8 @@ private fun OnboardingScreen(
             }
             OnboardingPage.SelectDisplayModel -> {
                 SelectDisplayModelContent(
-                    uiState = uiState,
-                    onEvent = onEvent,
+                    state = state,
+                    onAction = onAction,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = bottomPaddingValue),
@@ -158,7 +112,7 @@ private fun OnboardingScreen(
             }
             OnboardingPage.Finish -> {
                 FinishContent(
-                    onEvent = onEvent,
+                    onAction = onAction,
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(bottom = bottomPaddingValue),

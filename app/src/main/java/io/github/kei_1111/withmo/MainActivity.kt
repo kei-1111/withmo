@@ -25,6 +25,7 @@ import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.common.unity.UnityManager
 import io.github.kei_1111.withmo.common.unity.UnityMethod
 import io.github.kei_1111.withmo.common.unity.UnityObject
+import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
@@ -60,6 +61,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var appWidgetManager: AppWidgetManager
+
+    @Inject
+    lateinit var modelFileManager: ModelFileManager
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -113,7 +117,7 @@ class MainActivity : ComponentActivity() {
 
         UnityManager.init(this)
 
-        observeModelFilePath(this)
+        observeModelFilePath()
         observeThemeSettings()
 
         lifecycleScope.launchWhenCreated {
@@ -208,9 +212,9 @@ class MainActivity : ComponentActivity() {
         appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
-    private fun observeModelFilePath(context: Context) {
+    private fun observeModelFilePath() {
         lifecycleScope.launch {
-            val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+            val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
 
             getModelFilePathUseCase().collect { modelFilePath ->
                 if (modelFilePath.path != null) {

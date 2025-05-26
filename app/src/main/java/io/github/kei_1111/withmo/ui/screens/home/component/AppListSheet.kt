@@ -35,8 +35,8 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
 import io.github.kei_1111.withmo.ui.theme.DesignConstants
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -50,20 +50,20 @@ import kotlinx.collections.immutable.toPersistentList
 internal fun AppListSheet(
     appList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
-    uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
 
     LaunchedEffect(appList) {
         resultAppList = appList.filter { appInfo ->
-            appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
+            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
         }.toPersistentList()
     }
 
     ModalBottomSheet(
-        onDismissRequest = { onEvent(HomeUiEvent.OnAppListSheetSwipeDown) },
+        onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = appListSheetState,
         dragHandle = {},
@@ -74,36 +74,30 @@ internal fun AppListSheet(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(
-                        top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
-                        start = Paddings.Medium,
-                        end = Paddings.Medium,
-                    ),
-                verticalArrangement = Arrangement.spacedBy(
-                    Paddings.Medium,
-                    Alignment.CenterVertically,
-                ),
+                    .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding())
+                    .padding(horizontal = Paddings.Medium),
+                verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 WithmoSearchTextField(
                     modifier = Modifier.fillMaxWidth(),
-                    value = uiState.appSearchQuery,
-                    onValueChange = { onEvent(HomeUiEvent.OnAppSearchQueryChange(it)) },
+                    value = state.appSearchQuery,
+                    onValueChange = { onAction(HomeAction.OnAppSearchQueryChange(it)) },
                     action = {
                         resultAppList = appList.filter { appInfo ->
-                            appInfo.label.contains(uiState.appSearchQuery, ignoreCase = true)
+                            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
                         }.toPersistentList()
                     },
                 )
                 if (resultAppList.isNotEmpty()) {
                     AppList(
                         appList = resultAppList,
-                        appIconShape = uiState.currentUserSettings.appIconSettings.appIconShape.toShape(
-                            uiState.currentUserSettings.appIconSettings.roundedCornerPercent,
+                        appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
+                            state.currentUserSettings.appIconSettings.roundedCornerPercent,
                         ),
                         isNavigateSettingsButtonShown =
-                        uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
-                        onEvent = onEvent,
+                        state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                        onAction = onAction,
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else {
@@ -122,7 +116,7 @@ private fun AppList(
     appList: ImmutableList<AppInfo>,
     appIconShape: Shape,
     isNavigateSettingsButtonShown: Boolean,
-    onEvent: (HomeUiEvent) -> Unit,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -149,8 +143,8 @@ private fun AppList(
                     items = launchableAppList,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                    onClick = { onAction(HomeAction.OnAppClick(it)) },
+                    onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                 )
             }
         }
@@ -165,8 +159,8 @@ private fun AppList(
                     items = settingApp,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
-                    onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                    onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                    onClick = { onAction(HomeAction.OnAppClick(it)) },
+                    onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                 )
             }
         }
@@ -183,9 +177,7 @@ private fun CustomAppInfoGridLayout(
     modifier: Modifier = Modifier,
     verticalSpacing: Dp = Paddings.Large,
     horizontalSpacing: Dp = Paddings.Large,
-    contentPadding: PaddingValues = PaddingValues(
-        bottom = Paddings.ExtraSmall,
-    ),
+    contentPadding: PaddingValues = PaddingValues(bottom = Paddings.ExtraSmall),
 ) {
     Column(
         modifier = modifier

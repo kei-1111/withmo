@@ -15,15 +15,15 @@ import androidx.compose.ui.res.painterResource
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.DisplayMediumText
+import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingUiEvent
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WelcomeContent(
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -49,7 +49,7 @@ internal fun WelcomeContent(
             BodyMediumText("今すぐwithmoを始めよう！")
         }
         WelcomeContentBottomAppBar(
-            onEvent = onEvent,
+            onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(Paddings.Medium),
@@ -59,12 +59,12 @@ internal fun WelcomeContent(
 
 @Composable
 private fun WelcomeContentBottomAppBar(
-    onEvent: (OnboardingUiEvent) -> Unit,
+    onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     OnboardingBottomAppBarNextButton(
         text = "次へ",
-        onClick = { onEvent(OnboardingUiEvent.OnNextButtonClick) },
+        onClick = { onAction(OnboardingAction.OnNextButtonClick) },
         modifier = modifier,
     )
 }

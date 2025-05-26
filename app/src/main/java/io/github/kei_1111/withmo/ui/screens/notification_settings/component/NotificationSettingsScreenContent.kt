@@ -7,14 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
-import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsUiEvent
-import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsAction
+import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun NotificationSettingsScreenContent(
-    uiState: NotificationSettingsUiState,
-    onEvent: (NotificationSettingsUiEvent) -> Unit,
+    state: NotificationSettingsState,
+    onAction: (NotificationSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -24,8 +24,8 @@ internal fun NotificationSettingsScreenContent(
     ) {
         WithmoSettingItemWithSwitch(
             title = "通知の受け取り",
-            checked = uiState.notificationSettings.isNotificationAnimationEnabled,
-            onCheckedChange = { onEvent(NotificationSettingsUiEvent.OnIsNotificationAnimationEnabledSwitchChange(it)) },
+            checked = state.notificationSettings.isNotificationAnimationEnabled,
+            onCheckedChange = { onAction(NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

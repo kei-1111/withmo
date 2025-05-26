@@ -1,10 +1,9 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
-import android.content.Context
-import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
@@ -12,12 +11,10 @@ import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -28,8 +25,9 @@ class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val oneTimeEventRepository: OneTimeEventRepository,
-) : BaseViewModel<OnboardingUiState, OnboardingUiEvent>() {
-    override fun createInitialState(): OnboardingUiState = OnboardingUiState()
+    private val modelFileManager: ModelFileManager,
+) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
+    override fun createInitialState(): OnboardingState = OnboardingState()
 
     val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
         .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
@@ -41,96 +39,64 @@ class OnboardingViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                _uiState.update {
-                    it.copy(
-                        selectedAppList = favoriteAppList.toPersistentList(),
-                    )
-                }
+                updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
 
-    fun addSelectedAppList(appInfo: AppInfo) {
-        _uiState.update { currentState ->
-            if (currentState.selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                currentState.selectedAppList.none { it.packageName == appInfo.packageName }
+    private fun addSelectedAppList(appInfo: AppInfo) {
+        updateState {
+            if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                selectedAppList.none { it.packageName == appInfo.packageName }
             ) {
-                currentState.copy(
-                    selectedAppList = (currentState.selectedAppList + appInfo).toPersistentList(),
+                copy(
+                    selectedAppList = (selectedAppList + appInfo).toPersistentList(),
                 )
             } else {
-                currentState
+                this
             }
         }
     }
 
-    fun removeSelectedAppList(appInfo: AppInfo) {
-        _uiState.update {
-            it.copy(
-                selectedAppList = it.selectedAppList.filterNot { it.packageName == appInfo.packageName }
+    private fun removeSelectedAppList(appInfo: AppInfo) {
+        updateState {
+            copy(
+                selectedAppList = selectedAppList
+                    .filterNot { it.packageName == appInfo.packageName }
                     .toPersistentList(),
             )
         }
     }
 
-    fun onValueChangeAppSearchQuery(query: String) {
-        _uiState.update {
-            it.copy(appSearchQuery = query)
-        }
-    }
-
-    suspend fun getVrmFilePath(context: Context, uri: Uri): String? {
-        return FileUtils.copyVrmFileFromUri(context, uri)?.absolutePath
-    }
-
-    fun setIsModelLoading(isLoading: Boolean) {
-        _uiState.update {
-            it.copy(isModelLoading = isLoading)
-        }
-    }
-
-    fun setModelFilePath(modelFilePath: ModelFilePath) {
-        _uiState.update {
-            it.copy(modelFilePath = modelFilePath)
-        }
-    }
-
-    fun setModelFileThumbnail(modelFilePath: ModelFilePath) {
+    private fun setModelFileThumbnail(modelFilePath: ModelFilePath) {
         viewModelScope.launch {
             val thumbnails = modelFilePath.path?.let { File(it) }
-                ?.let { FileUtils.getVrmThumbnail(it) }
-            _uiState.update {
-                it.copy(modelFileThumbnail = thumbnails)
-            }
+                ?.let { modelFileManager.getVrmThumbnail(it) }
+            updateState { copy(modelFileThumbnail = thumbnails) }
         }
     }
 
-    fun navigateToNextPage(
-        onFinish: () -> Unit,
-    ) {
-        val currentPage = _uiState.value.currentPage
+    private fun navigateToNextPage() {
+        val currentPage = state.value.currentPage
         val nextPage = currentPage.ordinal + 1
         if (nextPage < OnboardingPage.entries.size) {
-            _uiState.update {
-                it.copy(currentPage = OnboardingPage.entries[nextPage])
-            }
+            updateState { copy(currentPage = OnboardingPage.entries[nextPage]) }
         } else {
-            onFinish()
+            saveSetting()
+            sendEffect(OnboardingEffect.NavigateHome)
         }
     }
 
-    fun navigateToPreviousPage() {
-        val currentPage = _uiState.value.currentPage
+    private fun navigateToPreviousPage() {
+        val currentPage = state.value.currentPage
         val previousPage = currentPage.ordinal - 1
         if (previousPage >= 0) {
-            _uiState.update {
-                it.copy(currentPage = OnboardingPage.entries[previousPage])
-            }
+            updateState { copy(currentPage = OnboardingPage.entries[previousPage]) }
         }
     }
 
-    fun saveSetting(context: Context) {
-        val favoriteAppList = _uiState.value.selectedAppList.mapIndexed { index, appInfo ->
+    private fun saveSetting() {
+        val favoriteAppList = state.value.selectedAppList.mapIndexed { index, appInfo ->
             appInfo.copy(
                 favoriteOrder = when (index) {
                     0 -> FavoriteOrder.First
@@ -145,12 +111,46 @@ class OnboardingViewModel @Inject constructor(
         viewModelScope.launch {
             oneTimeEventRepository.markOnboardingFirstShown()
             appInfoRepository.updateAppInfoList(favoriteAppList)
-            val modelFilePath = _uiState.value.modelFilePath
+            val modelFilePath = state.value.modelFilePath
             if (modelFilePath.path != null) {
                 saveModelFilePathUseCase(modelFilePath)
             } else {
-                val defaultModelFilePath = FileUtils.copyVrmFileFromAssets(context)?.absolutePath
+                val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
                 saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
+            }
+        }
+    }
+
+    override fun onAction(action: OnboardingAction) {
+        when (action) {
+            is OnboardingAction.OnAllAppListAppClick -> addSelectedAppList(action.appInfo)
+
+            is OnboardingAction.OnFavoriteAppListAppClick -> removeSelectedAppList(action.appInfo)
+
+            is OnboardingAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+
+            is OnboardingAction.OnSelectDisplayModelAreaClick -> sendEffect(OnboardingEffect.OpenDocument)
+
+            is OnboardingAction.OnNextButtonClick -> navigateToNextPage()
+
+            is OnboardingAction.OnPreviousButtonClick -> navigateToPreviousPage()
+
+            is OnboardingAction.OnOpenDocumentLauncherResult -> {
+                viewModelScope.launch {
+                    updateState { copy(isModelLoading = true) }
+                    if (action.uri == null) {
+                        sendEffect(OnboardingEffect.ShowToast("ファイルが選択されませんでした"))
+                    } else {
+                        val filePath = modelFileManager.copyVrmFileFromUri(action.uri)?.absolutePath
+                        if (filePath == null) {
+                            sendEffect(OnboardingEffect.ShowToast("ファイルの読み込みに失敗しました"))
+                        } else {
+                            updateState { copy(modelFilePath = ModelFilePath(filePath)) }
+                            setModelFileThumbnail(ModelFilePath(filePath))
+                        }
+                    }
+                    updateState { copy(isModelLoading = false) }
+                }
             }
         }
     }

@@ -18,8 +18,8 @@ import io.github.kei_1111.withmo.ui.component.CenteredMessage
 import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
 import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
-import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiEvent
-import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsAction
+import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
@@ -28,8 +28,8 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun FavoriteAppSettingsScreenContent(
     appList: ImmutableList<AppInfo>,
-    uiState: FavoriteAppSettingsUiState,
-    onEvent: (FavoriteAppSettingsUiEvent) -> Unit,
+    state: FavoriteAppSettingsState,
+    onAction: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var resultAppList by remember { mutableStateOf(appList) }
@@ -39,12 +39,12 @@ internal fun FavoriteAppSettingsScreenContent(
             appList.filter { it.label.contains(query, ignoreCase = true) }.toPersistentList()
     }
 
-    val appIconShape = uiState.appIconSettings.appIconShape.toShape(
-        uiState.appIconSettings.roundedCornerPercent,
+    val appIconShape = state.appIconSettings.appIconShape.toShape(
+        state.appIconSettings.roundedCornerPercent,
     )
 
     LaunchedEffect(appList) {
-        filterAppList(uiState.appSearchQuery)
+        filterAppList(state.appSearchQuery)
     }
 
     Column(
@@ -66,18 +66,16 @@ internal fun FavoriteAppSettingsScreenContent(
         ) {
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = uiState.appSearchQuery,
-                onValueChange = { onEvent(FavoriteAppSettingsUiEvent.OnAppSearchQueryChange(it)) },
-                action = { filterAppList(uiState.appSearchQuery) },
+                value = state.appSearchQuery,
+                onValueChange = { onAction(FavoriteAppSettingsAction.OnAppSearchQueryChange(it)) },
+                action = { filterAppList(state.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = resultAppList,
-                    favoriteAppList = uiState.favoriteAppList,
-                    addSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnAllAppListAppClick(it)) },
-                    removeSelectedAppList = {
-                        onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it))
-                    },
+                    favoriteAppList = state.favoriteAppList,
+                    addSelectedAppList = { onAction(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
+                    removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
@@ -91,8 +89,8 @@ internal fun FavoriteAppSettingsScreenContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = uiState.favoriteAppList,
-            removeSelectedAppList = { onEvent(FavoriteAppSettingsUiEvent.OnFavoriteAppListAppClick(it)) },
+            favoriteAppList = state.favoriteAppList,
+            removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
         )

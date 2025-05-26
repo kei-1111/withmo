@@ -27,52 +27,47 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoWidget
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WidgetContent(
-    uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appIconSpaceHeight =
-        (uiState.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
+        (state.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(
         modifier = modifier,
     ) {
-        uiState.widgetList.forEach { withmoWidgetInfo ->
+        state.widgetList.forEach { withmoWidgetInfo ->
             key(withmoWidgetInfo.widgetInfo.id) {
                 WithmoWidget(
                     withmoWidgetInfo = withmoWidgetInfo,
                     startPadding = Paddings.Medium,
                     endPadding = Paddings.Medium,
-                    bottomPadding =
-                    bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
-                    isEditMode = uiState.isEditMode,
-                    deleteWidget = { onEvent(HomeUiEvent.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
-                    resizeWidget = { onEvent(HomeUiEvent.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
+                    bottomPadding = bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                    isEditMode = state.isEditMode,
+                    deleteWidget = { onAction(HomeAction.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
+                    resizeWidget = { onAction(HomeAction.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
                 )
             }
         }
-        if (uiState.isEditMode) {
+        if (state.isEditMode) {
             EditWidgetContent(
-                onEvent = onEvent,
+                onEvent = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(
-                        bottom = Paddings.ExtraSmall,
-                    )
-                    .padding(
-                        horizontal = Paddings.Medium,
-                    ),
+                    .padding(bottom = Paddings.ExtraSmall)
+                    .padding(horizontal = Paddings.Medium),
             )
         }
     }
@@ -80,7 +75,7 @@ internal fun WidgetContent(
 
 @Composable
 private fun EditWidgetContent(
-    onEvent: (HomeUiEvent) -> Unit,
+    onEvent: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -92,10 +87,10 @@ private fun EditWidgetContent(
             modifier = Modifier.weight(Weights.Medium),
         )
         AddWidgetButton(
-            onClick = { onEvent(HomeUiEvent.OnAddWidgetButtonClick) },
+            onClick = { onEvent(HomeAction.OnAddWidgetButtonClick) },
         )
         CompleteEditButton(
-            onClick = { onEvent(HomeUiEvent.OnCompleteEditButtonClick) },
+            onClick = { onEvent(HomeAction.OnCompleteEditButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }

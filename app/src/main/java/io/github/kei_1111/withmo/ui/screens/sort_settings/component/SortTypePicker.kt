@@ -16,14 +16,14 @@ import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsAction
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SortTypePicker(
     selectedSortType: SortType,
-    onEvent: (SortSettingsUiEvent) -> Unit,
+    onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -49,7 +49,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.ALPHABETICAL == selectedSortType,
-                onClick = { onEvent(SortSettingsUiEvent.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             SortTypePickerDivider()
@@ -60,7 +60,7 @@ internal fun SortTypePicker(
                     )
                 },
                 selected = SortType.USE_COUNT == selectedSortType,
-                onClick = { onEvent(SortSettingsUiEvent.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

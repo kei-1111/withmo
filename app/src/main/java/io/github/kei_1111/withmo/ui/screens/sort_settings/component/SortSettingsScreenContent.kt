@@ -6,14 +6,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsUiEvent
-import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsUiState
+import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsAction
+import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SortSettingsScreenContent(
-    uiState: SortSettingsUiState,
-    onEvent: (SortSettingsUiEvent) -> Unit,
+    state: SortSettingsState,
+    onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -22,8 +22,8 @@ internal fun SortSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         SortTypePicker(
-            selectedSortType = uiState.sortSettings.sortType,
-            onEvent = onEvent,
+            selectedSortType = state.sortSettings.sortType,
+            onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
         )
     }

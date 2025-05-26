@@ -3,11 +3,9 @@ package io.github.kei_1111.withmo.ui.screens.app_icon_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.usecase.user_settings.app_icon.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.app_icon.SaveAppIconSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,9 +13,9 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : BaseViewModel<AppIconSettingsUiState, AppIconSettingsUiEvent>() {
+) : BaseViewModel<AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
 
-    override fun createInitialState(): AppIconSettingsUiState = AppIconSettingsUiState()
+    override fun createInitialState(): AppIconSettingsState = AppIconSettingsState()
 
     init {
         observeAppIconSettings()
@@ -26,8 +24,8 @@ class AppIconSettingsViewModel @Inject constructor(
     private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
-                _uiState.update {
-                    it.copy(
+                updateState {
+                    copy(
                         appIconSettings = appIconSettings,
                         initialAppIconSettings = appIconSettings,
                     )
@@ -36,78 +34,75 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeAppIconSize(appIconSize: Float) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    appIconSize = appIconSize,
-                ),
-                isSaveButtonEnabled = appIconSize != it.initialAppIconSettings.appIconSize,
-            )
-        }
-    }
-
-    fun changeAppIconShape(appIconShape: AppIconShape) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    appIconShape = appIconShape,
-                ),
-                isSaveButtonEnabled = appIconShape != it.initialAppIconSettings.appIconShape,
-            )
-        }
-    }
-
-    fun changeRoundedCornerPercent(roundedCornerPercent: Float) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    roundedCornerPercent = roundedCornerPercent,
-                ),
-                isSaveButtonEnabled = roundedCornerPercent != it.initialAppIconSettings.roundedCornerPercent,
-            )
-        }
-    }
-
-    fun changeIsAppNameShown(isAppNameShown: Boolean) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    isAppNameShown = isAppNameShown,
-                ),
-                isSaveButtonEnabled = isAppNameShown != it.initialAppIconSettings.isAppNameShown,
-            )
-        }
-    }
-
-    fun changeIsFavoriteAppBackgroundShown(isFavoriteAppBackgroundShown: Boolean) {
-        _uiState.update {
-            it.copy(
-                appIconSettings = it.appIconSettings.copy(
-                    isFavoriteAppBackgroundShown = isFavoriteAppBackgroundShown,
-                ),
-                isSaveButtonEnabled = isFavoriteAppBackgroundShown != it.initialAppIconSettings.isFavoriteAppBackgroundShown,
-            )
-        }
-    }
-
-    fun saveAppIconSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
-        _uiState.update {
-            it.copy(
-                isSaveButtonEnabled = false,
-            )
-        }
+    private fun saveAppIconSettings() {
+        updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
-                saveAppIconSettingsUseCase(uiState.value.appIconSettings)
-                onSaveSuccess()
+                saveAppIconSettingsUseCase(state.value.appIconSettings)
+                sendEffect(AppIconSettingsEffect.ShowToast("保存しました"))
+                sendEffect(AppIconSettingsEffect.NavigateBack)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save app icon settings", e)
-                onSaveFailure()
+                sendEffect(AppIconSettingsEffect.ShowToast("保存に失敗しました"))
             }
+        }
+    }
+
+    override fun onAction(action: AppIconSettingsAction) {
+        when (action) {
+            is AppIconSettingsAction.OnAppIconSizeSliderChange -> {
+                updateState {
+                    val updatedAppIconSettings = appIconSettings.copy(appIconSize = action.appIconSize)
+                    copy(
+                        appIconSettings = updatedAppIconSettings,
+                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
+                    )
+                }
+            }
+
+            is AppIconSettingsAction.OnAppIconShapeRadioButtonClick -> {
+                updateState {
+                    val updatedAppIconSettings = appIconSettings.copy(appIconShape = action.appIconShape)
+                    copy(
+                        appIconSettings = updatedAppIconSettings,
+                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
+                    )
+                }
+            }
+
+            is AppIconSettingsAction.OnRoundedCornerPercentSliderChange -> {
+                updateState {
+                    val updatedAppIconSettings = appIconSettings.copy(roundedCornerPercent = action.roundedCornerPercent)
+                    copy(
+                        appIconSettings = updatedAppIconSettings,
+                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
+                    )
+                }
+            }
+
+            is AppIconSettingsAction.OnIsAppNameShownSwitchChange -> {
+                updateState {
+                    val updatedAppIconSettings = appIconSettings.copy(isAppNameShown = action.isAppNameShown)
+                    copy(
+                        appIconSettings = updatedAppIconSettings,
+                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
+                    )
+                }
+            }
+
+            is AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange -> {
+                updateState {
+                    val updatedAppIconSettings = appIconSettings.copy(isFavoriteAppBackgroundShown = action.isFavoriteAppBackgroundShown)
+                    copy(
+                        appIconSettings = updatedAppIconSettings,
+                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
+                    )
+                }
+            }
+
+            is AppIconSettingsAction.OnSaveButtonClick -> saveAppIconSettings()
+
+            is AppIconSettingsAction.OnBackButtonClick -> sendEffect(AppIconSettingsEffect.NavigateBack)
         }
     }
 

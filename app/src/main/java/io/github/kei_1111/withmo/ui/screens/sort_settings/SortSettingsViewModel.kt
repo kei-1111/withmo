@@ -3,11 +3,9 @@ package io.github.kei_1111.withmo.ui.screens.sort_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.domain.model.user_settings.SortType
 import io.github.kei_1111.withmo.domain.usecase.user_settings.sort.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.sort.SaveSortSettingsUseCase
 import io.github.kei_1111.withmo.ui.base.BaseViewModel
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,9 +13,9 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
-) : BaseViewModel<SortSettingsUiState, SortSettingsUiEvent>() {
+) : BaseViewModel<SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
-    override fun createInitialState(): SortSettingsUiState = SortSettingsUiState()
+    override fun createInitialState(): SortSettingsState = SortSettingsState()
 
     init {
         observerSortSettings()
@@ -26,8 +24,8 @@ class SortSettingsViewModel @Inject constructor(
     private fun observerSortSettings() {
         viewModelScope.launch {
             getSortSettingsUseCase().collect { sortSettings ->
-                _uiState.update {
-                    it.copy(
+                updateState {
+                    copy(
                         sortSettings = sortSettings,
                         initialSortSettings = sortSettings,
                     )
@@ -36,35 +34,36 @@ class SortSettingsViewModel @Inject constructor(
         }
     }
 
-    fun changeSortType(sortType: SortType) {
-        _uiState.update {
-            it.copy(
-                sortSettings = it.sortSettings.copy(
-                    sortType = sortType,
-                ),
-                isSaveButtonEnabled = sortType != it.initialSortSettings.sortType,
-            )
+    private fun saveSortSettings() {
+        updateState { copy(isSaveButtonEnabled = false) }
+        viewModelScope.launch {
+            try {
+                val sortSettings = state.value.sortSettings
+                saveSortSettingsUseCase(sortSettings)
+                sendEffect(SortSettingsEffect.ShowToast("保存しました"))
+                sendEffect(SortSettingsEffect.NavigateBack)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to save sort settings", e)
+                sendEffect(SortSettingsEffect.ShowToast("保存に失敗しました"))
+            }
         }
     }
 
-    fun saveSortSettings(
-        onSaveSuccess: () -> Unit,
-        onSaveFailure: () -> Unit,
-    ) {
-        _uiState.update {
-            it.copy(
-                isSaveButtonEnabled = false,
-            )
-        }
-        viewModelScope.launch {
-            try {
-                val sortSettings = _uiState.value.sortSettings
-                saveSortSettingsUseCase(sortSettings)
-                onSaveSuccess()
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to save sort settings", e)
-                onSaveFailure()
+    override fun onAction(action: SortSettingsAction) {
+        when (action) {
+            is SortSettingsAction.OnSortTypeRadioButtonClick -> {
+                updateState {
+                    val updatedSortSettings = sortSettings.copy(sortType = action.sortType)
+                    copy(
+                        sortSettings = updatedSortSettings,
+                        isSaveButtonEnabled = updatedSortSettings != initialSortSettings,
+                    )
+                }
             }
+
+            is SortSettingsAction.OnSaveButtonClick -> saveSortSettings()
+
+            is SortSettingsAction.OnBackButtonClick -> sendEffect(SortSettingsEffect.NavigateBack)
         }
     }
 

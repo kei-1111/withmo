@@ -24,29 +24,29 @@ import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.common.AppConstants
 import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import io.github.kei_1111.withmo.utils.FileUtils
 
 @Composable
 internal fun DisplayModelContent(
-    uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isDefaultModelFile =
-        uiState.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
+        state.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
 
     Row(
         modifier = modifier
             .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.Bottom,
     ) {
-        if (uiState.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
+        if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             NavigateSettingsButton(
-                onClick = { onEvent(HomeUiEvent.OnNavigateSettingsButtonClick) },
+                onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
             )
         }
         Spacer(
@@ -57,21 +57,21 @@ internal fun DisplayModelContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             if (
-                uiState.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+                state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
                 isDefaultModelFile == false
             ) {
                 SetDefaultModelButton(
-                    onClick = { onEvent(HomeUiEvent.OnSetDefaultModelButtonClick) },
+                    onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
                 )
             }
-            if (uiState.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+            if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
                 OpenDocumentButton(
-                    onClick = { onEvent(HomeUiEvent.OnOpenDocumentButtonClick) },
+                    onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
                 )
             }
-            if (uiState.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
+            if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
                 ShowScaleSliderButton(
-                    onClick = { onEvent(HomeUiEvent.OnShowScaleSliderButtonClick) },
+                    onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
                 )
             }
         }

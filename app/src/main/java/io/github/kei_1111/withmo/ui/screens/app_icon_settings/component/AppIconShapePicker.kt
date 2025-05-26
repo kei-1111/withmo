@@ -21,7 +21,7 @@ import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.domain.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
-import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsUiEvent
+import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsAction
 import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -29,7 +29,7 @@ import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 @Composable
 internal fun AppIconShapePicker(
     selectedAppIconShape: AppIconShape,
-    onEvent: (AppIconSettingsUiEvent) -> Unit,
+    onAction: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Surface(
@@ -56,7 +56,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Circle == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.Circle)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Circle)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -68,7 +68,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.RoundedCorner == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.RoundedCorner)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.RoundedCorner)) },
                 modifier = Modifier.fillMaxWidth(),
             )
             AppIconShapePickerDivider()
@@ -80,7 +80,7 @@ internal fun AppIconShapePicker(
                     )
                 },
                 selected = AppIconShape.Square == selectedAppIconShape,
-                onClick = { onEvent(AppIconSettingsUiEvent.OnAppIconShapeRadioButtonClick(AppIconShape.Square)) },
+                onClick = { onAction(AppIconSettingsAction.OnAppIconShapeRadioButtonClick(AppIconShape.Square)) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }

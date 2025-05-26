@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.settings
 
-import io.github.kei_1111.withmo.ui.base.UiState
+import io.github.kei_1111.withmo.ui.base.State
 
-data class SettingsUiState(
+data class SettingsState(
     val isDefaultHomeApp: Boolean = true,
-) : UiState
+) : State

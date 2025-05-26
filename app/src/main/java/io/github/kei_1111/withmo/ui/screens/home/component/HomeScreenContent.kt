@@ -29,8 +29,8 @@ import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiEvent
-import io.github.kei_1111.withmo.ui.screens.home.HomeUiState
+import io.github.kei_1111.withmo.ui.screens.home.HomeAction
+import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
@@ -42,8 +42,8 @@ private const val BottomSheetShowDragHeight = -50f
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
-    uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val currentTime = LocalCurrentTime.current
@@ -51,12 +51,12 @@ internal fun HomeScreenContent(
     Box(
         modifier = modifier,
     ) {
-        if (uiState.isShowScaleSliderButtonShown) {
+        if (state.isCloseScaleSliderButtonShown) {
             Column(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 WithmoIconButton(
-                    onClick = { onEvent(HomeUiEvent.OnCloseScaleSliderButtonClick) },
+                    onClick = { onAction(HomeAction.OnCloseScaleSliderButtonClick) },
                     modifier = Modifier
                         .padding(start = Paddings.Medium)
                         .size(AppConstants.DefaultAppIconSize.dp),
@@ -69,9 +69,9 @@ internal fun HomeScreenContent(
                 }
             }
         } else {
-            if (uiState.currentUserSettings.clockSettings.isClockShown) {
+            if (state.currentUserSettings.clockSettings.isClockShown) {
                 WithmoClock(
-                    clockType = uiState.currentUserSettings.clockSettings.clockType,
+                    clockType = state.currentUserSettings.clockSettings.clockType,
                     dateTimeInfo = currentTime.toDateTimeInfo(),
                     modifier = Modifier.padding(start = Paddings.Medium),
                 )
@@ -83,23 +83,23 @@ internal fun HomeScreenContent(
                         detectVerticalDragGestures(
                             onVerticalDrag = { change, dragAmount ->
                                 if (dragAmount < BottomSheetShowDragHeight) {
-                                    onEvent(HomeUiEvent.OnAppListSheetSwipeUp)
+                                    onAction(HomeAction.OnAppListSheetSwipeUp)
                                 }
                             },
                         )
                     },
             ) {
                 PagerContent(
-                    uiState = uiState,
-                    onEvent = onEvent,
+                    state = state,
+                    onAction = onAction,
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
                 )
-                if (!uiState.isEditMode && uiState.favoriteAppList.isNotEmpty()) {
+                if (!state.isEditMode && state.favoriteAppList.isNotEmpty()) {
                     RowAppList(
-                        uiState = uiState,
-                        onEvent = onEvent,
+                        state = state,
+                        onAction = onAction,
                         modifier = Modifier.fillMaxWidth(),
                     )
                 }
@@ -110,11 +110,11 @@ internal fun HomeScreenContent(
 
 @Composable
 private fun RowAppList(
-    uiState: HomeUiState,
-    onEvent: (HomeUiEvent) -> Unit,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appIconSettings = uiState.currentUserSettings.appIconSettings
+    val appIconSettings = state.currentUserSettings.appIconSettings
 
     Row(
         modifier = modifier
@@ -122,8 +122,7 @@ private fun RowAppList(
             .padding(horizontal = Paddings.Medium)
             .background(
                 color = if (appIconSettings.isFavoriteAppBackgroundShown) {
-                    MaterialTheme.colorScheme.surfaceVariant
-                        .copy(alpha = Alphas.Medium)
+                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alphas.Medium)
                 } else {
                     Color.Transparent
                 },
@@ -133,10 +132,10 @@ private fun RowAppList(
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        uiState.favoriteAppList.forEach {
+        state.favoriteAppList.forEach {
             AppItem(
-                onClick = { onEvent(HomeUiEvent.OnAppClick(it)) },
-                onLongClick = { onEvent(HomeUiEvent.OnAppLongClick(it)) },
+                onClick = { onAction(HomeAction.OnAppClick(it)) },
+                onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                 appInfo = it,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(
