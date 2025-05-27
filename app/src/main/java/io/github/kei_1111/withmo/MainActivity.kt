@@ -25,9 +25,9 @@ import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.theme.GetThemeSettingsUseCase
@@ -217,8 +217,8 @@ class MainActivity : ComponentActivity() {
             val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
 
             getModelFilePathUseCase().collect { modelFilePath ->
-                if (modelFilePath.path != null) {
-                    val path = modelFilePath.path
+                val path = modelFilePath.path
+                if (path != null) {
                     if (FileUtils.fileExists(path)) {
                         AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
                     } else {

@@ -5,7 +5,7 @@ import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.utils.TimeUtils.TimePeriods.EveningStartTime
 import io.github.kei_1111.withmo.utils.TimeUtils.TimePeriods.MorningStartTime
 import io.github.kei_1111.withmo.utils.TimeUtils.TimePeriods.NightStartTime

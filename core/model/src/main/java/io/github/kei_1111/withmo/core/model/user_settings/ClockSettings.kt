@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.domain.model.user_settings
+package io.github.kei_1111.withmo.core.model.user_settings
 
 data class ClockSettings(
     val isClockShown: Boolean = true,

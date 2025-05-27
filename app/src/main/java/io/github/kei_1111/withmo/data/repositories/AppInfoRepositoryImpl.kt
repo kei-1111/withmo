@@ -4,10 +4,10 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.data.local.dao.AppInfoDao
 import io.github.kei_1111.withmo.data.mapper.toAppInfo
 import io.github.kei_1111.withmo.data.mapper.toEntity
-import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow

@@ -23,8 +23,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.common.AppConstants
-import io.github.kei_1111.withmo.domain.model.AppIcon
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppIcon
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings

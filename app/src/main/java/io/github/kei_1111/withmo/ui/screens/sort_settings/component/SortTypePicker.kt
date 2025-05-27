@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.domain.model.user_settings.SortType
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsAction

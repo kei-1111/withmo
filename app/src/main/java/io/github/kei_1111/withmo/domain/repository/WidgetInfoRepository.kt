@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.domain.repository
 
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import kotlinx.coroutines.flow.Flow
 
 interface WidgetInfoRepository {

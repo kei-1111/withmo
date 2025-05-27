@@ -4,8 +4,8 @@ import android.appwidget.AppWidgetProviderInfo
 import android.net.Uri
 import androidx.activity.result.ActivityResult
 import io.github.kei_1111.withmo.core.featurebase.Action
-import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 
 sealed interface HomeAction : Action {
     data class OnAppClick(val appInfo: AppInfo) : HomeAction

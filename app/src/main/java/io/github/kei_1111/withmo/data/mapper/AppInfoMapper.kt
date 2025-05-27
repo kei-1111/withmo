@@ -4,9 +4,9 @@ import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.data.local.entity.AppInfoEntity
-import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.utils.AppUtils
 
 fun AppInfo.toEntity(): AppInfoEntity {

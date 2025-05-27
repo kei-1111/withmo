@@ -14,8 +14,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.domain.model.DateTimeInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
+import io.github.kei_1111.withmo.core.model.DateTimeInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.ui.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.ui.theme.clockTextMediumSize

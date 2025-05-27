@@ -9,8 +9,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.domain.model.DateTimeInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
+import io.github.kei_1111.withmo.core.model.DateTimeInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoClock
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton

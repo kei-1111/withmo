@@ -2,8 +2,8 @@ package io.github.kei_1111.withmo.ui.screens.onboarding
 
 import android.graphics.Bitmap
 import io.github.kei_1111.withmo.core.featurebase.State
-import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

@@ -4,9 +4,9 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
+import io.github.kei_1111.withmo.core.model.WidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.data.local.entity.WidgetInfoEntity
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 
 fun WithmoWidgetInfo.toEntity(): WidgetInfoEntity {
     return WidgetInfoEntity(

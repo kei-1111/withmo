@@ -1,13 +1,13 @@
 package io.github.kei_1111.withmo.domain.repository
 
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.SideButtonSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.SortSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
+import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.coroutines.flow.Flow
 
 interface UserSettingsRepository {

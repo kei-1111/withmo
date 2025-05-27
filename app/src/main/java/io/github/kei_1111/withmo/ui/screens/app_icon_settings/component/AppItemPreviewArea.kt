@@ -22,8 +22,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenDimensions
 import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas

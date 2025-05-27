@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import io.github.kei_1111.withmo.core.common.AppConstants
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList

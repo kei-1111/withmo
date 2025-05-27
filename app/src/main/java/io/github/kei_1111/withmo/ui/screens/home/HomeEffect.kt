@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import android.content.Intent
 import io.github.kei_1111.withmo.core.featurebase.Effect
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppInfo
 
 sealed interface HomeEffect : Effect {
     data object OpenDocument : HomeEffect

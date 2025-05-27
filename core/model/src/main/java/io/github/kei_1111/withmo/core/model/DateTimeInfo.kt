@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.domain.model
+package io.github.kei_1111.withmo.core.model
 
 import android.os.Build
 import androidx.annotation.RequiresApi

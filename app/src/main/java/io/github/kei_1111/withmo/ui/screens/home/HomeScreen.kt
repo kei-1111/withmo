@@ -26,8 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.SortType
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.ui.screens.home.component.AppListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDialog

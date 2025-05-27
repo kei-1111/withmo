@@ -10,19 +10,19 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
+import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ClockType
+import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.di.UserSetting
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ClockType
-import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.domain.model.user_settings.NotificationSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.SideButtonSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.SortSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.SortType
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -157,8 +157,9 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveModelFilePath(modelFilePath: ModelFilePath) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                if (modelFilePath.path != null) {
-                    preferences[MODEL_FILE_PATH] = modelFilePath.path
+                val path = modelFilePath.path
+                if (path != null) {
+                    preferences[MODEL_FILE_PATH] = path
                 } else {
                     preferences.remove(MODEL_FILE_PATH)
                 }

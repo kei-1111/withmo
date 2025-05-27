@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.favorite_app_settings
 
 import io.github.kei_1111.withmo.core.featurebase.Action
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppInfo
 
 sealed interface FavoriteAppSettingsAction : Action {
     data class OnAllAppListAppClick(val appInfo: AppInfo) : FavoriteAppSettingsAction

@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.theme_settings
 
 import io.github.kei_1111.withmo.core.featurebase.State
-import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 
 data class ThemeSettingsState(
     val themeSettings: ThemeSettings = ThemeSettings(),

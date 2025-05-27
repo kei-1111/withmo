@@ -14,7 +14,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.ui.component.AppItem
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 

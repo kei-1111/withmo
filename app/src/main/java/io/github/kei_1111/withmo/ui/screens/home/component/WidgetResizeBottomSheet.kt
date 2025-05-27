@@ -23,7 +23,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ui.component.Widget
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings

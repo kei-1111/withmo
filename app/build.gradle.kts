@@ -92,6 +92,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     implementation(projects.core.common)
     implementation(projects.core.featurebase)
+    implementation(projects.core.model)
     implementation(projects.unityLibrary)
     implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
     testImplementation(libs.junit)

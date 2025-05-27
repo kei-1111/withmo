@@ -11,12 +11,12 @@ import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.domain.model.WidgetInfo
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
-import io.github.kei_1111.withmo.domain.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository

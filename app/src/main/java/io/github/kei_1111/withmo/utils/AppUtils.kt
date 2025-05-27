@@ -10,8 +10,8 @@ import android.graphics.drawable.Drawable
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
-import io.github.kei_1111.withmo.domain.model.AppIcon
-import io.github.kei_1111.withmo.domain.model.AppInfo
+import io.github.kei_1111.withmo.core.model.AppIcon
+import io.github.kei_1111.withmo.core.model.AppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

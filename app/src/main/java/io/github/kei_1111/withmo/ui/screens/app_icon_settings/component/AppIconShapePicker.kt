@@ -17,8 +17,8 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.core.common.AppConstants.DefaultRoundedCornerPercent
-import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
-import io.github.kei_1111.withmo.domain.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
+import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.ui.component.BodyMediumText
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsAction

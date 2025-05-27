@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
-import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.ktx.toDp
 import io.github.kei_1111.withmo.ktx.toInt
 import io.github.kei_1111.withmo.ktx.toPx
