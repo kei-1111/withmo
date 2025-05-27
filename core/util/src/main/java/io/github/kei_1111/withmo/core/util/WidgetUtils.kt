@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.utils
+package io.github.kei_1111.withmo.core.util
 
 import android.appwidget.AppWidgetProviderInfo
 import android.content.Context

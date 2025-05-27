@@ -22,13 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeState
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
-import io.github.kei_1111.withmo.utils.FileUtils
 
 @Composable
 internal fun DisplayModelContent(

@@ -15,6 +15,7 @@
             <option value="$PROJECT_DIR$/core/common" />
             <option value="$PROJECT_DIR$/core/featurebase" />
             <option value="$PROJECT_DIR$/core/model" />
+            <option value="$PROJECT_DIR$/core/util" />
             <option value="$PROJECT_DIR$/unityLibrary" />
           </set>
         </option>

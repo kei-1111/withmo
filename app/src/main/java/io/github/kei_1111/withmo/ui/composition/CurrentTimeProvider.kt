@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.repeatOnLifecycle
-import io.github.kei_1111.withmo.ktx.toZonedDateTime
+import io.github.kei_1111.withmo.core.util.ktx.toZonedDateTime
 import kotlinx.coroutines.awaitCancellation
 import java.time.Instant
 import java.time.ZoneId

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ktx
+package io.github.kei_1111.withmo.core.util.ktx
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalDensity

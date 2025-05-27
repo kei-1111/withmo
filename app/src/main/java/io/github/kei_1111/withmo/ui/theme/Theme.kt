@@ -9,8 +9,8 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
-import io.github.kei_1111.withmo.utils.TimeUtils
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,

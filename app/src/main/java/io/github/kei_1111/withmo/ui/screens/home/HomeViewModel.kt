@@ -15,6 +15,7 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.manager.WidgetManager
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
@@ -22,7 +23,6 @@ import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.domain.usecase.user_settings.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.model_file_path.SaveModelFilePathUseCase
-import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
