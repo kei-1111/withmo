@@ -17,7 +17,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
-import io.github.kei_1111.withmo.common.unity.UnityManager
+import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.navigation.Screen
 import io.github.kei_1111.withmo.navigation.WithmoNavHost
 

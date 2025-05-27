@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.di
+package io.github.kei_1111.withmo.core.common.dispatcher
 
 import javax.inject.Qualifier
 

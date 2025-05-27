@@ -8,8 +8,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
-import io.github.kei_1111.withmo.common.AppConstants
-import io.github.kei_1111.withmo.di.IoDispatcher
+import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.di.UserSetting
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape

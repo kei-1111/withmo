@@ -20,9 +20,9 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "withmo"
-include(":app")
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
-// unity
-include(":app", ":unityLibrary")
+include(":app")
+include(":core:common")
+include(":unityLibrary")
 project(":unityLibrary").projectDir = File("unityLibrary")
- 

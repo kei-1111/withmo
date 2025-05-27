@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.common.unity
+package io.github.kei_1111.withmo.core.common.unity
 
 import android.content.Context
 import com.unity3d.player.UnityPlayer

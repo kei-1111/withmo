@@ -9,6 +9,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.data.local.dao.AppInfoDao
 import io.github.kei_1111.withmo.data.local.dao.WidgetInfoDao
 import io.github.kei_1111.withmo.data.repositories.AppInfoRepositoryImpl

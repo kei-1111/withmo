@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.data.manager.ModelFileManagerImpl
 import io.github.kei_1111.withmo.data.manager.WidgetManagerImpl
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager

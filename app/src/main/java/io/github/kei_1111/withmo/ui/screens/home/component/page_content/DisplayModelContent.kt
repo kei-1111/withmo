@@ -21,7 +21,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.ui.component.LabelSmallText
 import io.github.kei_1111.withmo.ui.component.WithmoIconButton
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction

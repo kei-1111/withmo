@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch

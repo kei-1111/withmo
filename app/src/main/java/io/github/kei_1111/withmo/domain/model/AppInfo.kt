@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
-import io.github.kei_1111.withmo.common.IntentConstants
+import io.github.kei_1111.withmo.core.common.IntentConstants
 
 private const val AppInfoDefaultUseCount = 0
 

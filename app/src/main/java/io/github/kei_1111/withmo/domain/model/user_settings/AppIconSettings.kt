@@ -4,7 +4,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 
 data class AppIconSettings(
     val appIconSize: Float = AppConstants.DefaultAppIconSize,

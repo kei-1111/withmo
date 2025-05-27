@@ -6,10 +6,10 @@ import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
-import io.github.kei_1111.withmo.common.unity.UnityMethod
-import io.github.kei_1111.withmo.common.unity.UnityObject
-import io.github.kei_1111.withmo.common.unity.UnityToAndroidMessenger
+import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.core.common.unity.UnityMethod
+import io.github.kei_1111.withmo.core.common.unity.UnityObject
+import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.manager.WidgetManager
 import io.github.kei_1111.withmo.domain.model.AppInfo

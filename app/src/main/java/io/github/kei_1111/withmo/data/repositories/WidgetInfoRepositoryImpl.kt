@@ -1,10 +1,10 @@
 package io.github.kei_1111.withmo.data.repositories
 
 import android.appwidget.AppWidgetManager
+import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.data.local.dao.WidgetInfoDao
 import io.github.kei_1111.withmo.data.mapper.toEntity
 import io.github.kei_1111.withmo.data.mapper.toWidgetInfo
-import io.github.kei_1111.withmo.di.IoDispatcher
 import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher

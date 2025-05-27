@@ -22,7 +22,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppIcon
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.ui.component.utils.withmoShadow

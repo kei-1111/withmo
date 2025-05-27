@@ -7,7 +7,7 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Base64
 import android.util.Log
-import io.github.kei_1111.withmo.di.IoDispatcher
+import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.utils.FileUtils
 import kotlinx.coroutines.CoroutineDispatcher

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.common
+package io.github.kei_1111.withmo.core.common
 
 // dataモジュールやfeatureモジュールなど分離すべきモジュールで使用する定数を定義
 data object AppConstants {

@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.onboarding
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder

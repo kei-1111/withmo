@@ -20,11 +20,11 @@ import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.common.IntentConstants
-import io.github.kei_1111.withmo.common.unity.AndroidToUnityMessenger
-import io.github.kei_1111.withmo.common.unity.UnityManager
-import io.github.kei_1111.withmo.common.unity.UnityMethod
-import io.github.kei_1111.withmo.common.unity.UnityObject
+import io.github.kei_1111.withmo.core.common.IntentConstants
+import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.core.common.unity.UnityManager
+import io.github.kei_1111.withmo.core.common.unity.UnityMethod
+import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.domain.model.user_settings.ThemeType

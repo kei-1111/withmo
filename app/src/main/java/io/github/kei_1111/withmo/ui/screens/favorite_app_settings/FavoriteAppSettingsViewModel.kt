@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.ui.screens.favorite_app_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.common.AppConstants
+import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.FavoriteOrder
 import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
