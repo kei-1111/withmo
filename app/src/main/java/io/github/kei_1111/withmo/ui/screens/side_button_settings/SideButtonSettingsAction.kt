@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.side_button_settings
 
-import io.github.kei_1111.withmo.ui.base.Action
+import io.github.kei_1111.withmo.core.featurebase.Action
 
 sealed interface SideButtonSettingsAction : Action {
     data class OnIsShowScaleSliderButtonShownSwitchChange(val isShowScaleSliderButtonShown: Boolean) : SideButtonSettingsAction

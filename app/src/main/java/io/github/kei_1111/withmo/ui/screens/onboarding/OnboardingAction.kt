@@ -1,8 +1,8 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
 import android.net.Uri
+import io.github.kei_1111.withmo.core.featurebase.Action
 import io.github.kei_1111.withmo.domain.model.AppInfo
-import io.github.kei_1111.withmo.ui.base.Action
 
 sealed interface OnboardingAction : Action {
     data class OnAppSearchQueryChange(val query: String) : OnboardingAction

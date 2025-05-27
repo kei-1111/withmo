@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.favorite_app_settings
 
-import io.github.kei_1111.withmo.ui.base.Effect
+import io.github.kei_1111.withmo.core.featurebase.Effect
 
 sealed interface FavoriteAppSettingsEffect : Effect {
     data object NavigateBack : FavoriteAppSettingsEffect

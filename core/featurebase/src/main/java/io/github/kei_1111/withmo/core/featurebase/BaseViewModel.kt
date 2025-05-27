@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.base
+package io.github.kei_1111.withmo.core.featurebase
 
 import androidx.lifecycle.ViewModel
 import kotlinx.coroutines.channels.Channel

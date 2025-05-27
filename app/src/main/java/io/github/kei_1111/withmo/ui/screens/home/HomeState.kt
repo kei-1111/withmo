@@ -2,11 +2,11 @@ package io.github.kei_1111.withmo.ui.screens.home
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import io.github.kei_1111.withmo.core.featurebase.State
 import io.github.kei_1111.withmo.domain.model.AppInfo
 import io.github.kei_1111.withmo.domain.model.WidgetInfo
 import io.github.kei_1111.withmo.domain.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.domain.model.user_settings.UserSettings
-import io.github.kei_1111.withmo.ui.base.State
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

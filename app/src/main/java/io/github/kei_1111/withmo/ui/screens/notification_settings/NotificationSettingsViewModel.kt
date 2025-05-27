@@ -4,10 +4,10 @@ import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.domain.usecase.user_settings.notification.SaveNotificationSettingsUseCase
-import io.github.kei_1111.withmo.ui.base.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

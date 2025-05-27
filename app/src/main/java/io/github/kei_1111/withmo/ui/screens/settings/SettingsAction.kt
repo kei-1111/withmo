@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.settings
 
-import io.github.kei_1111.withmo.ui.base.Action
+import io.github.kei_1111.withmo.core.featurebase.Action
 
 sealed interface SettingsAction : Action {
     data class OnSettingsScreenLifecycleChanged(val isDefaultHomeApp: Boolean) : SettingsAction

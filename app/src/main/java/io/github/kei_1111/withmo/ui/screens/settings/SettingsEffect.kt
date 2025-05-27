@@ -1,7 +1,7 @@
 package io.github.kei_1111.withmo.ui.screens.settings
 
 import android.content.Intent
-import io.github.kei_1111.withmo.ui.base.Effect
+import io.github.kei_1111.withmo.core.featurebase.Effect
 
 sealed interface SettingsEffect : Effect {
     data class OpenHomeAppSettings(val intent: Intent) : SettingsEffect

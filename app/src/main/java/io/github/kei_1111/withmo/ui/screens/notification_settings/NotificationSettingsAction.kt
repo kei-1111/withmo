@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.notification_settings
 
-import io.github.kei_1111.withmo.ui.base.Action
+import io.github.kei_1111.withmo.core.featurebase.Action
 
 sealed interface NotificationSettingsAction : Action {
     data class OnIsNotificationAnimationEnabledSwitchChange(val isNotificationAnimationEnabled: Boolean) : NotificationSettingsAction

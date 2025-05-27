@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.ui.screens.onboarding
 
-import io.github.kei_1111.withmo.ui.base.Effect
+import io.github.kei_1111.withmo.core.featurebase.Effect
 
 sealed interface OnboardingEffect : Effect {
     data object OpenDocument : OnboardingEffect

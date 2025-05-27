@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.ui.screens.settings
 
 import android.content.Intent
 import android.provider.Settings
-import io.github.kei_1111.withmo.ui.base.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import javax.inject.Inject
 
 class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
