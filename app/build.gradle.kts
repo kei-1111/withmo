@@ -100,23 +100,4 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    detektPlugins(libs.detekt.compose)
-    detektPlugins(libs.detekt.formatting)
-}
-
-detekt {
-    config.setFrom("${rootProject.projectDir}/config/detekt/detekt.yml")
-    buildUponDefaultConfig = true
-
-    source = files("src/main/java")
-
-    tasks {
-        withType<Detekt> {
-            reports {
-            }
-        }
-    }
-
-    autoCorrect = true
 }
