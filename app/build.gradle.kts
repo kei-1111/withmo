@@ -94,6 +94,7 @@ dependencies {
     implementation(projects.core.domain)
     implementation(projects.core.featurebase)
     implementation(projects.core.model)
+    implementation(projects.core.ui)
     implementation(projects.core.util)
     implementation(projects.unityLibrary)
     implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))

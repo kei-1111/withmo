@@ -38,10 +38,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.ui.LocalAppWidgetHost
 import io.github.kei_1111.withmo.core.util.ktx.toDp
 import io.github.kei_1111.withmo.core.util.ktx.toInt
 import io.github.kei_1111.withmo.core.util.ktx.toPx
-import io.github.kei_1111.withmo.ui.composition.LocalAppWidgetHost
 import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlin.math.roundToInt

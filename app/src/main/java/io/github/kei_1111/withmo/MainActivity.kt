@@ -31,13 +31,13 @@ import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.GetModelFil
 import io.github.kei_1111.withmo.core.domain.usecase.theme.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider
+import io.github.kei_1111.withmo.core.ui.CurrentTimeProvider
+import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.App
-import io.github.kei_1111.withmo.ui.composition.AppWidgetHostsProvider
-import io.github.kei_1111.withmo.ui.composition.CurrentTimeProvider
-import io.github.kei_1111.withmo.ui.composition.LocalCurrentTime
 import io.github.kei_1111.withmo.ui.theme.WithmoTheme
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.composition
+package io.github.kei_1111.withmo.core.ui
 
 import android.os.Build
 import android.os.Handler
