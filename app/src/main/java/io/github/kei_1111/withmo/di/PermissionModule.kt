@@ -6,8 +6,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.data.permission.PermissionCheckerImpl
-import io.github.kei_1111.withmo.domain.permission.PermissionChecker
 import javax.inject.Singleton
 
 @Module

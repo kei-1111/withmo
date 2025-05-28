@@ -9,7 +9,7 @@ import android.content.pm.ActivityInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.os.bundleOf
-import io.github.kei_1111.withmo.domain.manager.WidgetManager
+import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
 import javax.inject.Inject
 
 class WidgetManagerImpl @Inject constructor(

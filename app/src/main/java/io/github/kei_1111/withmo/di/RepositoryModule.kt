@@ -10,16 +10,16 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
+import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
+import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
+import io.github.kei_1111.withmo.core.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.data.local.dao.AppInfoDao
 import io.github.kei_1111.withmo.data.local.dao.WidgetInfoDao
 import io.github.kei_1111.withmo.data.repositories.AppInfoRepositoryImpl
 import io.github.kei_1111.withmo.data.repositories.OneTimeEventRepositoryImpl
 import io.github.kei_1111.withmo.data.repositories.UserSettingsRepositoryImpl
 import io.github.kei_1111.withmo.data.repositories.WidgetInfoRepositoryImpl
-import io.github.kei_1111.withmo.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
-import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
-import io.github.kei_1111.withmo.domain.repository.WidgetInfoRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 

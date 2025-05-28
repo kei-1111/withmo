@@ -91,6 +91,7 @@ dependencies {
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.serialization.json)
     implementation(projects.core.common)
+    implementation(projects.core.domain)
     implementation(projects.core.featurebase)
     implementation(projects.core.model)
     implementation(projects.core.util)

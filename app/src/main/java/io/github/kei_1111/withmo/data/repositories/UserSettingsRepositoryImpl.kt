@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
+import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
@@ -23,7 +24,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.di.UserSetting
-import io.github.kei_1111.withmo.domain.repository.UserSettingsRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

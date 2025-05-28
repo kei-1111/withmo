@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
+import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.navigation.Screen
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch

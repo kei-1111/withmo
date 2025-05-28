@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.data.permission
 
 import android.content.Context
 import androidx.core.app.NotificationManagerCompat
-import io.github.kei_1111.withmo.domain.permission.PermissionChecker
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import javax.inject.Inject
 
 class PermissionCheckerImpl @Inject constructor(

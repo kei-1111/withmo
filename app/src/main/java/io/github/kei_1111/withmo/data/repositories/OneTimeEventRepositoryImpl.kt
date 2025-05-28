@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
+import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.di.OneTimeEvent
-import io.github.kei_1111.withmo.domain.repository.OneTimeEventRepository
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch

@@ -3,9 +3,9 @@ package io.github.kei_1111.withmo.ui.screens.sort_settings
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.domain.usecase.sort.GetSortSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.sort.SaveSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.domain.usecase.user_settings.sort.GetSortSettingsUseCase
-import io.github.kei_1111.withmo.domain.usecase.user_settings.sort.SaveSortSettingsUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
