@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.service
+package io.github.kei_1111.withmo.core.service.notification
 
 import android.content.Intent
 import android.os.Build
