@@ -25,6 +25,7 @@ import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.GetModelFilePathUseCase
@@ -38,7 +39,6 @@ import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.App
-import io.github.kei_1111.withmo.ui.theme.WithmoTheme
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

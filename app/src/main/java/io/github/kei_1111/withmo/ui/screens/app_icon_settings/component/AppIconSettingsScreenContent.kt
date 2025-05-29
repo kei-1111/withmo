@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsAction
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsState
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun AppIconSettingsScreenContent(

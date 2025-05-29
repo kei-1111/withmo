@@ -12,16 +12,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
+import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppListRow
+import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppSelector
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.component.CenteredMessage
-import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
-import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppListRow
-import io.github.kei_1111.withmo.ui.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsState
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

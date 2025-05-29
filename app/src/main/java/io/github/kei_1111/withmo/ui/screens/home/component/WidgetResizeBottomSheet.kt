@@ -23,10 +23,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import io.github.kei_1111.withmo.core.designsystem.component.Widget
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
-import io.github.kei_1111.withmo.ui.component.Widget
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSlider
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)

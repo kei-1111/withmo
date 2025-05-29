@@ -20,13 +20,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.ui.component.TitleLargeText
-import io.github.kei_1111.withmo.ui.component.WithmoSaveButton
-import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.screens.theme_settings.component.ThemeSettingsScreenContent
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Suppress("ModifierMissing")
 @Composable

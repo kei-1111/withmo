@@ -35,18 +35,18 @@ import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.component.TitleLargeText
-import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingState
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.ui.theme.dimensions.BadgeSizes
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.R)

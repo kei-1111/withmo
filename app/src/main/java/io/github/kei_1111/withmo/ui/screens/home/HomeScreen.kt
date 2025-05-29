@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.AppUtils
@@ -36,7 +37,6 @@ import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDia
 import io.github.kei_1111.withmo.ui.screens.home.component.ModelLoading
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
 import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch

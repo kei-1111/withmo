@@ -31,12 +31,12 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.R
+import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.ui.component.TitleLargeText
-import io.github.kei_1111.withmo.ui.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.ui.screens.settings.component.SettingsScreenContent
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing")

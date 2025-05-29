@@ -17,14 +17,14 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.core.common.AppConstants.DefaultRoundedCornerPercent
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsAction
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun AppIconShapePicker(

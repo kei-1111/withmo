@@ -24,15 +24,15 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoWidget
-import io.github.kei_1111.withmo.ui.component.utils.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.ui.screens.home.HomeState
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun WidgetContent(

@@ -9,13 +9,13 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoClock
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsAction
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ClockTypePicker(

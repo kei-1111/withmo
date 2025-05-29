@@ -22,13 +22,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.R
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreenDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 private const val AppItemLabelMaxLines = 1
 private const val PreviewAppItemSize = 4

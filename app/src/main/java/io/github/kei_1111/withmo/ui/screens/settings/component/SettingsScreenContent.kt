@@ -30,14 +30,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsAction
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsState
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.IconSizes
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 
 @Composable
 internal fun SettingsScreenContent(

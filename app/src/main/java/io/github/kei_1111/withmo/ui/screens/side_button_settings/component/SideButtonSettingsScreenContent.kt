@@ -6,10 +6,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsAction
 import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsState
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SideButtonSettingsScreenContent(

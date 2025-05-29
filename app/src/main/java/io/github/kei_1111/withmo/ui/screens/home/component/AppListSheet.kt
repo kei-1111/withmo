@@ -29,18 +29,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
+import io.github.kei_1111.withmo.core.designsystem.component.AppItem
+import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
+import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
+import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.component.AppItem
-import io.github.kei_1111.withmo.ui.component.CenteredMessage
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.ui.screens.home.HomeAction
 import io.github.kei_1111.withmo.ui.screens.home.HomeState
-import io.github.kei_1111.withmo.ui.theme.BottomSheetShape
-import io.github.kei_1111.withmo.ui.theme.DesignConstants
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.ui.theme.dimensions.Weights
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

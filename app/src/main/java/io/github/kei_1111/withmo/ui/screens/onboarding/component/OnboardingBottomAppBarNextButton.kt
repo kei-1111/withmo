@@ -5,9 +5,9 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 
 @Composable
 internal fun OnboardingBottomAppBarNextButton(

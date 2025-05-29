@@ -13,12 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsAction
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun SortTypePicker(

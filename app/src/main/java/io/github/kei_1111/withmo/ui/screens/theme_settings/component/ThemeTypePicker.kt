@@ -13,14 +13,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.ui.component.BodyMediumText
-import io.github.kei_1111.withmo.ui.component.LabelMediumText
-import io.github.kei_1111.withmo.ui.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsAction
-import io.github.kei_1111.withmo.ui.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.ui.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.ui.theme.dimensions.Paddings
 
 @Composable
 internal fun ThemeTypePicker(
