@@ -1,4 +1,4 @@
-package io.github.kei_1111.feature.onboarding
+package io.github.kei_1111.withmo.feature.onboarding
 
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -19,12 +19,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.feature.onboarding.component.contents.FinishContent
-import io.github.kei_1111.feature.onboarding.component.contents.SelectDisplayModelContent
-import io.github.kei_1111.feature.onboarding.component.contents.SelectFavoriteAppContent
-import io.github.kei_1111.feature.onboarding.component.contents.WelcomeContent
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.util.showToast
+import io.github.kei_1111.withmo.feature.onboarding.component.contents.FinishContent
+import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectDisplayModelContent
+import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectFavoriteAppContent
+import io.github.kei_1111.withmo.feature.onboarding.component.contents.WelcomeContent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

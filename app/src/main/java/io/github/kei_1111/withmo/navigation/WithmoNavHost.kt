@@ -17,8 +17,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
-import io.github.kei_1111.feature.onboarding.OnboardingScreen
 import io.github.kei_1111.withmo.feature.home.HomeScreen
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreen
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsScreen

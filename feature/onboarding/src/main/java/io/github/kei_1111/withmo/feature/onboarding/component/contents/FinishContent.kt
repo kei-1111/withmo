@@ -1,4 +1,4 @@
-package io.github.kei_1111.feature.onboarding.component.contents
+package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import io.github.kei_1111.feature.onboarding.OnboardingAction
-import io.github.kei_1111.feature.onboarding.OnboardingScreenDimensions
-import io.github.kei_1111.feature.onboarding.component.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.R
+import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
+import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
 
 @Composable
 internal fun FinishContent(

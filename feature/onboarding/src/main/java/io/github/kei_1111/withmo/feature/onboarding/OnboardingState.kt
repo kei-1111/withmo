@@ -1,4 +1,4 @@
-package io.github.kei_1111.feature.onboarding
+package io.github.kei_1111.withmo.feature.onboarding
 
 import android.graphics.Bitmap
 import io.github.kei_1111.withmo.core.featurebase.State

@@ -1,4 +1,4 @@
-package io.github.kei_1111.feature.onboarding.component.contents
+package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
@@ -14,10 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.feature.onboarding.OnboardingAction
-import io.github.kei_1111.feature.onboarding.OnboardingState
-import io.github.kei_1111.feature.onboarding.component.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
@@ -27,6 +23,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.F
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
+import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
+import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
