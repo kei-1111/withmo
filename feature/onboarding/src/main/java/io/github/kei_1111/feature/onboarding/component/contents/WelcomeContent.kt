@@ -1,10 +1,8 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding.component.contents
+package io.github.kei_1111.feature.onboarding.component.contents
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,25 +12,20 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import io.github.kei_1111.withmo.R
+import io.github.kei_1111.feature.onboarding.OnboardingAction
+import io.github.kei_1111.feature.onboarding.OnboardingScreenDimensions
+import io.github.kei_1111.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingAction
-import io.github.kei_1111.withmo.ui.screens.onboarding.OnboardingScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.ui.screens.onboarding.component.OnboardingBottomAppBarPreviousButton
+import io.github.kei_1111.withmo.feature.onboarding.R
 
 @Composable
-internal fun FinishContent(
+internal fun WelcomeContent(
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BackHandler {
-        onAction(OnboardingAction.OnPreviousButtonClick)
-    }
-
     Column(
         modifier = modifier,
     ) {
@@ -45,16 +38,17 @@ internal fun FinishContent(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onboarding_finish_logo),
-                contentDescription = "Finish",
-                modifier = Modifier.size(OnboardingScreenDimensions.FinishImageSize),
+                painter = painterResource(id = R.drawable.onboarding_welcome_logo),
+                contentDescription = "Welcome",
+                modifier = Modifier.size(OnboardingScreenDimensions.WelcomeImageSize),
             )
             Spacer(modifier = Modifier.height(Paddings.Medium))
-            DisplayMediumText("Completed!")
+            DisplayMediumText("Let's get started!")
             Spacer(modifier = Modifier.height(Paddings.Medium))
-            BodyMediumText("設定が完了しました！")
+            BodyMediumText("お気に入りアプリの登録と表示モデル設定をして")
+            BodyMediumText("今すぐwithmoを始めよう！")
         }
-        FinishContentBottomAppBar(
+        WelcomeContentBottomAppBar(
             onAction = onAction,
             modifier = Modifier
                 .fillMaxWidth()
@@ -64,22 +58,13 @@ internal fun FinishContent(
 }
 
 @Composable
-private fun FinishContentBottomAppBar(
+private fun WelcomeContentBottomAppBar(
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Row(
+    OnboardingBottomAppBarNextButton(
+        text = "次へ",
+        onClick = { onAction(OnboardingAction.OnNextButtonClick) },
         modifier = modifier,
-        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        OnboardingBottomAppBarPreviousButton(
-            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
-            modifier = Modifier.weight(Weights.Medium),
-        )
-        OnboardingBottomAppBarNextButton(
-            text = "はじめる",
-            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
-            modifier = Modifier.weight(Weights.Medium),
-        )
-    }
+    )
 }

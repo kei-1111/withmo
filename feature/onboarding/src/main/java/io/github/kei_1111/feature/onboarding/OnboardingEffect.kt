@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding
+package io.github.kei_1111.feature.onboarding
 
 import io.github.kei_1111.withmo.core.featurebase.Effect
 

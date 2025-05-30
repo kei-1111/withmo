@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding
+package io.github.kei_1111.feature.onboarding
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel

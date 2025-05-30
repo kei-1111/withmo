@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.onboarding.component
+package io.github.kei_1111.feature.onboarding.component
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.FilledTonalButton
