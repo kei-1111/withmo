@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component
+package io.github.kei_1111.withmo.feature.home.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -32,9 +32,9 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
-import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeState
-import io.github.kei_1111.withmo.ui.screens.home.component.page_content.PagerContent
+import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeState
+import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
 
 private const val BottomSheetShowDragHeight = -50f
 

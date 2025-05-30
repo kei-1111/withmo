@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.feature.home
 
 import android.app.Activity.RESULT_OK
 import android.os.Build

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component
+package io.github.kei_1111.withmo.feature.home.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -39,8 +39,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeState
+import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 

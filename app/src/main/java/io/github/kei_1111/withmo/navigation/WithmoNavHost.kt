@@ -18,10 +18,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.github.kei_1111.feature.onboarding.OnboardingScreen
+import io.github.kei_1111.withmo.feature.home.HomeScreen
 import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreen
 import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsScreen
 import io.github.kei_1111.withmo.ui.screens.settings.SettingsScreen
 import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsScreen
@@ -49,7 +49,7 @@ fun WithmoNavHost(
         composable<Screen.Onboarding>(
             exitTransition = { slideOutVertically { it } },
         ) {
-            io.github.kei_1111.feature.onboarding.OnboardingScreen(
+            OnboardingScreen(
                 onFinishButtonClick = { navController.navigate(Screen.Home) },
             )
         }

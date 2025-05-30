@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.feature.home
 
 import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,12 +31,12 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.ui.screens.home.component.AppListSheet
-import io.github.kei_1111.withmo.ui.screens.home.component.HomeScreenContent
-import io.github.kei_1111.withmo.ui.screens.home.component.ModelChangeWarningDialog
-import io.github.kei_1111.withmo.ui.screens.home.component.ModelLoading
-import io.github.kei_1111.withmo.ui.screens.home.component.WidgetListSheet
-import io.github.kei_1111.withmo.ui.screens.home.component.WidgetResizeBottomSheet
+import io.github.kei_1111.withmo.feature.home.component.AppListSheet
+import io.github.kei_1111.withmo.feature.home.component.HomeScreenContent
+import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
+import io.github.kei_1111.withmo.feature.home.component.ModelLoading
+import io.github.kei_1111.withmo.feature.home.component.WidgetListSheet
+import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component.page_content
+package io.github.kei_1111.withmo.feature.home.component.page_content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,9 +30,9 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
-import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
-import io.github.kei_1111.withmo.ui.screens.home.HomeState
+import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.feature.home.HomeState
 
 @Composable
 internal fun WidgetContent(

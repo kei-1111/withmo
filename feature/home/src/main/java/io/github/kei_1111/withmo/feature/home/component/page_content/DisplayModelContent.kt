@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component.page_content
+package io.github.kei_1111.withmo.feature.home.component.page_content
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -20,15 +20,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.R
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.util.FileUtils
-import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeState
+import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeState
+import io.github.kei_1111.withmo.feature.home.R
 
 @Composable
 internal fun DisplayModelContent(

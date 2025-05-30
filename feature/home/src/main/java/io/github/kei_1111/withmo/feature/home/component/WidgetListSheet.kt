@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component
+package io.github.kei_1111.withmo.feature.home.component
 
 import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
@@ -46,8 +46,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.util.WidgetUtils
-import io.github.kei_1111.withmo.ui.screens.home.HomeAction
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList

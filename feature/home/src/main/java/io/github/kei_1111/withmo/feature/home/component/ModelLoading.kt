@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home.component
+package io.github.kei_1111.withmo.feature.home.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,7 +17,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
-import io.github.kei_1111.withmo.ui.screens.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 
 @Composable
 internal fun ModelLoading(

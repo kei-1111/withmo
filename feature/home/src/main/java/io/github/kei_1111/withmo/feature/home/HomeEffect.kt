@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.ui.screens.home
+package io.github.kei_1111.withmo.feature.home
 
 import android.content.Intent
 import io.github.kei_1111.withmo.core.featurebase.Effect
