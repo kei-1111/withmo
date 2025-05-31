@@ -100,6 +100,7 @@ dependencies {
     implementation(projects.core.util)
     implementation(projects.feature.home)
     implementation(projects.feature.onboarding)
+    implementation(projects.feature.setting)
     implementation(projects.unityLibrary)
     implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
     testImplementation(libs.junit)

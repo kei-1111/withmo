@@ -19,14 +19,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.github.kei_1111.withmo.feature.home.HomeScreen
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreen
-import io.github.kei_1111.withmo.ui.screens.app_icon_settings.AppIconSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.clock_settings.ClockSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.favorite_app_settings.FavoriteAppSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.notification_settings.NotificationSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.settings.SettingsScreen
-import io.github.kei_1111.withmo.ui.screens.side_button_settings.SideButtonSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.sort_settings.SortSettingsScreen
-import io.github.kei_1111.withmo.ui.screens.theme_settings.ThemeSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.root.SettingsScreen
+import io.github.kei_1111.withmo.feature.setting.side_button.SideButtonSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsScreen
 
 @Suppress("LongMethod")
 @Composable
