@@ -1,28 +1,12 @@
 plugins {
-    alias(libs.plugins.android.library)
-    alias(libs.plugins.compose.compiler)
-    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.withmo.android.library.compose)
 }
 
 android {
     namespace = "io.github.kei_1111.withmo.core.ui"
-    compileSdk = 34
-
-    defaultConfig {
-        minSdk = 24
-    }
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
-    }
-    kotlinOptions {
-        jvmTarget = "11"
-    }
 }
 
 dependencies {
-    implementation(libs.androidx.activity.compose)
     implementation(projects.core.common)
     implementation(projects.core.model)
     implementation(projects.core.util)
