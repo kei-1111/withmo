@@ -1,5 +1,0 @@
-package io.github.kei_1111.withmo.domain.model.user_settings
-
-data class NotificationSettings(
-    val isNotificationAnimationEnabled: Boolean = false,
-)
