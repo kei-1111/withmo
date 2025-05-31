@@ -65,6 +65,11 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 
+# Use build-logic
+android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+detekt-gradle = { group = "io.gitlab.arturbosch.detekt", name = "detekt-gradle-plugin", version.ref = "detekt" }
+kotlin-gradle = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
+
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
@@ -77,3 +82,11 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
+
+# withmo Plugins
+withmo-android-application = { id = "withmo.android.application", version = "unspecified" }
+withmo-android-feature = { id = "withmo.android.feature", version = "unspecified" }
+withmo-android-library-compose = { id = "withmo.android.library.compose", version = "unspecified" }
+withmo-android-library = { id = "withmo.android.library", version = "unspecified" }
+withmo-detekt = { id = "withmo.detekt", version = "unspecified" }
+withmo-hilt = { id = "withmo.hilt", version = "unspecified" }

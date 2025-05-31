@@ -12,6 +12,14 @@ plugins {
     alias(libs.plugins.kotlin.android) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.serialization) apply false
+
+    // withmo
+    alias(libs.plugins.withmo.android.application) apply false
+    alias(libs.plugins.withmo.android.feature) apply false
+    alias(libs.plugins.withmo.android.library.compose) apply false
+    alias(libs.plugins.withmo.android.library) apply false
+    alias(libs.plugins.withmo.detekt) apply false
+    alias(libs.plugins.withmo.hilt) apply false
 }
 
 val detektFormatting = libs.detekt.formatting
