@@ -8,8 +8,8 @@ import org.gradle.kotlin.dsl.configure
 class AndroidLibraryComposePlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply(plugin = "withmo.android.library")
             apply(plugin = "org.jetbrains.kotlin.plugin.compose")
+            apply(plugin = "withmo.android.library")
 
             extensions.configure<LibraryExtension> {
                 configureAndroidCompose(this)

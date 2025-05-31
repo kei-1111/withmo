@@ -8,9 +8,9 @@ import org.gradle.kotlin.dsl.configure
 class AndroidLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            apply(plugin = "withmo.detekt")
             apply(plugin = "com.android.library")
             apply(plugin = "org.jetbrains.kotlin.android")
+            apply(plugin = "withmo.detekt")
 
             extensions.configure<LibraryExtension> {
                 configureKotlinAndroid(this)
