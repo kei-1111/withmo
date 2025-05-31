@@ -17,8 +17,10 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 implementation(project(":core:domain"))
                 implementation(project(":core:featurebase"))
                 implementation(project(":core:model"))
+                implementation(project(":core:util"))
 
                 implementation(libs.findLibrary("androidx.activity.compose").get())
+                implementation(libs.findLibrary("androidx.hilt.navigation.compose").get())
                 implementation(libs.findLibrary("androidx.material.icons.extended").get())
                 implementation(libs.findLibrary("androidx.material3").get())
                 implementation(libs.findLibrary("kotlinx.collections.immutable").get())
