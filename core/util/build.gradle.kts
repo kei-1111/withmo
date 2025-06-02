@@ -7,6 +7,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui)
     implementation(libs.kotlinx.collections.immutable)
     implementation(projects.core.common)
     implementation(projects.core.model)
