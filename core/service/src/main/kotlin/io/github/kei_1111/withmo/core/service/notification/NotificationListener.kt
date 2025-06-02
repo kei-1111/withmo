@@ -10,7 +10,7 @@ import io.github.kei_1111.withmo.core.common.IntentConstants
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
-import io.github.kei_1111.withmo.core.domain.usecase.notification.GetNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first

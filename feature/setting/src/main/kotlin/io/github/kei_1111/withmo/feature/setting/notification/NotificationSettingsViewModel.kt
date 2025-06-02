@@ -5,8 +5,8 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
-import io.github.kei_1111.withmo.core.domain.usecase.notification.GetNotificationSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.notification.SaveNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

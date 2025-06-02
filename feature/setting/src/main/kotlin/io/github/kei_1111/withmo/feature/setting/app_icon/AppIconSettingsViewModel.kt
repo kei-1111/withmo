@@ -3,8 +3,8 @@ package io.github.kei_1111.withmo.feature.setting.app_icon
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.GetAppIconSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.SaveAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.SaveModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder

@@ -28,8 +28,8 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.GetModelFilePathUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.theme.GetThemeSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider

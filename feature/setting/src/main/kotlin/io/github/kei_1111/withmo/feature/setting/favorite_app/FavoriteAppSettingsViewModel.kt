@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder

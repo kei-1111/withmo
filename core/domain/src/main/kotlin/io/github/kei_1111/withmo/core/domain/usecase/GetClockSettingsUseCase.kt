@@ -1,15 +1,21 @@
-package io.github.kei_1111.withmo.core.domain.usecase.sort
+package io.github.kei_1111.withmo.core.domain.usecase
 
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
+import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetSortSettingsUseCaseImpl @Inject constructor(
+interface GetClockSettingsUseCase {
+    operator fun invoke(): Flow<ClockSettings>
+}
+
+class GetClockSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
-) : GetSortSettingsUseCase {
+) : GetClockSettingsUseCase {
     override operator fun invoke() =
         userSettingsRepository.userSettings
-            .map { it.sortSettings }
+            .map { it.clockSettings }
             .distinctUntilChanged()
 }
