@@ -1,9 +1,8 @@
 package io.github.kei_1111.withmo.ui
 
 import android.os.Build
-import android.view.ViewGroup
-import android.view.ViewGroup.LayoutParams.MATCH_PARENT
-import android.widget.FrameLayout
+import android.view.SurfaceHolder
+import android.view.SurfaceView
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Surface
@@ -49,15 +48,18 @@ fun UnityView(
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
-    val unityView = remember { UnityManager.player.view }
-    val container = remember { FrameLayout(context) }
     val lifecycleOwner = LocalLifecycleOwner.current
+    val unitySurfaceView = remember {
+        SurfaceView(context).apply { holder.addCallback(HolderCallback()) }
+    }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             when (event) {
-                Lifecycle.Event.ON_START -> UnityManager.resume()
-                Lifecycle.Event.ON_STOP -> UnityManager.pause()
+                Lifecycle.Event.ON_START -> UnityManager.resumeForActivity()
+
+                Lifecycle.Event.ON_STOP -> UnityManager.pauseForActivity()
+
                 else -> {}
             }
         }
@@ -66,19 +68,24 @@ fun UnityView(
     }
 
     AndroidView(
-        factory = { container },
-        update = { host ->
-            if (unityView.parent != host) {
-                (unityView.parent as? ViewGroup)?.removeView(unityView)
-                host.addView(
-                    unityView,
-                    ViewGroup.LayoutParams(
-                        MATCH_PARENT,
-                        MATCH_PARENT,
-                    ),
-                )
-            }
-        },
+        factory = { unitySurfaceView },
         modifier = modifier.fillMaxSize(),
     )
+}
+
+private class HolderCallback : SurfaceHolder.Callback {
+
+    override fun surfaceCreated(h: SurfaceHolder) {
+        UnityManager.attachSurfaceForActivity(h.surface)
+        UnityManager.resumeForActivity()
+        UnityManager.focusGainedForActivity(true)
+    }
+
+    override fun surfaceDestroyed(h: SurfaceHolder) {
+        UnityManager.pauseForActivity()
+        UnityManager.detachSurfaceForActivity()
+    }
+
+    @Suppress("EmptyFunctionBlock")
+    override fun surfaceChanged(h: SurfaceHolder, f: Int, w: Int, hgt: Int) {}
 }

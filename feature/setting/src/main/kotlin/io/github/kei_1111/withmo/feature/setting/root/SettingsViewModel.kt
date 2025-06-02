@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.root
 
+import android.app.WallpaperManager
 import android.content.Intent
 import android.provider.Settings
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
@@ -29,6 +30,11 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, Set
             is SettingsAction.OnNavigateSortSettingsButtonClick -> sendEffect(SettingsEffect.NavigateSortSettings)
 
             is SettingsAction.OnNavigateNotificationSettingsButtonClick -> sendEffect(SettingsEffect.NavigateNotificationSettings)
+
+            is SettingsAction.OnNavigateWallpaperSettingsButtonClick -> {
+                val intent = Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER)
+                sendEffect(SettingsEffect.OpenWallpaperSettings(intent))
+            }
 
             is SettingsAction.OnNavigateThemeSettingsButtonClick -> sendEffect(SettingsEffect.NavigateThemeSettings)
 

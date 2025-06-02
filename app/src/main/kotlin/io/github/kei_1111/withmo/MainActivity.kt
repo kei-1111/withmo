@@ -178,17 +178,17 @@ class MainActivity : ComponentActivity() {
 
     override fun onWindowFocusChanged(hasFocus: Boolean) {
         super.onWindowFocusChanged(hasFocus)
-        UnityManager.focusGained(hasFocus)
+        UnityManager.focusGainedForActivity(hasFocus)
     }
 
     override fun onResume() {
         super.onResume()
-        UnityManager.resume()
+        UnityManager.resumeForActivity()
     }
 
     override fun onPause() {
         super.onPause()
-        UnityManager.pause()
+        UnityManager.pauseForActivity()
     }
 
     override fun onStop() {
@@ -198,12 +198,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        UnityManager.quit()
         unregisterReceiver(packageReceiver)
-    }
-
-    @Suppress("EmptyFunctionBlock")
-    override fun finish() {
     }
 
     private suspend fun syncAppInfo() {

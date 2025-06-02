@@ -39,7 +39,7 @@ import io.github.kei_1111.withmo.feature.setting.R
 import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenContent
 
 @RequiresApi(Build.VERSION_CODES.R)
-@Suppress("ModifierMissing")
+@Suppress("ModifierMissing", "CyclomaticComplexMethod")
 @Composable
 fun SettingsScreen(
     onNavigateClockSettingsButtonClick: () -> Unit,
@@ -101,6 +101,8 @@ fun SettingsScreen(
                 is SettingsEffect.NavigateSortSettings -> currentOnNavigateSortSettingsButtonClick()
 
                 is SettingsEffect.NavigateNotificationSettings -> currentOnNavigateNotificationSettingsButtonClick()
+
+                is SettingsEffect.OpenWallpaperSettings -> context.startActivity(effect.intent)
 
                 is SettingsEffect.NavigateThemeSettings -> currentOnNavigateThemeSettingsButtonClick()
 

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.rounded.Palette
 import androidx.compose.material.icons.rounded.RadioButtonChecked
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Tune
+import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -56,6 +57,7 @@ internal fun SettingsScreenContent(
         )
         HomeScreenSettings(onAction = onAction)
         NotificationSettings(onAction = onAction)
+        WallpaperSettings(onAction = onAction)
         ThemeSettings(onAction = onAction)
     }
 }
@@ -189,6 +191,36 @@ private fun NotificationSettings(
                     itemName = "通知",
                     onClick = {
                         onAction(SettingsAction.OnNavigateNotificationSettingsButtonClick)
+                    },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WallpaperSettings(
+    onAction: (SettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+    ) {
+        LabelMediumText(
+            text = "壁紙の設定",
+        )
+        Surface(
+            modifier = Modifier.fillMaxWidth(),
+            shape = MaterialTheme.shapes.medium,
+            color = MaterialTheme.colorScheme.surfaceContainer,
+        ) {
+            Column {
+                SettingItem(
+                    icon = Icons.Rounded.Wallpaper,
+                    itemName = "壁紙",
+                    onClick = {
+                        onAction(SettingsAction.OnNavigateWallpaperSettingsButtonClick)
                     },
                 )
             }
