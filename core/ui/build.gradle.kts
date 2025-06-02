@@ -7,6 +7,8 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.activity.compose)
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(projects.core.common)
     implementation(projects.core.model)
     implementation(projects.core.util)
