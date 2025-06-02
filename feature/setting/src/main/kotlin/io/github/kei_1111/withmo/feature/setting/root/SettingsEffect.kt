@@ -11,6 +11,7 @@ sealed interface SettingsEffect : Effect {
     data object NavigateSideButtonSettings : SettingsEffect
     data object NavigateSortSettings : SettingsEffect
     data object NavigateNotificationSettings : SettingsEffect
+    data class OpenWallpaperSettings(val intent: Intent) : SettingsEffect
     data object NavigateThemeSettings : SettingsEffect
     data object NavigateBack : SettingsEffect
     data class ShowToast(val message: String) : SettingsEffect

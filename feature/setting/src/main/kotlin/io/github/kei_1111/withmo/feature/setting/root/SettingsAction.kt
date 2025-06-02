@@ -11,6 +11,7 @@ sealed interface SettingsAction : Action {
     data object OnNavigateSideButtonSettingsButtonClick : SettingsAction
     data object OnNavigateSortSettingsButtonClick : SettingsAction
     data object OnNavigateNotificationSettingsButtonClick : SettingsAction
+    data object OnNavigateWallpaperSettingsButtonClick : SettingsAction
     data object OnNavigateThemeSettingsButtonClick : SettingsAction
     data object OnBackButtonClick : SettingsAction
 }
