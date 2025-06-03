@@ -17,9 +17,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
@@ -27,8 +25,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.home.component.AppListSheet
@@ -37,8 +33,6 @@ import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.feature.home.component.ModelLoading
 import io.github.kei_1111.withmo.feature.home.component.WidgetListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
@@ -55,17 +49,6 @@ fun HomeScreen(
     val scope = rememberCoroutineScope()
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-
-    val appList by viewModel.appList.collectAsStateWithLifecycle()
-
-    val homeAppList by remember(appList, state.currentUserSettings.sortSettings.sortType) {
-        derivedStateOf {
-            when (state.currentUserSettings.sortSettings.sortType) {
-                SortType.USE_COUNT -> appList.sortedByDescending { it.useCount }.toPersistentList()
-                SortType.ALPHABETICAL -> appList.sortedBy { it.label }.toPersistentList()
-            }
-        }
-    }
 
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
@@ -133,7 +116,6 @@ fun HomeScreen(
     HomeScreen(
         state = state,
         onAction = viewModel::onAction,
-        homeAppList = homeAppList,
         appListSheetState = appListSheetState,
         widgetListSheetState = widgetListSheetState,
         modifier = Modifier.fillMaxSize(),
@@ -146,7 +128,6 @@ fun HomeScreen(
 private fun HomeScreen(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
-    homeAppList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     widgetListSheetState: SheetState,
     modifier: Modifier = Modifier,
@@ -157,7 +138,6 @@ private fun HomeScreen(
 
     if (state.isAppListSheetOpened) {
         AppListSheet(
-            appList = homeAppList,
             appListSheetState = appListSheetState,
             state = state,
             onAction = onAction,

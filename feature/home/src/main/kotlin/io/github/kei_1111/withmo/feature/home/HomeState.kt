@@ -24,6 +24,7 @@ data class HomeState(
     val resizingWidget: WithmoWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
     val appSearchQuery: String = "",
+    val searchedAppList: ImmutableList<AppInfo> = persistentListOf(),
     val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
     val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
