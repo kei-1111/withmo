@@ -1,17 +1,21 @@
-package io.github.kei_1111.withmo.core.domain.usecase.model_file_path
+package io.github.kei_1111.withmo.core.domain.usecase
 
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
-import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class GetModelFilePathUseCaseImpl @Inject constructor(
+interface GetThemeSettingsUseCase {
+    operator fun invoke(): Flow<ThemeSettings>
+}
+
+class GetThemeSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
-) : GetModelFilePathUseCase {
-    override operator fun invoke(): Flow<ModelFilePath> =
+) : GetThemeSettingsUseCase {
+    override operator fun invoke() =
         userSettingsRepository.userSettings
-            .map { it.modelFilePath }
+            .map { it.themeSettings }
             .distinctUntilChanged()
 }

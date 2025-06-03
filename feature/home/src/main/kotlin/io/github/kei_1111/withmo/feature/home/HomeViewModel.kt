@@ -16,23 +16,24 @@ import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.SaveModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
+@Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
@@ -43,6 +44,8 @@ class HomeViewModel @Inject constructor(
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
 ) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+
+    private val currentAppList = mutableListOf<AppInfo>()
 
     override fun createInitialState(): HomeState = HomeState()
 
@@ -60,13 +63,11 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
-        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
-
     init {
         UnityToAndroidMessenger.receiver = WeakReference(this)
 
         observeUserSettings()
+        observeAppList()
         observeFavoriteAppList()
         observeWidgetList()
     }
@@ -74,7 +75,23 @@ class HomeViewModel @Inject constructor(
     private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
-                updateState { copy(currentUserSettings = userSettings) }
+                updateState {
+                    copy(
+                        currentUserSettings = userSettings,
+                        searchedAppList = sortAppList(userSettings.sortSettings.sortType, searchedAppList).toPersistentList(),
+                    )
+                }
+            }
+        }
+    }
+
+    private fun observeAppList() {
+        viewModelScope.launch {
+            appInfoRepository.getAllAppInfoList().collect { appList ->
+                currentAppList.clear()
+                currentAppList.addAll(appList)
+                val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
+                updateState { copy(searchedAppList = filteredAppList) }
             }
         }
     }
@@ -99,6 +116,14 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+        withContext(Dispatchers.Default) {
+            val filteredAppList = appList.filter { appInfo ->
+                appInfo.label.contains(query, ignoreCase = true)
+            }
+            sortAppList(state.value.currentUserSettings.sortSettings.sortType, filteredAppList)
+        }
 
     private fun addWidget(withmoWidgetInfo: WithmoWidgetInfo) {
         updateState { copy(widgetList = (widgetList + withmoWidgetInfo).toPersistentList()) }
@@ -190,7 +215,13 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
 
-            is HomeAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+            is HomeAction.OnAppSearchQueryChange -> {
+                updateState { copy(appSearchQuery = action.query) }
+                viewModelScope.launch {
+                    val filteredAppList = filterAppList(action.query, currentAppList)
+                    updateState { copy(searchedAppList = filteredAppList.toPersistentList()) }
+                }
+            }
 
             is HomeAction.OnAppListSheetSwipeUp -> {
                 sendEffect(HomeEffect.ShowAppListSheet)

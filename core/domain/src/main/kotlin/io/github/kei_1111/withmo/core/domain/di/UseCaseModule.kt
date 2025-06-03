@@ -5,36 +5,36 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
+import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.GetAppIconSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.GetAppIconSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.SaveAppIconSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.SaveAppIconSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.clock.GetClockSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.clock.GetClockSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.clock.SaveClockSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.clock.SaveClockSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.GetModelFilePathUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.GetModelFilePathUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.SaveModelFilePathUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.model_file_path.SaveModelFilePathUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.notification.GetNotificationSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.notification.GetNotificationSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.notification.SaveNotificationSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.notification.SaveNotificationSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.GetSideButtonSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.GetSideButtonSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.SaveSideButtonSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.SaveSideButtonSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.sort.GetSortSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.sort.GetSortSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.sort.SaveSortSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.sort.SaveSortSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.theme.GetThemeSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.theme.GetThemeSettingsUseCaseImpl
-import io.github.kei_1111.withmo.core.domain.usecase.theme.SaveThemeSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.theme.SaveThemeSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveThemeSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveThemeSettingsUseCaseImpl
 import javax.inject.Singleton
 
 @Suppress("TooManyFunctions")
@@ -42,14 +42,14 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
 
-//    UserSettings
+    // UserSettings
     @Provides
     @Singleton
     fun provideGetUserSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): GetUserSettingsUseCase = GetUserSettingsUseCaseImpl(userSettingsRepository)
 
-//    Notification
+    // Notification
     @Provides
     @Singleton
     fun provideGetNotificationSettingUseCase(
@@ -62,7 +62,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveNotificationSettingsUseCase = SaveNotificationSettingsUseCaseImpl(userSettingsRepository)
 
-//    Clock
+    // Clock
     @Provides
     @Singleton
     fun provideGetClockSettingsUseCase(
@@ -75,7 +75,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveClockSettingsUseCase = SaveClockSettingsUseCaseImpl(userSettingsRepository)
 
-//    AppIcon
+    // AppIcon
     @Provides
     @Singleton
     fun provideGetAppIconSettingsUseCase(
@@ -88,7 +88,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveAppIconSettingsUseCase = SaveAppIconSettingsUseCaseImpl(userSettingsRepository)
 
-//    SideButton
+    // SideButton
     @Provides
     @Singleton
     fun provideGetSideButtonSettingsUseCase(
@@ -101,7 +101,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveSideButtonSettingsUseCase = SaveSideButtonSettingsUseCaseImpl(userSettingsRepository)
 
-//    Sort
+    // Sort
     @Provides
     @Singleton
     fun provideGetSortSettingsUseCase(
@@ -114,7 +114,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveSortSettingsUseCase = SaveSortSettingsUseCaseImpl(userSettingsRepository)
 
-//    Theme
+    // Theme
     @Provides
     @Singleton
     fun provideGetThemeSettingsUseCase(
@@ -127,7 +127,7 @@ object UseCaseModule {
         userSettingsRepository: UserSettingsRepository,
     ): SaveThemeSettingsUseCase = SaveThemeSettingsUseCaseImpl(userSettingsRepository)
 
-//    ModelFilePath
+    // ModelFilePath
     @Provides
     @Singleton
     fun provideGetModelFilePathUseCase(

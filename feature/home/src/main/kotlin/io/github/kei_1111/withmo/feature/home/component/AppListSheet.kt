@@ -19,10 +19,7 @@ import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,20 +45,11 @@ import kotlinx.collections.immutable.toPersistentList
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun AppListSheet(
-    appList: ImmutableList<AppInfo>,
     appListSheetState: SheetState,
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var resultAppList by remember { mutableStateOf(appList) }
-
-    LaunchedEffect(appList) {
-        resultAppList = appList.filter { appInfo ->
-            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
-        }.toPersistentList()
-    }
-
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
         shape = BottomSheetShape,
@@ -83,15 +71,10 @@ internal fun AppListSheet(
                     modifier = Modifier.fillMaxWidth(),
                     value = state.appSearchQuery,
                     onValueChange = { onAction(HomeAction.OnAppSearchQueryChange(it)) },
-                    action = {
-                        resultAppList = appList.filter { appInfo ->
-                            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
-                        }.toPersistentList()
-                    },
                 )
-                if (resultAppList.isNotEmpty()) {
+                if (state.searchedAppList.isNotEmpty()) {
                     AppList(
-                        appList = resultAppList,
+                        appList = state.searchedAppList,
                         appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                             state.currentUserSettings.appIconSettings.roundedCornerPercent,
                         ),

@@ -5,10 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,34 +15,19 @@ import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.F
 import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsState
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun FavoriteAppSettingsScreenContent(
-    appList: ImmutableList<AppInfo>,
     state: FavoriteAppSettingsState,
     onAction: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var resultAppList by remember { mutableStateOf(appList) }
-
-    fun filterAppList(query: String) {
-        resultAppList =
-            appList.filter { it.label.contains(query, ignoreCase = true) }.toPersistentList()
-    }
-
     val appIconShape = state.appIconSettings.appIconShape.toShape(
         state.appIconSettings.roundedCornerPercent,
     )
-
-    LaunchedEffect(appList) {
-        filterAppList(state.appSearchQuery)
-    }
 
     Column(
         modifier = modifier,
@@ -68,11 +50,10 @@ internal fun FavoriteAppSettingsScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.appSearchQuery,
                 onValueChange = { onAction(FavoriteAppSettingsAction.OnAppSearchQueryChange(it)) },
-                action = { filterAppList(state.appSearchQuery) },
             )
-            if (resultAppList.isNotEmpty()) {
+            if (state.searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
-                    appList = resultAppList,
+                    appList = state.searchedAppList,
                     favoriteAppList = state.favoriteAppList,
                     addSelectedAppList = { onAction(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },

@@ -5,43 +5,56 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.core.domain.usecase.app_icon.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteAppSettingsViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
+    private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
 ) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
+    private val currentAppList = mutableListOf<AppInfo>()
+
     override fun createInitialState(): FavoriteAppSettingsState = FavoriteAppSettingsState()
 
-    val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
-        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
-
     init {
+        observeAppList()
         observeFavoriteAppList()
-
         observeAppIconSettings()
+    }
+
+    private fun observeAppList() {
+        viewModelScope.launch {
+            appInfoRepository.getAllAppInfoList().collect { appList ->
+                currentAppList.clear()
+                currentAppList.addAll(appList)
+                val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
+                updateState { copy(searchedAppList = filteredAppList) }
+            }
+        }
     }
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
-                val sortedFavoriteAppList = favoriteAppList.toPersistentList()
+                val immutableFavoriteAppList = favoriteAppList.toPersistentList()
 
                 updateState {
                     copy(
-                        favoriteAppList = sortedFavoriteAppList,
-                        initialFavoriteAppList = sortedFavoriteAppList,
+                        favoriteAppList = immutableFavoriteAppList,
+                        initialFavoriteAppList = immutableFavoriteAppList,
                     )
                 }
             }
@@ -55,6 +68,15 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+        withContext(Dispatchers.Default) {
+            val sortType = getSortSettingsUseCase().first().sortType
+            val filteredAppList = appList.filter { appInfo ->
+                appInfo.label.contains(query, ignoreCase = true)
+            }
+            sortAppList(sortType, filteredAppList)
+        }
 
     private fun addFavoriteAppList(appInfo: AppInfo) {
         val addedFavoriteAppList = (state.value.favoriteAppList + appInfo).toPersistentList()
@@ -133,7 +155,13 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
             is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.appInfo)
 
-            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
+                updateState { copy(appSearchQuery = action.query) }
+                viewModelScope.launch {
+                    val filteredAppList = filterAppList(action.query, currentAppList)
+                    updateState { copy(searchedAppList = filteredAppList.toPersistentList()) }
+                }
+            }
 
             is FavoriteAppSettingsAction.OnSaveButtonClick -> saveFavoriteAppList()
 

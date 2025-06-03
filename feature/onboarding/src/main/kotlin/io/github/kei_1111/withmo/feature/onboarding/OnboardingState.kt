@@ -10,6 +10,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class OnboardingState(
     val currentPage: OnboardingPage = OnboardingPage.Welcome,
     val appSearchQuery: String = "",
+    val searchedAppList: ImmutableList<AppInfo> = persistentListOf(),
     val selectedAppList: ImmutableList<AppInfo> = persistentListOf(),
     val isModelLoading: Boolean = false,
     val modelFilePath: ModelFilePath = ModelFilePath(null),

@@ -3,8 +3,8 @@ package io.github.kei_1111.withmo.feature.setting.side_button
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.GetSideButtonSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.side_button.SaveSideButtonSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

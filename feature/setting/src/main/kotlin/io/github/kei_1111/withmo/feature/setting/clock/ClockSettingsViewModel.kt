@@ -3,8 +3,8 @@ package io.github.kei_1111.withmo.feature.setting.clock
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.kei_1111.withmo.core.domain.usecase.clock.GetClockSettingsUseCase
-import io.github.kei_1111.withmo.core.domain.usecase.clock.SaveClockSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

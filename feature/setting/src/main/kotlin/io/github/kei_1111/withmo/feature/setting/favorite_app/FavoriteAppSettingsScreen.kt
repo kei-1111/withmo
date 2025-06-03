@@ -23,11 +23,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.favorite_app.component.FavoriteAppSettingsScreenContent
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("ModifierMissing")
 @Composable
@@ -37,7 +34,6 @@ fun FavoriteAppSettingsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val appList by viewModel.appList.collectAsStateWithLifecycle()
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
     BackHandler {
@@ -55,7 +51,6 @@ fun FavoriteAppSettingsScreen(
     }
 
     FavoriteAppSettingsScreen(
-        appList = appList.toPersistentList(),
         state = state,
         onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
@@ -64,7 +59,6 @@ fun FavoriteAppSettingsScreen(
 
 @Composable
 private fun FavoriteAppSettingsScreen(
-    appList: ImmutableList<AppInfo>,
     state: FavoriteAppSettingsState,
     onAction: (FavoriteAppSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -85,7 +79,6 @@ private fun FavoriteAppSettingsScreen(
                 navigateBack = { onAction(FavoriteAppSettingsAction.OnBackButtonClick) },
             )
             FavoriteAppSettingsScreenContent(
-                appList = appList,
                 state = state,
                 onAction = onAction,
                 modifier = Modifier

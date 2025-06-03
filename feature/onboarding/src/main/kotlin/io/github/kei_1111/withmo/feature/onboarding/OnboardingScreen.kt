@@ -19,14 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.FinishContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectDisplayModelContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectFavoriteAppContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.WelcomeContent
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "LongMethod")
@@ -37,8 +34,6 @@ fun OnboardingScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-
-    val appList by viewModel.appList.collectAsStateWithLifecycle()
 
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
@@ -61,7 +56,6 @@ fun OnboardingScreen(
     }
 
     OnboardingScreen(
-        appList = appList.toPersistentList(),
         state = state,
         onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
@@ -71,7 +65,6 @@ fun OnboardingScreen(
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 private fun OnboardingScreen(
-    appList: ImmutableList<AppInfo>,
     state: OnboardingState,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -93,7 +86,6 @@ private fun OnboardingScreen(
             }
             OnboardingPage.SelectFavoriteApp -> {
                 SelectFavoriteAppContent(
-                    appList = appList,
                     state = state,
                     onAction = onAction,
                     modifier = Modifier
