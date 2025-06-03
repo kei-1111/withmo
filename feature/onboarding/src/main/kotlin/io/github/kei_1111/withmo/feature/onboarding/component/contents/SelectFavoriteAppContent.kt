@@ -77,7 +77,7 @@ internal fun SelectFavoriteAppContent(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.appSearchQuery,
                 onValueChange = { onAction(OnboardingAction.OnAppSearchQueryChange(it)) },
-                action = { filterAppList(state.appSearchQuery) },
+//                action = { filterAppList(state.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(

@@ -68,7 +68,7 @@ internal fun FavoriteAppSettingsScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.appSearchQuery,
                 onValueChange = { onAction(FavoriteAppSettingsAction.OnAppSearchQueryChange(it)) },
-                action = { filterAppList(state.appSearchQuery) },
+//                action = { filterAppList(state.appSearchQuery) },
             )
             if (resultAppList.isNotEmpty()) {
                 FavoriteAppSelector(

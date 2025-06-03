@@ -83,11 +83,11 @@ internal fun AppListSheet(
                     modifier = Modifier.fillMaxWidth(),
                     value = state.appSearchQuery,
                     onValueChange = { onAction(HomeAction.OnAppSearchQueryChange(it)) },
-                    action = {
-                        resultAppList = appList.filter { appInfo ->
-                            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
-                        }.toPersistentList()
-                    },
+//                    action = {
+//                        resultAppList = appList.filter { appInfo ->
+//                            appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
+//                        }.toPersistentList()
+//                    },
                 )
                 if (resultAppList.isNotEmpty()) {
                     AppList(
