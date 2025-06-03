@@ -7,10 +7,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,13 +19,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.F
 import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
 @Composable
@@ -37,7 +31,6 @@ internal fun SelectFavoriteAppContent(
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
     BackHandler {
         onAction(OnboardingAction.OnPreviousButtonClick)
     }
