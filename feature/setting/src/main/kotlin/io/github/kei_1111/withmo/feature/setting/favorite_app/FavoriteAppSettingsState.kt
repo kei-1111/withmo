@@ -10,6 +10,7 @@ data class FavoriteAppSettingsState(
     val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
     val initialFavoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
     val appSearchQuery: String = "",
+    val searchedAppList: ImmutableList<AppInfo> = persistentListOf(),
     val isSaveButtonEnabled: Boolean = false,
     val appIconSettings: AppIconSettings = AppIconSettings(),
 ) : State

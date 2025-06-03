@@ -26,8 +26,6 @@ fun FavoriteAppSelector(
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
 ) {
-    val sortedAppList = appList.sortedBy(AppInfo::label)
-
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(DesignConstants.AppListGridColums),
@@ -38,7 +36,7 @@ fun FavoriteAppSelector(
             bottom = Paddings.Medium,
         ),
     ) {
-        items(sortedAppList) { appInfo ->
+        items(appList) { appInfo ->
             val isSelected = favoriteAppList
                 .any { it.packageName == appInfo.packageName }
 
