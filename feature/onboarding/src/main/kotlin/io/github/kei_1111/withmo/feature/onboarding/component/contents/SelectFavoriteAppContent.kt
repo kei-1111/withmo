@@ -33,21 +33,10 @@ import kotlinx.collections.immutable.toPersistentList
 @Suppress("LongMethod")
 @Composable
 internal fun SelectFavoriteAppContent(
-    appList: ImmutableList<AppInfo>,
     state: OnboardingState,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var resultAppList by remember { mutableStateOf(appList) }
-
-    fun filterAppList(query: String) {
-        resultAppList =
-            appList.filter { it.label.contains(query, ignoreCase = true) }.toPersistentList()
-    }
-
-    LaunchedEffect(appList) {
-        filterAppList(state.appSearchQuery)
-    }
 
     BackHandler {
         onAction(OnboardingAction.OnPreviousButtonClick)
@@ -77,11 +66,10 @@ internal fun SelectFavoriteAppContent(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.appSearchQuery,
                 onValueChange = { onAction(OnboardingAction.OnAppSearchQueryChange(it)) },
-//                action = { filterAppList(state.appSearchQuery) },
             )
-            if (resultAppList.isNotEmpty()) {
+            if (state.searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
-                    appList = resultAppList,
+                    appList = state.searchedAppList,
                     favoriteAppList = state.selectedAppList,
                     addSelectedAppList = { onAction(OnboardingAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },

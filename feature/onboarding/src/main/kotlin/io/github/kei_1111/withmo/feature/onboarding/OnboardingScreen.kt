@@ -38,8 +38,6 @@ fun OnboardingScreen(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    val appList by viewModel.appList.collectAsStateWithLifecycle()
-
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
     ) { uri ->
@@ -61,7 +59,6 @@ fun OnboardingScreen(
     }
 
     OnboardingScreen(
-        appList = appList.toPersistentList(),
         state = state,
         onAction = viewModel::onAction,
         modifier = Modifier.fillMaxSize(),
@@ -71,7 +68,6 @@ fun OnboardingScreen(
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 private fun OnboardingScreen(
-    appList: ImmutableList<AppInfo>,
     state: OnboardingState,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -93,7 +89,6 @@ private fun OnboardingScreen(
             }
             OnboardingPage.SelectFavoriteApp -> {
                 SelectFavoriteAppContent(
-                    appList = appList,
                     state = state,
                     onAction = onAction,
                     modifier = Modifier

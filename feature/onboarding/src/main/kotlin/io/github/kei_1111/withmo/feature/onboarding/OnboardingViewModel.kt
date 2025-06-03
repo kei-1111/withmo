@@ -6,16 +6,21 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import javax.inject.Inject
 
@@ -23,17 +28,30 @@ import javax.inject.Inject
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
     private val appInfoRepository: AppInfoRepository,
+    private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val oneTimeEventRepository: OneTimeEventRepository,
     private val modelFileManager: ModelFileManager,
 ) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
+
+    private val currentAppList = mutableListOf<AppInfo>()
+
     override fun createInitialState(): OnboardingState = OnboardingState()
 
-    val appList: StateFlow<List<AppInfo>> = appInfoRepository.getAllAppInfoList()
-        .stateIn(viewModelScope, started = SharingStarted.WhileSubscribed(TimeoutMillis), initialValue = emptyList())
-
     init {
+        observeAppList()
         observeFavoriteAppList()
+    }
+
+    private fun observeAppList() {
+        viewModelScope.launch {
+            appInfoRepository.getAllAppInfoList().collect { appList ->
+                currentAppList.clear()
+                currentAppList.addAll(appList)
+                val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
+                updateState { copy(searchedAppList = filteredAppList) }
+            }
+        }
     }
 
     private fun observeFavoriteAppList() {
@@ -43,6 +61,15 @@ class OnboardingViewModel @Inject constructor(
             }
         }
     }
+
+    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+        withContext(Dispatchers.Default) {
+            val sortType = getSortSettingsUseCase().first().sortType
+            val filteredAppList = appList.filter { appInfo ->
+                appInfo.label.contains(query, ignoreCase = true)
+            }
+            sortAppList(sortType, filteredAppList)
+        }
 
     private fun addSelectedAppList(appInfo: AppInfo) {
         updateState {
@@ -127,7 +154,13 @@ class OnboardingViewModel @Inject constructor(
 
             is OnboardingAction.OnFavoriteAppListAppClick -> removeSelectedAppList(action.appInfo)
 
-            is OnboardingAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+            is OnboardingAction.OnAppSearchQueryChange -> {
+                updateState { copy(appSearchQuery = action.query) }
+                viewModelScope.launch {
+                    val filteredAppList = filterAppList(action.query, currentAppList).toPersistentList()
+                    updateState { copy(searchedAppList = filteredAppList) }
+                }
+            }
 
             is OnboardingAction.OnSelectDisplayModelAreaClick -> sendEffect(OnboardingEffect.OpenDocument)
 
