@@ -12,6 +12,7 @@ sealed interface HomeAction : Action {
     data class OnAppLongClick(val appInfo: AppInfo) : HomeAction
     data object OnShowScaleSliderButtonClick : HomeAction
     data object OnCloseScaleSliderButtonClick : HomeAction
+    data class OnScaleSliderChange(val scale: Float) : HomeAction
     data object OnSetDefaultModelButtonClick : HomeAction
     data object OnOpenDocumentButtonClick : HomeAction
     data object OnNavigateSettingsButtonClick : HomeAction

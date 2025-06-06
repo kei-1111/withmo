@@ -17,8 +17,6 @@ enum class UnityObject(val unityName: String) {
 
     VRMloader("VRMloader"),
 
-    SliderManeger("SliderManeger"),
-
     IKAnimationController("IKAnimationController"),
 
     VRMAnimationController("VRMAnimationController"),
@@ -36,11 +34,12 @@ enum class UnityMethod(val unityName: String) {
     LoadVRM("LoadVRM"),
 
     ShowObject("ShowObject"),
-    HideObject("HideObject"),
 
     TriggerExitScreenAnimation("TriggerExitScreenAnimation"),
     TriggerEnterScreenAnimation("TriggerEnterScreenAnimation"),
     MoveLookat("MoveLookat"),
 
     TriggerTouchAnimation("TriggerTouchAnimation"),
+
+    AdjustScale("AdjustScale"),
 }

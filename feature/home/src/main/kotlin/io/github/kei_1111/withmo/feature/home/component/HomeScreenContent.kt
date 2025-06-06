@@ -11,21 +11,14 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -34,6 +27,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
+import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
 
 private const val BottomSheetShowDragHeight = -50f
@@ -51,23 +45,12 @@ internal fun HomeScreenContent(
     Box(
         modifier = modifier,
     ) {
-        if (state.isCloseScaleSliderButtonShown) {
-            Column(
+        if (state.isChangeModelScaleContentShown) {
+            ChangeModelScaleContent(
+                state = state,
+                onAction = onAction,
                 modifier = Modifier.fillMaxSize(),
-            ) {
-                WithmoIconButton(
-                    onClick = { onAction(HomeAction.OnCloseScaleSliderButtonClick) },
-                    modifier = Modifier
-                        .padding(start = Paddings.Medium)
-                        .size(AppConstants.DefaultAppIconSize.dp),
-                ) {
-                    Icon(
-                        imageVector = Icons.Rounded.Close,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface,
-                    )
-                }
-            }
+            )
         } else {
             if (state.currentUserSettings.clockSettings.isClockShown) {
                 WithmoClock(
