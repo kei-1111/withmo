@@ -76,10 +76,14 @@ object AppUtils {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getAppIcon(icon: Drawable): AppIcon {
-        return if (icon is AdaptiveIconDrawable) {
+        val adaptive = icon as? AdaptiveIconDrawable
+        val foregroundIcon: Drawable? = adaptive?.foreground
+        val backgroundIcon: Drawable? = adaptive?.background
+
+        return if (foregroundIcon != null) {
             AppIcon(
-                foregroundIcon = icon.foreground,
-                backgroundIcon = icon.background,
+                foregroundIcon = foregroundIcon,
+                backgroundIcon = backgroundIcon,
             )
         } else {
             AppIcon(
