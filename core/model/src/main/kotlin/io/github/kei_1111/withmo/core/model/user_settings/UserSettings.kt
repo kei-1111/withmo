@@ -8,4 +8,5 @@ data class UserSettings(
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
     val themeSettings: ThemeSettings = ThemeSettings(),
     val modelFilePath: ModelFilePath = ModelFilePath(null),
+    val modelSettings: ModelSettings = ModelSettings(),
 )

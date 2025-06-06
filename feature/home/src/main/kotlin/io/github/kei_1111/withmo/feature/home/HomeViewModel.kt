@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.feature.home
 
 import android.app.Activity.RESULT_OK
 import android.os.Build
+import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewModelScope
@@ -17,6 +18,7 @@ import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.repository.WidgetInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
@@ -43,9 +45,11 @@ class HomeViewModel @Inject constructor(
     private val modelFileManager: ModelFileManager,
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
+    private val saveModelSettingsUseCase: SaveModelSettingsUseCase,
 ) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     private val currentAppList = mutableListOf<AppInfo>()
+    private var lastScaleSentTime = 0L
 
     override fun createInitialState(): HomeState = HomeState()
 
@@ -53,6 +57,11 @@ class HomeViewModel @Inject constructor(
         when (message) {
             ModelLoadState.LoadingSuccess.name -> {
                 updateState { copy(isModelLoading = false) }
+                AndroidToUnityMessenger.sendMessage(
+                    UnityObject.VRMloader,
+                    UnityMethod.AdjustScale,
+                    state.value.currentUserSettings.modelSettings.scale.toString(),
+                )
             }
             ModelLoadState.LoadingFailure.name -> {
                 updateState { copy(isModelLoading = false) }
@@ -170,13 +179,28 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnAppLongClick -> sendEffect(HomeEffect.DeleteApp(action.appInfo))
 
             is HomeAction.OnShowScaleSliderButtonClick -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.ShowObject, "")
-                updateState { copy(isCloseScaleSliderButtonShown = true) }
+                updateState { copy(isChangeModelScaleContentShown = true) }
             }
 
             is HomeAction.OnCloseScaleSliderButtonClick -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SliderManeger, UnityMethod.HideObject, "")
-                updateState { copy(isCloseScaleSliderButtonShown = false) }
+                updateState { copy(isChangeModelScaleContentShown = false) }
+                viewModelScope.launch {
+                    saveModelSettingsUseCase(state.value.currentUserSettings.modelSettings)
+                }
+            }
+
+            is HomeAction.OnScaleSliderChange -> {
+                val now = SystemClock.elapsedRealtime()
+                if (now - lastScaleSentTime >= ScaleCooldownMillis) {
+                    AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.AdjustScale, action.scale.toString())
+                    updateState {
+                        copy(
+                            currentUserSettings = currentUserSettings.copy(
+                                modelSettings = currentUserSettings.modelSettings.copy(scale = action.scale),
+                            ),
+                        )
+                    }
+                }
             }
 
             is HomeAction.OnSetDefaultModelButtonClick -> {
@@ -370,7 +394,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private companion object {
-        const val TimeoutMillis = 5000L
+        const val ScaleCooldownMillis = 16L
 
         const val TAG = "HomeViewModel"
     }

@@ -12,7 +12,7 @@ import kotlinx.collections.immutable.persistentListOf
 
 @RequiresApi(Build.VERSION_CODES.O)
 data class HomeState(
-    val isCloseScaleSliderButtonShown: Boolean = false,
+    val isChangeModelScaleContentShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,
     val isModelLoading: Boolean = true,
     val isAppListSheetOpened: Boolean = false,

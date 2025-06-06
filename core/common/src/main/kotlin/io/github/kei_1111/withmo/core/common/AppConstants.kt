@@ -11,4 +11,6 @@ data object AppConstants {
     const val DefaultRoundedCornerPercent = 20f
     const val MinRoundedCornerPercent = 0f
     const val MaxRoundedCornerPercent = 100f
+
+    const val DefaultModelScale = 1.0f
 }

@@ -11,6 +11,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
@@ -27,6 +29,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCase
@@ -139,4 +143,17 @@ object UseCaseModule {
     fun provideSaveModelFilePathUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveModelFilePathUseCase = SaveModelFilePathUseCaseImpl(userSettingsRepository)
+
+    // ModelSettings
+    @Provides
+    @Singleton
+    fun provideGetModelSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): GetModelSettingsUseCase = GetModelSettingsUseCaseImpl(userSettingsRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveModelSettingsUseCase(
+        userSettingsRepository: UserSettingsRepository,
+    ): SaveModelSettingsUseCase = SaveModelSettingsUseCaseImpl(userSettingsRepository)
 }

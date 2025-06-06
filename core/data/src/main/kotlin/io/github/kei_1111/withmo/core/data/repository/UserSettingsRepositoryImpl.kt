@@ -17,6 +17,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.ModelSettings
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
@@ -89,6 +90,9 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 ),
                 modelFilePath = ModelFilePath(
                     path = preferences[MODEL_FILE_PATH],
+                ),
+                modelSettings = ModelSettings(
+                    scale = preferences[SCALE] ?: AppConstants.DefaultModelScale,
                 ),
             )
         }
@@ -167,6 +171,14 @@ class UserSettingsRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun saveModelSettings(modelSettings: ModelSettings) {
+        withContext(ioDispatcher) {
+            dataStore.edit { preferences ->
+                preferences[SCALE] = modelSettings.scale
+            }
+        }
+    }
+
     private companion object {
         val IS_NOTIFICATION_ANIMATION_ENABLED =
             booleanPreferencesKey("is_notification_animation_enabled")
@@ -184,6 +196,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
         val IS_NAVIGATE_SETTINGS_BUTTON_SHOWN = booleanPreferencesKey("is_navigate_settings_button_shown")
         val THEME_TYPE = stringPreferencesKey("theme_type")
         val MODEL_FILE_PATH = stringPreferencesKey("model_file_path")
+        val SCALE = floatPreferencesKey("scale")
 
         const val TAG = "UserSettingsRepository"
     }
