@@ -74,12 +74,39 @@ object AppUtils {
         }
     }
 
+    /**
+     * 与えられた [Drawable] からアプリ用アイコンを組み立てて返す。
+     *
+     * ### 背景
+     * - Android 8.0 (API 26) 以降は “Adaptive Icon” が導入され、
+     *   `Drawable` が `AdaptiveIconDrawable` の場合は
+     *   **foreground / background** の 2 レイヤーを持つ。
+     * - しかし端末メーカー独自のアイコンパックや旧形式の APK を
+     *   OS がラップしたケースでは、`foreground` / `background` の
+     *   どちらか一方、または両方が **null** になることがある。
+     * - Kotlin ではプラットフォーム型 (`Drawable!`) を非 null として
+     *   受け取ると自動挿入された null チェックで
+     *   `NullPointerException` が発生するため、ここで安全に判定している。
+     *
+     * ### 振る舞い
+     * 1. `AdaptiveIconDrawable` なら各レイヤーを取得。
+     * 2. **foreground が null でなければ** 2 レイヤー構成として返す。
+     * 3. foreground が null（＝実質レガシーアイコン）なら
+     *    元の `Drawable` を 1 枚絵としてフォールバック。
+     *
+     * @param icon アプリから取得したアイコン `Drawable`
+     * @return [AppIcon] - 分離された 2 レイヤー、またはレガシー 1 レイヤー
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     private fun getAppIcon(icon: Drawable): AppIcon {
-        return if (icon is AdaptiveIconDrawable) {
+        val adaptive = icon as? AdaptiveIconDrawable
+        val foregroundIcon: Drawable? = adaptive?.foreground
+        val backgroundIcon: Drawable? = adaptive?.background
+
+        return if (foregroundIcon != null) {
             AppIcon(
-                foregroundIcon = icon.foreground,
-                backgroundIcon = icon.background,
+                foregroundIcon = foregroundIcon,
+                backgroundIcon = backgroundIcon,
             )
         } else {
             AppIcon(
