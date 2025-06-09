@@ -10,55 +10,49 @@ on:
   release:
     types: [published]
   workflow_run:
-    types:
-      - completed
+    workflows: ["CI"]          # ← 失敗を監視したいワークフロー名
+    types: [completed]
 
 jobs:
   notify-discord:
     runs-on: ubuntu-latest
-    if: ${{ always() }} # workflow_runの失敗でも通知したいので
+    if: ${{ always() }}
+
     steps:
       - name: Send message to Discord
+        env:
+          WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
+        shell: bash
         run: |
-          # PR作成
-          if [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "opened" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"🔔 **Pull Request 作成**\n${{ github.actor }}より、PR「${{ github.event.pull_request.title }}」が作成されました。\n${{ github.event.pull_request.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
+          set -euo pipefail
+          send() { curl --fail -s -H "Content-Type: application/json" -d "{\"content\":\"$1\"}" "$WEBHOOK"; }
 
-          # PRマージ
-          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "closed" && "${{ github.event.pull_request.merged }}" == "true" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"✅ **Pull Request マージ**\n${{ github.actor }}より、PR「${{ github.event.pull_request.title }}」がマージされました。\n${{ github.event.pull_request.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          # PRレビューリクエスト
-          elif [[ "${{ github.event_name }}" == "pull_request" && "${{ github.event.action }}" == "review_requested" ]]; then
-            reviewer="${{ github.event.requested_reviewer.login }}"
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"👀 **レビューリクエスト**\n${{ github.actor }}より、${reviewer}にレビューリクエストが行われました。\nPR: ${{ github.event.pull_request.html_url }}\"}" \
-               ${{ secrets.DISCORD_WEBHOOK_URL }}
-  
-          # Issue作成
-          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "opened" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"📌 **Issue 作成**\n${{ github.actor }}より、Issue「${{ github.event.issue.title }}」が作成されました。\n${{ github.event.issue.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          # Issueクローズ
-          elif [[ "${{ github.event_name }}" == "issues" && "${{ github.event.action }}" == "closed" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"✅ **Issue クローズ**\n${{ github.actor }}より、Issue「${{ github.event.issue.title }}」がクローズされました。\n${{ github.event.issue.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          # Issueコメント
-          elif [[ "${{ github.event_name }}" == "issue_comment" && "${{ github.event.action }}" == "created" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"💬 **Issue コメント**\n${{ github.actor }}より、Issueにコメントが追加されました。\nコメント: ${{ github.event.comment.body }}\n${{ github.event.issue.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
-
-          # CI/CD失敗
-          elif [[ "${{ github.event_name }}" == "workflow_run" && "${{ github.event.workflow_run.conclusion }}" == "failure" ]]; then
-            curl -H "Content-Type: application/json" \
-              -d "{\"content\": \"❌ **CI/CD 失敗**\nWorkflow「${{ github.event.workflow_run.name }}」が失敗しました。\n詳細: ${{ github.event.workflow_run.html_url }}\"}" \
-              ${{ secrets.DISCORD_WEBHOOK_URL }}
+          case "${{ github.event_name }}:${{ github.event.action }}" in
+            pull_request:opened)
+              send "🔔 **Pull Request 作成**\n${{ github.actor }}より、PR「${{ github.event.pull_request.title }}」が作成されました。\n${{ github.event.pull_request.html_url }}"
+              ;;
+            pull_request:closed)
+              if [[ "${{ github.event.pull_request.merged }}" == "true" ]]; then
+                send "✅ **Pull Request マージ**\n${{ github.actor }}より、PR「${{ github.event.pull_request.title }}」がマージされました。\n${{ github.event.pull_request.html_url }}"
+              fi
+              ;;
+            pull_request:review_requested)
+              reviewer="${{ github.event.requested_reviewer.login || github.event.requested_team.name }}"
+              send "👀 **レビューリクエスト**\n${{ github.actor }}より、${reviewer} にレビュー依頼が来ました。\n${{ github.event.pull_request.html_url }}"
+              ;;
+            issues:opened)
+              send "📌 **Issue 作成**\n${{ github.actor }}より、Issue「${{ github.event.issue.title }}」が作成されました。\n${{ github.event.issue.html_url }}"
+              ;;
+            issues:closed)
+              send "✅ **Issue クローズ**\n${{ github.actor }}より、Issue「${{ github.event.issue.title }}」がクローズされました。\n${{ github.event.issue.html_url }}"
+              ;;
+            issue_comment:created)
+              body=$(printf %q "${{ github.event.comment.body }}")   # エスケープ
+              send "💬 **Issue コメント**\n${{ github.actor }}よりコメントが追加されました。\n${body}\n${{ github.event.issue.html_url }}"
+              ;;
+            workflow_run:completed)
+              if [[ "${{ github.event.workflow_run.conclusion }}" == "failure" ]]; then
+                send "❌ **CI/CD 失敗**\nWorkflow「${{ github.event.workflow_run.name }}」が失敗しました。\n${{ github.event.workflow_run.html_url }}"
+              fi
+              ;;
+          esac
