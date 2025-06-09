@@ -1,3 +1,5 @@
+@file:Suppress("ModifierComposed")
+
 package io.github.kei_1111.withmo.core.ui.modifier
 
 import androidx.compose.foundation.ExperimentalFoundationApi

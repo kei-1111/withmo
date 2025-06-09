@@ -35,7 +35,7 @@ fun FavoriteAppSelectorItem(
     ) {
         AppItem(
             appInfo = appInfo,
-            modifier = GetFavoriteAppSelectorItemModifier(
+            modifier = getFavoriteAppSelectorItemModifier(
                 isSelected = isSelected,
                 addSelectedAppList = addSelectedAppList,
                 removeSelectedAppList = removeSelectedAppList,
@@ -50,7 +50,7 @@ fun FavoriteAppSelectorItem(
 private val BorderWidth = 1.dp
 
 @Composable
-fun GetFavoriteAppSelectorItemModifier(
+fun getFavoriteAppSelectorItemModifier(
     isSelected: Boolean,
     addSelectedAppList: () -> Unit,
     removeSelectedAppList: () -> Unit,
