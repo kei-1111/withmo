@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.root.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,6 +36,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.setting.root.SettingsAction
 import io.github.kei_1111.withmo.feature.setting.root.SettingsState
 
@@ -281,7 +281,7 @@ private fun SettingItem(
     Row(
         modifier = modifier
             .height(CommonDimensions.SettingItemHeight)
-            .clickable { onClick() }
+            .safeClickable { onClick() }
             .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {

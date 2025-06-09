@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
@@ -10,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 // RadioButtonを用いて設定項目を作りたいときに使う
 // 設定項目はTextだけではないため、itemを@Composableで受け取るようにした
@@ -22,9 +23,11 @@ fun WithmoSettingItemWithRadioButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
 ) {
+    val clickBlocker = LocalClickBlocker.current
+
     Row(
         modifier = modifier
-            .clickable { onClick() }
+            .safeClickable { onClick() }
             .padding(horizontal = Paddings.Medium),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -32,7 +35,7 @@ fun WithmoSettingItemWithRadioButton(
         Spacer(modifier = Modifier.weight(Weights.Medium))
         RadioButton(
             selected = selected,
-            onClick = onClick,
+            onClick = { if (clickBlocker.tryClick()) onClick() },
             enabled = enabled,
         )
     }

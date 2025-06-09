@@ -5,7 +5,6 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -45,6 +44,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Ic
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
@@ -128,7 +128,7 @@ private fun WidgetContainer(
                 modifier = Modifier
                     .height(CommonDimensions.SettingItemHeight)
                     .fillMaxWidth()
-                    .clickable { expanded = !expanded }
+                    .safeClickable { expanded = !expanded }
                     .padding(horizontal = Paddings.Medium),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -194,7 +194,7 @@ private fun WidgetItem(
 
     Column(
         modifier = modifier
-            .clickable { selectWidget(widgetInfo) },
+            .safeClickable { selectWidget(widgetInfo) },
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (previewDrawable != null) {

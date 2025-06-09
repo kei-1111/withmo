@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -21,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private val TopAppBarHeight = 64.dp
 
@@ -51,7 +51,7 @@ fun WithmoTopAppBar(
                     imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.clickable { navigateBack() },
+                    modifier = Modifier.safeClickable { navigateBack() },
                 )
             }
             navigateClose?.let {
@@ -59,7 +59,7 @@ fun WithmoTopAppBar(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "Close",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.clickable { navigateClose() },
+                    modifier = Modifier.safeClickable { navigateClose() },
                 )
             }
             Box(
