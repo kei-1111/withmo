@@ -33,6 +33,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider
+import io.github.kei_1111.withmo.core.ui.ClickBlockerProvider
 import io.github.kei_1111.withmo.core.ui.CurrentTimeProvider
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.core.util.AppUtils
@@ -162,13 +163,15 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    WithmoTheme(
-                        themeType = themeSettings.themeType,
-                    ) {
-                        viewModel.startScreen?.let {
-                            App(
-                                startScreen = it,
-                            )
+                    ClickBlockerProvider {
+                        WithmoTheme(
+                            themeType = themeSettings.themeType,
+                        ) {
+                            viewModel.startScreen?.let {
+                                App(
+                                    startScreen = it,
+                                )
+                            }
                         }
                     }
                 }

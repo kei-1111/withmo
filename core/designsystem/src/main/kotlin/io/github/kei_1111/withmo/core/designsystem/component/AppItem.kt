@@ -1,10 +1,8 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.graphics.drawable.Drawable
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,6 +27,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private const val AppItemLabelMaxLines = 1
 
@@ -85,7 +84,6 @@ fun AppItem(
 private const val AdaptiveIconScale = 1.5f
 
 @Suppress("LongMethod")
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun AppIcon(
     appIcon: AppIcon,
@@ -107,7 +105,7 @@ private fun AppIcon(
                         color = MaterialTheme.colorScheme.surface,
                         shape = appIconShape,
                     )
-                    .combinedClickable(
+                    .safeClickable(
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),
@@ -138,7 +136,7 @@ private fun AppIcon(
                         color = Color.White,
                         shape = CircleShape,
                     )
-                    .combinedClickable(
+                    .safeClickable(
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),

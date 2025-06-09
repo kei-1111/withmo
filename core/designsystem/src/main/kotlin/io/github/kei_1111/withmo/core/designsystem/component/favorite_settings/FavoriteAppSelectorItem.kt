@@ -2,7 +2,6 @@ package io.github.kei_1111.withmo.core.designsystem.component.favorite_settings
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
 fun FavoriteAppSelectorItem(
@@ -59,7 +59,7 @@ fun getFavoriteAppSelectorItemModifier(
     return if (isSelected) {
         Modifier
             .clip(MaterialTheme.shapes.medium)
-            .clickable { removeSelectedAppList() }
+            .safeClickable { removeSelectedAppList() }
             .border(
                 BorderWidth,
                 MaterialTheme.colorScheme.primary,
@@ -70,7 +70,7 @@ fun getFavoriteAppSelectorItemModifier(
     } else {
         Modifier
             .clip(MaterialTheme.shapes.medium)
-            .clickable { addSelectedAppList() }
+            .safeClickable { addSelectedAppList() }
             .padding(Paddings.ExtraSmall)
     }
 }

@@ -17,6 +17,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 implementation(project(":core:domain"))
                 implementation(project(":core:featurebase"))
                 implementation(project(":core:model"))
+                implementation(project(":core:ui"))
                 implementation(project(":core:util"))
 
                 implementation(libs.findLibrary("androidx.activity.compose").get())

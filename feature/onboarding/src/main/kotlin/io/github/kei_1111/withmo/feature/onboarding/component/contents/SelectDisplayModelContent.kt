@@ -5,7 +5,6 @@ import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -42,6 +41,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
@@ -110,7 +110,7 @@ private fun SelectDisplayModelArea(
                 shape = MaterialTheme.shapes.medium,
                 width = OnboardingScreenDimensions.BorderWidth,
             )
-            .clickable { onClick() }
+            .safeClickable { onClick() }
     } else {
         modifier
             .size(OnboardingScreenDimensions.SelectDisplayModelAreaSize)
@@ -120,7 +120,7 @@ private fun SelectDisplayModelArea(
                 strokeWidth = OnboardingScreenDimensions.BorderWidth,
                 gapLength = OnboardingScreenDimensions.SelectDisplayModelAreaGapLength,
             )
-            .clickable { onClick() }
+            .safeClickable { onClick() }
     }
 
     Surface(
