@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.home.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -20,22 +23,30 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import kotlinx.collections.immutable.ImmutableList
@@ -192,6 +203,38 @@ private fun CustomAppInfoGridLayout(
                     }
                 }
             }
+        }
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppListPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            val context = LocalContext.current
+            val appIcon = remember {
+                AppIcon(
+                    foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                    backgroundIcon = null,
+                )
+            }
+
+            AppList(
+                appList = List(40) {
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    )
+                }.toPersistentList(),
+                appIconShape = CircleShape,
+                isNavigateSettingsButtonShown = false,
+                onAction = {},
+            )
         }
     }
 }

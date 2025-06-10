@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -153,4 +154,14 @@ private fun PageIndicator(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun PageIndicatorPreview() {
+    PageIndicator(
+        pageCount = 3,
+        currentPage = 1,
+        modifier = Modifier.fillMaxWidth(),
+    )
 }

@@ -4,6 +4,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 
@@ -40,5 +41,14 @@ internal fun ModelChangeWarningDialog(
         text = {
             BodyMediumText("表示モデルは、VRMファイルのみ対応しております。表示したいモデルのVRMファイルを選択してください。")
         },
+    )
+}
+
+@Composable
+@Preview
+private fun ModelChangeWarningDialogPreview() {
+    ModelChangeWarningDialog(
+        onConfirm = { },
+        onDismiss = { },
     )
 }

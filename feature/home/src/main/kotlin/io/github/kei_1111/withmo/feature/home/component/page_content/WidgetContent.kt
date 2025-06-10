@@ -1,11 +1,14 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,13 +26,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -136,6 +143,57 @@ private fun CompleteEditButton(
         BodyMediumText(
             text = "編集完了",
             color = MaterialTheme.colorScheme.primary,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun WidgetContentPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            WidgetContent(
+                state = HomeState(
+                    isEditMode = true,
+                ),
+                onAction = {},
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun EditWidgetContentPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            EditWidgetContent(
+                onEvent = {},
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun AddWidgetButtonPreview() {
+    PreviewEnvironment {
+        AddWidgetButton(
+            onClick = {},
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun CompleteEditButtonPreview() {
+    PreviewEnvironment {
+        CompleteEditButton(
+            onClick = {},
         )
     }
 }

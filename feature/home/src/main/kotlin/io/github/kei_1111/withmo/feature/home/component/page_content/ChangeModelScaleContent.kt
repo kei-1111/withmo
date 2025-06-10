@@ -1,8 +1,11 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -19,9 +22,12 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 
@@ -94,6 +100,21 @@ private fun ScaleSlider(
                 modifier = Modifier
                     .size(IconSizes.Small),
                 tint = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ChangeModelScaleContentPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            ChangeModelScaleContent(
+                state = HomeState(),
+                onAction = {},
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }

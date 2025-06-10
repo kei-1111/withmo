@@ -1,5 +1,9 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,12 +23,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -185,5 +193,72 @@ private fun SideButtonContainer(
             text = label,
             color = MaterialTheme.colorScheme.onSurface,
         )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun DisplayModelContentPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            DisplayModelContent(
+                state = HomeState(),
+                onAction = {},
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun NavigationSettingsButtonPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            NavigateSettingsButton(
+                onClick = {},
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SetDefaultModelButtonPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            SetDefaultModelButton(
+                onClick = {},
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun OpenDocumentButtonPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            OpenDocumentButton(
+                onClick = {},
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ShowScaleSliderButtonPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            ShowScaleSliderButton(
+                onClick = {},
+            )
+        }
     }
 }

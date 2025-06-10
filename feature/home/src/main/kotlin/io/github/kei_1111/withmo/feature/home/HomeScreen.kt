@@ -22,9 +22,13 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.home.component.AppListSheet
@@ -188,5 +192,21 @@ private fun HomeScreen(
         ModelLoading(
             modifier = Modifier.fillMaxSize(),
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+@Preview
+private fun HomeScreenPreview() {
+    PreviewEnvironment {
+        WithmoTheme(themeType = ThemeType.LIGHT) {
+            HomeScreen(
+                state = HomeState(),
+                onAction = {},
+                appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+                widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            )
+        }
     }
 }

@@ -8,9 +8,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppListRow
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
