@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -17,12 +19,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.R
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.primaryContainerLight
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
@@ -82,10 +85,11 @@ fun getFavoriteAppSelectorItemModifier(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun FavoriteAppSelectorItemPreview() {
-    PreviewEnvironment {
+@Composable
+private fun FavoriteAppSelectorItemLightPreview() {
+    DesignSystemLightPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -104,7 +108,39 @@ private fun FavoriteAppSelectorItemPreview() {
             addSelectedAppList = { },
             removeSelectedAppList = { },
             onClick = { },
-            backgroundColor = primaryContainerLight,
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                alpha = Alphas.Disabled,
+            ),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun FavoriteAppSelectorItemDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        FavoriteAppSelectorItem(
+            appInfo = AppInfo(
+                appIcon = appIcon,
+                label = "withmo",
+                packageName = "com.example.app",
+            ),
+            isSelected = true,
+            addSelectedAppList = { },
+            removeSelectedAppList = { },
+            onClick = { },
+            backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                alpha = Alphas.Disabled,
+            ),
         )
     }
 }

@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -12,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -50,13 +54,30 @@ fun WithmoSettingItemWithSwitch(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoSettingItemWithSwitchPreview() {
-    WithmoSettingItemWithSwitch(
-        title = "設定項目",
-        checked = true,
-        onCheckedChange = {},
-        modifier = Modifier.padding(Paddings.Medium),
-    )
+@Composable
+private fun WithmoSettingItemWithSwitchLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoSettingItemWithSwitch(
+            title = "設定項目",
+            checked = false,
+            onCheckedChange = {},
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoSettingItemWithSwitchDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoSettingItemWithSwitch(
+            title = "設定項目",
+            checked = true,
+            onCheckedChange = {},
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
 }

@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -30,6 +32,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -131,25 +135,60 @@ fun WithmoSearchTextField(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoTextFieldPreview() {
-    WithmoTextField(
-        value = "",
-        onValueChange = {},
-        placeholder = "Search",
-        modifier = Modifier.height(TextFieldHeight),
-        singleLine = true,
-        keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),
-    )
+@Composable
+private fun WithmoTextFieldLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = "Search",
+            modifier = Modifier.height(TextFieldHeight),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),
+        )
+    }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoSearchTextFieldPreview() {
-    WithmoSearchTextField(
-        value = "",
-        onValueChange = {},
-    )
+@Composable
+private fun WithmoTextFieldDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoTextField(
+            value = "",
+            onValueChange = {},
+            placeholder = "Search",
+            modifier = Modifier.height(TextFieldHeight),
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
+            keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoSearchTextFieldLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoSearchTextField(
+            value = "",
+            onValueChange = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoSearchTextFieldDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoSearchTextField(
+            value = "",
+            onValueChange = {},
+        )
+    }
 }

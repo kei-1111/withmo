@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -15,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
@@ -167,34 +171,78 @@ private fun ClockHorizontalDate(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoClockTopDatePreview() {
-    WithmoClock(
-        clockType = ClockType.TOP_DATE,
-        dateTimeInfo = DateTimeInfo(
-            year = "2002",
-            month = "11",
-            day = "11",
-            dayOfWeek = "月",
-            hour = "12",
-            minute = "34",
-        ),
-    )
+@Composable
+private fun WithmoClockTopDateLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoClock(
+            clockType = ClockType.TOP_DATE,
+            dateTimeInfo = DateTimeInfo(
+                year = "2002",
+                month = "11",
+                day = "11",
+                dayOfWeek = "月",
+                hour = "12",
+                minute = "34",
+            ),
+        )
+    }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoClockHorizontalDatePreview() {
-    WithmoClock(
-        clockType = ClockType.HORIZONTAL_DATE,
-        dateTimeInfo = DateTimeInfo(
-            year = "2002",
-            month = "11",
-            day = "11",
-            dayOfWeek = "月",
-            hour = "12",
-            minute = "34",
-        ),
-    )
+@Composable
+private fun WithmoClockTopDateDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoClock(
+            clockType = ClockType.TOP_DATE,
+            dateTimeInfo = DateTimeInfo(
+                year = "2002",
+                month = "11",
+                day = "11",
+                dayOfWeek = "月",
+                hour = "12",
+                minute = "34",
+            ),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoClockHorizontalDateLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoClock(
+            clockType = ClockType.HORIZONTAL_DATE,
+            dateTimeInfo = DateTimeInfo(
+                year = "2002",
+                month = "11",
+                day = "11",
+                dayOfWeek = "月",
+                hour = "12",
+                minute = "34",
+            ),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoClockHorizontalDateDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoClock(
+            clockType = ClockType.HORIZONTAL_DATE,
+            dateTimeInfo = DateTimeInfo(
+                year = "2002",
+                month = "11",
+                day = "11",
+                dayOfWeek = "月",
+                hour = "12",
+                minute = "34",
+            ),
+        )
+    }
 }

@@ -1,7 +1,9 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.appwidget.AppWidgetManager
+import android.os.Build
 import android.os.Bundle
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -38,6 +40,8 @@ import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import androidx.compose.ui.viewinterop.AndroidView
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
@@ -330,18 +334,46 @@ fun calculateWidgetPosition(
     return Offset(x, y)
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun DeleteWidgetBadgePreview() {
-    DeleteWidgetBadge(
-        onClick = {},
-    )
+@Composable
+private fun DeleteWidgetBadgeLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        DeleteWidgetBadge(
+            onClick = {},
+        )
+    }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun ResizeWidgetBadgePreview() {
-    ResizeWidgetBadge(
-        onClick = {},
-    )
+@Composable
+private fun DeleteWidgetBadgeDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        DeleteWidgetBadge(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ResizeWidgetBadgeLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        ResizeWidgetBadge(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ResizeWidgetBadgeDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        ResizeWidgetBadge(
+            onClick = {},
+        )
+    }
 }

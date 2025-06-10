@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.graphics.drawable.Drawable
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
@@ -32,7 +36,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private const val AppItemLabelMaxLines = 1
@@ -169,10 +172,11 @@ private fun Badge(
     )
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun AppItemPreview() {
-    PreviewEnvironment {
+@Composable
+private fun AppItemLightPreview() {
+    DesignSystemLightPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -192,10 +196,35 @@ private fun AppItemPreview() {
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun AppIconPreview() {
-    PreviewEnvironment {
+@Composable
+private fun AppItemDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        AppItem(
+            appInfo = AppInfo(
+                appIcon = appIcon,
+                label = "withmo",
+                packageName = "io.github.kei_1111.withmo",
+                notification = true,
+            ),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun AppIconLightPreview() {
+    DesignSystemLightPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -212,8 +241,41 @@ private fun AppIconPreview() {
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun BadgePreview() {
-    Badge()
+@Composable
+private fun AppIconDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        AppIcon(
+            appIcon = appIcon,
+            onClick = { },
+            onLongClick = { },
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun BadgeLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        Badge()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun BadgeDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        Badge()
+    }
 }

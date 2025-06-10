@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,13 +17,14 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -72,11 +75,47 @@ fun FavoriteAppSelector(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("MagicNumber")
-@Composable
 @Preview
-private fun FavoriteAppSelectorPreview() {
-    PreviewEnvironment {
+@Composable
+private fun FavoriteAppSelectorLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        FavoriteAppSelector(
+            appList = List(40) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "withmo $it",
+                    packageName = "com.example.app$it",
+                )
+            }.toPersistentList(),
+            favoriteAppList = List(2) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "withmo $it",
+                    packageName = "com.example.app$it",
+                )
+            }.toPersistentList(),
+            addSelectedAppList = { },
+            removeSelectedAppList = { },
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Suppress("MagicNumber")
+@Preview
+@Composable
+private fun FavoriteAppSelectorDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
