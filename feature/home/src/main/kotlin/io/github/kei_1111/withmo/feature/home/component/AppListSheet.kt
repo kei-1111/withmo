@@ -39,15 +39,14 @@ import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
-import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -209,32 +208,60 @@ private fun CustomAppInfoGridLayout(
 
 @Suppress("MagicNumber")
 @RequiresApi(Build.VERSION_CODES.O)
-@Composable
 @Preview
-private fun AppListPreview() {
-    PreviewEnvironment {
-        WithmoTheme(themeType = ThemeType.LIGHT) {
-            val context = LocalContext.current
-            val appIcon = remember {
-                AppIcon(
-                    foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
-                    backgroundIcon = null,
-                )
-            }
-
-            AppList(
-                appList = List(40) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
-                    )
-                }.toPersistentList(),
-                appIconShape = CircleShape,
-                isNavigateSettingsButtonShown = false,
-                onAction = {},
+@Composable
+private fun AppListLightPreview() {
+    HomeLightPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
             )
         }
+
+        AppList(
+            appList = List(40) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = "io.github.kei_1111.withmo.app$it",
+                    notification = it % 2 == 0,
+                )
+            }.toPersistentList(),
+            appIconShape = CircleShape,
+            isNavigateSettingsButtonShown = false,
+            onAction = {},
+        )
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun AppListDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        AppList(
+            appList = List(40) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = "io.github.kei_1111.withmo.app$it",
+                    notification = it % 2 == 0,
+                )
+            }.toPersistentList(),
+            appIconShape = CircleShape,
+            isNavigateSettingsButtonShown = false,
+            onAction = {},
+        )
     }
 }

@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.home.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,6 +20,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 
 @Composable
@@ -56,8 +60,20 @@ internal fun ModelLoading(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun ModelLoadingPreview() {
-    ModelLoading()
+@Composable
+private fun ModelLoadingLightPreview() {
+    HomeLightPreviewEnvironment {
+        ModelLoading()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ModelLoadingDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        ModelLoading()
+    }
 }

@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -30,6 +32,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.PageContent
@@ -156,12 +160,28 @@ private fun PageIndicator(
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun PageIndicatorPreview() {
-    PageIndicator(
-        pageCount = 3,
-        currentPage = 1,
-        modifier = Modifier.fillMaxWidth(),
-    )
+@Composable
+private fun PageIndicatorLightPreview() {
+    HomeLightPreviewEnvironment {
+        PageIndicator(
+            pageCount = 3,
+            currentPage = 1,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun PageIndicatorDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        PageIndicator(
+            pageCount = 3,
+            currentPage = 1,
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

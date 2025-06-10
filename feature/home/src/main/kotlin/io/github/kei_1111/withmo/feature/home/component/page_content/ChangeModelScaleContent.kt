@@ -23,12 +23,11 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
-import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeState
 
 @Composable
@@ -106,25 +105,51 @@ private fun ScaleSlider(
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-@Composable
 @Preview
-private fun ChangeModelScaleContentPreview() {
-    PreviewEnvironment {
-        WithmoTheme(themeType = ThemeType.LIGHT) {
-            ChangeModelScaleContent(
-                state = HomeState(),
-                onAction = {},
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+@Composable
+private fun ChangeModelScaleContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        ChangeModelScaleContent(
+            state = HomeState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun ScaleSliderPreview() {
-    ScaleSlider(
-        state = HomeState(),
-        onAction = {},
-    )
+@Composable
+private fun ChangeModelScaleContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        ChangeModelScaleContent(
+            state = HomeState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ScaleSliderLightPreview() {
+    HomeLightPreviewEnvironment {
+        ScaleSlider(
+            state = HomeState(),
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ScaleSliderDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        ScaleSlider(
+            state = HomeState(),
+            onAction = {},
+        )
+    }
 }
