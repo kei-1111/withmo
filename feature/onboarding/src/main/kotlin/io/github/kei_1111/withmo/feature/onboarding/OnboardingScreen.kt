@@ -25,6 +25,8 @@ import io.github.kei_1111.withmo.feature.onboarding.component.contents.FinishCon
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectDisplayModelContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectFavoriteAppContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.WelcomeContent
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "LongMethod")

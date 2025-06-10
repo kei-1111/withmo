@@ -18,9 +18,9 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWi
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Composable
 internal fun ClockTypePicker(

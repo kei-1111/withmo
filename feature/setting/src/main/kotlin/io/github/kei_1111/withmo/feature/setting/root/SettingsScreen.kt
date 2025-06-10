@@ -37,8 +37,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.R
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenContent
 
 @RequiresApi(Build.VERSION_CODES.R)

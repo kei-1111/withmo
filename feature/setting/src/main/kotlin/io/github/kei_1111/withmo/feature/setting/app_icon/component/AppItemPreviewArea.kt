@@ -32,9 +32,9 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 private const val AppItemLabelMaxLines = 1
 private const val PreviewAppItemSize = 4

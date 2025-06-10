@@ -31,8 +31,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.theme.component.ThemeSettingsScreenContent
 
 @Suppress("ModifierMissing")

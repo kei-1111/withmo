@@ -16,10 +16,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWi
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsState
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Composable
 internal fun AppIconSettingsScreenContent(

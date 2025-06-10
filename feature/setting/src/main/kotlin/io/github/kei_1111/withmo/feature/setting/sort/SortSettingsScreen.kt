@@ -31,8 +31,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
 
 @Suppress("ModifierMissing")

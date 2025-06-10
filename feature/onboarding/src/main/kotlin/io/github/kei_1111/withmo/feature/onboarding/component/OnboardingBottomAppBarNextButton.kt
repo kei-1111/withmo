@@ -11,8 +11,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 
 @Composable
 internal fun OnboardingBottomAppBarNextButton(

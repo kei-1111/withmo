@@ -1,15 +1,15 @@
-package io.github.kei_1111.withmo.core.designsystem
+package io.github.kei_1111.withmo.feature.onboarding.preview
 
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
+import io.github.kei_1111.withmo.core.ui.preview.PreviewEnvironment
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DesignSystemLightPreviewEnvironment(
+fun OnboardingLightPreviewEnvironment(
     content: @Composable () -> Unit,
 ) {
     PreviewEnvironment {
@@ -21,7 +21,7 @@ fun DesignSystemLightPreviewEnvironment(
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun DesignSystemDarkPreviewEnvironment(
+fun OnboardingDarkPreviewEnvironment(
     content: @Composable () -> Unit,
 ) {
     PreviewEnvironment {

@@ -44,12 +44,12 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.R)
