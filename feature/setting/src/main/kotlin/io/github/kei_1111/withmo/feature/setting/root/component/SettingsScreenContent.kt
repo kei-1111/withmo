@@ -1,3 +1,5 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kei_1111.withmo.feature.setting.root.component
 
 import android.os.Build
