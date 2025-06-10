@@ -1,9 +1,12 @@
 package io.github.kei_1111.withmo.feature.setting.root.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
@@ -37,6 +41,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Ic
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.root.SettingsAction
 import io.github.kei_1111.withmo.feature.setting.root.SettingsState
 
@@ -303,6 +309,174 @@ private fun SettingItem(
             imageVector = Icons.Rounded.KeyboardArrowRight,
             contentDescription = "Next",
             tint = itemColor,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SettingsScreenContentLightPreview() {
+    SettingLightPreviewEnvironment {
+        SettingsScreenContent(
+            state = SettingsState(
+                isDefaultHomeApp = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SettingsScreenContentDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SettingsScreenContent(
+            state = SettingsState(
+                isDefaultHomeApp = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun HomeAppSettingsLightPreview() {
+    SettingLightPreviewEnvironment {
+        HomeAppSettings(
+            isDefaultHomeApp = true,
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun HomeAppSettingsDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        HomeAppSettings(
+            isDefaultHomeApp = false,
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun HomeScreenSettingsLightPreview() {
+    SettingLightPreviewEnvironment {
+        HomeScreenSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun HomeScreenSettingsDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        HomeScreenSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun NotificationSettingsLightPreview() {
+    SettingLightPreviewEnvironment {
+        NotificationSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun NotificationSettingsDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        NotificationSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun WallpaperSettingsLightPreview() {
+    SettingLightPreviewEnvironment {
+        WallpaperSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun WallpaperSettingsDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        WallpaperSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeSettingsLightPreview() {
+    SettingLightPreviewEnvironment {
+        ThemeSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeSettingsDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        ThemeSettings(
+            onAction = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SettingItemLightPreview() {
+    SettingLightPreviewEnvironment {
+        SettingItem(
+            icon = Icons.Rounded.AccessTime,
+            itemName = "時計",
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SettingItemDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SettingItem(
+            icon = Icons.Rounded.AccessTime,
+            itemName = "時計",
+            onClick = {},
         )
     }
 }

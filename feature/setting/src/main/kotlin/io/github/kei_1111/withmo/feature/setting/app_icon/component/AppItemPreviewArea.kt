@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -20,14 +22,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
 
 private const val AppItemLabelMaxLines = 1
@@ -100,5 +106,65 @@ private fun AppItemPreview(
                 maxLines = AppItemLabelMaxLines,
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppItemPreviewAreaLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppItemPreviewArea(
+            appIconSettings = AppIconSettings(
+                appIconShape = AppIconShape.Circle,
+                isAppNameShown = true,
+                isFavoriteAppBackgroundShown = true,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppItemPreviewAreaDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppItemPreviewArea(
+            appIconSettings = AppIconSettings(
+                appIconShape = AppIconShape.RoundedCorner,
+                isAppNameShown = false,
+                isFavoriteAppBackgroundShown = false,
+            ),
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppItemPreviewLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppItemPreview(
+            appIconSettings = AppIconSettings(
+                appIconShape = AppIconShape.Circle,
+                isAppNameShown = true,
+            ),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppItemPreviewDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppItemPreview(
+            appIconSettings = AppIconSettings(
+                appIconShape = AppIconShape.Square,
+                isAppNameShown = false,
+            ),
+        )
     }
 }

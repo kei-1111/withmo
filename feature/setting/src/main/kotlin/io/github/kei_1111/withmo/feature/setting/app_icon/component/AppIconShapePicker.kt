@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants.DefaultRoundedCornerPercent
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
@@ -24,6 +27,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Ic
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
 
 @Composable
@@ -122,5 +127,55 @@ private fun AppIconShapePickerItem(
             modifier = Modifier.padding(Paddings.ExtraSmall),
         )
         BodyMediumText(text = title)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconShapePickerLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppIconShapePicker(
+            selectedAppIconShape = AppIconShape.Circle,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconShapePickerDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppIconShapePicker(
+            selectedAppIconShape = AppIconShape.RoundedCorner,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconShapePickerItemLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppIconShapePickerItem(
+            title = "円形",
+            appIconShape = AppIconShape.Circle,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconShapePickerItemDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppIconShapePickerItem(
+            title = "角丸四角形",
+            appIconShape = AppIconShape.RoundedCorner,
+        )
     }
 }

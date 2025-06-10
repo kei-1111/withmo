@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -19,6 +21,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
@@ -26,7 +29,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.util.showToast
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppIconSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppItemPreviewArea
 
@@ -103,5 +109,37 @@ private fun AppIconSettingsScreen(
                     .padding(Paddings.Medium),
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconSettingsScreenLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppIconSettingsScreen(
+            state = AppIconSettingsState(
+                appIconSettings = AppIconSettings(),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconSettingsScreenDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppIconSettingsScreen(
+            state = AppIconSettingsState(
+                appIconSettings = AppIconSettings(),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

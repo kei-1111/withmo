@@ -1,16 +1,23 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsState
 
@@ -56,6 +63,38 @@ internal fun AppIconSettingsScreenContent(
             checked = state.appIconSettings.isFavoriteAppBackgroundShown,
             onCheckedChange = { onAction(AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconSettingsScreenContentLightPreview() {
+    SettingLightPreviewEnvironment {
+        AppIconSettingsScreenContent(
+            state = AppIconSettingsState(
+                appIconSettings = AppIconSettings(),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun AppIconSettingsScreenContentDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        AppIconSettingsScreenContent(
+            state = AppIconSettingsState(
+                appIconSettings = AppIconSettings(),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }

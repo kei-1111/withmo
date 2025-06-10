@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.setting.theme.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
@@ -20,6 +23,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsAction
 
 @Composable
@@ -117,5 +122,53 @@ private fun ThemeTypePickerItem(
                 BodyMediumText(text = "ダークモード")
             }
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeTypePickerLightPreview() {
+    SettingLightPreviewEnvironment {
+        ThemeTypePicker(
+            selectedThemeType = ThemeType.TIME_BASED,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeTypePickerDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        ThemeTypePicker(
+            selectedThemeType = ThemeType.LIGHT,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeTypePickerItemLightPreview() {
+    SettingLightPreviewEnvironment {
+        ThemeTypePickerItem(
+            themeType = ThemeType.TIME_BASED,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ThemeTypePickerItemDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        ThemeTypePickerItem(
+            themeType = ThemeType.DARK,
+        )
     }
 }
