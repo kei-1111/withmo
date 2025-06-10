@@ -17,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.util.showToast
@@ -111,5 +112,31 @@ private fun OnboardingScreen(
                 )
             }
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun OnboardingScreenLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        OnboardingScreen(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun OnboardingScreenDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        OnboardingScreen(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
