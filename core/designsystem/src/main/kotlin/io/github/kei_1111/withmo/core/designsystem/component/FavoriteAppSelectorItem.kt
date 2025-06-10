@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.designsystem.component.favorite_settings
+package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.primaryContainerLight
 import io.github.kei_1111.withmo.core.model.AppIcon

@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.designsystem.component.favorite_settings
+package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
