@@ -69,7 +69,7 @@ internal fun WidgetContent(
         }
         if (state.isEditMode) {
             EditWidgetContent(
-                onEvent = onAction,
+                onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
@@ -82,7 +82,7 @@ internal fun WidgetContent(
 
 @Composable
 private fun EditWidgetContent(
-    onEvent: (HomeAction) -> Unit,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -94,10 +94,10 @@ private fun EditWidgetContent(
             modifier = Modifier.weight(Weights.Medium),
         )
         AddWidgetButton(
-            onClick = { onEvent(HomeAction.OnAddWidgetButtonClick) },
+            onClick = { onAction(HomeAction.OnAddWidgetButtonClick) },
         )
         CompleteEditButton(
-            onClick = { onEvent(HomeAction.OnCompleteEditButtonClick) },
+            onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }
@@ -171,7 +171,7 @@ private fun EditWidgetContentPreview() {
     PreviewEnvironment {
         WithmoTheme(themeType = ThemeType.LIGHT) {
             EditWidgetContent(
-                onEvent = {},
+                onAction = {},
                 modifier = Modifier.fillMaxWidth(),
             )
         }
