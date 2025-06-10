@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.feature.setting.sort
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
@@ -25,7 +28,11 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.showToast
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
 
 @Suppress("ModifierMissing")
@@ -97,5 +104,41 @@ private fun SortSettingsScreen(
                     .padding(Paddings.Medium),
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortSettingsScreenLightPreview() {
+    SettingLightPreviewEnvironment {
+        SortSettingsScreen(
+            state = SortSettingsState(
+                sortSettings = SortSettings(
+                    sortType = SortType.ALPHABETICAL,
+                ),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortSettingsScreenDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SortSettingsScreen(
+            state = SortSettingsState(
+                sortSettings = SortSettings(
+                    sortType = SortType.USE_COUNT,
+                ),
+                isSaveButtonEnabled = false,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

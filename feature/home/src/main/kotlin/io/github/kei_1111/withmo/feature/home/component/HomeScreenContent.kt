@@ -13,22 +13,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.AppIcon
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
+import kotlinx.collections.immutable.toPersistentList
 
 private const val BottomSheetShowDragHeight = -50f
 
@@ -128,5 +138,123 @@ private fun RowAppList(
                 modifier = Modifier.weight(Weights.Medium),
             )
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun HomeScreenContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        HomeScreenContent(
+            state = HomeState(
+                favoriteAppList = List(3) {
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "withmo $it",
+                        packageName = "com.example.app$it",
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = { },
+        )
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun HomeScreenContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        HomeScreenContent(
+            state = HomeState(
+                favoriteAppList = List(3) {
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "withmo $it",
+                        packageName = "com.example.app$it",
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = { },
+        )
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun RowAppListLightPreview() {
+    HomeLightPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        RowAppList(
+            state = HomeState(
+                favoriteAppList = List(4) {
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "withmo $it",
+                        packageName = "com.example.app$it",
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun RowAppListDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        RowAppList(
+            state = HomeState(
+                favoriteAppList = List(4) {
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "withmo $it",
+                        packageName = "com.example.app$it",
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = { },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }

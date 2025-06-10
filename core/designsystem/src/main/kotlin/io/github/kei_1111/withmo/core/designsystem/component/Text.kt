@@ -1,5 +1,10 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,7 +17,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 
 @Composable
 fun DisplayMediumText(
@@ -212,4 +221,124 @@ fun LabelSmallText(
         minLines = minLines,
         onTextLayout = onTextLayout,
     )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun DisplayMediumTextLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        DisplayMediumText(
+            text = "Display Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun DisplayMediumTextDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        DisplayMediumText(
+            text = "Display Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun TitleLargeTextLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        TitleLargeText(
+            text = "Title Large Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun TitleLargeTextDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        TitleLargeText(
+            text = "Title Large Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun BodyMediumTextLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        BodyMediumText(
+            text = "Body Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun BodyMediumTextDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        BodyMediumText(
+            text = "Body Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun LabelMediumTextLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        LabelMediumText(
+            text = "Label Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun LabelMediumTextDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        LabelMediumText(
+            text = "Label Medium Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun LabelSmallTextLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        LabelSmallText(
+            text = "Label Small Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun LabelSmallTextDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        LabelSmallText(
+            text = "Label Small Text",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
 }

@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
 import androidx.annotation.IntRange
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
@@ -23,6 +25,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 
 private val SliderThumbSize = 20.dp
 private val SliderTrackHeight = 4.dp
@@ -119,24 +123,58 @@ fun WithmoVerticalSlider(
     )
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoSliderPreview() {
-    WithmoSlider(
-        value = 0.5f,
-        onValueChange = {},
-        valueRange = 0f..1f,
-        modifier = Modifier.size(200.dp, 50.dp),
-    )
+@Composable
+private fun WithmoSliderLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoSlider(
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.size(200.dp, 50.dp),
+        )
+    }
 }
 
-@Composable
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
-private fun WithmoVerticalSliderPreview() {
-    WithmoVerticalSlider(
-        value = 0.5f,
-        onValueChange = {},
-        valueRange = 0f..1f,
-        modifier = Modifier.size(50.dp, 200.dp),
-    )
+@Composable
+private fun WithmoSliderDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoSlider(
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.size(200.dp, 50.dp),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoVerticalSliderLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoVerticalSlider(
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.size(50.dp, 200.dp),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoVerticalSliderDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoVerticalSlider(
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.size(50.dp, 200.dp),
+        )
+    }
 }

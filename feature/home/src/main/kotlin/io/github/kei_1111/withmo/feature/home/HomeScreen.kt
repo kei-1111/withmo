@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -187,6 +188,36 @@ private fun HomeScreen(
     if (state.isModelLoading) {
         ModelLoading(
             modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun HomeScreenLightPreview() {
+    HomeLightPreviewEnvironment {
+        HomeScreen(
+            state = HomeState(),
+            onAction = {},
+            appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
+@Composable
+private fun HomeScreenDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        HomeScreen(
+            state = HomeState(),
+            onAction = {},
+            appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+            widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         )
     }
 }

@@ -1,11 +1,16 @@
 package io.github.kei_1111.withmo.feature.onboarding.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingLightPreviewEnvironment
 
 @Composable
 internal fun OnboardingBottomAppBarPreviousButton(
@@ -18,5 +23,29 @@ internal fun OnboardingBottomAppBarPreviousButton(
             .height(CommonDimensions.SettingItemHeight),
     ) {
         BodyMediumText(text = "戻る")
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun OnboardingBottomAppBarPreviousButtonLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        OnboardingBottomAppBarPreviousButton(
+            onClick = {},
+            modifier = Modifier.height(CommonDimensions.SettingItemHeight),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun OnboardingBottomAppBarPreviousButtonDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        OnboardingBottomAppBarPreviousButton(
+            onClick = {},
+            modifier = Modifier.height(CommonDimensions.SettingItemHeight),
+        )
     }
 }

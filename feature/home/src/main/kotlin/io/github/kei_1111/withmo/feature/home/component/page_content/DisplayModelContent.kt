@@ -1,5 +1,9 @@
+@file:Suppress("TooManyFunctions")
+
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
@@ -27,6 +32,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.R
 
@@ -184,6 +191,120 @@ private fun SideButtonContainer(
         LabelSmallText(
             text = label,
             color = MaterialTheme.colorScheme.onSurface,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun DisplayModelContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        DisplayModelContent(
+            state = HomeState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun DisplayModelContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        DisplayModelContent(
+            state = HomeState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun NavigateSettingsButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        NavigateSettingsButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun NavigateSettingsButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        NavigateSettingsButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun SetDefaultModelButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        SetDefaultModelButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun SetDefaultModelButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        SetDefaultModelButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun OpenDocumentButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        OpenDocumentButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun OpenDocumentButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        OpenDocumentButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ShowScaleSliderButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        ShowScaleSliderButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun ShowScaleSliderButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        ShowScaleSliderButton(
+            onClick = {},
         )
     }
 }

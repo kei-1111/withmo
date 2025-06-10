@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.designsystem.component.utils
+package io.github.kei_1111.withmo.core.designsystem.component.modifier
 
 import android.graphics.Paint
 import androidx.compose.foundation.shape.CircleShape

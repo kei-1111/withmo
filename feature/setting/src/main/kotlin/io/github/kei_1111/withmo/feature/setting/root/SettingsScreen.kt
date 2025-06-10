@@ -25,6 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -36,6 +37,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.R
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenContent
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -175,5 +178,59 @@ private fun LogoWithText(
                 ),
         )
         TitleLargeText(text = text)
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun SettingsScreenLightPreview() {
+    SettingLightPreviewEnvironment {
+        SettingsScreen(
+            state = SettingsState(
+                isDefaultHomeApp = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun SettingsScreenDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SettingsScreen(
+            state = SettingsState(
+                isDefaultHomeApp = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun LogoWithTextLightPreview() {
+    SettingLightPreviewEnvironment {
+        LogoWithText(
+            text = "の設定",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun LogoWithTextDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        LogoWithText(
+            text = "の設定",
+            modifier = Modifier.padding(Paddings.Medium),
+        )
     }
 }

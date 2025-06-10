@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.setting.sort.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,11 +15,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsAction
 
 @Composable
@@ -97,5 +102,53 @@ private fun SortTypePickerItem(
                 BodyMediumText(text = "使用回数順")
             }
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortTypePickerLightPreview() {
+    SettingLightPreviewEnvironment {
+        SortTypePicker(
+            selectedSortType = SortType.ALPHABETICAL,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortTypePickerDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SortTypePicker(
+            selectedSortType = SortType.USE_COUNT,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortTypePickerItemLightPreview() {
+    SettingLightPreviewEnvironment {
+        SortTypePickerItem(
+            sortType = SortType.ALPHABETICAL,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SortTypePickerItemDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SortTypePickerItem(
+            sortType = SortType.USE_COUNT,
+        )
     }
 }

@@ -1,5 +1,7 @@
-package io.github.kei_1111.withmo.core.designsystem.component.favorite_settings
+package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -8,11 +10,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppListRow(
@@ -47,5 +53,29 @@ fun FavoriteAppListRow(
                 modifier = Modifier.weight(Weights.Medium),
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun FavoriteAppListRowLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        FavoriteAppListRow(
+            favoriteAppList = emptyList<AppInfo>().toPersistentList(),
+            removeSelectedAppList = { },
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun FavoriteAppListRowDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        FavoriteAppListRow(
+            favoriteAppList = emptyList<AppInfo>().toPersistentList(),
+            removeSelectedAppList = { },
+        )
     }
 }

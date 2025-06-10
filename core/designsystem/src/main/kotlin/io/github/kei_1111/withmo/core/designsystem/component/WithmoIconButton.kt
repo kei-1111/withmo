@@ -1,13 +1,21 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Man
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
+import androidx.compose.ui.tooling.preview.Preview
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
@@ -29,5 +37,39 @@ fun WithmoIconButton(
         contentAlignment = Alignment.Center,
     ) {
         content()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoIconButtonLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoIconButton(
+            onClick = {},
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Man,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoIconButtonDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoIconButton(
+            onClick = {},
+        ) {
+            Icon(
+                imageVector = Icons.Rounded.Man,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface,
+            )
+        }
     }
 }

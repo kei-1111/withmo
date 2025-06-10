@@ -1,25 +1,29 @@
 package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
+import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppListRow
+import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
-import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppListRow
-import io.github.kei_1111.withmo.core.designsystem.component.favorite_settings.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
@@ -113,6 +117,58 @@ private fun SelectFavoriteAppContentBottomAppBar(
             },
             onClick = { onAction(OnboardingAction.OnNextButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectFavoriteAppContentLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        SelectFavoriteAppContent(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectFavoriteAppContentDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        SelectFavoriteAppContent(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        SelectFavoriteAppContentBottomAppBar(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        SelectFavoriteAppContentBottomAppBar(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

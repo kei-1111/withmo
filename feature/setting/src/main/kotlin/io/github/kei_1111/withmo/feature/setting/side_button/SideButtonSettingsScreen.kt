@@ -1,6 +1,8 @@
 package io.github.kei_1111.withmo.feature.setting.side_button
 
+import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -18,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
@@ -25,7 +28,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.core.util.showToast
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.side_button.component.SideButtonSettingsScreenContent
 
 @Suppress("ModifierMissing")
@@ -97,5 +103,47 @@ private fun SideButtonSettingsScreen(
                     .padding(Paddings.Medium),
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SideButtonSettingsScreenLightPreview() {
+    SettingLightPreviewEnvironment {
+        SideButtonSettingsScreen(
+            state = SideButtonSettingsState(
+                sideButtonSettings = SideButtonSettings(
+                    isShowScaleSliderButtonShown = true,
+                    isOpenDocumentButtonShown = true,
+                    isSetDefaultModelButtonShown = false,
+                    isNavigateSettingsButtonShown = true,
+                ),
+                isSaveButtonEnabled = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SideButtonSettingsScreenDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        SideButtonSettingsScreen(
+            state = SideButtonSettingsState(
+                sideButtonSettings = SideButtonSettings(
+                    isShowScaleSliderButtonShown = false,
+                    isOpenDocumentButtonShown = false,
+                    isSetDefaultModelButtonShown = true,
+                    isNavigateSettingsButtonShown = false,
+                ),
+                isSaveButtonEnabled = false,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.setting.clock.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -9,12 +11,15 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
+import io.github.kei_1111.withmo.feature.setting.SettingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
 
 @Composable
@@ -75,4 +80,32 @@ private fun ClockTypePickerDivider(
             .padding(start = Paddings.Medium)
             .fillMaxWidth(),
     )
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ClockTypePickerLightPreview() {
+    SettingLightPreviewEnvironment {
+        ClockTypePicker(
+            isClockShown = true,
+            selectedClockType = ClockType.TOP_DATE,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun ClockTypePickerDarkPreview() {
+    SettingDarkPreviewEnvironment {
+        ClockTypePicker(
+            isClockShown = false,
+            selectedClockType = ClockType.HORIZONTAL_DATE,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

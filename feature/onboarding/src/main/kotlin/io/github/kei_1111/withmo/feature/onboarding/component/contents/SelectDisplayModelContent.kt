@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawOutline
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
@@ -43,6 +44,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.onboarding.OnboardingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
@@ -256,4 +259,56 @@ private fun Modifier.dashedBorder(
         style = dashedStroke,
         brush = SolidColor(color),
     )
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun SelectDisplayModelContentLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        SelectDisplayModelContent(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+@Preview
+private fun SelectDisplayModelContentDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        SelectDisplayModelContent(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectDisplayModelContentBottomAppBarLightPreview() {
+    OnboardingLightPreviewEnvironment {
+        SelectDisplayModelContentBottomAppBar(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+@Preview
+private fun SelectDisplayModelContentBottomAppBarDarkPreview() {
+    OnboardingDarkPreviewEnvironment {
+        SelectDisplayModelContentBottomAppBar(
+            state = OnboardingState(),
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
 }

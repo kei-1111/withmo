@@ -1,12 +1,17 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.os.Build
 import androidx.annotation.IntRange
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemDarkPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 
 @Composable
@@ -39,5 +44,35 @@ fun WithmoSettingItemWithSlider(
                 steps = steps,
             )
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoSettingItemWithSliderLightPreview() {
+    DesignSystemLightPreviewEnvironment {
+        WithmoSettingItemWithSlider(
+            title = "設定項目",
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.padding(Paddings.Medium),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WithmoSettingItemWithSliderDarkPreview() {
+    DesignSystemDarkPreviewEnvironment {
+        WithmoSettingItemWithSlider(
+            title = "設定項目",
+            value = 0.5f,
+            onValueChange = {},
+            valueRange = 0f..1f,
+            modifier = Modifier.padding(Paddings.Medium),
+        )
     }
 }

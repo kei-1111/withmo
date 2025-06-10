@@ -1,11 +1,14 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -23,14 +26,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
 import io.github.kei_1111.withmo.feature.home.HomeAction
+import io.github.kei_1111.withmo.feature.home.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.HomeLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 
@@ -62,7 +68,7 @@ internal fun WidgetContent(
         }
         if (state.isEditMode) {
             EditWidgetContent(
-                onEvent = onAction,
+                onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
@@ -75,7 +81,7 @@ internal fun WidgetContent(
 
 @Composable
 private fun EditWidgetContent(
-    onEvent: (HomeAction) -> Unit,
+    onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -87,10 +93,10 @@ private fun EditWidgetContent(
             modifier = Modifier.weight(Weights.Medium),
         )
         AddWidgetButton(
-            onClick = { onEvent(HomeAction.OnAddWidgetButtonClick) },
+            onClick = { onAction(HomeAction.OnAddWidgetButtonClick) },
         )
         CompleteEditButton(
-            onClick = { onEvent(HomeAction.OnCompleteEditButtonClick) },
+            onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
             modifier = Modifier.weight(Weights.Medium),
         )
     }
@@ -136,6 +142,104 @@ private fun CompleteEditButton(
         BodyMediumText(
             text = "編集完了",
             color = MaterialTheme.colorScheme.primary,
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WidgetContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        WidgetContent(
+            state = HomeState(
+                isEditMode = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WidgetContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        WidgetContent(
+            state = HomeState(
+                isEditMode = true,
+            ),
+            onAction = {},
+            modifier = Modifier.fillMaxSize(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun EditWidgetContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        EditWidgetContent(
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun EditWidgetContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        EditWidgetContent(
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun AddWidgetButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        AddWidgetButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun AddWidgetButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        AddWidgetButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun CompleteEditButtonLightPreview() {
+    HomeLightPreviewEnvironment {
+        CompleteEditButton(
+            onClick = {},
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun CompleteEditButtonDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        CompleteEditButton(
+            onClick = {},
         )
     }
 }
