@@ -1,5 +1,3 @@
-@file:Suppress("TooManyFunctions")
-
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
 import android.os.Build
