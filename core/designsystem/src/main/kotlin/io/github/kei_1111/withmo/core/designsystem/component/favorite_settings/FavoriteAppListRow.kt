@@ -8,11 +8,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppListRow(
@@ -48,4 +50,13 @@ fun FavoriteAppListRow(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun FavoriteAppListRowPreview() {
+    FavoriteAppListRow(
+        favoriteAppList = emptyList<AppInfo>().toPersistentList(),
+        removeSelectedAppList = { },
+    )
 }

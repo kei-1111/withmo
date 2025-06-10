@@ -17,9 +17,11 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private val TopAppBarHeight = 64.dp
@@ -69,5 +71,18 @@ fun WithmoTopAppBar(
                 content()
             }
         }
+    }
+}
+
+@Composable
+@Preview
+private fun WithmoTopAppBarPreview() {
+    PreviewEnvironment {
+        WithmoTopAppBar(
+            navigateBack = {},
+            content = {
+                TitleLargeText("Withmo Top App Bar")
+            },
+        )
     }
 }

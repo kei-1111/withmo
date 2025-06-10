@@ -9,13 +9,21 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppSelector(
@@ -61,5 +69,39 @@ fun FavoriteAppSelector(
                 appIconShape = appIconShape,
             )
         }
+    }
+}
+
+@Suppress("MagicNumber")
+@Composable
+@Preview
+private fun FavoriteAppSelectorPreview() {
+    PreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        FavoriteAppSelector(
+            appList = List(40) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "withmo $it",
+                    packageName = "com.example.app$it",
+                )
+            }.toPersistentList(),
+            favoriteAppList = List(2) {
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "withmo $it",
+                    packageName = "com.example.app$it",
+                )
+            }.toPersistentList(),
+            addSelectedAppList = { },
+            removeSelectedAppList = { },
+        )
     }
 }

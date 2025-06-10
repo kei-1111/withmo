@@ -7,9 +7,11 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 // RadioButtonを用いて設定項目を作りたいときに使う
@@ -37,6 +39,20 @@ fun WithmoSettingItemWithRadioButton(
             selected = selected,
             onClick = { if (clickBlocker.tryClick()) onClick() },
             enabled = enabled,
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun WithmoSettingItemWithRadioButtonPreview() {
+    PreviewEnvironment {
+        WithmoSettingItemWithRadioButton(
+            item = {
+                BodyMediumText(text = "設定項目")
+            },
+            selected = true,
+            onClick = { },
         )
     }
 }

@@ -7,15 +7,23 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.AppItem
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.designsystem.component.theme.primaryContainerLight
+import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
@@ -72,5 +80,32 @@ fun getFavoriteAppSelectorItemModifier(
             .clip(MaterialTheme.shapes.medium)
             .safeClickable { addSelectedAppList() }
             .padding(Paddings.ExtraSmall)
+    }
+}
+
+@Composable
+@Preview
+private fun FavoriteAppSelectorItemPreview() {
+    PreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        FavoriteAppSelectorItem(
+            appInfo = AppInfo(
+                appIcon = appIcon,
+                label = "withmo",
+                packageName = "com.example.app",
+            ),
+            isSelected = false,
+            addSelectedAppList = { },
+            removeSelectedAppList = { },
+            onClick = { },
+            backgroundColor = primaryContainerLight,
+        )
     }
 }

@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -12,6 +13,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 
 @Composable
@@ -212,4 +214,16 @@ fun LabelSmallText(
         minLines = minLines,
         onTextLayout = onTextLayout,
     )
+}
+
+@Composable
+@Preview(widthDp = 500)
+private fun TextPreview() {
+    Column {
+        DisplayMediumText("Display Medium Text")
+        TitleLargeText("Title Large Text")
+        BodyMediumText("Body Medium Text")
+        LabelMediumText("Label Medium Text")
+        LabelSmallText("Label Small Text")
+    }
 }

@@ -11,6 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
@@ -49,4 +50,10 @@ fun EmptyAppItem(
             }
         }
     }
+}
+
+@Composable
+@Preview
+private fun EmptyAppItemPreview() {
+    EmptyAppItem()
 }

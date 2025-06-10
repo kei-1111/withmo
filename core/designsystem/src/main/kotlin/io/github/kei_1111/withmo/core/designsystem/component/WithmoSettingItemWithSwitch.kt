@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -47,4 +48,15 @@ fun WithmoSettingItemWithSwitch(
             )
         }
     }
+}
+
+@Composable
+@Preview
+private fun WithmoSettingItemWithSwitchPreview() {
+    WithmoSettingItemWithSwitch(
+        title = "設定項目",
+        checked = true,
+        onCheckedChange = {},
+        modifier = Modifier.padding(Paddings.Medium),
+    )
 }

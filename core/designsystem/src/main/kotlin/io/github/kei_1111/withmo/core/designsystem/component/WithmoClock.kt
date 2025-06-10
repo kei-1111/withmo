@@ -13,6 +13,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
@@ -164,4 +165,36 @@ private fun ClockHorizontalDate(
             }
         }
     }
+}
+
+@Composable
+@Preview
+private fun WithmoClockTopDatePreview() {
+    WithmoClock(
+        clockType = ClockType.TOP_DATE,
+        dateTimeInfo = DateTimeInfo(
+            year = "2002",
+            month = "11",
+            day = "11",
+            dayOfWeek = "月",
+            hour = "12",
+            minute = "34",
+        ),
+    )
+}
+
+@Composable
+@Preview
+private fun WithmoClockHorizontalDatePreview() {
+    WithmoClock(
+        clockType = ClockType.HORIZONTAL_DATE,
+        dateTimeInfo = DateTimeInfo(
+            year = "2002",
+            month = "11",
+            day = "11",
+            dayOfWeek = "月",
+            hour = "12",
+            minute = "34",
+        ),
+    )
 }

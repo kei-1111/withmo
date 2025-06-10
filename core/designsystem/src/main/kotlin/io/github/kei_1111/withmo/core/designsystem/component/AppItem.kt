@@ -11,22 +11,28 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private const val AppItemLabelMaxLines = 1
@@ -161,4 +167,53 @@ private fun Badge(
             .size(BadgeSizes.Medium)
             .background(MaterialTheme.colorScheme.primary, CircleShape),
     )
+}
+
+@Composable
+@Preview
+private fun AppItemPreview() {
+    PreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        AppItem(
+            appInfo = AppInfo(
+                appIcon = appIcon,
+                label = "withmo",
+                packageName = "io.github.kei_1111.withmo",
+                notification = true,
+            ),
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun AppIconPreview() {
+    PreviewEnvironment {
+        val context = LocalContext.current
+        val appIcon = remember {
+            AppIcon(
+                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
+                backgroundIcon = null,
+            )
+        }
+
+        AppIcon(
+            appIcon = appIcon,
+            onClick = { },
+            onLongClick = { },
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun BadgePreview() {
+    Badge()
 }

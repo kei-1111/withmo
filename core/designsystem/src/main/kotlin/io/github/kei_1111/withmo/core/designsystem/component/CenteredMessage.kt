@@ -1,9 +1,11 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun CenteredMessage(
@@ -18,4 +20,13 @@ fun CenteredMessage(
             text = message,
         )
     }
+}
+
+@Composable
+@Preview
+private fun CenteredMessagePreview() {
+    CenteredMessage(
+        message = "This is a centered message.",
+        modifier = Modifier.fillMaxSize(),
+    )
 }

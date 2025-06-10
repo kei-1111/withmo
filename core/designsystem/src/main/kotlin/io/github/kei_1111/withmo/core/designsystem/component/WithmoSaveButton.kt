@@ -5,6 +5,7 @@ import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 
@@ -29,4 +30,13 @@ fun WithmoSaveButton(
             },
         )
     }
+}
+
+@Composable
+@Preview
+private fun WithmoSaveButtonPreview() {
+    WithmoSaveButton(
+        onClick = {},
+        enabled = true,
+    )
 }
