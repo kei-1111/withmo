@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.ui.PreviewEnvironment
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 

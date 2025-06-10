@@ -29,7 +29,7 @@ import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.ui.PreviewEnvironment

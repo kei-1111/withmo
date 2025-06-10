@@ -21,7 +21,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.utils.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 
