@@ -19,8 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -29,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
@@ -107,21 +106,15 @@ private fun AddWidgetButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    IconButton(
+    WithmoIconButton(
         onClick = onClick,
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary,
-        ),
-        modifier = modifier
-            .size(CommonDimensions.SettingItemHeight)
-            .withmoShadow(
-                shape = CircleShape,
-            ),
+        modifier = modifier.size(CommonDimensions.SettingItemHeight),
+        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
     ) {
         Icon(
             imageVector = Icons.Rounded.Widgets,
             contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary,
         )
     }
 }
