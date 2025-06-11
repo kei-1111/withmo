@@ -22,6 +22,31 @@ import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSyste
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
+/**
+ * withmoアプリケーション用のカスタムダイアログコンポーネント
+ * 
+ * Material Design 3に準拠したダイアログで、ユーザーに重要な情報を表示し、
+ * アクションの確認を求める際に使用されます。
+ * 
+ * 特徴：
+ * - シンプルで分かりやすいレイアウト
+ * - アクセシビリティに配慮したデザイン
+ * - ライト・ダークテーマ対応
+ * - 適切なタッチターゲットサイズ
+ * 
+ * @param title ダイアログのタイトルテキスト。ユーザーに表示される見出し
+ * @param description ダイアログの説明文。ユーザーに表示される詳細情報や注意事項
+ * @param dismissButtonText キャンセル/却下ボタンに表示されるテキスト（例："キャンセル"）
+ * @param confirmButtonText 確認/実行ボタンに表示されるテキスト（例："確認"、"削除"など）
+ * @param onDismissRequest ダイアログの外側をタップした時やバックボタンを押した時に呼び出されるコールバック
+ * @param onDismissClick キャンセルボタンがクリックされた時に呼び出されるコールバック
+ * @param onConfirmClick 確認ボタンがクリックされた時に呼び出されるコールバック
+ * @param modifier このダイアログに適用するModifier（オプション）
+ * 
+ * @see WithmoDialogContent
+ * @sample WithmoDialogLightPreview
+ * @sample WithmoDialogDarkPreview
+ */
 @Composable
 fun WithmoDialog(
     title: String,
@@ -53,6 +78,25 @@ fun WithmoDialog(
     }
 }
 
+/**
+ * WithmoDialogの内部コンテンツコンポーネント
+ * 
+ * ダイアログの実際のコンテンツ（タイトル、説明、ボタン）をレイアウトします。
+ * このコンポーネントはプライベートで、WithmoDialogコンポーネント内でのみ使用されます。
+ * 
+ * レイアウト構成：
+ * - タイトル（TitleLargeText）
+ * - 説明文（BodyMediumText）
+ * - ボタン領域（Row配置）
+ * 
+ * @param title タイトルテキスト
+ * @param description 説明テキスト
+ * @param dismissButtonText キャンセルボタンのテキスト
+ * @param confirmButtonText 確認ボタンのテキスト
+ * @param onDismissClick キャンセルボタンクリック時のコールバック
+ * @param onConfirmClick 確認ボタンクリック時のコールバック
+ * @param modifier レイアウト調整用のModifier
+ */
 @Composable
 private fun WithmoDialogContent(
     title: String,
