@@ -108,7 +108,7 @@ private fun WithmoDialogContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(Paddings.Medium),
+        modifier = modifier.padding(Paddings.Large),
     ) {
         TitleLargeText(title)
         Spacer(modifier = Modifier.height(Paddings.Small))
