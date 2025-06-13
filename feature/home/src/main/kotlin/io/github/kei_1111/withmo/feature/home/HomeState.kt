@@ -3,8 +3,8 @@ package io.github.kei_1111.withmo.feature.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.featurebase.State
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
@@ -24,8 +24,8 @@ data class HomeState(
     val resizingWidget: WithmoWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
     val appSearchQuery: String = "",
-    val searchedAppList: ImmutableList<AppInfo> = persistentListOf(),
-    val favoriteAppList: ImmutableList<AppInfo> = persistentListOf(),
+    val searchedAppList: ImmutableList<WithmoAppInfo> = persistentListOf(),
+    val favoriteAppList: ImmutableList<WithmoAppInfo> = persistentListOf(),
     val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
 ) : State

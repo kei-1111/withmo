@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.core.data.repository
 
 import android.appwidget.AppWidgetManager
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
-import io.github.kei_1111.withmo.core.data.local.dao.WidgetInfoDao
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoWidgetInfoDao
 import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
 import io.github.kei_1111.withmo.core.data.local.mapper.toWidgetInfo
 import io.github.kei_1111.withmo.core.domain.repository.WidgetInfoRepository
@@ -15,34 +15,34 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class WidgetInfoRepositoryImpl @Inject constructor(
-    private val widgetInfoDao: WidgetInfoDao,
+    private val withmoWidgetInfoDao: WithmoWidgetInfoDao,
     private val appWidgetManager: AppWidgetManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : WidgetInfoRepository {
 
-    override fun getAllWidgetList(): Flow<List<WithmoWidgetInfo>> {
-        return widgetInfoDao.getAllWidgets()
+    override fun getAllList(): Flow<List<WithmoWidgetInfo>> {
+        return withmoWidgetInfoDao.getAllList()
             .map { entities ->
                 entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
             }
             .flowOn(ioDispatcher)
     }
 
-    override suspend fun insertWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
+    override suspend fun insert(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.insert(withmoWidgetInfoList.map { it.toEntity() })
+            withmoWidgetInfoDao.insert(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun updateWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
+    override suspend fun update(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.update(withmoWidgetInfoList.map { it.toEntity() })
+            withmoWidgetInfoDao.update(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun deleteWidget(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
+    override suspend fun delete(withmoWidgetInfoList: List<WithmoWidgetInfo>) {
         withContext(ioDispatcher) {
-            widgetInfoDao.delete(withmoWidgetInfoList.map { it.toEntity() })
+            withmoWidgetInfoDao.delete(withmoWidgetInfoList.map { it.toEntity() })
         }
     }
 

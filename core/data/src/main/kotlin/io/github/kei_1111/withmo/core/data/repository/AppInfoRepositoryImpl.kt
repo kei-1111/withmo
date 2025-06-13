@@ -4,11 +4,11 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
-import io.github.kei_1111.withmo.core.data.local.dao.AppInfoDao
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoAppInfoDao
 import io.github.kei_1111.withmo.core.data.local.mapper.toAppInfo
 import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
-import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -18,14 +18,14 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class AppInfoRepositoryImpl @Inject constructor(
-    private val appInfoDao: AppInfoDao,
+    private val withmoAppInfoDao: WithmoAppInfoDao,
     private val context: Context,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : AppInfoRepository {
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getAllAppInfoList(): Flow<List<AppInfo>> {
-        return appInfoDao.getAllAppInfoList()
+    override fun getAllList(): Flow<List<WithmoAppInfo>> {
+        return withmoAppInfoDao.getAllList()
             .map { entities ->
                 entities.mapNotNull { entity -> entity.toAppInfo(context) }
             }
@@ -33,8 +33,8 @@ class AppInfoRepositoryImpl @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override fun getFavoriteAppInfoList(): Flow<List<AppInfo>> {
-        return appInfoDao.getFavoriteAppInfoList()
+    override fun getFavoriteList(): Flow<List<WithmoAppInfo>> {
+        return withmoAppInfoDao.getFavoriteList()
             .map { entities ->
                 entities
                     .mapNotNull { entity -> entity.toAppInfo(context) }
@@ -44,49 +44,49 @@ class AppInfoRepositoryImpl @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    override suspend fun getAppInfoByPackageName(packageName: String): AppInfo? {
+    override suspend fun getByPackageName(packageName: String): WithmoAppInfo? {
         return withContext(ioDispatcher) {
-            appInfoDao.getAppInfoByPackageName(packageName)?.toAppInfo(context)
+            withmoAppInfoDao.getByPackageName(packageName)?.toAppInfo(context)
                 ?: return@withContext null
         }
     }
 
-    override suspend fun insertAppInfo(appInfo: AppInfo) {
+    override suspend fun insert(withmoAppInfo: WithmoAppInfo) {
         withContext(ioDispatcher) {
-            appInfoDao.insertAppInfo(appInfo.toEntity())
+            withmoAppInfoDao.insert(withmoAppInfo.toEntity())
         }
     }
 
-    override suspend fun updateAppInfo(appInfo: AppInfo) {
+    override suspend fun update(withmoAppInfo: WithmoAppInfo) {
         withContext(ioDispatcher) {
-            appInfoDao.updateAppInfo(appInfo.toEntity())
+            withmoAppInfoDao.update(withmoAppInfo.toEntity())
         }
     }
 
-    override suspend fun updateAppInfoList(appInfoList: List<AppInfo>) {
+    override suspend fun updateList(withmoAppInfoList: List<WithmoAppInfo>) {
         withContext(ioDispatcher) {
-            appInfoDao.updateAppInfoList(appInfoList.map { it.toEntity() })
+            withmoAppInfoDao.updateList(withmoAppInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun deleteAppInfo(appInfo: AppInfo) {
+    override suspend fun delete(withmoAppInfo: WithmoAppInfo) {
         withContext(ioDispatcher) {
-            appInfoDao.deleteAppInfo(appInfo.toEntity())
+            withmoAppInfoDao.delete(withmoAppInfo.toEntity())
         }
     }
 
-    override suspend fun syncWithInstalledApps(installedApps: List<AppInfo>) {
+    override suspend fun syncWithInstalledApps(installedApps: List<WithmoAppInfo>) {
         withContext(ioDispatcher) {
-            val roomAppEntities = appInfoDao.getAllAppInfoList().first()
+            val roomAppEntities = withmoAppInfoDao.getAllList().first()
 
-            val installedAppPackages = installedApps.map { it.packageName }.toSet()
+            val installedAppPackages = installedApps.map { it.info.packageName }.toSet()
             val roomAppPackages = roomAppEntities.map { it.packageName }.toSet()
 
-            val newApps = installedApps.filter { it.packageName !in roomAppPackages }
-            newApps.forEach { insertAppInfo(it) }
+            val newApps = installedApps.filter { it.info.packageName !in roomAppPackages }
+            newApps.forEach { insert(it) }
 
             val removedEntities = roomAppEntities.filter { it.packageName !in installedAppPackages }
-            removedEntities.forEach { appInfoDao.deleteAppInfo(it) }
+            removedEntities.forEach { withmoAppInfoDao.delete(it) }
         }
     }
 

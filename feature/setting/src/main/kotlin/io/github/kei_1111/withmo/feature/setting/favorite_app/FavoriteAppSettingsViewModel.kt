@@ -8,8 +8,8 @@ import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
@@ -25,7 +25,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
 ) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
-    private val currentAppList = mutableListOf<AppInfo>()
+    private val currentAppList = mutableListOf<WithmoAppInfo>()
 
     override fun createInitialState(): FavoriteAppSettingsState = FavoriteAppSettingsState()
 
@@ -37,10 +37,10 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     private fun observeAppList() {
         viewModelScope.launch {
-            appInfoRepository.getAllAppInfoList().collect { appList ->
+            appInfoRepository.getAllList().collect { withmoAppList ->
                 currentAppList.clear()
-                currentAppList.addAll(appList)
-                val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
+                currentAppList.addAll(withmoAppList)
+                val filteredAppList = filterAppList(state.value.appSearchQuery, withmoAppList).toPersistentList()
                 updateState { copy(searchedAppList = filteredAppList) }
             }
         }
@@ -48,7 +48,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
+            appInfoRepository.getFavoriteList().collect { favoriteAppList ->
                 val immutableFavoriteAppList = favoriteAppList.toPersistentList()
 
                 updateState {
@@ -69,21 +69,21 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+    private suspend fun filterAppList(query: String, appList: List<WithmoAppInfo>): List<WithmoAppInfo> =
         withContext(Dispatchers.Default) {
             val sortType = getSortSettingsUseCase().first().sortType
             val filteredAppList = appList.filter { appInfo ->
-                appInfo.label.contains(query, ignoreCase = true)
+                appInfo.info.label.contains(query, ignoreCase = true)
             }
             sortAppList(sortType, filteredAppList)
         }
 
-    private fun addFavoriteAppList(appInfo: AppInfo) {
-        val addedFavoriteAppList = (state.value.favoriteAppList + appInfo).toPersistentList()
+    private fun addFavoriteAppList(withmoAppInfo: WithmoAppInfo) {
+        val addedFavoriteAppList = (state.value.favoriteAppList + withmoAppInfo).toPersistentList()
 
         updateState {
             if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                favoriteAppList.none { it.packageName == appInfo.packageName }
+                favoriteAppList.none { it.info.packageName == withmoAppInfo.info.packageName }
             ) {
                 copy(
                     favoriteAppList = addedFavoriteAppList,
@@ -95,9 +95,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun removeFavoriteAppList(appInfo: AppInfo) {
+    private fun removeFavoriteAppList(withmoAppInfo: WithmoAppInfo) {
         val removedFavoriteAppList = state.value.favoriteAppList
-            .filterNot { it.packageName == appInfo.packageName }
+            .filterNot { it.info.packageName == withmoAppInfo.info.packageName }
             .toPersistentList()
 
         updateState {
@@ -119,16 +119,16 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             FavoriteOrder.Fourth,
         )
 
-        val currentPackageNames = currentFavoriteAppList.map { it.packageName }.toSet()
+        val currentPackageNames = currentFavoriteAppList.map { it.info.packageName }.toSet()
 
-        val appsToRemoveFromFavorites = initialFavoriteAppList.filter { appInfo ->
-            appInfo.favoriteOrder != FavoriteOrder.NotFavorite && !currentPackageNames.contains(appInfo.packageName)
+        val appsToRemoveFromFavorites = initialFavoriteAppList.filter { withmoAppInfo ->
+            withmoAppInfo.favoriteOrder != FavoriteOrder.NotFavorite && !currentPackageNames.contains(withmoAppInfo.info.packageName)
         }.map { appInfo ->
             appInfo.copy(favoriteOrder = FavoriteOrder.NotFavorite)
         }
 
-        val appsToUpdateFavorites = currentFavoriteAppList.mapIndexed { index, appInfo ->
-            appInfo.copy(
+        val appsToUpdateFavorites = currentFavoriteAppList.mapIndexed { index, withmoAppInfo ->
+            withmoAppInfo.copy(
                 favoriteOrder = favoriteOrders.getOrNull(index) ?: FavoriteOrder.NotFavorite,
             )
         }
@@ -139,7 +139,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                appInfoRepository.updateAppInfoList(appsToUpdate)
+                appInfoRepository.updateList(appsToUpdate)
                 sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
                 sendEffect(FavoriteAppSettingsEffect.NavigateBack)
             } catch (e: Exception) {
@@ -151,9 +151,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     override fun onAction(action: FavoriteAppSettingsAction) {
         when (action) {
-            is FavoriteAppSettingsAction.OnAllAppListAppClick -> addFavoriteAppList(action.appInfo)
+            is FavoriteAppSettingsAction.OnAllAppListAppClick -> addFavoriteAppList(action.withmoAppInfo)
 
-            is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.appInfo)
+            is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> removeFavoriteAppList(action.withmoAppInfo)
 
             is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
                 updateState { copy(appSearchQuery = action.query) }
@@ -169,9 +169,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun List<AppInfo>.isSameAs(other: List<AppInfo>): Boolean {
+    private fun List<WithmoAppInfo>.isSameAs(other: List<WithmoAppInfo>): Boolean {
         return this.size == other.size &&
-            this.zip(other).all { (a, b) -> a.packageName == b.packageName }
+            this.zip(other).all { (a, b) -> a.info.packageName == b.info.packageName }
     }
 
     private companion object {

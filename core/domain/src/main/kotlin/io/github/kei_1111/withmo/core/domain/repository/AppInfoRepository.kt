@@ -1,22 +1,22 @@
 package io.github.kei_1111.withmo.core.domain.repository
 
-import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.coroutines.flow.Flow
 
 interface AppInfoRepository {
-    fun getAllAppInfoList(): Flow<List<AppInfo>>
+    fun getAllList(): Flow<List<WithmoAppInfo>>
 
-    fun getFavoriteAppInfoList(): Flow<List<AppInfo>>
+    fun getFavoriteList(): Flow<List<WithmoAppInfo>>
 
-    suspend fun getAppInfoByPackageName(packageName: String): AppInfo?
+    suspend fun getByPackageName(packageName: String): WithmoAppInfo?
 
-    suspend fun insertAppInfo(appInfo: AppInfo)
+    suspend fun insert(withmoAppInfo: WithmoAppInfo)
 
-    suspend fun updateAppInfo(appInfo: AppInfo)
+    suspend fun update(withmoAppInfo: WithmoAppInfo)
 
-    suspend fun updateAppInfoList(appInfoList: List<AppInfo>)
+    suspend fun updateList(withmoAppInfoList: List<WithmoAppInfo>)
 
-    suspend fun deleteAppInfo(appInfo: AppInfo)
+    suspend fun delete(withmoAppInfo: WithmoAppInfo)
 
-    suspend fun syncWithInstalledApps(installedApps: List<AppInfo>)
+    suspend fun syncWithInstalledApps(installedApps: List<WithmoAppInfo>)
 }

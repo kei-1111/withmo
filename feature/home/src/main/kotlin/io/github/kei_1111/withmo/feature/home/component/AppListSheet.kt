@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +42,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -70,9 +73,14 @@ internal fun AppListSheet(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding())
+                    .padding(
+                        top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
+                    )
                     .padding(horizontal = Paddings.Medium),
-                verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(
+                    Paddings.Medium,
+                    Alignment.CenterVertically,
+                ),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 WithmoSearchTextField(
@@ -104,7 +112,7 @@ internal fun AppListSheet(
 
 @Composable
 private fun AppList(
-    appList: ImmutableList<AppInfo>,
+    appList: ImmutableList<WithmoAppInfo>,
     appIconShape: Shape,
     isNavigateSettingsButtonShown: Boolean,
     onAction: (HomeAction) -> Unit,
@@ -112,10 +120,10 @@ private fun AppList(
 ) {
     val context = LocalContext.current
     val launchableAppList = appList
-        .filter { it.packageName != context.packageName }
+        .filter { it.info.packageName != context.packageName }
         .toPersistentList()
     val settingApp = appList
-        .filter { it.packageName == context.packageName }
+        .filter { it.info.packageName == context.packageName }
         .toPersistentList()
 
     Column(
@@ -160,7 +168,7 @@ private fun AppList(
 
 @Composable
 private fun CustomAppInfoGridLayout(
-    items: ImmutableList<AppInfo>,
+    items: ImmutableList<WithmoAppInfo>,
     columns: Int,
     appIconShape: Shape,
     onClick: (AppInfo) -> Unit,
@@ -187,9 +195,9 @@ private fun CustomAppInfoGridLayout(
                         contentAlignment = Alignment.Center,
                     ) {
                         AppItem(
-                            appInfo = item,
-                            onClick = { onClick(item) },
-                            onLongClick = { onLongClick(item) },
+                            appInfo = item.info,
+                            onClick = { onClick(item.info) },
+                            onLongClick = { onLongClick(item.info) },
                             appIconShape = appIconShape,
                         )
                     }
@@ -220,11 +228,15 @@ private fun AppListLightPreview() {
 
         AppList(
             appList = List(40) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "アプリ $it",
-                    packageName = "io.github.kei_1111.withmo.app$it",
-                    notification = it % 2 == 0,
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             appIconShape = CircleShape,
@@ -250,11 +262,15 @@ private fun AppListDarkPreview() {
 
         AppList(
             appList = List(40) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "アプリ $it",
-                    packageName = "io.github.kei_1111.withmo.app$it",
-                    notification = it % 2 == 0,
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             appIconShape = CircleShape,

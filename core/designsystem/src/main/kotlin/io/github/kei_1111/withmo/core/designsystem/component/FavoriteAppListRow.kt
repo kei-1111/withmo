@@ -16,14 +16,14 @@ import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSyste
 import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppListRow(
-    favoriteAppList: ImmutableList<AppInfo>,
-    removeSelectedAppList: (AppInfo) -> Unit,
+    favoriteAppList: ImmutableList<WithmoAppInfo>,
+    removeSelectedAppList: (WithmoAppInfo) -> Unit,
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
 ) {
@@ -37,7 +37,7 @@ fun FavoriteAppListRow(
     ) {
         favoriteAppList.forEach {
             FavoriteAppSelectorItem(
-                appInfo = it,
+                appInfo = it.info,
                 isSelected = true,
                 addSelectedAppList = { },
                 removeSelectedAppList = { removeSelectedAppList(it) },
@@ -62,7 +62,7 @@ fun FavoriteAppListRow(
 private fun FavoriteAppListRowLightPreview() {
     DesignSystemLightPreviewEnvironment {
         FavoriteAppListRow(
-            favoriteAppList = emptyList<AppInfo>().toPersistentList(),
+            favoriteAppList = emptyList<WithmoAppInfo>().toPersistentList(),
             removeSelectedAppList = { },
         )
     }
@@ -74,7 +74,7 @@ private fun FavoriteAppListRowLightPreview() {
 private fun FavoriteAppListRowDarkPreview() {
     DesignSystemDarkPreviewEnvironment {
         FavoriteAppListRow(
-            favoriteAppList = emptyList<AppInfo>().toPersistentList(),
+            favoriteAppList = emptyList<WithmoAppInfo>().toPersistentList(),
             removeSelectedAppList = { },
         )
     }

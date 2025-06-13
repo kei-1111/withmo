@@ -4,8 +4,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "app_info")
-data class AppInfoEntity(
+@Entity(tableName = "withmo_app_info")
+data class WithmoAppInfoEntity(
     @PrimaryKey
     @ColumnInfo(name = "package_name")
     val packageName: String,
@@ -18,4 +18,10 @@ data class AppInfoEntity(
 
     @ColumnInfo(name = "favorite_order")
     val favoriteOrder: String,
+
+    @ColumnInfo(name = "position_x")
+    val positionX: Float?,
+
+    @ColumnInfo(name = "position_y")
+    val positionY: Float?,
 )

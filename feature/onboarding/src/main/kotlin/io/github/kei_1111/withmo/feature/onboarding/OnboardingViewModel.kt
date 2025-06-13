@@ -9,8 +9,8 @@ import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import kotlinx.collections.immutable.toPersistentList
@@ -31,7 +31,7 @@ class OnboardingViewModel @Inject constructor(
     private val modelFileManager: ModelFileManager,
 ) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
 
-    private val currentAppList = mutableListOf<AppInfo>()
+    private val currentAppList = mutableListOf<WithmoAppInfo>()
 
     override fun createInitialState(): OnboardingState = OnboardingState()
 
@@ -42,7 +42,7 @@ class OnboardingViewModel @Inject constructor(
 
     private fun observeAppList() {
         viewModelScope.launch {
-            appInfoRepository.getAllAppInfoList().collect { appList ->
+            appInfoRepository.getAllList().collect { appList ->
                 currentAppList.clear()
                 currentAppList.addAll(appList)
                 val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
@@ -53,40 +53,38 @@ class OnboardingViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
+            appInfoRepository.getFavoriteList().collect { favoriteAppList ->
                 updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
 
-    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+    private suspend fun filterAppList(query: String, appList: List<WithmoAppInfo>): List<WithmoAppInfo> =
         withContext(Dispatchers.Default) {
             val sortType = getSortSettingsUseCase().first().sortType
             val filteredAppList = appList.filter { appInfo ->
-                appInfo.label.contains(query, ignoreCase = true)
+                appInfo.info.label.contains(query, ignoreCase = true)
             }
             sortAppList(sortType, filteredAppList)
         }
 
-    private fun addSelectedAppList(appInfo: AppInfo) {
+    private fun addSelectedAppList(withmoAppInfo: WithmoAppInfo) {
         updateState {
             if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                selectedAppList.none { it.packageName == appInfo.packageName }
+                selectedAppList.none { it.info.packageName == withmoAppInfo.info.packageName }
             ) {
-                copy(
-                    selectedAppList = (selectedAppList + appInfo).toPersistentList(),
-                )
+                copy(selectedAppList = (selectedAppList + withmoAppInfo).toPersistentList(),)
             } else {
                 this
             }
         }
     }
 
-    private fun removeSelectedAppList(appInfo: AppInfo) {
+    private fun removeSelectedAppList(withmoAppInfo: WithmoAppInfo) {
         updateState {
             copy(
                 selectedAppList = selectedAppList
-                    .filterNot { it.packageName == appInfo.packageName }
+                    .filterNot { it.info.packageName == withmoAppInfo.info.packageName }
                     .toPersistentList(),
             )
         }
@@ -120,8 +118,8 @@ class OnboardingViewModel @Inject constructor(
     }
 
     private fun saveSetting() {
-        val favoriteAppList = state.value.selectedAppList.mapIndexed { index, appInfo ->
-            appInfo.copy(
+        val favoriteAppList = state.value.selectedAppList.mapIndexed { index, withmoAppInfo ->
+            withmoAppInfo.copy(
                 favoriteOrder = when (index) {
                     0 -> FavoriteOrder.First
                     1 -> FavoriteOrder.Second
@@ -134,7 +132,7 @@ class OnboardingViewModel @Inject constructor(
 
         viewModelScope.launch {
             oneTimeEventRepository.markOnboardingFirstShown()
-            appInfoRepository.updateAppInfoList(favoriteAppList)
+            appInfoRepository.updateList(favoriteAppList)
             val modelFilePath = state.value.modelFilePath
             if (modelFilePath.path != null) {
                 saveModelFilePathUseCase(modelFilePath)
@@ -147,9 +145,9 @@ class OnboardingViewModel @Inject constructor(
 
     override fun onAction(action: OnboardingAction) {
         when (action) {
-            is OnboardingAction.OnAllAppListAppClick -> addSelectedAppList(action.appInfo)
+            is OnboardingAction.OnAllAppListAppClick -> addSelectedAppList(action.withmoAppInfo)
 
-            is OnboardingAction.OnFavoriteAppListAppClick -> removeSelectedAppList(action.appInfo)
+            is OnboardingAction.OnFavoriteAppListAppClick -> removeSelectedAppList(action.withmoAppInfo)
 
             is OnboardingAction.OnAppSearchQueryChange -> {
                 updateState { copy(appSearchQuery = action.query) }

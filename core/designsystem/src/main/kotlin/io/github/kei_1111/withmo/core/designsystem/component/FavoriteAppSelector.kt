@@ -13,6 +13,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,15 +26,17 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppSelector(
-    appList: ImmutableList<AppInfo>,
-    favoriteAppList: ImmutableList<AppInfo>,
-    addSelectedAppList: (AppInfo) -> Unit,
-    removeSelectedAppList: (AppInfo) -> Unit,
+    appList: ImmutableList<WithmoAppInfo>,
+    favoriteAppList: ImmutableList<WithmoAppInfo>,
+    addSelectedAppList: (WithmoAppInfo) -> Unit,
+    removeSelectedAppList: (WithmoAppInfo) -> Unit,
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
 ) {
@@ -47,22 +50,22 @@ fun FavoriteAppSelector(
             bottom = Paddings.Medium,
         ),
     ) {
-        items(appList) { appInfo ->
+        items(appList) { withmoAppInfo ->
             val isSelected = favoriteAppList
-                .any { it.packageName == appInfo.packageName }
+                .any { it.info.packageName == withmoAppInfo.info.packageName }
 
             FavoriteAppSelectorItem(
-                appInfo = appInfo,
+                appInfo = withmoAppInfo.info,
                 isSelected = isSelected,
-                addSelectedAppList = { addSelectedAppList(appInfo) },
+                addSelectedAppList = { addSelectedAppList(withmoAppInfo) },
                 removeSelectedAppList = {
-                    removeSelectedAppList(appInfo)
+                    removeSelectedAppList(withmoAppInfo)
                 },
                 onClick = {
                     if (isSelected) {
-                        removeSelectedAppList(appInfo)
+                        removeSelectedAppList(withmoAppInfo)
                     } else {
-                        addSelectedAppList(appInfo)
+                        addSelectedAppList(withmoAppInfo)
                     }
                 },
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
@@ -91,17 +94,27 @@ private fun FavoriteAppSelectorLightPreview() {
 
         FavoriteAppSelector(
             appList = List(40) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "withmo $it",
-                    packageName = "com.example.app$it",
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             favoriteAppList = List(2) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "withmo $it",
-                    packageName = "com.example.app$it",
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             addSelectedAppList = { },
@@ -126,17 +139,27 @@ private fun FavoriteAppSelectorDarkPreview() {
 
         FavoriteAppSelector(
             appList = List(40) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "withmo $it",
-                    packageName = "com.example.app$it",
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             favoriteAppList = List(2) {
-                AppInfo(
-                    appIcon = appIcon,
-                    label = "withmo $it",
-                    packageName = "com.example.app$it",
+                WithmoAppInfo(
+                    info = AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 2 == 0,
+                    ),
+                    favoriteOrder = FavoriteOrder.NotFavorite,
+                    position = Offset.Unspecified,
                 )
             }.toPersistentList(),
             addSelectedAppList = { },

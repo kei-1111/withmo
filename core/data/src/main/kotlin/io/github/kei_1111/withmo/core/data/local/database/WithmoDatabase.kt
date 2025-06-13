@@ -2,17 +2,17 @@ package io.github.kei_1111.withmo.core.data.local.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import io.github.kei_1111.withmo.core.data.local.dao.AppInfoDao
-import io.github.kei_1111.withmo.core.data.local.dao.WidgetInfoDao
-import io.github.kei_1111.withmo.core.data.local.entity.AppInfoEntity
-import io.github.kei_1111.withmo.core.data.local.entity.WidgetInfoEntity
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoAppInfoDao
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoWidgetInfoDao
+import io.github.kei_1111.withmo.core.data.local.entity.WithmoAppInfoEntity
+import io.github.kei_1111.withmo.core.data.local.entity.WithmoWidgetInfoEntity
 
 @Database(
-    entities = [AppInfoEntity::class, WidgetInfoEntity::class],
-    version = 7,
+    entities = [WithmoAppInfoEntity::class, WithmoWidgetInfoEntity::class],
+    version = 8,
     exportSchema = false,
 )
 abstract class WithmoDatabase : RoomDatabase() {
-    abstract fun appInfoDao(): AppInfoDao
-    abstract fun widgetInfoDao(): WidgetInfoDao
+    abstract fun withmoAppInfoDao(): WithmoAppInfoDao
+    abstract fun withmoWidgetInfoDao(): WithmoWidgetInfoDao
 }

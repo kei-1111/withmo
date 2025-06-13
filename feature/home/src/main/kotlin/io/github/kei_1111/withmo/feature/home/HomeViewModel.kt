@@ -20,8 +20,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
     private val saveModelSettingsUseCase: SaveModelSettingsUseCase,
 ) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
-    private val currentAppList = mutableListOf<AppInfo>()
+    private val currentAppList = mutableListOf<WithmoAppInfo>()
     private var lastScaleSentTime = 0L
 
     override fun createInitialState(): HomeState = HomeState()
@@ -96,7 +96,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeAppList() {
         viewModelScope.launch {
-            appInfoRepository.getAllAppInfoList().collect { appList ->
+            appInfoRepository.getAllList().collect { appList ->
                 currentAppList.clear()
                 currentAppList.addAll(appList)
                 val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
@@ -107,7 +107,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            appInfoRepository.getFavoriteAppInfoList().collect { favoriteAppList ->
+            appInfoRepository.getFavoriteList().collect { favoriteAppList ->
                 updateState { copy(favoriteAppList = favoriteAppList.toPersistentList()) }
             }
         }
@@ -115,7 +115,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeWidgetList() {
         viewModelScope.launch {
-            widgetInfoRepository.getAllWidgetList().collect { widgetList ->
+            widgetInfoRepository.getAllList().collect { widgetList ->
                 updateState {
                     copy(
                         widgetList = widgetList.toPersistentList(),
@@ -126,10 +126,10 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun filterAppList(query: String, appList: List<AppInfo>): List<AppInfo> =
+    private suspend fun filterAppList(query: String, appList: List<WithmoAppInfo>): List<WithmoAppInfo> =
         withContext(Dispatchers.Default) {
-            val filteredAppList = appList.filter { appInfo ->
-                appInfo.label.contains(query, ignoreCase = true)
+            val filteredAppList = appList.filter { withmoAppInfo ->
+                withmoAppInfo.info.label.contains(query, ignoreCase = true)
             }
             sortAppList(state.value.currentUserSettings.sortSettings.sortType, filteredAppList)
         }
@@ -165,9 +165,9 @@ class HomeViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            widgetInfoRepository.insertWidget(addedWidgetList)
-            widgetInfoRepository.deleteWidget(deletedWidgetList)
-            widgetInfoRepository.updateWidget(updatedWidgetList)
+            widgetInfoRepository.insert(addedWidgetList)
+            widgetInfoRepository.delete(deletedWidgetList)
+            widgetInfoRepository.update(updatedWidgetList)
         }
     }
 

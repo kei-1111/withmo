@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -29,6 +30,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
@@ -127,9 +130,9 @@ private fun RowAppList(
     ) {
         state.favoriteAppList.forEach {
             AppItem(
-                onClick = { onAction(HomeAction.OnAppClick(it)) },
-                onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
-                appInfo = it,
+                onClick = { onAction(HomeAction.OnAppClick(it.info)) },
+                onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
+                appInfo = it.info,
                 appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
@@ -158,10 +161,15 @@ private fun HomeScreenContentLightPreview() {
         HomeScreenContent(
             state = HomeState(
                 favoriteAppList = List(3) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -187,10 +195,15 @@ private fun HomeScreenContentDarkPreview() {
         HomeScreenContent(
             state = HomeState(
                 favoriteAppList = List(3) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -216,10 +229,15 @@ private fun RowAppListLightPreview() {
         RowAppList(
             state = HomeState(
                 favoriteAppList = List(4) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -246,10 +264,15 @@ private fun RowAppListDarkPreview() {
         RowAppList(
             state = HomeState(
                 favoriteAppList = List(4) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
