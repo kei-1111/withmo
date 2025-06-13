@@ -43,7 +43,7 @@ fun FavoriteAppSelectorItem(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        AppItem(
+        App(
             appInfo = appInfo,
             modifier = getFavoriteAppSelectorItemModifier(
                 isSelected = isSelected,

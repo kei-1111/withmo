@@ -41,7 +41,7 @@ import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 private const val AppItemLabelMaxLines = 1
 
 @Composable
-fun AppItem(
+fun App(
     appInfo: AppInfo,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
@@ -175,7 +175,7 @@ private fun Badge(
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AppItemLightPreview() {
+private fun AppLightPreview() {
     DesignSystemLightPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
@@ -185,7 +185,7 @@ private fun AppItemLightPreview() {
             )
         }
 
-        AppItem(
+        App(
             appInfo = AppInfo(
                 appIcon = appIcon,
                 label = "withmo",
@@ -199,7 +199,7 @@ private fun AppItemLightPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AppItemDarkPreview() {
+private fun AppDarkPreview() {
     DesignSystemDarkPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
@@ -209,7 +209,7 @@ private fun AppItemDarkPreview() {
             )
         }
 
-        AppItem(
+        App(
             appInfo = AppInfo(
                 appIcon = appIcon,
                 label = "withmo",

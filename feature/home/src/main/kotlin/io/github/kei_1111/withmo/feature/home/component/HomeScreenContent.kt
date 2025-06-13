@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.AppItem
+import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -129,7 +129,7 @@ private fun RowAppList(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         state.favoriteAppList.forEach {
-            AppItem(
+            App(
                 onClick = { onAction(HomeAction.OnAppClick(it.info)) },
                 onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
                 appInfo = it.info,

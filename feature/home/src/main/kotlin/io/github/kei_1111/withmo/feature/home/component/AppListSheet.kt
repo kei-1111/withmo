@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.AppItem
+import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
@@ -194,7 +194,7 @@ private fun CustomAppInfoGridLayout(
                             .weight(Weights.Medium),
                         contentAlignment = Alignment.Center,
                     ) {
-                        AppItem(
+                        App(
                             appInfo = item.info,
                             onClick = { onClick(item.info) },
                             onLongClick = { onLongClick(item.info) },
