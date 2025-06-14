@@ -73,7 +73,7 @@ class OnboardingViewModel @Inject constructor(
             if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
                 selectedAppList.none { it.info.packageName == withmoAppInfo.info.packageName }
             ) {
-                copy(selectedAppList = (selectedAppList + withmoAppInfo).toPersistentList(),)
+                copy(selectedAppList = (selectedAppList + withmoAppInfo).toPersistentList())
             } else {
                 this
             }
