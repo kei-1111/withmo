@@ -163,6 +163,38 @@ private fun PageIndicator(
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
+private fun PagerContentLightPreview() {
+    HomeLightPreviewEnvironment {
+        PagerContent(
+            state = HomeState(),
+            onAction = {},
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun PagerContentDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        PagerContent(
+            state = HomeState(
+                isEditMode = true,
+                currentPage = PageContent.Widget,
+            ),
+            onAction = {},
+            modifier = Modifier
+                .fillMaxSize()
+        )
+    }
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
 private fun PageIndicatorLightPreview() {
     HomeLightPreviewEnvironment {
         PageIndicator(
