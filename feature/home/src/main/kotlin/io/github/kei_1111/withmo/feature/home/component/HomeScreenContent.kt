@@ -2,17 +2,22 @@ package io.github.kei_1111.withmo.feature.home.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +58,10 @@ internal fun HomeScreenContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
+    val targetBottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPaddingValue)
+
     val currentTime = LocalCurrentTime.current
 
     Box(
@@ -69,7 +78,9 @@ internal fun HomeScreenContent(
                 WithmoClock(
                     clockType = state.currentUserSettings.clockSettings.clockType,
                     dateTimeInfo = currentTime.toDateTimeInfo(),
-                    modifier = Modifier.padding(start = Paddings.Medium),
+                    modifier = Modifier
+                        .padding(top = topPaddingValue)
+                        .padding(start = Paddings.Medium),
                 )
             }
             Column(
@@ -96,7 +107,9 @@ internal fun HomeScreenContent(
                     RowAppList(
                         state = state,
                         onAction = onAction,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = bottomPaddingValue),
                     )
                 }
             }

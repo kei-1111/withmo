@@ -2,16 +2,20 @@ package io.github.kei_1111.withmo.feature.home.component.page_content
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -19,6 +23,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -47,6 +52,9 @@ internal fun PagerContent(
 ) {
     val density = LocalDensity.current
     val configuration = LocalConfiguration.current
+
+    val targetBottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPaddingValue)
 
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
@@ -125,7 +133,14 @@ internal fun PagerContent(
             PageIndicator(
                 pageCount = pagerState.pageCount,
                 currentPage = pagerState.currentPage,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth()
+                    .then(
+                        if (state.favoriteAppList.isEmpty()) {
+                            Modifier.padding(bottom = bottomPaddingValue)
+                        } else {
+                            Modifier
+                        },
+                    ),
             )
         }
     }
@@ -169,7 +184,7 @@ private fun PagerContentLightPreview() {
             state = HomeState(),
             onAction = {},
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         )
     }
 }
@@ -186,11 +201,10 @@ private fun PagerContentDarkPreview() {
             ),
             onAction = {},
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxSize(),
         )
     }
 }
-
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview

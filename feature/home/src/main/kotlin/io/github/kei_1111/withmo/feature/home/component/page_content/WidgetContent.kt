@@ -45,8 +45,12 @@ internal fun WidgetContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val appIconSpaceHeight =
-        (state.currentUserSettings.appIconSettings.appIconSize + Paddings.AppIconPadding).dp
+    // App Composableの高さ
+    val appHeight = state.currentUserSettings.appIconSettings.appIconSize.dp + Paddings.Large
+    // RowAppList Composableの高さ
+    val rowAppListHeight = appHeight + Paddings.Small * 2 + Paddings.ExtraSmall * 2
+
+    val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
 
     Box(
@@ -58,7 +62,8 @@ internal fun WidgetContent(
                     withmoWidgetInfo = withmoWidgetInfo,
                     startPadding = Paddings.Medium,
                     endPadding = Paddings.Medium,
-                    bottomPadding = bottomPaddingValue + appIconSpaceHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                    topPadding = topPaddingValue,
+                    bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                     isEditMode = state.isEditMode,
                     deleteWidget = { onAction(HomeAction.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
                     resizeWidget = { onAction(HomeAction.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
@@ -71,7 +76,7 @@ internal fun WidgetContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = Paddings.ExtraSmall)
+                    .padding(bottom = bottomPaddingValue + Paddings.ExtraSmall)
                     .padding(horizontal = Paddings.Medium),
             )
         }
