@@ -50,7 +50,6 @@ import kotlinx.collections.immutable.toPersistentList
 
 private const val BottomSheetShowDragHeight = -50f
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
@@ -58,11 +57,8 @@ internal fun HomeScreenContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val targetBottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPaddingValue)
-
-    val currentTime = LocalCurrentTime.current
 
     Box(
         modifier = modifier,
@@ -74,15 +70,6 @@ internal fun HomeScreenContent(
                 modifier = Modifier.fillMaxSize(),
             )
         } else {
-            if (state.currentUserSettings.clockSettings.isClockShown) {
-                WithmoClock(
-                    clockType = state.currentUserSettings.clockSettings.clockType,
-                    dateTimeInfo = currentTime.toDateTimeInfo(),
-                    modifier = Modifier
-                        .padding(top = topPaddingValue)
-                        .padding(start = Paddings.Medium),
-                )
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()

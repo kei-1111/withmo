@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -30,9 +31,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.toDateTimeInfo
+import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -40,52 +44,67 @@ import io.github.kei_1111.withmo.feature.home.R
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun DisplayModelContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentTime = LocalCurrentTime.current
+
     val isDefaultModelFile =
         state.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
 
     val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
 
-    Row(
+    Box(
         modifier = modifier
             .padding(top = topPaddingValue)
-            .padding(horizontal = Paddings.Medium),
-        verticalAlignment = Alignment.Bottom,
+            .padding(horizontal = Paddings.Medium)
     ) {
-        if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
-            NavigateSettingsButton(
-                onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
+        if (state.currentUserSettings.clockSettings.isClockShown) {
+            WithmoClock(
+                clockType = state.currentUserSettings.clockSettings.clockType,
+                dateTimeInfo = currentTime.toDateTimeInfo(),
+                modifier = Modifier.align(Alignment.TopStart)
             )
         }
-        Spacer(
-            modifier = Modifier.weight(Weights.Medium),
-        )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
-            horizontalAlignment = Alignment.CenterHorizontally,
+
+        Row(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.Bottom,
         ) {
-            if (
-                state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
-                isDefaultModelFile == false
+            if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
+                NavigateSettingsButton(
+                    onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
+                )
+            }
+            Spacer(
+                modifier = Modifier.weight(Weights.Medium),
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SetDefaultModelButton(
-                    onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
-                )
-            }
-            if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
-                OpenDocumentButton(
-                    onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
-                )
-            }
-            if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
-                ShowScaleSliderButton(
-                    onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
-                )
+                if (
+                    state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+                    isDefaultModelFile == false
+                ) {
+                    SetDefaultModelButton(
+                        onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
+                    )
+                }
+                if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+                    OpenDocumentButton(
+                        onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
+                    )
+                }
+                if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
+                    ShowScaleSliderButton(
+                        onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
+                    )
+                }
             }
         }
     }
