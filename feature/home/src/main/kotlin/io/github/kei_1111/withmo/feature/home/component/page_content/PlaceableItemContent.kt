@@ -27,12 +27,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoApp
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -40,7 +44,7 @@ import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
 @Composable
-internal fun WidgetContent(
+internal fun PlaceableItemContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -56,22 +60,43 @@ internal fun WidgetContent(
     Box(
         modifier = modifier,
     ) {
-        state.widgetList.forEach { withmoWidgetInfo ->
-            key(withmoWidgetInfo.widgetInfo.id) {
-                WithmoWidget(
-                    withmoWidgetInfo = withmoWidgetInfo,
-                    startPadding = Paddings.Medium,
-                    endPadding = Paddings.Medium,
-                    topPadding = topPaddingValue,
-                    bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
-                    isEditMode = state.isEditMode,
-                    deleteWidget = { onAction(HomeAction.OnDeleteWidgetBadgeClick(withmoWidgetInfo)) },
-                    resizeWidget = { onAction(HomeAction.OnResizeWidgetBadgeClick(withmoWidgetInfo)) },
-                )
+        state.placedItemList.forEach { placeableItem ->
+            key(placeableItem.id) {
+                when (placeableItem) {
+                    is WithmoWidgetInfo -> {
+                        WithmoWidget(
+                            withmoWidgetInfo = placeableItem,
+                            startPadding = Paddings.Medium,
+                            endPadding = Paddings.Medium,
+                            topPadding = topPaddingValue,
+                            bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                            isEditMode = state.isEditMode,
+                            onDeleteBadgeClick = { onAction(HomeAction.OnDeletePlaceableItemBadgeClick(placeableItem)) },
+                            onResizeBadgeClick = { onAction(HomeAction.OnResizeWidgetBadgeClick(placeableItem)) },
+                        )
+                    }
+
+                    is WithmoAppInfo -> {
+                        WithmoApp(
+                            withmoAppInfo = placeableItem,
+                            appIconSize = state.currentUserSettings.appIconSettings.appIconSize,
+                            appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(state.currentUserSettings.appIconSettings.roundedCornerPercent),
+                            isAppNameShown = state.currentUserSettings.appIconSettings.isAppNameShown,
+                            topPadding = topPaddingValue,
+                            bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                            startPadding = Paddings.Medium,
+                            endPadding = Paddings.Medium,
+                            isEditMode = state.isEditMode,
+                            onAppClick = { onAction(HomeAction.OnAppClick(placeableItem.info)) },
+                            onAppLongClick = { onAction(HomeAction.OnAppLongClick(placeableItem.info)) },
+                            onDeleteBadgeClick = { onAction(HomeAction.OnDeletePlaceableItemBadgeClick(placeableItem)) },
+                        )
+                    }
+                }
             }
         }
         if (state.isEditMode) {
-            EditWidgetContent(
+            EditPlaceableItemContent(
                 onAction = onAction,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -84,7 +109,7 @@ internal fun WidgetContent(
 }
 
 @Composable
-private fun EditWidgetContent(
+private fun EditPlaceableItemContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -96,8 +121,8 @@ private fun EditWidgetContent(
         Spacer(
             modifier = Modifier.weight(Weights.Medium),
         )
-        AddWidgetButton(
-            onClick = { onAction(HomeAction.OnAddWidgetButtonClick) },
+        AddPlaceableItemButton(
+            onClick = { onAction(HomeAction.OnAddPlaceableItemButtonClick) },
         )
         CompleteEditButton(
             onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
@@ -107,7 +132,7 @@ private fun EditWidgetContent(
 }
 
 @Composable
-private fun AddWidgetButton(
+private fun AddPlaceableItemButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -147,9 +172,9 @@ private fun CompleteEditButton(
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun WidgetContentLightPreview() {
+private fun PlaceableItemContentightPreview() {
     HomeLightPreviewEnvironment {
-        WidgetContent(
+        PlaceableItemContent(
             state = HomeState(
                 isEditMode = true,
             ),
@@ -162,9 +187,9 @@ private fun WidgetContentLightPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun WidgetContentDarkPreview() {
+private fun PlaceableItemContentDarkPreview() {
     HomeDarkPreviewEnvironment {
-        WidgetContent(
+        PlaceableItemContent(
             state = HomeState(
                 isEditMode = true,
             ),
@@ -177,9 +202,9 @@ private fun WidgetContentDarkPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun EditWidgetContentLightPreview() {
+private fun EditPlaceableItemContentLightPreview() {
     HomeLightPreviewEnvironment {
-        EditWidgetContent(
+        EditPlaceableItemContent(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )
@@ -189,9 +214,9 @@ private fun EditWidgetContentLightPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun EditWidgetContentDarkPreview() {
+private fun EditPlaceableItemContentDarkPreview() {
     HomeDarkPreviewEnvironment {
-        EditWidgetContent(
+        EditPlaceableItemContent(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )
@@ -201,9 +226,9 @@ private fun EditWidgetContentDarkPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AddWidgetButtonLightPreview() {
+private fun AddPlaceableItemButtonLightPreview() {
     HomeLightPreviewEnvironment {
-        AddWidgetButton(
+        AddPlaceableItemButton(
             onClick = {},
         )
     }
@@ -212,9 +237,9 @@ private fun AddWidgetButtonLightPreview() {
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AddWidgetButtonDarkPreview() {
+private fun AddPlaceableItemButtonDarkPreview() {
     HomeDarkPreviewEnvironment {
-        AddWidgetButton(
+        AddPlaceableItemButton(
             onClick = {},
         )
     }

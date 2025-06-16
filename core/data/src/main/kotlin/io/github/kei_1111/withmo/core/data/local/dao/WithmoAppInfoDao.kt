@@ -18,6 +18,9 @@ interface WithmoAppInfoDao {
     @Query("SELECT * FROM withmo_app_info WHERE favorite_order != 'NotFavorite'")
     fun getFavoriteList(): Flow<List<WithmoAppInfoEntity>>
 
+    @Query("SELECT * FROM withmo_app_info WHERE position_x IS NOT NULL AND position_y IS NOT NULL")
+    fun getPlacedList(): Flow<List<WithmoAppInfoEntity>>
+
     @Query("SELECT * FROM withmo_app_info WHERE package_name = :packageName")
     suspend fun getByPackageName(packageName: String): WithmoAppInfoEntity?
 

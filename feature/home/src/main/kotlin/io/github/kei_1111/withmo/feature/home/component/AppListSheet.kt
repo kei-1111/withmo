@@ -96,7 +96,8 @@ internal fun AppListSheet(
                         ),
                         isNavigateSettingsButtonShown =
                         state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
-                        onAction = onAction,
+                        onAppClick = { onAction(HomeAction.OnAppClick(it)) },
+                        onAppLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                         modifier = Modifier.fillMaxSize(),
                     )
                 } else {
@@ -104,108 +105,6 @@ internal fun AppListSheet(
                         message = "アプリが見つかりません",
                         modifier = Modifier.fillMaxSize(),
                     )
-                }
-            }
-        }
-    }
-}
-
-@Composable
-private fun AppList(
-    appList: ImmutableList<WithmoAppInfo>,
-    appIconShape: Shape,
-    isNavigateSettingsButtonShown: Boolean,
-    onAction: (HomeAction) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val context = LocalContext.current
-    val launchableAppList = appList
-        .filter { it.info.packageName != context.packageName }
-        .toPersistentList()
-    val settingApp = appList
-        .filter { it.info.packageName == context.packageName }
-        .toPersistentList()
-
-    Column(
-        modifier = modifier
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        if (launchableAppList.isNotEmpty()) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
-            ) {
-                LabelMediumText(
-                    text = "アプリ一覧",
-                )
-                CustomAppInfoGridLayout(
-                    items = launchableAppList,
-                    columns = DesignConstants.AppListGridColums,
-                    appIconShape = appIconShape,
-                    onClick = { onAction(HomeAction.OnAppClick(it)) },
-                    onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
-                )
-            }
-        }
-        if (settingApp.isNotEmpty() && !isNavigateSettingsButtonShown) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
-            ) {
-                LabelMediumText(
-                    text = "カスタマイズ",
-                )
-                CustomAppInfoGridLayout(
-                    items = settingApp,
-                    columns = DesignConstants.AppListGridColums,
-                    appIconShape = appIconShape,
-                    onClick = { onAction(HomeAction.OnAppClick(it)) },
-                    onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun CustomAppInfoGridLayout(
-    items: ImmutableList<WithmoAppInfo>,
-    columns: Int,
-    appIconShape: Shape,
-    onClick: (AppInfo) -> Unit,
-    onLongClick: (AppInfo) -> Unit,
-    modifier: Modifier = Modifier,
-    verticalSpacing: Dp = Paddings.Large,
-    horizontalSpacing: Dp = Paddings.Large,
-    contentPadding: PaddingValues = PaddingValues(bottom = Paddings.ExtraSmall),
-) {
-    Column(
-        modifier = modifier
-            .padding(contentPadding),
-        verticalArrangement = Arrangement.spacedBy(verticalSpacing),
-    ) {
-        items.chunked(columns).forEach { rowItems ->
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(horizontalSpacing),
-            ) {
-                rowItems.forEach { item ->
-                    Box(
-                        modifier = Modifier
-                            .weight(Weights.Medium),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        App(
-                            appInfo = item.info,
-                            onClick = { onClick(item.info) },
-                            onLongClick = { onLongClick(item.info) },
-                            appIconShape = appIconShape,
-                        )
-                    }
-                }
-                if (rowItems.size < columns) {
-                    repeat(columns - rowItems.size) {
-                        Spacer(modifier = Modifier.weight(Weights.Medium))
-                    }
                 }
             }
         }
@@ -241,7 +140,8 @@ private fun AppListLightPreview() {
             }.toPersistentList(),
             appIconShape = CircleShape,
             isNavigateSettingsButtonShown = false,
-            onAction = {},
+            onAppClick = {},
+            onAppLongClick = {},
         )
     }
 }
@@ -275,7 +175,8 @@ private fun AppListDarkPreview() {
             }.toPersistentList(),
             appIconShape = CircleShape,
             isNavigateSettingsButtonShown = false,
-            onAction = {},
+            onAppClick = {},
+            onAppLongClick = {},
         )
     }
 }

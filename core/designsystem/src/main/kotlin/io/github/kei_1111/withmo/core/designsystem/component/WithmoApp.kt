@@ -30,12 +30,15 @@ fun WithmoApp(
     withmoAppInfo: WithmoAppInfo,
     appIconSize: Float,
     appIconShape: Shape,
+    isAppNameShown: Boolean,
     topPadding: Dp,
     bottomPadding: Dp,
     startPadding: Dp,
     endPadding: Dp,
     isEditMode: Boolean,
-    deleteApp: () -> Unit,
+    onAppClick: () -> Unit,
+    onAppLongClick: () -> Unit,
+    onDeleteBadgeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -53,14 +56,15 @@ fun WithmoApp(
         endPaddingPx = endPadding.toPx(),
         isEditMode = isEditMode,
         modifier = modifier,
-        deletePlaceableItem = deleteApp,
+        onDeleteBadgeClick = onDeleteBadgeClick,
     ) {
         App(
             appInfo = withmoAppInfo.info,
             appIconSize = appIconSize,
             appIconShape = appIconShape,
-            onClick = { withmoAppInfo.info.launch(context) },
-            onLongClick = { withmoAppInfo.info.delete(context) },
+            isAppNameShown = isAppNameShown,
+            onClick = onAppClick,
+            onLongClick = onAppLongClick,
         )
     }
 }
@@ -91,12 +95,15 @@ private fun WithmoAppLightPreview() {
             ),
             appIconSize = AppConstants.DefaultAppIconSize,
             appIconShape = CircleShape,
+            isAppNameShown = false,
             topPadding = 0.dp,
             bottomPadding = 0.dp,
             startPadding = 0.dp,
             endPadding = 0.dp,
             isEditMode = false,
-            deleteApp = {},
+            onAppClick = {},
+            onAppLongClick = {},
+            onDeleteBadgeClick = {},
         )
     }
 }
@@ -127,12 +134,15 @@ private fun WithmoAppDarkPreview() {
             ),
             appIconSize = AppConstants.DefaultAppIconSize,
             appIconShape = RoundedCornerShape(3.dp),
+            isAppNameShown = true,
             topPadding = 0.dp,
             bottomPadding = 0.dp,
             startPadding = 0.dp,
             endPadding = 0.dp,
             isEditMode = true,
-            deleteApp = {},
+            onAppClick = {},
+            onAppLongClick = {},
+            onDeleteBadgeClick = {},
         )
     }
 }

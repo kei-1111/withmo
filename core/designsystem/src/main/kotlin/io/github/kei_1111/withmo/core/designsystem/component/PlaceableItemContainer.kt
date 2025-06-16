@@ -61,8 +61,8 @@ fun PlaceableItemContainer(
     endPaddingPx: Float,
     isEditMode: Boolean,
     modifier: Modifier = Modifier,
-    deletePlaceableItem: () -> Unit,
-    resizePlaceableItem: (() -> Unit)? = null,
+    onDeleteBadgeClick: () -> Unit,
+    onResizeBadgeClick: (() -> Unit)? = null,
     content: @Composable () -> Unit,
 ) {
     val configuration = LocalConfiguration.current
@@ -152,13 +152,13 @@ fun PlaceableItemContainer(
                         .padding(Paddings.ExtraSmall),
                 ) {
                     DeleteBadge(
-                        onClick = deletePlaceableItem,
+                        onClick = onDeleteBadgeClick,
                         modifier = Modifier
                             .align(Alignment.TopEnd),
                     )
-                    resizePlaceableItem?.let {
+                    onResizeBadgeClick?.let {
                         ResizeBadge(
-                            onClick = resizePlaceableItem,
+                            onClick = onResizeBadgeClick,
                             modifier = Modifier
                                 .align(Alignment.BottomEnd),
                         )

@@ -44,6 +44,15 @@ class AppInfoRepositoryImpl @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
+    override fun getPlacedList(): Flow<List<WithmoAppInfo>> {
+        return withmoAppInfoDao.getPlacedList()
+            .map { entities ->
+                entities.mapNotNull { entity -> entity.toAppInfo(context) }
+            }
+            .flowOn(ioDispatcher)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun getByPackageName(packageName: String): WithmoAppInfo? {
         return withContext(ioDispatcher) {
             withmoAppInfoDao.getByPackageName(packageName)?.toAppInfo(context)

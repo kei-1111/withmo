@@ -72,10 +72,10 @@ internal fun PagerContent(
             } else {
                 when (page) {
                     PageContent.DisplayModel.ordinal -> {
-                        onAction(HomeAction.OnWidgetContentSwipeRight)
+                        onAction(HomeAction.OnPlaceableItemContentSwipeRight)
                     }
 
-                    PageContent.Widget.ordinal -> {
+                    PageContent.PlaceableItem.ordinal -> {
                         onAction(HomeAction.OnDisplayModelContentSwipeLeft)
                     }
                 }
@@ -114,15 +114,15 @@ internal fun PagerContent(
                     )
                 }
 
-                PageContent.Widget.ordinal -> {
-                    WidgetContent(
+                PageContent.PlaceableItem.ordinal -> {
+                    PlaceableItemContent(
                         state = state,
                         onAction = onAction,
                         modifier = Modifier
                             .fillMaxSize()
                             .pointerInput(Unit) {
                                 detectTapGestures(
-                                    onLongPress = { onAction(HomeAction.OnWidgetContentLongClick) },
+                                    onLongPress = { onAction(HomeAction.OnPlaceableItemContentLongClick) },
                                 )
                             },
                     )
@@ -197,7 +197,7 @@ private fun PagerContentDarkPreview() {
         PagerContent(
             state = HomeState(
                 isEditMode = true,
-                currentPage = PageContent.Widget,
+                currentPage = PageContent.PlaceableItem,
             ),
             onAction = {},
             modifier = Modifier

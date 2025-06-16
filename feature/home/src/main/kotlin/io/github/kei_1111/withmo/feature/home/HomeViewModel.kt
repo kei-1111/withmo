@@ -5,6 +5,7 @@ import android.os.Build
 import android.os.SystemClock
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
@@ -20,6 +21,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
@@ -28,6 +30,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -78,7 +81,7 @@ class HomeViewModel @Inject constructor(
         observeUserSettings()
         observeAppList()
         observeFavoriteAppList()
-        observeWidgetList()
+        observePlaceableItemList()
     }
 
     private fun observeUserSettings() {
@@ -113,13 +116,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun observeWidgetList() {
+    private fun observePlaceableItemList() {
         viewModelScope.launch {
-            widgetInfoRepository.getAllList().collect { widgetList ->
+            combine(
+                widgetInfoRepository.getAllList(),
+                appInfoRepository.getPlacedList(),
+            ) { widgetList, appList ->
+                (widgetList + appList).toPersistentList()
+            }.collect { placedItemList ->
                 updateState {
                     copy(
-                        widgetList = widgetList.toPersistentList(),
-                        initialWidgetList = widgetList.toPersistentList(),
+                        placedItemList = placedItemList,
+                        initialPlacedItemList = placedItemList,
                     )
                 }
             }
@@ -134,40 +142,50 @@ class HomeViewModel @Inject constructor(
             sortAppList(state.value.currentUserSettings.sortSettings.sortType, filteredAppList)
         }
 
-    private fun addWidget(withmoWidgetInfo: WithmoWidgetInfo) {
-        updateState { copy(widgetList = (widgetList + withmoWidgetInfo).toPersistentList()) }
+    private fun addPlaceableItem(placeableItem: PlaceableItem) {
+        updateState { copy(placedItemList = (placedItemList + placeableItem).toPersistentList()) }
     }
 
-    private fun deleteWidget(withmoWidgetInfo: WithmoWidgetInfo) {
+    private fun deletePlaceableItem(placeableItem: PlaceableItem) {
         updateState {
             copy(
-                widgetList = widgetList
-                    .filterNot { it.widgetInfo.id == withmoWidgetInfo.widgetInfo.id }
+                placedItemList = placedItemList
+                    .filterNot { it.id == placeableItem.id }
                     .toPersistentList(),
             )
         }
     }
 
-    private fun saveWidgetList() {
-        val currentWidgetList = state.value.widgetList
-        val initialWidgetList = state.value.initialWidgetList
+    private fun savePlaceableItemList() {
+        val currentPlacedItemList = state.value.placedItemList
+        val initialPlacedItemList = state.value.initialPlacedItemList
 
-        val addedWidgetList = currentWidgetList.filterNot { currentWidget ->
-            initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
+        val addedPlacedItemList = currentPlacedItemList.filterNot { currentPlaceableItem ->
+            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
         }
 
-        val updatedWidgetList = currentWidgetList.filter { currentWidget ->
-            initialWidgetList.any { initialWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
+        val updatedPlacedItemList = currentPlacedItemList.filter { currentPlaceableItem ->
+            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
         }
 
-        val deletedWidgetList = initialWidgetList.filterNot { initialWidget ->
-            currentWidgetList.any { currentWidget -> initialWidget.widgetInfo.id == currentWidget.widgetInfo.id }
+        val deletedPlacedItemList = initialPlacedItemList.filterNot { initialPlaceableItem ->
+            currentPlacedItemList.any { currentPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
         }
 
         viewModelScope.launch {
+            val addedWidgetList = addedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
+            val updatedWidgetList = updatedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
+            val deletedWidgetList = deletedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
             widgetInfoRepository.insert(addedWidgetList)
-            widgetInfoRepository.delete(deletedWidgetList)
             widgetInfoRepository.update(updatedWidgetList)
+            widgetInfoRepository.delete(deletedWidgetList)
+
+            val addedAppList = addedPlacedItemList.filterIsInstance<WithmoAppInfo>()
+            val updatedAppList = updatedPlacedItemList.filterIsInstance<WithmoAppInfo>()
+            val deletedAppList = deletedPlacedItemList.filterIsInstance<WithmoAppInfo>()
+            addedAppList.map { appInfoRepository.insert(it) }
+            appInfoRepository.updateList(updatedAppList)
+            deletedAppList.map { appInfoRepository.delete(it) }
         }
     }
 
@@ -257,22 +275,22 @@ class HomeViewModel @Inject constructor(
                 updateState { copy(isAppListSheetOpened = false) }
             }
 
-            is HomeAction.OnAddWidgetButtonClick -> {
-                sendEffect(HomeEffect.ShowWidgetListSheet)
-                updateState { copy(isWidgetListSheetOpened = true) }
+            is HomeAction.OnAddPlaceableItemButtonClick -> {
+                sendEffect(HomeEffect.ShowPlaceableItemListSheet)
+                updateState { copy(isPlaceableItemListSheetOpened = true) }
             }
 
-            is HomeAction.OnWidgetListSheetSwipeDown -> {
-                sendEffect(HomeEffect.HideWidgetListSheet)
-                updateState { copy(isWidgetListSheetOpened = false) }
+            is HomeAction.OnPlaceableItemListSheetSwipeDown -> {
+                sendEffect(HomeEffect.HidePlaceableItemListSheet)
+                updateState { copy(isPlaceableItemListSheetOpened = false) }
             }
 
             is HomeAction.OnDisplayModelContentSwipeLeft -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
-                updateState { copy(currentPage = PageContent.Widget) }
+                updateState { copy(currentPage = PageContent.PlaceableItem) }
             }
 
-            is HomeAction.OnWidgetContentSwipeRight -> {
+            is HomeAction.OnPlaceableItemContentSwipeRight -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
                 updateState { copy(currentPage = PageContent.DisplayModel) }
             }
@@ -285,7 +303,7 @@ class HomeViewModel @Inject constructor(
                 AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
             }
 
-            is HomeAction.OnWidgetListSheetItemClick -> {
+            is HomeAction.OnPlaceableItemListSheetWidgetClick -> {
                 val widgetId = widgetManager.allocateId()
                 val provider = action.widgetInfo.provider
                 val result = widgetManager.bindAppWidgetId(widgetId, provider, action.widgetInfo.minWidth, action.widgetInfo.minHeight)
@@ -301,27 +319,38 @@ class HomeViewModel @Inject constructor(
                         if (activityInfo != null && activityInfo.exported) {
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addWidget(WithmoWidgetInfo(widgetInfo))
+                            addPlaceableItem(WithmoWidgetInfo(widgetInfo))
                         }
                     } else {
-                        addWidget(WithmoWidgetInfo(widgetInfo))
+                        addPlaceableItem(WithmoWidgetInfo(widgetInfo))
                     }
                 } else {
                     val intent = widgetManager.buildBindIntent(widgetId, provider)
                     sendEffect(HomeEffect.BindWidget(intent))
                 }
-                sendEffect(HomeEffect.HideWidgetListSheet)
-                updateState { copy(isWidgetListSheetOpened = false) }
+                sendEffect(HomeEffect.HidePlaceableItemListSheet)
+                updateState { copy(isPlaceableItemListSheetOpened = false) }
             }
 
-            is HomeAction.OnWidgetContentLongClick -> updateState { copy(isEditMode = true) }
+            is HomeAction.OnPlaceableItemListSheetAppClick -> {
+                addPlaceableItem(
+                    WithmoAppInfo(
+                        info = action.appInfo,
+                        position = Offset.Zero
+                    )
+                )
+                sendEffect(HomeEffect.HidePlaceableItemListSheet)
+                updateState { copy(isPlaceableItemListSheetOpened = false) }
+            }
+
+            is HomeAction.OnPlaceableItemContentLongClick -> updateState { copy(isEditMode = true) }
 
             is HomeAction.OnCompleteEditButtonClick -> {
-                saveWidgetList()
+                savePlaceableItemList()
                 updateState { copy(isEditMode = false) }
             }
 
-            is HomeAction.OnDeleteWidgetBadgeClick -> deleteWidget(action.withmoWidgetInfo)
+            is HomeAction.OnDeletePlaceableItemBadgeClick -> deletePlaceableItem(action.placeableItem)
 
             is HomeAction.OnResizeWidgetBadgeClick -> {
                 updateState {
@@ -330,7 +359,7 @@ class HomeViewModel @Inject constructor(
                         resizingWidget = action.withmoWidgetInfo,
                     )
                 }
-                deleteWidget(action.withmoWidgetInfo)
+                deletePlaceableItem(action.withmoWidgetInfo)
             }
 
             is HomeAction.OnWidgetResizeBottomSheetClose -> {
@@ -340,7 +369,7 @@ class HomeViewModel @Inject constructor(
                         resizingWidget = null,
                     )
                 }
-                addWidget(action.withmoWidgetInfo)
+                addPlaceableItem(action.withmoWidgetInfo)
             }
 
             is HomeAction.OnOpenDocumentLauncherResult -> {
@@ -369,7 +398,7 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnConfigureWidgetLauncherResult -> {
                 state.value.pendingWidgetInfo?.let { widgetInfo ->
                     if (action.result.resultCode == RESULT_OK) {
-                        addWidget(WithmoWidgetInfo(widgetInfo))
+                        addPlaceableItem(WithmoWidgetInfo(widgetInfo))
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
                     }
@@ -383,7 +412,7 @@ class HomeViewModel @Inject constructor(
                             val intent = widgetManager.buildConfigureIntent(widgetInfo.id, widgetInfo.info.configure)
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addWidget(WithmoWidgetInfo(widgetInfo))
+                            addPlaceableItem(WithmoWidgetInfo(widgetInfo))
                         }
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)

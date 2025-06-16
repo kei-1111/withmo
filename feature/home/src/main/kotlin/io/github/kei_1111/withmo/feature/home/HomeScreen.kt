@@ -28,7 +28,7 @@ import io.github.kei_1111.withmo.feature.home.component.AppListSheet
 import io.github.kei_1111.withmo.feature.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.feature.home.component.ModelLoading
-import io.github.kei_1111.withmo.feature.home.component.WidgetListSheet
+import io.github.kei_1111.withmo.feature.home.component.PlaceableItemListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
@@ -47,7 +47,7 @@ fun HomeScreen(
 
     val scope = rememberCoroutineScope()
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val placeableItemListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
@@ -101,9 +101,9 @@ fun HomeScreen(
 
                 is HomeEffect.HideAppListSheet -> scope.launch { appListSheetState.hide() }
 
-                is HomeEffect.ShowWidgetListSheet -> scope.launch { widgetListSheetState.show() }
+                is HomeEffect.ShowPlaceableItemListSheet -> scope.launch { placeableItemListSheetState.show() }
 
-                is HomeEffect.HideWidgetListSheet -> scope.launch { widgetListSheetState.hide() }
+                is HomeEffect.HidePlaceableItemListSheet -> scope.launch { placeableItemListSheetState.hide() }
 
                 is HomeEffect.NavigateSettings -> currentOnNavigateSettingsButtonClick()
 
@@ -116,7 +116,7 @@ fun HomeScreen(
         state = state,
         onAction = viewModel::onAction,
         appListSheetState = appListSheetState,
-        widgetListSheetState = widgetListSheetState,
+        widgetListSheetState = placeableItemListSheetState,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -141,9 +141,10 @@ private fun HomeScreen(
         )
     }
 
-    if (state.isWidgetListSheetOpened) {
-        WidgetListSheet(
-            widgetListSheetState = widgetListSheetState,
+    if (state.isPlaceableItemListSheetOpened) {
+        PlaceableItemListSheet(
+            placeableItemListSheetState = widgetListSheetState,
+            state = state,
             onAction = onAction,
             modifier = Modifier.padding(
                 top = topPaddingValue,

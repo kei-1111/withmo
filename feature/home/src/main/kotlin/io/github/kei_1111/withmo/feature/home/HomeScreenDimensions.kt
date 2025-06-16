@@ -6,6 +6,8 @@ internal data object HomeScreenDimensions {
     val ModelLoadingHeight = 100.dp
     val ModelLoadingWidth = 300.dp
 
+    val PlaceableItemTabHeight = 60.dp
+
     val PageIndicatorSpaceHeight = 25.dp
     val PageIndicatorSize = 8.dp
 

@@ -20,8 +20,8 @@ fun WithmoWidget(
     startPadding: Dp,
     endPadding: Dp,
     isEditMode: Boolean,
-    deleteWidget: () -> Unit,
-    resizeWidget: () -> Unit,
+    onDeleteBadgeClick: () -> Unit,
+    onResizeBadgeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val configuration = LocalConfiguration.current
@@ -59,8 +59,8 @@ fun WithmoWidget(
         endPaddingPx = endPadding.toPx(),
         isEditMode = isEditMode,
         modifier = modifier,
-        deletePlaceableItem = deleteWidget,
-        resizePlaceableItem = resizeWidget,
+        onDeleteBadgeClick = onDeleteBadgeClick,
+        onResizeBadgeClick = onResizeBadgeClick,
     ) {
         Widget(
             withmoWidgetInfo = withmoWidgetInfo,

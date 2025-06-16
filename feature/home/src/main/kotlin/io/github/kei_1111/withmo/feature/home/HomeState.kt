@@ -3,6 +3,7 @@ package io.github.kei_1111.withmo.feature.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.featurebase.State
+import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
@@ -16,9 +17,9 @@ data class HomeState(
     val isModelChangeWarningDialogShown: Boolean = false,
     val isModelLoading: Boolean = true,
     val isAppListSheetOpened: Boolean = false,
-    val isWidgetListSheetOpened: Boolean = false,
-    val widgetList: ImmutableList<WithmoWidgetInfo> = persistentListOf(),
-    val initialWidgetList: ImmutableList<WithmoWidgetInfo> = persistentListOf(),
+    val isPlaceableItemListSheetOpened: Boolean = false,
+    val placedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
+    val initialPlacedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
     val pendingWidgetInfo: WidgetInfo? = null,
     val isEditMode: Boolean = false,
     val resizingWidget: WithmoWidgetInfo? = null,
@@ -32,5 +33,5 @@ data class HomeState(
 
 enum class PageContent {
     DisplayModel,
-    Widget,
+    PlaceableItem,
 }

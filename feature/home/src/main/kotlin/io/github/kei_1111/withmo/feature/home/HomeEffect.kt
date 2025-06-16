@@ -12,8 +12,8 @@ sealed interface HomeEffect : Effect {
     data class DeleteApp(val appInfo: AppInfo) : HomeEffect
     data object ShowAppListSheet : HomeEffect
     data object HideAppListSheet : HomeEffect
-    data object ShowWidgetListSheet : HomeEffect
-    data object HideWidgetListSheet : HomeEffect
+    data object ShowPlaceableItemListSheet : HomeEffect
+    data object HidePlaceableItemListSheet : HomeEffect
     data object NavigateSettings : HomeEffect
     data class ShowToast(val message: String) : HomeEffect
 }

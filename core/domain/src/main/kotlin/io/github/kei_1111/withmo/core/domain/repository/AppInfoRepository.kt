@@ -8,6 +8,8 @@ interface AppInfoRepository {
 
     fun getFavoriteList(): Flow<List<WithmoAppInfo>>
 
+    fun getPlacedList(): Flow<List<WithmoAppInfo>>
+
     suspend fun getByPackageName(packageName: String): WithmoAppInfo?
 
     suspend fun insert(withmoAppInfo: WithmoAppInfo)

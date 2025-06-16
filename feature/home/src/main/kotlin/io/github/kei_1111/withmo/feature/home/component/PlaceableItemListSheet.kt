@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,8 +27,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Tab
+import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -37,26 +41,93 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
+import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
+import io.github.kei_1111.withmo.feature.home.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 
+enum class PlaceableItemTab {
+    Widget,
+    App
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun WidgetListSheet(
-    widgetListSheetState: SheetState,
+internal fun PlaceableItemListSheet(
+    placeableItemListSheetState: SheetState,
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var selectedTab by remember { mutableIntStateOf(PlaceableItemTab.Widget.ordinal) }
+
+    ModalBottomSheet(
+        onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
+        shape = BottomSheetShape,
+        sheetState = placeableItemListSheetState,
+        dragHandle = {},
+        modifier = modifier,
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            TabRow(
+                selectedTabIndex = selectedTab,
+                modifier = Modifier.fillMaxWidth(),
+            ) {
+                Tab(
+                    selected = selectedTab == PlaceableItemTab.Widget.ordinal,
+                    onClick = { selectedTab = PlaceableItemTab.Widget.ordinal },
+                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    text = { BodyMediumText(text = "ウィジェット") },
+                )
+                Tab(
+                    selected = selectedTab == PlaceableItemTab.App.ordinal,
+                    onClick = { selectedTab = PlaceableItemTab.App.ordinal },
+                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    text = { BodyMediumText(text = "アプリ") },
+                )
+            }
+
+            when (selectedTab) {
+                PlaceableItemTab.Widget.ordinal -> {
+                    WidgetTabContent(
+                        onAction = onAction,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+
+                PlaceableItemTab.App.ordinal -> {
+                    AppTabContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.S)
+@Composable
+private fun WidgetTabContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -66,15 +137,50 @@ internal fun WidgetListSheet(
         .groupBy { it.provider.packageName }
         .toPersistentMap()
 
-    ModalBottomSheet(
-        onDismissRequest = { onAction(HomeAction.OnWidgetListSheetSwipeDown) },
-        sheetState = widgetListSheetState,
+    WidgetList(
+        groupedWidgetInfoMaps = groupedWidgetInfoMaps,
+        selectWidget = { onAction(HomeAction.OnPlaceableItemListSheetWidgetClick(it)) },
         modifier = modifier,
+    )
+}
+
+@Suppress("LongMethod")
+@Composable
+private fun AppTabContent(
+    state: HomeState,
+    onAction: (HomeAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .padding(top = Paddings.Medium)
+            .padding(horizontal = Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        WidgetList(
-            groupedWidgetInfoMaps = groupedWidgetInfoMaps,
-            selectWidget = { onAction(HomeAction.OnWidgetListSheetItemClick(it)) },
+        WithmoSearchTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = state.appSearchQuery,
+            onValueChange = { onAction(HomeAction.OnAppSearchQueryChange(it)) },
         )
+        if (state.searchedAppList.isNotEmpty()) {
+            AppList(
+                appList = state.searchedAppList,
+                appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
+                    state.currentUserSettings.appIconSettings.roundedCornerPercent,
+                ),
+                isNavigateSettingsButtonShown =
+                    state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                onAppClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
+                onAppLongClick = {},
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
+            CenteredMessage(
+                message = "アプリが見つかりません",
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 
