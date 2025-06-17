@@ -15,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -121,10 +122,11 @@ internal fun AppListSheet(
 }
 
 @Suppress("MagicNumber")
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AppListLightPreview() {
+private fun AppListSheetLightPreview() {
     HomeLightPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
@@ -134,32 +136,33 @@ private fun AppListLightPreview() {
             )
         }
 
-        AppList(
-            appList = List(40) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = Offset.Unspecified,
-                )
-            }.toPersistentList(),
-            appIconShape = CircleShape,
-            isNavigateSettingsButtonShown = false,
-            onAppClick = {},
-            onAppLongClick = {},
+        AppListSheet(
+            appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
+            state = HomeState(
+                appList = List(20) {
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 3 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = {},
         )
     }
 }
 
 @Suppress("MagicNumber")
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-private fun AppListDarkPreview() {
+private fun AppListSheetDarkPreview() {
     HomeDarkPreviewEnvironment {
         val context = LocalContext.current
         val appIcon = remember {
@@ -169,23 +172,24 @@ private fun AppListDarkPreview() {
             )
         }
 
-        AppList(
-            appList = List(40) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = Offset.Unspecified,
-                )
-            }.toPersistentList(),
-            appIconShape = CircleShape,
-            isNavigateSettingsButtonShown = false,
-            onAppClick = {},
-            onAppLongClick = {},
+        AppListSheet(
+            appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
+            state = HomeState(
+                appList = List(20) {
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 3 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
+                    )
+                }.toPersistentList(),
+            ),
+            onAction = {},
         )
     }
 }
+

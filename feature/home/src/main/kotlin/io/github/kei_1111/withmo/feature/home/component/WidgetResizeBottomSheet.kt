@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.feature.home.component
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,14 +21,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
+import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.component.Widget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
+import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -101,6 +110,72 @@ internal fun WidgetResizeBottomSheet(
                     steps = 1,
                 )
             }
+        }
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WidgetResizeBottomSheetLightPreview() {
+    HomeLightPreviewEnvironment {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Paddings.Medium),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+        ) {
+            WithmoSettingItemWithSlider(
+                title = "Widget 幅",
+                value = 200f,
+                onValueChange = {},
+                valueRange = 100f..400f,
+                modifier = Modifier.fillMaxWidth(),
+                steps = 1,
+            )
+            WithmoSettingItemWithSlider(
+                title = "Widget 高さ",
+                value = 150f,
+                onValueChange = {},
+                valueRange = 100f..400f,
+                modifier = Modifier.fillMaxWidth(),
+                steps = 1,
+            )
+        }
+    }
+}
+
+@Suppress("MagicNumber")
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview
+@Composable
+private fun WidgetResizeBottomSheetDarkPreview() {
+    HomeDarkPreviewEnvironment {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Paddings.Medium),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+        ) {
+            WithmoSettingItemWithSlider(
+                title = "Widget 幅",
+                value = 200f,
+                onValueChange = {},
+                valueRange = 100f..400f,
+                modifier = Modifier.fillMaxWidth(),
+                steps = 1,
+            )
+            WithmoSettingItemWithSlider(
+                title = "Widget 高さ",
+                value = 150f,
+                onValueChange = {},
+                valueRange = 100f..400f,
+                modifier = Modifier.fillMaxWidth(),
+                steps = 1,
+            )
         }
     }
 }
