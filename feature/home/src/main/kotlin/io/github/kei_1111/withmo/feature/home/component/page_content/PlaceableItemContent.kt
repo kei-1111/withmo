@@ -80,7 +80,9 @@ internal fun PlaceableItemContent(
                         WithmoApp(
                             withmoAppInfo = placeableItem,
                             appIconSize = state.currentUserSettings.appIconSettings.appIconSize,
-                            appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(state.currentUserSettings.appIconSettings.roundedCornerPercent),
+                            appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
+                                state.currentUserSettings.appIconSettings.roundedCornerPercent,
+                            ),
                             isAppNameShown = state.currentUserSettings.appIconSettings.isAppNameShown,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,

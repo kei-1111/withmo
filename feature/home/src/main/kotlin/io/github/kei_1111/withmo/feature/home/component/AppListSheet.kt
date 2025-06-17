@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -58,7 +57,7 @@ internal fun AppListSheet(
     val searchedAppList by remember(
         appSearchQuery,
         state.appList,
-        state.currentUserSettings.sortSettings.sortType
+        state.currentUserSettings.sortSettings.sortType,
     ) {
         derivedStateOf {
             val filtered = state.appList.filter { appInfo ->
@@ -66,7 +65,7 @@ internal fun AppListSheet(
             }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,
-                appList  = filtered,
+                appList = filtered,
             ).toPersistentList()
         }
     }
@@ -192,4 +191,3 @@ private fun AppListSheetDarkPreview() {
         )
     }
 }
-

@@ -29,11 +29,9 @@ import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.ref.WeakReference
 import javax.inject.Inject
 
@@ -245,7 +243,6 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
 
-
             is HomeAction.OnAppListSheetSwipeUp -> {
                 sendEffect(HomeEffect.ShowAppListSheet)
                 updateState { copy(isAppListSheetOpened = true) }
@@ -317,8 +314,8 @@ class HomeViewModel @Inject constructor(
                 addPlaceableItem(
                     WithmoAppInfo(
                         info = action.appInfo,
-                        position = Offset.Zero
-                    )
+                        position = Offset.Zero,
+                    ),
                 )
                 sendEffect(HomeEffect.HidePlaceableItemListSheet)
                 updateState { copy(isPlaceableItemListSheetOpened = false) }

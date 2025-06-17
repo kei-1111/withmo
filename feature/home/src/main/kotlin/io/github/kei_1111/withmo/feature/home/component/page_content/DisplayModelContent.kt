@@ -61,13 +61,13 @@ internal fun DisplayModelContent(
     Box(
         modifier = modifier
             .padding(top = topPaddingValue)
-            .padding(horizontal = Paddings.Medium)
+            .padding(horizontal = Paddings.Medium),
     ) {
         if (state.currentUserSettings.clockSettings.isClockShown) {
             WithmoClock(
                 clockType = state.currentUserSettings.clockSettings.clockType,
                 dateTimeInfo = currentTime.toDateTimeInfo(),
-                modifier = Modifier.align(Alignment.TopStart)
+                modifier = Modifier.align(Alignment.TopStart),
             )
         }
 

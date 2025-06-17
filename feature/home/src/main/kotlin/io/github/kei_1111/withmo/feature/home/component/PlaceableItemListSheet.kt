@@ -72,11 +72,7 @@ import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
 
-enum class PlaceableItemTab {
-    Widget,
-    App
-}
-
+@Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun PlaceableItemListSheet(
@@ -91,7 +87,7 @@ internal fun PlaceableItemListSheet(
     val searchedAppList by remember(
         appSearchQuery,
         state.appList,
-        state.currentUserSettings.sortSettings.sortType
+        state.currentUserSettings.sortSettings.sortType,
     ) {
         derivedStateOf {
             val filtered = state.appList.filter { appInfo ->
@@ -99,7 +95,7 @@ internal fun PlaceableItemListSheet(
             }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,
-                appList  = filtered,
+                appList = filtered,
             ).toPersistentList()
         }
     }
@@ -155,6 +151,11 @@ internal fun PlaceableItemListSheet(
     }
 }
 
+enum class PlaceableItemTab {
+    Widget,
+    App,
+}
+
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 private fun WidgetTabContent(
@@ -203,7 +204,7 @@ private fun AppTabContent(
                     state.currentUserSettings.appIconSettings.roundedCornerPercent,
                 ),
                 isNavigateSettingsButtonShown =
-                    state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
                 onAppClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
                 onAppLongClick = {},
                 modifier = Modifier.fillMaxSize(),
