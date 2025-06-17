@@ -51,7 +51,6 @@ class HomeViewModel @Inject constructor(
     private val saveModelSettingsUseCase: SaveModelSettingsUseCase,
 ) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
-    private val currentAppList = mutableListOf<WithmoAppInfo>()
     private var lastScaleSentTime = 0L
 
     override fun createInitialState(): HomeState = HomeState()
@@ -90,7 +89,7 @@ class HomeViewModel @Inject constructor(
                 updateState {
                     copy(
                         currentUserSettings = userSettings,
-                        searchedAppList = sortAppList(userSettings.sortSettings.sortType, searchedAppList).toPersistentList(),
+                        appList = sortAppList(userSettings.sortSettings.sortType, appList).toPersistentList(),
                     )
                 }
             }
@@ -100,10 +99,7 @@ class HomeViewModel @Inject constructor(
     private fun observeAppList() {
         viewModelScope.launch {
             appInfoRepository.getAllList().collect { appList ->
-                currentAppList.clear()
-                currentAppList.addAll(appList)
-                val filteredAppList = filterAppList(state.value.appSearchQuery, appList).toPersistentList()
-                updateState { copy(searchedAppList = filteredAppList) }
+                updateState { copy(appList = appList.toPersistentList()) }
             }
         }
     }
@@ -133,14 +129,6 @@ class HomeViewModel @Inject constructor(
             }
         }
     }
-
-    private suspend fun filterAppList(query: String, appList: List<WithmoAppInfo>): List<WithmoAppInfo> =
-        withContext(Dispatchers.Default) {
-            val filteredAppList = appList.filter { withmoAppInfo ->
-                withmoAppInfo.info.label.contains(query, ignoreCase = true)
-            }
-            sortAppList(state.value.currentUserSettings.sortSettings.sortType, filteredAppList)
-        }
 
     private fun addPlaceableItem(placeableItem: PlaceableItem) {
         updateState { copy(placedItemList = (placedItemList + placeableItem).toPersistentList()) }
@@ -257,13 +245,6 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
 
-            is HomeAction.OnAppSearchQueryChange -> {
-                updateState { copy(appSearchQuery = action.query) }
-                viewModelScope.launch {
-                    val filteredAppList = filterAppList(action.query, currentAppList)
-                    updateState { copy(searchedAppList = filteredAppList.toPersistentList()) }
-                }
-            }
 
             is HomeAction.OnAppListSheetSwipeUp -> {
                 sendEffect(HomeEffect.ShowAppListSheet)

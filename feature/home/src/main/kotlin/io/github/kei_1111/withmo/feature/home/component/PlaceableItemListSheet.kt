@@ -30,6 +30,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +51,9 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -76,6 +80,23 @@ internal fun PlaceableItemListSheet(
     modifier: Modifier = Modifier,
 ) {
     var selectedTab by remember { mutableIntStateOf(PlaceableItemTab.Widget.ordinal) }
+
+    var appSearchQuery by remember { mutableStateOf("") }
+    val searchedAppList by remember(
+        appSearchQuery,
+        state.appList,
+        state.currentUserSettings.sortSettings.sortType
+    ) {
+        derivedStateOf {
+            val filtered = state.appList.filter { appInfo ->
+                appInfo.info.label.contains(appSearchQuery, ignoreCase = true)
+            }
+            sortAppList(
+                sortType = state.currentUserSettings.sortSettings.sortType,
+                appList  = filtered,
+            ).toPersistentList()
+        }
+    }
 
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
@@ -115,6 +136,9 @@ internal fun PlaceableItemListSheet(
 
                 PlaceableItemTab.App.ordinal -> {
                     AppTabContent(
+                        appSearchQuery = appSearchQuery,
+                        onAppSearchQueryChange = { appSearchQuery = it },
+                        searchedAppList = searchedAppList,
                         state = state,
                         onAction = onAction,
                         modifier = Modifier.fillMaxSize(),
@@ -147,6 +171,9 @@ private fun WidgetTabContent(
 @Suppress("LongMethod")
 @Composable
 private fun AppTabContent(
+    appSearchQuery: String,
+    onAppSearchQueryChange: (String) -> Unit,
+    searchedAppList: ImmutableList<WithmoAppInfo>,
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -160,12 +187,12 @@ private fun AppTabContent(
     ) {
         WithmoSearchTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = state.appSearchQuery,
-            onValueChange = { onAction(HomeAction.OnAppSearchQueryChange(it)) },
+            value = appSearchQuery,
+            onValueChange = onAppSearchQueryChange,
         )
-        if (state.searchedAppList.isNotEmpty()) {
+        if (searchedAppList.isNotEmpty()) {
             AppList(
-                appList = state.searchedAppList,
+                appList = searchedAppList,
                 appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                     state.currentUserSettings.appIconSettings.roundedCornerPercent,
                 ),

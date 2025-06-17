@@ -19,7 +19,6 @@ sealed interface HomeAction : Action {
     data object OnNavigateSettingsButtonClick : HomeAction
     data object OnModelChangeWarningDialogConfirm : HomeAction
     data object OnModelChangeWarningDialogDismiss : HomeAction
-    data class OnAppSearchQueryChange(val query: String) : HomeAction
     data object OnAppListSheetSwipeUp : HomeAction
     data object OnAppListSheetSwipeDown : HomeAction
     data object OnAddPlaceableItemButtonClick : HomeAction
