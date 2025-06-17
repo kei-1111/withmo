@@ -10,8 +10,8 @@ import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 
 fun WithmoWidgetInfo.toEntity(): WithmoWidgetInfoEntity {
     return WithmoWidgetInfoEntity(
-        id = widgetInfo.id,
-        appWidgetProviderClassName = widgetInfo.info.provider.className,
+        id = info.id,
+        appWidgetProviderClassName = info.info.provider.className,
         width = width,
         height = height,
         positionX = position.x,
@@ -27,7 +27,7 @@ fun WithmoWidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): Wit
     }
 
     return WithmoWidgetInfo(
-        widgetInfo = WidgetInfo(id, info),
+        info = WidgetInfo(id, info),
         width = width,
         height = height,
         position = Offset(positionX, positionY),

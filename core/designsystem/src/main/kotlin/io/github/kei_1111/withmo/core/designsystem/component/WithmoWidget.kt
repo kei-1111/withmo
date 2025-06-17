@@ -37,14 +37,14 @@ fun WithmoWidget(
 
     if (withmoWidgetInfo.width == 0) {
         withmoWidgetInfo.width = calculateWidgetWidth(
-            widgetWidth = withmoWidgetInfo.widgetInfo.info.minWidth.toDp(),
+            widgetWidth = withmoWidgetInfo.info.info.minWidth.toDp(),
             minDraggedSpaceDimension = minDraggedSpaceDimension,
         )
     }
 
     if (withmoWidgetInfo.height == 0) {
         withmoWidgetInfo.height = calculateWidgetHeight(
-            widgetHeight = withmoWidgetInfo.widgetInfo.info.minHeight.toDp(),
+            widgetHeight = withmoWidgetInfo.info.info.minHeight.toDp(),
             minDraggedSpaceDimension = minDraggedSpaceDimension,
         )
     }

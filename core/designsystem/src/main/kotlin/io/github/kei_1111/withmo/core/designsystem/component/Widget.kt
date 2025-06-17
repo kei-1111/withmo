@@ -20,11 +20,11 @@ fun Widget(
     val appWidgetHost = LocalAppWidgetHost.current
     val context = LocalContext.current
 
-    val hostView = remember(withmoWidgetInfo.widgetInfo.id) {
+    val hostView = remember(withmoWidgetInfo.info.id) {
         appWidgetHost.createView(
             context.applicationContext,
-            withmoWidgetInfo.widgetInfo.id,
-            withmoWidgetInfo.widgetInfo.info,
+            withmoWidgetInfo.info.id,
+            withmoWidgetInfo.info.info,
         ).apply {
             val widgetSizeBundle = Bundle().apply {
                 putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, withmoWidgetInfo.width)
