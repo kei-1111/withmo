@@ -179,9 +179,9 @@ class HomeViewModel @Inject constructor(
             val addedAppList = addedPlacedItemList.filterIsInstance<WithmoAppInfo>()
             val updatedAppList = updatedPlacedItemList.filterIsInstance<WithmoAppInfo>()
             val deletedAppList = deletedPlacedItemList.filterIsInstance<WithmoAppInfo>()
-            addedAppList.map { appInfoRepository.insert(it) }
+            addedAppList.forEach { appInfoRepository.insert(it) }
             appInfoRepository.updateList(updatedAppList)
-            deletedAppList.map { appInfoRepository.delete(it) }
+            deletedAppList.forEach { appInfoRepository.delete(it) }
         }
     }
 
