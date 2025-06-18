@@ -4,13 +4,10 @@ import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
-import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
@@ -25,14 +22,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.home.component.AppListSheet
 import io.github.kei_1111.withmo.feature.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.feature.home.component.ModelLoading
-import io.github.kei_1111.withmo.feature.home.component.WidgetListSheet
+import io.github.kei_1111.withmo.feature.home.component.PlaceableItemListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
@@ -51,7 +47,7 @@ fun HomeScreen(
 
     val scope = rememberCoroutineScope()
     val appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
-    val widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
+    val placeableItemListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
 
     val openDocumentLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.OpenDocument(),
@@ -105,9 +101,9 @@ fun HomeScreen(
 
                 is HomeEffect.HideAppListSheet -> scope.launch { appListSheetState.hide() }
 
-                is HomeEffect.ShowWidgetListSheet -> scope.launch { widgetListSheetState.show() }
+                is HomeEffect.ShowPlaceableItemListSheet -> scope.launch { placeableItemListSheetState.show() }
 
-                is HomeEffect.HideWidgetListSheet -> scope.launch { widgetListSheetState.hide() }
+                is HomeEffect.HidePlaceableItemListSheet -> scope.launch { placeableItemListSheetState.hide() }
 
                 is HomeEffect.NavigateSettings -> currentOnNavigateSettingsButtonClick()
 
@@ -120,7 +116,7 @@ fun HomeScreen(
         state = state,
         onAction = viewModel::onAction,
         appListSheetState = appListSheetState,
-        widgetListSheetState = widgetListSheetState,
+        widgetListSheetState = placeableItemListSheetState,
         modifier = Modifier.fillMaxSize(),
     )
 }
@@ -136,8 +132,6 @@ private fun HomeScreen(
     modifier: Modifier = Modifier,
 ) {
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
-    val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
-    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
     if (state.isAppListSheetOpened) {
         AppListSheet(
@@ -147,9 +141,10 @@ private fun HomeScreen(
         )
     }
 
-    if (state.isWidgetListSheetOpened) {
-        WidgetListSheet(
-            widgetListSheetState = widgetListSheetState,
+    if (state.isPlaceableItemListSheetOpened) {
+        PlaceableItemListSheet(
+            placeableItemListSheetState = widgetListSheetState,
+            state = state,
             onAction = onAction,
             modifier = Modifier.padding(
                 top = topPaddingValue,
@@ -166,19 +161,11 @@ private fun HomeScreen(
         }
     }
 
-    Box(
-        modifier = modifier
-            .padding(
-                top = topPaddingValue,
-                bottom = bottomPaddingValue + Paddings.Medium,
-            ),
-    ) {
-        HomeScreenContent(
-            state = state,
-            onAction = onAction,
-            modifier = Modifier.fillMaxSize(),
-        )
-    }
+    HomeScreenContent(
+        state = state,
+        onAction = onAction,
+        modifier = modifier,
+    )
 
     if (state.isModelChangeWarningDialogShown) {
         ModelChangeWarningDialog(

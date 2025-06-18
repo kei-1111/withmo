@@ -12,6 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
@@ -22,6 +23,7 @@ import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 fun WithmoIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
     content: @Composable () -> Unit,
 ) {
     Box(
@@ -30,7 +32,7 @@ fun WithmoIconButton(
                 shape = CircleShape,
             )
             .background(
-                color = MaterialTheme.colorScheme.surface,
+                color = backgroundColor,
                 shape = CircleShape,
             )
             .safeClickable { onClick() },

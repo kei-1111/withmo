@@ -4,22 +4,22 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProviderInfo
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
-import io.github.kei_1111.withmo.core.data.local.entity.WidgetInfoEntity
+import io.github.kei_1111.withmo.core.data.local.entity.WithmoWidgetInfoEntity
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 
-fun WithmoWidgetInfo.toEntity(): WidgetInfoEntity {
-    return WidgetInfoEntity(
-        id = widgetInfo.id,
-        appWidgetProviderClassName = widgetInfo.info.provider.className,
-        positionX = position.x,
-        positionY = position.y,
+fun WithmoWidgetInfo.toEntity(): WithmoWidgetInfoEntity {
+    return WithmoWidgetInfoEntity(
+        id = info.id,
+        appWidgetProviderClassName = info.info.provider.className,
         width = width,
         height = height,
+        positionX = position.x,
+        positionY = position.y,
     )
 }
 
-fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WithmoWidgetInfo? {
+fun WithmoWidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WithmoWidgetInfo? {
     val info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
     if (info == null) {
         Log.e("toWidgetInfo", "AppWidgetProviderInfo not found: $appWidgetProviderClassName")
@@ -27,10 +27,10 @@ fun WidgetInfoEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): WithmoWid
     }
 
     return WithmoWidgetInfo(
-        widgetInfo = WidgetInfo(id, info),
-        position = Offset(positionX, positionY),
+        info = WidgetInfo(id, info),
         width = width,
         height = height,
+        position = Offset(positionX, positionY),
     )
 }
 

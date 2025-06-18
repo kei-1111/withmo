@@ -50,16 +50,6 @@ class AppIconSettingsViewModel @Inject constructor(
 
     override fun onAction(action: AppIconSettingsAction) {
         when (action) {
-            is AppIconSettingsAction.OnAppIconSizeSliderChange -> {
-                updateState {
-                    val updatedAppIconSettings = appIconSettings.copy(appIconSize = action.appIconSize)
-                    copy(
-                        appIconSettings = updatedAppIconSettings,
-                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
-                    )
-                }
-            }
-
             is AppIconSettingsAction.OnAppIconShapeRadioButtonClick -> {
                 updateState {
                     val updatedAppIconSettings = appIconSettings.copy(appIconShape = action.appIconShape)
@@ -73,26 +63,6 @@ class AppIconSettingsViewModel @Inject constructor(
             is AppIconSettingsAction.OnRoundedCornerPercentSliderChange -> {
                 updateState {
                     val updatedAppIconSettings = appIconSettings.copy(roundedCornerPercent = action.roundedCornerPercent)
-                    copy(
-                        appIconSettings = updatedAppIconSettings,
-                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
-                    )
-                }
-            }
-
-            is AppIconSettingsAction.OnIsAppNameShownSwitchChange -> {
-                updateState {
-                    val updatedAppIconSettings = appIconSettings.copy(isAppNameShown = action.isAppNameShown)
-                    copy(
-                        appIconSettings = updatedAppIconSettings,
-                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
-                    )
-                }
-            }
-
-            is AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange -> {
-                updateState {
-                    val updatedAppIconSettings = appIconSettings.copy(isFavoriteAppBackgroundShown = action.isFavoriteAppBackgroundShown)
                     copy(
                         appIconSettings = updatedAppIconSettings,
                         isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,

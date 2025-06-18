@@ -17,6 +17,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.geometry.Offset
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,6 +31,8 @@ import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider
@@ -76,26 +79,36 @@ class MainActivity : ComponentActivity() {
                 IntentConstants.Action.NotificationReceived -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
-                            appInfoRepository.getAppInfoByPackageName(pkgName)
+                            appInfoRepository.getByPackageName(pkgName)
                         } ?: return@launch
 
-                        val updatedAppInfo = currentAppInfo.copy(notification = true)
-                        appInfoRepository.updateAppInfo(updatedAppInfo)
+                        val updatedAppInfo = currentAppInfo
+                            .copy(
+                                info = currentAppInfo.info.copy(
+                                    notification = true,
+                                ),
+                            )
+                        appInfoRepository.update(updatedAppInfo)
                     }
                 }
+
                 IntentConstants.Action.StartActivity -> {
                     lifecycleScope.launch {
                         val currentAppInfo = packageName?.let { pkgName ->
-                            appInfoRepository.getAppInfoByPackageName(pkgName)
+                            appInfoRepository.getByPackageName(pkgName)
                         } ?: return@launch
 
-                        val updatedAppInfo = currentAppInfo.copy(
-                            notification = false,
-                            useCount = currentAppInfo.useCount + 1,
-                        )
-                        appInfoRepository.updateAppInfo(updatedAppInfo)
+                        val updatedAppInfo = currentAppInfo
+                            .copy(
+                                info = currentAppInfo.info.copy(
+                                    notification = false,
+                                    useCount = currentAppInfo.info.useCount + 1,
+                                ),
+                            )
+                        appInfoRepository.update(updatedAppInfo)
                     }
                 }
+
                 else -> {
                     lifecycleScope.launch {
                         syncAppInfo()
@@ -205,7 +218,13 @@ class MainActivity : ComponentActivity() {
     }
 
     private suspend fun syncAppInfo() {
-        val installedApps = AppUtils.getAppList(this)
+        val installedApps = AppUtils.getAppList(this).map {
+            WithmoAppInfo(
+                info = it,
+                favoriteOrder = FavoriteOrder.NotFavorite,
+                position = Offset.Unspecified,
+            )
+        }
 
         appInfoRepository.syncWithInstalledApps(installedApps)
     }

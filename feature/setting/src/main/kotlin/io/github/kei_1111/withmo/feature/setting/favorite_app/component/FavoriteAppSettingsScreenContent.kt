@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
@@ -23,6 +24,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsAction
@@ -108,19 +111,27 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
                 searchedAppList = List(6) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
                 favoriteAppList = List(3) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "お気に入り $it",
-                        packageName = "io.github.kei_1111.withmo.favorite$it",
-                        notification = false,
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
                 appIconSettings = AppIconSettings(),

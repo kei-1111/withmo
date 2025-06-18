@@ -55,12 +55,12 @@ object DatabaseModule {
 //    AppInfoDao
     @Provides
     @Singleton
-    fun provideAppInfoDao(database: WithmoDatabase) = database.appInfoDao()
+    fun provideAppInfoDao(database: WithmoDatabase) = database.withmoAppInfoDao()
 
 //    WidgetInfoDao
     @Provides
     @Singleton
-    fun provideWidgetInfoDao(database: WithmoDatabase) = database.widgetInfoDao()
+    fun provideWidgetInfoDao(database: WithmoDatabase) = database.withmoWidgetInfoDao()
 }
 
 @Qualifier

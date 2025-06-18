@@ -10,8 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
-import io.github.kei_1111.withmo.core.data.local.dao.AppInfoDao
-import io.github.kei_1111.withmo.core.data.local.dao.WidgetInfoDao
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoAppInfoDao
+import io.github.kei_1111.withmo.core.data.local.dao.WithmoWidgetInfoDao
 import io.github.kei_1111.withmo.core.data.repository.AppInfoRepositoryImpl
 import io.github.kei_1111.withmo.core.data.repository.OneTimeEventRepositoryImpl
 import io.github.kei_1111.withmo.core.data.repository.UserSettingsRepositoryImpl
@@ -44,16 +44,16 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAppInfoRepository(
-        appInfoDao: AppInfoDao,
+        withmoAppInfoDao: WithmoAppInfoDao,
         @ApplicationContext context: Context,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): AppInfoRepository = AppInfoRepositoryImpl(appInfoDao, context, coroutineDispatcher)
+    ): AppInfoRepository = AppInfoRepositoryImpl(withmoAppInfoDao, context, coroutineDispatcher)
 
     @Provides
     @Singleton
     fun provideWidgetInfoRepository(
-        widgetInfoDao: WidgetInfoDao,
+        withmoWidgetInfoDao: WithmoWidgetInfoDao,
         appWidgetManager: AppWidgetManager,
         @IoDispatcher coroutineDispatcher: CoroutineDispatcher,
-    ): WidgetInfoRepository = WidgetInfoRepositoryImpl(widgetInfoDao, appWidgetManager, coroutineDispatcher)
+    ): WidgetInfoRepository = WidgetInfoRepositoryImpl(withmoWidgetInfoDao, appWidgetManager, coroutineDispatcher)
 }

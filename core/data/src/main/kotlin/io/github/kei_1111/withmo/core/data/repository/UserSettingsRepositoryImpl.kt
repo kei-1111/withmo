@@ -60,7 +60,6 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         ?: ClockType.TOP_DATE,
                 ),
                 appIconSettings = AppIconSettings(
-                    appIconSize = preferences[APP_ICON_SIZE] ?: AppConstants.DefaultAppIconSize,
                     appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
                         when (shape) {
                             AppIconShape.Circle.toString() -> AppIconShape.Circle
@@ -69,10 +68,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                             else -> AppIconShape.Circle
                         }
                     } ?: AppIconShape.Circle,
-                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT]
-                        ?: AppConstants.DefaultRoundedCornerPercent,
-                    isAppNameShown = preferences[IS_APP_NAME_SHOWN] ?: true,
-                    isFavoriteAppBackgroundShown = preferences[IS_FAVORITE_APP_BACKGROUND_SHOWN] ?: true,
+                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: AppConstants.DefaultRoundedCornerPercent,
                 ),
                 sortSettings = SortSettings(
                     sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
@@ -117,11 +113,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     override suspend fun saveAppIconSettings(appIconSettings: AppIconSettings) {
         withContext(ioDispatcher) {
             dataStore.edit { preferences ->
-                preferences[APP_ICON_SIZE] = appIconSettings.appIconSize
                 preferences[APP_ICON_SHAPE] = appIconSettings.appIconShape.toString()
                 preferences[ROUNDED_CORNER_PERCENT] = appIconSettings.roundedCornerPercent
-                preferences[IS_APP_NAME_SHOWN] = appIconSettings.isAppNameShown
-                preferences[IS_FAVORITE_APP_BACKGROUND_SHOWN] = appIconSettings.isFavoriteAppBackgroundShown
             }
         }
     }

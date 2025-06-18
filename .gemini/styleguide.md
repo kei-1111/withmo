@@ -1,7 +1,13 @@
 # withmoプロジェクト コードレビュー StyleGuide
 
 ## 概要
-このStyleGuideは、withmoプロジェクトのPRに対してGemini Code Assistantが日本語でコードレビューを行う際の指針として作成されています。
+このStyleGuideは、withmoプロジェクトのPRに対してGemini Code Assistantが**日本語で**コードレビューを行う際の指針として作成されています。
+
+### レビュー規則
+- **すべてのコードレビューは日本語で行ってください**
+- コメントやフィードバックは**日本語**で記述してください
+- 技術的な議論も**日本語**を基本としてください
+- **特に問題がない場合は「LGTM」を返してください**
 
 ## プロジェクト構造
 
@@ -186,7 +192,7 @@ sealed interface FeatureNameEffect : Effect {
 
 #### デザインシステム
 - `:core:designsystem`内のコンポーネントを最優先で使用
-- 新規コンポーネントは`Withmo`プレフィックスを付ける
+- **Withmo接頭語は汎用コンポーネントを拡張する場合のみ付ける**（例：WithmoButton、WithmoTextField）
 - Material3をベースとし、カスタムテーマを適用
 
 #### コンポーネント階層

@@ -6,12 +6,15 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
@@ -24,12 +27,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.toDateTimeInfo
+import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -37,49 +43,67 @@ import io.github.kei_1111.withmo.feature.home.R
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun DisplayModelContent(
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentTime = LocalCurrentTime.current
+
     val isDefaultModelFile =
         state.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
 
-    Row(
+    val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
+
+    Box(
         modifier = modifier
+            .padding(top = topPaddingValue)
             .padding(horizontal = Paddings.Medium),
-        verticalAlignment = Alignment.Bottom,
     ) {
-        if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
-            NavigateSettingsButton(
-                onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
+        if (state.currentUserSettings.clockSettings.isClockShown) {
+            WithmoClock(
+                clockType = state.currentUserSettings.clockSettings.clockType,
+                dateTimeInfo = currentTime.toDateTimeInfo(),
+                modifier = Modifier.align(Alignment.TopStart),
             )
         }
-        Spacer(
-            modifier = Modifier.weight(Weights.Medium),
-        )
-        Column(
-            verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
-            horizontalAlignment = Alignment.CenterHorizontally,
+
+        Row(
+            modifier = Modifier.align(Alignment.BottomCenter),
+            verticalAlignment = Alignment.Bottom,
         ) {
-            if (
-                state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
-                isDefaultModelFile == false
+            if (state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
+                NavigateSettingsButton(
+                    onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
+                )
+            }
+            Spacer(
+                modifier = Modifier.weight(Weights.Medium),
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                SetDefaultModelButton(
-                    onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
-                )
-            }
-            if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
-                OpenDocumentButton(
-                    onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
-                )
-            }
-            if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
-                ShowScaleSliderButton(
-                    onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
-                )
+                if (
+                    state.currentUserSettings.sideButtonSettings.isSetDefaultModelButtonShown &&
+                    isDefaultModelFile == false
+                ) {
+                    SetDefaultModelButton(
+                        onClick = { onAction(HomeAction.OnSetDefaultModelButtonClick) },
+                    )
+                }
+                if (state.currentUserSettings.sideButtonSettings.isOpenDocumentButtonShown) {
+                    OpenDocumentButton(
+                        onClick = { onAction(HomeAction.OnOpenDocumentButtonClick) },
+                    )
+                }
+                if (state.currentUserSettings.sideButtonSettings.isShowScaleSliderButtonShown) {
+                    ShowScaleSliderButton(
+                        onClick = { onAction(HomeAction.OnShowScaleSliderButtonClick) },
+                    )
+                }
             }
         }
     }
@@ -96,7 +120,7 @@ private fun NavigateSettingsButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Image(
                 painter = painterResource(R.drawable.withmo_icon_wide),
@@ -119,7 +143,7 @@ private fun SetDefaultModelButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Image(
                 painter = painterResource(R.drawable.alicia_icon),
@@ -142,11 +166,12 @@ private fun OpenDocumentButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChangeCircle,
                 contentDescription = null,
+                modifier = Modifier.size(IconSizes.Large),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -164,11 +189,12 @@ private fun ShowScaleSliderButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
+                modifier = Modifier.size(IconSizes.Large),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -183,7 +209,7 @@ private fun SideButtonContainer(
 ) {
     Column(
         modifier = modifier
-            .height(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
+            .size(CommonDimensions.AppIconSize + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()

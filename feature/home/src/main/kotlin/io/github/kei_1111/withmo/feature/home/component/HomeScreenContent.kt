@@ -2,36 +2,37 @@ package io.github.kei_1111.withmo.feature.home.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.AppItem
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
+import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.toDateTimeInfo
+import io.github.kei_1111.withmo.core.model.FavoriteOrder
+import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
@@ -42,7 +43,6 @@ import kotlinx.collections.immutable.toPersistentList
 
 private const val BottomSheetShowDragHeight = -50f
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
@@ -50,7 +50,8 @@ internal fun HomeScreenContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val currentTime = LocalCurrentTime.current
+    val targetBottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
+    val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPaddingValue)
 
     Box(
         modifier = modifier,
@@ -62,13 +63,6 @@ internal fun HomeScreenContent(
                 modifier = Modifier.fillMaxSize(),
             )
         } else {
-            if (state.currentUserSettings.clockSettings.isClockShown) {
-                WithmoClock(
-                    clockType = state.currentUserSettings.clockSettings.clockType,
-                    dateTimeInfo = currentTime.toDateTimeInfo(),
-                    modifier = Modifier.padding(start = Paddings.Medium),
-                )
-            }
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -93,7 +87,9 @@ internal fun HomeScreenContent(
                     RowAppList(
                         state = state,
                         onAction = onAction,
-                        modifier = Modifier.fillMaxWidth(),
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = bottomPaddingValue),
                     )
                 }
             }
@@ -108,34 +104,24 @@ private fun RowAppList(
     modifier: Modifier = Modifier,
 ) {
     val appIconSettings = state.currentUserSettings.appIconSettings
+    val appList = state.favoriteAppList
 
     Row(
         modifier = modifier
-            .padding(vertical = Paddings.ExtraSmall)
             .padding(horizontal = Paddings.Medium)
-            .background(
-                color = if (appIconSettings.isFavoriteAppBackgroundShown) {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alphas.Medium)
-                } else {
-                    Color.Transparent
-                },
-                shape = MaterialTheme.shapes.medium,
-            )
-            .padding(vertical = Paddings.Small),
-        horizontalArrangement = Arrangement.Center,
+            .padding(vertical = Paddings.ExtraSmall),
+        horizontalArrangement = if (appList.size == 1) { Arrangement.Center } else { Arrangement.SpaceBetween },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        state.favoriteAppList.forEach {
-            AppItem(
-                onClick = { onAction(HomeAction.OnAppClick(it)) },
-                onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
-                appInfo = it,
-                appIconSize = appIconSettings.appIconSize,
+        appList.forEach {
+            App(
+                onClick = { onAction(HomeAction.OnAppClick(it.info)) },
+                onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
+                appInfo = it.info,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
-                isAppNameShown = appIconSettings.isAppNameShown,
-                modifier = Modifier.weight(Weights.Medium),
+                isAppNameShown = false,
             )
         }
     }
@@ -157,11 +143,16 @@ private fun HomeScreenContentLightPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(3) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                favoriteAppList = List(2) {
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -187,10 +178,15 @@ private fun HomeScreenContentDarkPreview() {
         HomeScreenContent(
             state = HomeState(
                 favoriteAppList = List(3) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -216,10 +212,15 @@ private fun RowAppListLightPreview() {
         RowAppList(
             state = HomeState(
                 favoriteAppList = List(4) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
@@ -245,11 +246,16 @@ private fun RowAppListDarkPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(4) {
-                    AppInfo(
-                        appIcon = appIcon,
-                        label = "withmo $it",
-                        packageName = "com.example.app$it",
+                favoriteAppList = List(1) {
+                    WithmoAppInfo(
+                        info = AppInfo(
+                            appIcon = appIcon,
+                            label = "アプリ $it",
+                            packageName = "io.github.kei_1111.withmo.app$it",
+                            notification = it % 2 == 0,
+                        ),
+                        favoriteOrder = FavoriteOrder.NotFavorite,
+                        position = Offset.Unspecified,
                     )
                 }.toPersistentList(),
             ),
