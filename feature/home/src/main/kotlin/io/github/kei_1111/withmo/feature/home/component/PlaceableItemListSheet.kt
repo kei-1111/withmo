@@ -298,7 +298,7 @@ private fun WidgetContainer(
             if (expanded) {
                 Column(
                     modifier = Modifier
-                        .padding(Paddings.Medium)
+                        .padding(vertical = Paddings.Medium)
                         .align(Alignment.CenterHorizontally),
                     verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
                     horizontalAlignment = Alignment.CenterHorizontally,
@@ -334,7 +334,8 @@ private fun WidgetItem(
 
     Column(
         modifier = modifier
-            .safeClickable { selectWidget(widgetInfo) },
+            .safeClickable { selectWidget(widgetInfo) }
+            .padding(horizontal = Paddings.Medium),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (previewDrawable != null) {
