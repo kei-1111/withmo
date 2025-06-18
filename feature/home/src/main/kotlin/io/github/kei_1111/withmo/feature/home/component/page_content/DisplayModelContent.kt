@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
@@ -28,11 +27,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
@@ -121,7 +120,7 @@ private fun NavigateSettingsButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Image(
                 painter = painterResource(R.drawable.withmo_icon_wide),
@@ -144,7 +143,7 @@ private fun SetDefaultModelButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Image(
                 painter = painterResource(R.drawable.alicia_icon),
@@ -167,11 +166,12 @@ private fun OpenDocumentButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChangeCircle,
                 contentDescription = null,
+                modifier = Modifier.size(IconSizes.Large),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -189,11 +189,12 @@ private fun ShowScaleSliderButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(AppConstants.DefaultAppIconSize.dp),
+            modifier = Modifier.size(CommonDimensions.AppIconSize),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
+                modifier = Modifier.size(IconSizes.Large),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -208,7 +209,7 @@ private fun SideButtonContainer(
 ) {
     Column(
         modifier = modifier
-            .height(AppConstants.DefaultAppIconSize.dp + Paddings.Large),
+            .size(CommonDimensions.AppIconSize + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()

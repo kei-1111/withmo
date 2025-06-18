@@ -2,13 +2,18 @@ package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.appwidget.AppWidgetManager
 import android.os.Bundle
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetHost
 
@@ -46,6 +51,17 @@ fun Widget(
     AndroidView(
         factory = { hostView },
         modifier = modifier
-            .size(withmoWidgetInfo.width.dp, withmoWidgetInfo.height.dp),
+            .size(withmoWidgetInfo.width.dp, withmoWidgetInfo.height.dp)
+            .padding(Paddings.Small)
+            .withmoShadow(
+                shape = MaterialTheme.shapes.large,
+            )
+            .background(
+                color = MaterialTheme.colorScheme.surface,
+                shape = MaterialTheme.shapes.large,
+            ),
+        update = { view ->
+            view.setPadding(0, 0, 0, 0)
+        },
     )
 }

@@ -14,10 +14,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -28,9 +28,7 @@ import io.github.kei_1111.withmo.core.util.ktx.toPx
 @Composable
 fun WithmoApp(
     withmoAppInfo: WithmoAppInfo,
-    appIconSize: Float,
     appIconShape: Shape,
-    isAppNameShown: Boolean,
     topPadding: Dp,
     bottomPadding: Dp,
     startPadding: Dp,
@@ -44,7 +42,7 @@ fun WithmoApp(
     val context = LocalContext.current
 
     // App ComposableのSize
-    val appSize = appIconSize.dp + Paddings.Large
+    val appSize = CommonDimensions.AppIconSize + Paddings.Large
 
     PlaceableItemContainer(
         placeableItem = withmoAppInfo,
@@ -60,9 +58,8 @@ fun WithmoApp(
     ) {
         App(
             appInfo = withmoAppInfo.info,
-            appIconSize = appIconSize,
             appIconShape = appIconShape,
-            isAppNameShown = isAppNameShown,
+            isAppNameShown = false,
             onClick = onAppClick,
             onLongClick = onAppLongClick,
         )
@@ -93,9 +90,7 @@ private fun WithmoAppLightPreview() {
                 favoriteOrder = FavoriteOrder.NotFavorite,
                 position = Offset.Zero,
             ),
-            appIconSize = AppConstants.DefaultAppIconSize,
             appIconShape = CircleShape,
-            isAppNameShown = false,
             topPadding = 0.dp,
             bottomPadding = 0.dp,
             startPadding = 0.dp,
@@ -132,9 +127,7 @@ private fun WithmoAppDarkPreview() {
                 favoriteOrder = FavoriteOrder.NotFavorite,
                 position = Offset.Zero,
             ),
-            appIconSize = AppConstants.DefaultAppIconSize,
             appIconShape = RoundedCornerShape(3.dp),
-            isAppNameShown = true,
             topPadding = 0.dp,
             bottomPadding = 0.dp,
             startPadding = 0.dp,

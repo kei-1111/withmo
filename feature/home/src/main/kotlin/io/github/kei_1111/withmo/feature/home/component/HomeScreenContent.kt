@@ -3,7 +3,6 @@ package io.github.kei_1111.withmo.feature.home.component
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,21 +14,18 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.App
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
@@ -108,34 +104,24 @@ private fun RowAppList(
     modifier: Modifier = Modifier,
 ) {
     val appIconSettings = state.currentUserSettings.appIconSettings
+    val appList = state.favoriteAppList
 
     Row(
         modifier = modifier
-            .padding(vertical = Paddings.ExtraSmall)
             .padding(horizontal = Paddings.Medium)
-            .background(
-                color = if (appIconSettings.isFavoriteAppBackgroundShown) {
-                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = Alphas.Medium)
-                } else {
-                    Color.Transparent
-                },
-                shape = MaterialTheme.shapes.medium,
-            )
-            .padding(vertical = Paddings.Small),
-        horizontalArrangement = Arrangement.Center,
+            .padding(vertical = Paddings.ExtraSmall),
+        horizontalArrangement = if (appList.size == 1) { Arrangement.Center } else { Arrangement.SpaceBetween },
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        state.favoriteAppList.forEach {
+        appList.forEach {
             App(
                 onClick = { onAction(HomeAction.OnAppClick(it.info)) },
                 onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
                 appInfo = it.info,
-                appIconSize = appIconSettings.appIconSize,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
-                isAppNameShown = appIconSettings.isAppNameShown,
-                modifier = Modifier.weight(Weights.Medium),
+                isAppNameShown = false,
             )
         }
     }
@@ -157,7 +143,7 @@ private fun HomeScreenContentLightPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(3) {
+                favoriteAppList = List(2) {
                     WithmoAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
@@ -260,7 +246,7 @@ private fun RowAppListDarkPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(4) {
+                favoriteAppList = List(1) {
                     WithmoAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,

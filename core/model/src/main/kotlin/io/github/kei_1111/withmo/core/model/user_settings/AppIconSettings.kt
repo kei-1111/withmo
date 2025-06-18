@@ -7,11 +7,8 @@ import androidx.compose.ui.graphics.Shape
 import io.github.kei_1111.withmo.core.common.AppConstants
 
 data class AppIconSettings(
-    val appIconSize: Float = AppConstants.DefaultAppIconSize,
     val appIconShape: AppIconShape = AppIconShape.Circle,
     val roundedCornerPercent: Float = AppConstants.DefaultRoundedCornerPercent,
-    val isAppNameShown: Boolean = true,
-    val isFavoriteAppBackgroundShown: Boolean = true,
 )
 
 sealed class AppIconShape {

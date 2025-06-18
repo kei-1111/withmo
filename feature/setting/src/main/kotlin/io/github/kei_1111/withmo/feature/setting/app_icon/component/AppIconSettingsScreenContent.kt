@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
@@ -32,13 +31,6 @@ internal fun AppIconSettingsScreenContent(
             .padding(Paddings.Medium),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
-        WithmoSettingItemWithSlider(
-            title = "アプリアイコンの大きさ",
-            value = state.appIconSettings.appIconSize,
-            onValueChange = { onAction(AppIconSettingsAction.OnAppIconSizeSliderChange(it)) },
-            valueRange = AppConstants.MinAppIconSize..AppConstants.MaxAppIconSize,
-            modifier = Modifier.fillMaxWidth(),
-        )
         AppIconShapePicker(
             selectedAppIconShape = state.appIconSettings.appIconShape,
             onAction = onAction,
@@ -50,18 +42,6 @@ internal fun AppIconSettingsScreenContent(
             onValueChange = { onAction(AppIconSettingsAction.OnRoundedCornerPercentSliderChange(it)) },
             valueRange = AppConstants.MinRoundedCornerPercent..AppConstants.MaxRoundedCornerPercent,
             enabled = state.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
-            modifier = Modifier.fillMaxWidth(),
-        )
-        WithmoSettingItemWithSwitch(
-            title = "アプリ名の表示",
-            checked = state.appIconSettings.isAppNameShown,
-            onCheckedChange = { onAction(AppIconSettingsAction.OnIsAppNameShownSwitchChange(it)) },
-            modifier = Modifier.fillMaxWidth(),
-        )
-        WithmoSettingItemWithSwitch(
-            title = "お気に入りアプリの背景を表示",
-            checked = state.appIconSettings.isFavoriteAppBackgroundShown,
-            onCheckedChange = { onAction(AppIconSettingsAction.OnIsFavoriteAppBackgroundShownSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }

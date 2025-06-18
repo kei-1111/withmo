@@ -25,7 +25,6 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoApp
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
@@ -50,9 +49,9 @@ internal fun PlaceableItemContent(
     modifier: Modifier = Modifier,
 ) {
     // App Composableの高さ
-    val appHeight = state.currentUserSettings.appIconSettings.appIconSize.dp + Paddings.Large
+    val appHeight = CommonDimensions.AppIconSize + Paddings.Large
     // RowAppList Composableの高さ
-    val rowAppListHeight = appHeight + Paddings.Small * 2 + Paddings.ExtraSmall * 2
+    val rowAppListHeight = appHeight + Paddings.ExtraSmall * 2
 
     val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -79,11 +78,9 @@ internal fun PlaceableItemContent(
                     is WithmoAppInfo -> {
                         WithmoApp(
                             withmoAppInfo = placeableItem,
-                            appIconSize = state.currentUserSettings.appIconSettings.appIconSize,
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,
                             ),
-                            isAppNameShown = state.currentUserSettings.appIconSettings.isAppNameShown,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                             startPadding = Paddings.Medium,
