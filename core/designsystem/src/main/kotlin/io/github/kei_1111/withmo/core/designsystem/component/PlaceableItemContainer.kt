@@ -154,7 +154,7 @@ fun PlaceableItemContainer(
                     DeleteBadge(
                         onClick = onDeleteBadgeClick,
                         modifier = Modifier
-                            .align(Alignment.TopEnd),
+                            .align(Alignment.TopStart),
                     )
                     onResizeBadgeClick?.let {
                         ResizeBadge(
