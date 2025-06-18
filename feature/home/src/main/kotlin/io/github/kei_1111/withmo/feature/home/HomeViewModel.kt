@@ -130,7 +130,7 @@ class HomeViewModel @Inject constructor(
 
     /**
      * 配置可能なアイテムをStateの配置済みリストに追加する
-     * 
+     *
      * @param placeableItem 追加するアイテム
      */
     private fun addPlaceableItem(placeableItem: PlaceableItem) {
@@ -139,7 +139,7 @@ class HomeViewModel @Inject constructor(
 
     /**
      * 指定されたアイテムをStateの配置済みリストから削除する
-     * 
+     *
      * @param placeableItem 削除するアイテム
      */
     private fun deletePlaceableItem(placeableItem: PlaceableItem) {
