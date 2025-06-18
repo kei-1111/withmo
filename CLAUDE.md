@@ -1,41 +1,41 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+このファイルは Claude Code (claude.ai/code) がこのリポジトリでコード作業を行う際のガイドラインを示しています。
 
-## Project Overview
+## プロジェクト概要
 
-**withmo** is a Japanese Android launcher application that combines "Digital Figure × Launcher" functionality, allowing users to display 3D models (.vrm format) on their home screen using Unity as a Library. The app serves both as an interactive launcher and live wallpaper, with time-based visual changes and extensive customization options.
+**withmo** は「デジタルフィギュア × ランチャー」のコンセプトで作られた日本語Androidランチャーアプリです。Unity as a Libraryを活用してホーム画面に3Dモデル（.vrm形式）を表示することができ、インタラクティブなランチャーとライブ壁紙の両方の役割を果たします。時間に応じた視覚変化や豊富なカスタマイズ機能が特徴です。
 
-## Architecture
+## アーキテクチャ
 
-### Multi-Module Clean Architecture with MVI
+### マルチモジュール Clean Architecture + MVI
 
-The project implements Clean Architecture with MVI (Model-View-Intent) pattern across feature modules:
+このプロジェクトでは、全フィーチャーモジュールでMVI（Model-View-Intent）パターンによるClean Architectureを採用しています：
 
 **Core Modules:**
-- `core:common` - Unity integration, constants, dispatchers
-- `core:data` - Room database, DataStore repositories, managers
-- `core:domain` - Use cases, repository interfaces, business logic
-- `core:designsystem` - Compose components, themes, Material 3 design system
-- `core:featurebase` - Base MVI classes (State, Action, Effect, BaseViewModel)
-- `core:model` - Domain models and user settings data classes
-- `core:service` - Background services (UnityWallpaperService, NotificationListener)
-- `core:ui` - Shared UI utilities, providers, modifiers
-- `core:util` - General utilities, extension functions
+- `core:common` - Unity統合、定数、ディスパッチャーなどの共通機能
+- `core:data` - Roomデータベース、DataStoreリポジトリ、各種マネージャー
+- `core:domain` - ユースケース、リポジトリインターフェース、ビジネスロジック
+- `core:designsystem` - Composeコンポーネント、テーマ、Material 3デザインシステム
+- `core:featurebase` - MVI基底クラス（State、Action、Effect、BaseViewModel）
+- `core:model` - ドメインモデルとユーザー設定データクラス
+- `core:service` - バックグラウンドサービス（UnityWallpaperService、NotificationListener）
+- `core:ui` - 共有UIユーティリティ、プロバイダー、モディファイア
+- `core:util` - 汎用ユーティリティ、拡張関数
 
 **Feature Modules:**
-- `feature:home` - Main launcher with 3D model display, widget management
-- `feature:onboarding` - Initial setup flow for model selection and app configuration
-- `feature:setting` - Settings screens (app icons, clock, themes, favorites, etc.)
+- `feature:home` - 3Dモデル表示とウィジェット管理を行うメインランチャー画面
+- `feature:onboarding` - モデル選択とアプリ設定の初期セットアップ画面
+- `feature:setting` - 各種設定画面（アプリアイコン、時計、テーマ、お気に入りなど）
 
-### MVI Implementation
+### MVI実装
 
-Each feature follows strict MVI pattern with unified data flow:
+各フィーチャーでは統一されたデータフローによる厳格なMVIパターンを採用しています：
 
-**Core Components:**
-- **Action**: User operations passed to ViewModel as input
-- **State**: Data required for screen rendering
-- **Effect**: One-time side effects like navigation and toasts that UI executes once
+**主要コンポーネント:**
+- **Action**: ユーザー操作をViewModelに伝達するためのアクション
+- **State**: 画面描画に必要なデータの状態
+- **Effect**: ナビゲーションやトーストなど、一度だけ実行される副作用
 
 **BaseViewModel Architecture:**
 ```kotlin
@@ -52,96 +52,89 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 }
 ```
 
-**Screen Structure:**
-- **Main Screen**: Receives ViewModel, subscribes to effects, handles navigation
-- **Content Screen**: Receives state + onAction, pure UI rendering only
+**画面構成:**
+- **メイン画面**: ViewModelを受け取り、エフェクトを監視してナビゲーションを処理
+- **コンテンツ画面**: stateとonActionを受け取って純粋なUIを描画
 
-**Naming Conventions:**
-- **Action**: `On` + target + past tense (e.g., `OnSaveButtonClick`, `OnNavigateSettingsButtonClick`)
-- **Effect**: Imperative verb + object (e.g., `NavigateBack`, `ShowToast`, `OpenDocument`)
-- **State**: Noun properties (e.g., `clockSettings`, `isSaveButtonEnabled`)
+**命名規則:**
+- **Action**: `On` + 対象 + 過去形（例：`OnSaveButtonClick`、`OnNavigateSettingsButtonClick`）
+- **Effect**: 命令形動詞 + 対象（例：`NavigateBack`、`ShowToast`、`OpenDocument`）
+- **State**: 名詞形プロパティ（例：`clockSettings`、`isSaveButtonEnabled`）
 
-**Data Flow Example:**
-1. User presses back button
-2. `onAction(OnBackButtonClick)` executed
-3. ViewModel calls `sendEffect(NavigateBack)`
-4. Screen's LaunchedEffect collects and executes navigation
+**データフロー例:**
+1. ユーザーが戻るボタンを押す
+2. `onAction(OnBackButtonClick)` が実行される
+3. ViewModelが `sendEffect(NavigateBack)` を呼び出す
+4. 画面のLaunchedEffectが収集してナビゲーションを実行
 
-### Unity as a Library Integration
+### Unity as a Library統合
 
-Sophisticated Unity integration supporting dual-surface rendering:
+デュアルサーフェスレンダリングに対応した高度なUnity統合機能：
 
 **UnityManager** (`core:common`):
-- Singleton managing UnityPlayer lifecycle
-- Surface switching between Activity and Wallpaper modes
-- Lifecycle-aware methods for different contexts
+- UnityPlayerのライフサイクルを管理するシングルトンクラス
+- ActivityとWallpaperモード間でのサーフェス切り替え機能
+- 様々なコンテキストに対応したライフサイクル管理メソッド
 
-**Messaging Bridge**:
-- `AndroidToUnityMessenger`: Structured messaging using enums (UnityObject/UnityMethod)
-- `UnityToAndroidMessenger`: Callback interface with WeakReference for memory safety
-- Bidirectional communication for model loading, animations, theme changes
+**メッセージングブリッジ**:
+- `AndroidToUnityMessenger`: 列挙型（UnityObject/UnityMethod）による構造化メッセージング
+- `UnityToAndroidMessenger`: WeakReferenceによるメモリ安全なコールバックインターフェース
+- モデル読み込み、アニメーション、テーマ変更などの双方向通信
 
-**Multi-Surface Support**:
-- Activity surface: Unity as background layer with Compose UI overlay
-- Wallpaper surface: Live wallpaper implementation via WallpaperService
+**マルチサーフェス対応**:
+- Activityサーフェス: Compose UIをオーバーレイした背景レイヤーとしてのUnity
+- Wallpaperサーフェス: WallpaperServiceによるライブ壁紙実装
 
-## Build System
+## ビルドシステム
 
 ### Convention Plugins
 
-Custom Gradle convention plugins in `build-logic/convention/`:
-- `withmo.android.application` - Main app configuration
-- `withmo.android.feature` - Feature module setup with MVI dependencies
-- `withmo.android.library.compose` - Compose library configuration
-- `withmo.detekt` - Code quality with custom rules
-- `withmo.hilt` - Dependency injection setup
+`build-logic/convention/` 内のカスタムGradle convention plugins:
+- `withmo.android.application` - メインアプリケーション設定
+- `withmo.android.feature` - MVI依存関係を含むフィーチャーモジュール設定
+- `withmo.android.library.compose` - Composeライブラリ設定
+- `withmo.detekt` - カスタムルールによるコード品質管理
+- `withmo.hilt` - 依存性注入設定
 
-### Common Commands
+### 共通コマンド
 
 ```bash
-# Run static analysis
+# 静的解析を実行
 ./gradlew detekt
 ```
 
-## Key Technical Details
+## 主要技術詳細
 
-### Data Layer
-- **Room Database**: App info, widget data with Flow-based reactive queries
-- **DataStore**: User settings, one-time events (replacing SharedPreferences)
-- **File Management**: VRM model files stored in internal storage
+### データ層
+- **Roomデータベース**: Flowベースのリアクティブクエリによるアプリ情報、ウィジェットデータ管理
+- **DataStore**: ユーザー設定、一回限りイベントの管理（SharedPreferencesの代替）
+- **ファイル管理**: 内部ストレージでのVRMモデルファイル管理
 
-### Unity Integration Points
-- MainActivity initializes UnityManager and observes model changes
-- HomeViewModel implements MessageReceiverFromUnity for callbacks
-- NotificationListener triggers Unity animations on system notifications
-- Theme system sends time-based commands to Unity for visual changes
+### Unity統合ポイント
+- MainActivityでUnityManagerを初期化してモデル変更を監視
+- HomeViewModelでコールバック用のMessageReceiverFromUnityを実装
+- NotificationListenerでシステム通知によるUnityアニメーションのトリガー
+- テーマシステムから時間ベースのコマンドをUnityに送信して視覚変化を制御
 
-### Important Constraints
-- **Unity Library Not Included**: unityLibrary is excluded from git due to size
-- **VRM File Support**: Only VRM format 3D models are supported
-- **NDK ABIs**: Limited to armeabi-v7a and arm64-v8a
-- **Closed Testing**: Currently in closed testing phase
+### 重要な制約事項
+- **Unity Libraryは含まれません**: unityLibraryはファイルサイズのためgitから除外されています
+- **VRMファイルサポート**: 対応する3Dモデル形式はVRMのみです
+- **NDK ABIs**: armeabi-v7aとarm64-v8aのみに対応しています
 
-### Design System Notes
-- Material 3 theming with time-based background changes
-- Japanese-first UI with comprehensive localization
-- Custom Compose components with KDoc documentation
-- Paddings object for consistent spacing (Tiny=2dp to ExtraLarge=25dp)
+### デザインシステム
+- 時間による背景変化機能を持つMaterial 3テーマ
+- 包括的なローカライゼーション対応の日本語ファーストUI
+- KDocドキュメンテーション付きのカスタムComposeコンポーネント
+- 統一されたスペーシング管理用のPaddingsオブジェクト（Tiny=2dp〜ExtraLarge=25dp）
 
-### Development Patterns
-- Use `@sample` annotations in KDoc for preview functions
-- Follow existing MVI patterns when adding new features
-- Implement proper lifecycle management for Unity interactions
-- Use Flow-based reactive programming throughout data layer
+### 開発パターン
+- プレビュー関数にはKDocで `@sample` アノテーションを使用する
+- 新機能追加時は既存のMVIパターンに従って実装する
+- Unity操作では適切なライフサイクル管理を行う
+- データ層全体でFlowベースのリアクティブプログラミングを使用する
 
-## Testing & Quality
-- **Detekt**: Comprehensive static analysis with compose-specific rules
-- **GitHub Actions**: Automated CI/CD with code quality checks
-- **Convention-based Structure**: Enforced through custom Gradle plugins
-- **Minimal Test Coverage**: Focus on critical Unity integration points if adding tests
-
-## Project Recognition
-
-- 技育CAMP2023 vol14 優秀賞 (Excellence Award)
-- 技育展2024 YUMEMI賞 (YUMEMI Award)
-- Featured in closed testing on Google Play
+## テスト・品質管理
+- **Detekt**: Compose固有ルールを含む包括的な静的解析
+- **GitHub Actions**: コード品質チェックを含む自動CI/CD
+- **Convention-based構造**: カスタムGradleプラグインによる統一的な構成
+- **最小限のテストカバレッジ**: テスト追加時は重要なUnity統合ポイントを重視する
