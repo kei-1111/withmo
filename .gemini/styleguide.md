@@ -191,7 +191,7 @@ sealed interface FeatureNameEffect : Effect {
 
 #### デザインシステム
 - `:core:designsystem`内のコンポーネントを最優先で使用
-- 新規コンポーネントは`Withmo`プレフィックスを付ける
+- **Withmo接頭語は汎用コンポーネントを拡張する場合のみ付ける**（例：WithmoButton、WithmoTextField）
 - Material3をベースとし、カスタムテーマを適用
 
 #### コンポーネント階層
