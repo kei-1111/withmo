@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoDialog
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
@@ -33,6 +34,18 @@ internal fun SortSettingsScreenContent(
             selectedSortType = state.sortSettings.sortType,
             onAction = onAction,
             modifier = Modifier.fillMaxWidth(),
+        )
+    }
+
+    if (state.isUsageStatsPermissionDialogVisible) {
+        WithmoDialog(
+            title = "使用統計の権限が必要です",
+            description = "使用回数順でソートするには、端末の使用統計にアクセスする権限が必要です。設定画面を開きますか？",
+            dismissButtonText = "キャンセル",
+            confirmButtonText = "設定を開く",
+            onDismissRequest = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
+            onDismissClick = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
+            onConfirmClick = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogConfirm) },
         )
     }
 }

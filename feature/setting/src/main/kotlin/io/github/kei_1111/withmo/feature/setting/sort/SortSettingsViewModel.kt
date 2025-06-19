@@ -3,9 +3,11 @@ package io.github.kei_1111.withmo.feature.setting.sort
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,6 +15,7 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
+    private val permissionChecker: PermissionChecker,
 ) : BaseViewModel<SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
     override fun createInitialState(): SortSettingsState = SortSettingsState()
@@ -52,18 +55,52 @@ class SortSettingsViewModel @Inject constructor(
     override fun onAction(action: SortSettingsAction) {
         when (action) {
             is SortSettingsAction.OnSortTypeRadioButtonClick -> {
-                updateState {
-                    val updatedSortSettings = sortSettings.copy(sortType = action.sortType)
-                    copy(
-                        sortSettings = updatedSortSettings,
-                        isSaveButtonEnabled = updatedSortSettings != initialSortSettings,
-                    )
-                }
+                handleSortTypeSelection(action.sortType)
             }
 
             is SortSettingsAction.OnSaveButtonClick -> saveSortSettings()
 
             is SortSettingsAction.OnBackButtonClick -> sendEffect(SortSettingsEffect.NavigateBack)
+
+            is SortSettingsAction.OnUsageStatsPermissionDialogConfirm -> {
+                updateState { copy(isUsageStatsPermissionDialogVisible = false) }
+                sendEffect(SortSettingsEffect.RequestUsageStatsPermission)
+            }
+
+            is SortSettingsAction.OnUsageStatsPermissionDialogDismiss -> {
+                updateState { copy(isUsageStatsPermissionDialogVisible = false) }
+            }
+
+            is SortSettingsAction.OnUsageStatsPermissionResult -> {
+                checkUsageStatsPermissionAndUpdate()
+            }
+        }
+    }
+
+    private fun handleSortTypeSelection(sortType: SortType) {
+        if (sortType == SortType.USE_COUNT && !permissionChecker.isUsageStatsPermissionGranted()) {
+            updateState { copy(isUsageStatsPermissionDialogVisible = true) }
+        } else {
+            updateSortType(sortType)
+        }
+    }
+
+    private fun updateSortType(sortType: SortType) {
+        updateState {
+            val updatedSortSettings = sortSettings.copy(sortType = sortType)
+            copy(
+                sortSettings = updatedSortSettings,
+                isSaveButtonEnabled = updatedSortSettings != initialSortSettings,
+            )
+        }
+    }
+
+    private fun checkUsageStatsPermissionAndUpdate() {
+        if (permissionChecker.isUsageStatsPermissionGranted()) {
+            updateSortType(SortType.USE_COUNT)
+            sendEffect(SortSettingsEffect.ShowToast("使用統計の権限が許可されました"))
+        } else {
+            sendEffect(SortSettingsEffect.ShowToast("使用統計の権限が必要です"))
         }
     }
 
