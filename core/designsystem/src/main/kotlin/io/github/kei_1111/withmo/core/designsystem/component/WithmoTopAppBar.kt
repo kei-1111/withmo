@@ -14,10 +14,10 @@ import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Close
-import androidx.compose.material.ripple.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,7 +31,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Sh
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 private val TopAppBarHeight = 64.dp
-private val RippleRadius = 16.dp
+private val RippleRadius = 24.dp
 
 @Composable
 fun WithmoTopAppBar(
@@ -62,7 +62,10 @@ fun WithmoTopAppBar(
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.safeClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(radius = RippleRadius),
+                        indication = ripple(
+                            bounded = false,
+                            radius = RippleRadius
+                        ),
                     ) { navigateBack() },
                 )
             }
@@ -73,7 +76,10 @@ fun WithmoTopAppBar(
                     tint = MaterialTheme.colorScheme.onSurface,
                     modifier = Modifier.safeClickable(
                         interactionSource = remember { MutableInteractionSource() },
-                        indication = ripple(radius = RippleRadius),
+                        indication = ripple(
+                            bounded = false,
+                            radius = RippleRadius
+                        ),
                     ) { navigateClose() },
                 )
             }
