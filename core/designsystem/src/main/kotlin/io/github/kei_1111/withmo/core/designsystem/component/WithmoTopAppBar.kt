@@ -64,7 +64,7 @@ fun WithmoTopAppBar(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius
+                            radius = RippleRadius,
                         ),
                     ) { navigateBack() },
                 )
@@ -78,7 +78,7 @@ fun WithmoTopAppBar(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius
+                            radius = RippleRadius,
                         ),
                     ) { navigateClose() },
                 )
