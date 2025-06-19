@@ -2,6 +2,7 @@ package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -13,10 +14,12 @@ import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.ripple.ripple
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -56,7 +59,10 @@ fun WithmoTopAppBar(
                     imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = "Back",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.safeClickable { navigateBack() },
+                    modifier = Modifier.safeClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(radius = 16.dp),
+                    ) { navigateBack() },
                 )
             }
             navigateClose?.let {
@@ -64,7 +70,10 @@ fun WithmoTopAppBar(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "Close",
                     tint = MaterialTheme.colorScheme.onSurface,
-                    modifier = Modifier.safeClickable { navigateClose() },
+                    modifier = Modifier.safeClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(radius = 16.dp),
+                    ) { navigateClose() },
                 )
             }
             Box(
