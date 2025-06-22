@@ -18,20 +18,11 @@ class PermissionCheckerImpl @Inject constructor(
         val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as? AppOpsManager
             ?: return false
 
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOpsManager.unsafeCheckOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                Process.myUid(),
-                context.packageName,
-            )
-        } else {
-            @Suppress("DEPRECATION")
-            appOpsManager.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                Process.myUid(),
-                context.packageName,
-            )
-        }
+        val mode = appOpsManager.unsafeCheckOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            Process.myUid(),
+            context.packageName,
+        )
 
         return mode == AppOpsManager.MODE_ALLOWED
     }
