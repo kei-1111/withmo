@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
+import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
@@ -15,6 +16,7 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
+    private val appInfoRepository: AppInfoRepository,
     private val permissionChecker: PermissionChecker,
 ) : BaseViewModel<SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
@@ -78,8 +80,13 @@ class SortSettingsViewModel @Inject constructor(
     }
 
     private fun handleSortTypeSelection(sortType: SortType) {
-        if (sortType == SortType.USE_COUNT && !permissionChecker.isUsageStatsPermissionGranted()) {
-            updateState { copy(isUsageStatsPermissionDialogVisible = true) }
+        if (sortType == SortType.USE_COUNT) {
+            if (!permissionChecker.isUsageStatsPermissionGranted()) {
+                updateState { copy(isUsageStatsPermissionDialogVisible = true) }
+            } else {
+                updateSortType(sortType)
+                updateUsageCounts()
+            }
         } else {
             updateSortType(sortType)
         }
@@ -98,9 +105,20 @@ class SortSettingsViewModel @Inject constructor(
     private fun checkUsageStatsPermissionAndUpdate() {
         if (permissionChecker.isUsageStatsPermissionGranted()) {
             updateSortType(SortType.USE_COUNT)
-            sendEffect(SortSettingsEffect.ShowToast("使用統計の権限が許可されました"))
+            updateUsageCounts()
+            sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が許可されました"))
         } else {
-            sendEffect(SortSettingsEffect.ShowToast("使用統計の権限が必要です"))
+            sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が必要です"))
+        }
+    }
+
+    private fun updateUsageCounts() {
+        viewModelScope.launch {
+            try {
+                appInfoRepository.updateUsageCounts()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update usage counts", e)
+            }
         }
     }
 

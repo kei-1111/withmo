@@ -7,6 +7,7 @@ import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.core.data.local.dao.WithmoAppInfoDao
 import io.github.kei_1111.withmo.core.data.local.mapper.toAppInfo
 import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
+import io.github.kei_1111.withmo.core.domain.manager.AppUsageStatsManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +21,7 @@ import javax.inject.Inject
 class AppInfoRepositoryImpl @Inject constructor(
     private val withmoAppInfoDao: WithmoAppInfoDao,
     private val context: Context,
+    private val appUsageStatsManager: AppUsageStatsManager,
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : AppInfoRepository {
 
@@ -96,6 +98,28 @@ class AppInfoRepositoryImpl @Inject constructor(
 
             val removedEntities = roomAppEntities.filter { it.packageName !in installedAppPackages }
             removedEntities.forEach { withmoAppInfoDao.delete(it) }
+        }
+    }
+
+    override suspend fun updateUsageCounts() {
+        withContext(ioDispatcher) {
+            val usageCounts = appUsageStatsManager.getAppUsageCounts()
+
+            if (usageCounts.isNotEmpty()) {
+                val allApps = withmoAppInfoDao.getAllList().first()
+                val updatedApps = allApps.mapNotNull { entity ->
+                    val usageCount = usageCounts[entity.packageName] ?: 0
+                    if (entity.useCount != usageCount) {
+                        entity.copy(useCount = usageCount)
+                    } else {
+                        null
+                    }
+                }
+
+                if (updatedApps.isNotEmpty()) {
+                    withmoAppInfoDao.updateList(updatedApps)
+                }
+            }
         }
     }
 
