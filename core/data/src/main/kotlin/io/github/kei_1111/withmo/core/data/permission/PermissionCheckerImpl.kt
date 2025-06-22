@@ -2,7 +2,6 @@ package io.github.kei_1111.withmo.core.data.permission
 
 import android.app.AppOpsManager
 import android.content.Context
-import android.os.Build
 import android.os.Process
 import androidx.core.app.NotificationManagerCompat
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
