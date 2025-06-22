@@ -38,6 +38,7 @@ import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
+import io.github.kei_1111.withmo.feature.setting.sort.component.UsagePermissionDialog
 
 @Suppress("ModifierMissing")
 @Composable
@@ -119,6 +120,13 @@ private fun SortSettingsScreen(
                     .padding(Paddings.Medium),
             )
         }
+    }
+
+    if (state.isUsageStatsPermissionDialogVisible) {
+        UsagePermissionDialog(
+            onDismiss = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
+            onConfirm = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogConfirm) },
+        )
     }
 }
 
