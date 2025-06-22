@@ -58,7 +58,7 @@ class AppUsageStatsManagerImpl @Inject constructor(
                 }
 
                 if (isLaunch && event.packageName in launchableApps) {
-                    counts[event.packageName] = counts[event.packageName]!! + 1
+                    counts[event.packageName] = (counts[event.packageName] ?: 0) + 1
                 }
             }
         } catch (e: Exception) {
