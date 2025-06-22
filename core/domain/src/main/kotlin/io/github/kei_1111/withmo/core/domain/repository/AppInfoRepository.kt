@@ -21,4 +21,6 @@ interface AppInfoRepository {
     suspend fun delete(withmoAppInfo: WithmoAppInfo)
 
     suspend fun syncWithInstalledApps(installedApps: List<WithmoAppInfo>)
+
+    suspend fun updateUsageCounts()
 }

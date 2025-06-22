@@ -7,4 +7,7 @@ sealed interface SortSettingsAction : Action {
     data class OnSortTypeRadioButtonClick(val sortType: SortType) : SortSettingsAction
     data object OnSaveButtonClick : SortSettingsAction
     data object OnBackButtonClick : SortSettingsAction
+    data object OnUsageStatsPermissionDialogConfirm : SortSettingsAction
+    data object OnUsageStatsPermissionDialogDismiss : SortSettingsAction
+    data object OnUsageStatsPermissionResult : SortSettingsAction
 }

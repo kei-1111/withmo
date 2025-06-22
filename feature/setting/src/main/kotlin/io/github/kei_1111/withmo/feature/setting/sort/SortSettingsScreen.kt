@@ -1,7 +1,11 @@
 package io.github.kei_1111.withmo.feature.setting.sort
 
+import android.content.Intent
 import android.os.Build
+import android.provider.Settings
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
@@ -34,6 +38,7 @@ import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
+import io.github.kei_1111.withmo.feature.setting.sort.component.UsagePermissionDialog
 
 @Suppress("ModifierMissing")
 @Composable
@@ -46,6 +51,12 @@ fun SortSettingsScreen(
 
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
 
+    val usageStatsPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) {
+        viewModel.onAction(SortSettingsAction.OnUsageStatsPermissionResult)
+    }
+
     BackHandler {
         viewModel.onAction(SortSettingsAction.OnBackButtonClick)
     }
@@ -56,6 +67,11 @@ fun SortSettingsScreen(
                 is SortSettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
                 is SortSettingsEffect.ShowToast -> showToast(context, effect.message)
+
+                is SortSettingsEffect.RequestUsageStatsPermission -> {
+                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                    usageStatsPermissionLauncher.launch(intent)
+                }
             }
         }
     }
@@ -104,6 +120,13 @@ private fun SortSettingsScreen(
                     .padding(Paddings.Medium),
             )
         }
+    }
+
+    if (state.isUsageStatsPermissionDialogVisible) {
+        UsagePermissionDialog(
+            onDismiss = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
+            onConfirm = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogConfirm) },
+        )
     }
 }
 

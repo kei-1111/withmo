@@ -7,4 +7,5 @@ data class SortSettingsState(
     val sortSettings: SortSettings = SortSettings(),
     val initialSortSettings: SortSettings = SortSettings(),
     val isSaveButtonEnabled: Boolean = false,
+    val isUsageStatsPermissionDialogVisible: Boolean = false,
 ) : State

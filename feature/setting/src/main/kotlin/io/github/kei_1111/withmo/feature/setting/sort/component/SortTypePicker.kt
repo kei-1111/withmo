@@ -17,7 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
@@ -100,6 +102,10 @@ private fun SortTypePickerItem(
             }
             SortType.USE_COUNT -> {
                 BodyMediumText(text = "使用回数順")
+                LabelMediumText(
+                    text = "端末に保存されているアプリの使用回数で並び替え",
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                )
             }
         }
     }
