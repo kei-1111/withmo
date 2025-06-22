@@ -2,6 +2,8 @@ package io.github.kei_1111.withmo.feature.setting.root
 
 import android.os.Build
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -39,6 +41,7 @@ import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.R
 import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.feature.setting.root.component.NotificationPermissionDialog
 import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenContent
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -67,6 +70,12 @@ fun SettingsScreen(
     val currentOnNavigateNotificationSettingsButtonClick by rememberUpdatedState(onNavigateNotificationSettingsButtonClick)
     val currentOnNavigateThemeSettingsButtonClick by rememberUpdatedState(onNavigateThemeSettingsButtonClick)
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+
+    val notificationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult(),
+    ) {
+        viewModel.onAction(SettingsAction.OnNotificationListenerPermissionResult)
+    }
 
     BackHandler {
         viewModel.onAction(SettingsAction.OnBackButtonClick)
@@ -112,6 +121,8 @@ fun SettingsScreen(
                 is SettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
                 is SettingsEffect.ShowToast -> showToast(context, effect.message)
+
+                is SettingsEffect.RequestNotificationListenerPermission -> notificationPermissionLauncher.launch(effect.intent)
             }
         }
     }
@@ -153,6 +164,13 @@ private fun SettingsScreen(
                 onAction = onAction,
             )
         }
+    }
+
+    if (state.isNotificationPermissionDialogVisible) {
+        NotificationPermissionDialog(
+            onConfirm = { onAction(SettingsAction.OnNotificationPermissionDialogConfirm) },
+            onDismiss = { onAction(SettingsAction.OnNotificationPermissionDialogDismiss) },
+        )
     }
 }
 

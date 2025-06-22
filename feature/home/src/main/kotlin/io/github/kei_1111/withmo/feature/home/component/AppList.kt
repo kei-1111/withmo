@@ -42,6 +42,7 @@ import kotlinx.collections.immutable.toPersistentList
 fun AppList(
     appList: ImmutableList<WithmoAppInfo>,
     appIconShape: Shape,
+    isNotificationBadgeShown: Boolean,
     isNavigateSettingsButtonShown: Boolean,
     onAppClick: (AppInfo) -> Unit,
     onAppLongClick: (AppInfo) -> Unit,
@@ -71,6 +72,7 @@ fun AppList(
                     items = launchableAppList,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
+                    isNotificationBadgeShown = isNotificationBadgeShown,
                     onClick = onAppClick,
                     onLongClick = onAppLongClick,
                 )
@@ -87,6 +89,7 @@ fun AppList(
                     items = settingApp,
                     columns = DesignConstants.AppListGridColums,
                     appIconShape = appIconShape,
+                    isNotificationBadgeShown = false,
                     onClick = onAppClick,
                     onLongClick = onAppLongClick,
                 )
@@ -100,6 +103,7 @@ private fun CustomAppInfoGridLayout(
     items: ImmutableList<WithmoAppInfo>,
     columns: Int,
     appIconShape: Shape,
+    isNotificationBadgeShown: Boolean,
     onClick: (AppInfo) -> Unit,
     onLongClick: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -125,6 +129,7 @@ private fun CustomAppInfoGridLayout(
                     ) {
                         App(
                             appInfo = item.info,
+                            isNotificationBadgeShown = isNotificationBadgeShown,
                             onClick = { onClick(item.info) },
                             onLongClick = { onLongClick(item.info) },
                             appIconShape = appIconShape,
@@ -169,6 +174,7 @@ private fun AppListLightPreview() {
                 )
             }.toPersistentList(),
             appIconShape = CircleShape,
+            isNotificationBadgeShown = true,
             isNavigateSettingsButtonShown = false,
             onAppClick = {},
             onAppLongClick = {},
@@ -204,6 +210,7 @@ private fun AppListDarkPreview() {
                     position = Offset.Unspecified,
                 )
             }.toPersistentList(),
+            isNotificationBadgeShown = true,
             appIconShape = CircleShape,
             isNavigateSettingsButtonShown = false,
             onAppClick = {},

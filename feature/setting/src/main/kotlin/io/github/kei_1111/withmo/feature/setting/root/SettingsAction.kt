@@ -14,4 +14,7 @@ sealed interface SettingsAction : Action {
     data object OnNavigateWallpaperSettingsButtonClick : SettingsAction
     data object OnNavigateThemeSettingsButtonClick : SettingsAction
     data object OnBackButtonClick : SettingsAction
+    data object OnNotificationPermissionDialogConfirm : SettingsAction
+    data object OnNotificationPermissionDialogDismiss : SettingsAction
+    data object OnNotificationListenerPermissionResult : SettingsAction
 }

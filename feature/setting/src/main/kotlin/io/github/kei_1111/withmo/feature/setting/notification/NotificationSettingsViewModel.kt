@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.notification
 
-import android.content.Intent
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -54,60 +53,36 @@ class NotificationSettingsViewModel @Inject constructor(
     override fun onAction(action: NotificationSettingsAction) {
         when (action) {
             is NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange -> {
-                if (permissionChecker.isNotificationListenerEnabled()) {
-                    updateState {
-                        val updatedNotificationSettings = notificationSettings.copy(
-                            isNotificationAnimationEnabled = action.isNotificationAnimationEnabled,
-                        )
-                        copy(
-                            notificationSettings = updatedNotificationSettings,
-                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                        )
-                    }
-                } else {
-                    updateState {
-                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false)
-                        copy(
-                            notificationSettings = updatedNotificationSettings,
-                            isNotificationPermissionDialogShown = true,
-                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                        )
-                    }
+                updateState {
+                    val updatedNotificationSettings = notificationSettings.copy(
+                        isNotificationAnimationEnabled = action.isNotificationAnimationEnabled,
+                    )
+                    copy(
+                        notificationSettings = updatedNotificationSettings,
+                        isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
+                    )
                 }
             }
 
-            is NotificationSettingsAction.OnNotificationPermissionDialogConfirm -> {
-                val intent = Intent("android.settings.ACTION_NOTIFICATION_LISTENER_SETTINGS")
-                sendEffect(NotificationSettingsEffect.RequestNotificationListenerPermission(intent))
-                updateState { copy(isNotificationPermissionDialogShown = false) }
-            }
-
-            is NotificationSettingsAction.OnNotificationPermissionDialogDismiss -> {
-                updateState { copy(isNotificationPermissionDialogShown = false) }
-                sendEffect(NotificationSettingsEffect.ShowToast("通知アニメーションを有効にするには\n通知アクセスを許可してください"))
+            is NotificationSettingsAction.OnIsNotificationBadgeEnabledSwitchChange -> {
+                updateState {
+                    val updatedNotificationSettings = notificationSettings.copy(
+                        isNotificationBadgeEnabled = action.isNotificationBadgeEnabled,
+                    )
+                    copy(
+                        notificationSettings = updatedNotificationSettings,
+                        isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
+                    )
+                }
             }
 
             is NotificationSettingsAction.OnSaveButtonClick -> saveNotificationSettings()
 
             is NotificationSettingsAction.OnBackButtonClick -> sendEffect(NotificationSettingsEffect.NavigateBack)
 
-            is NotificationSettingsAction.OnNotificationListenerPermissionResult -> {
-                if (permissionChecker.isNotificationListenerEnabled()) {
-                    updateState {
-                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = true)
-                        copy(
-                            notificationSettings = updatedNotificationSettings,
-                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                        )
-                    }
-                } else {
-                    updateState {
-                        val updatedNotificationSettings = notificationSettings.copy(isNotificationAnimationEnabled = false)
-                        copy(
-                            notificationSettings = updatedNotificationSettings,
-                            isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                        )
-                    }
+            is NotificationSettingsAction.OnCheckPermissionOnResume -> {
+                if (!permissionChecker.isNotificationListenerEnabled()) {
+                    sendEffect(NotificationSettingsEffect.NavigateBack)
                 }
             }
         }

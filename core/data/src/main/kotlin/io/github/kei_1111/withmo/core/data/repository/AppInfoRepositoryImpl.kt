@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
+@Suppress("TooManyFunctions")
 class AppInfoRepositoryImpl @Inject constructor(
     private val withmoAppInfoDao: WithmoAppInfoDao,
     private val context: Context,
@@ -119,6 +120,20 @@ class AppInfoRepositoryImpl @Inject constructor(
                 if (updatedApps.isNotEmpty()) {
                     withmoAppInfoDao.updateList(updatedApps)
                 }
+            }
+        }
+    }
+
+    override suspend fun updateNotificationFlags(notificationMap: Map<String, Boolean>) {
+        withContext(ioDispatcher) {
+            val allApps = withmoAppInfoDao.getAllList().first()
+            val updatedApps = allApps.mapNotNull { entity ->
+                val hasNotification = notificationMap[entity.packageName] ?: false
+                entity.copy(notification = hasNotification)
+            }
+
+            if (updatedApps.isNotEmpty()) {
+                withmoAppInfoDao.updateList(updatedApps)
             }
         }
     }

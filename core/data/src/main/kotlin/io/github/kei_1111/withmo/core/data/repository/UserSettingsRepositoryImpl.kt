@@ -53,6 +53,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED]
                         ?: false,
+                    isNotificationBadgeEnabled = preferences[IS_NOTIFICATION_BADGE_ENABLED]
+                        ?: false,
                 ),
                 clockSettings = ClockSettings(
                     isClockShown = preferences[IS_CLOCK_SHOWN] ?: true,
@@ -106,6 +108,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
             dataStore.edit { preferences ->
                 preferences[IS_NOTIFICATION_ANIMATION_ENABLED] =
                     notificationSettings.isNotificationAnimationEnabled
+                preferences[IS_NOTIFICATION_BADGE_ENABLED] =
+                    notificationSettings.isNotificationBadgeEnabled
             }
         }
     }
@@ -175,6 +179,8 @@ class UserSettingsRepositoryImpl @Inject constructor(
     private companion object {
         val IS_NOTIFICATION_ANIMATION_ENABLED =
             booleanPreferencesKey("is_notification_animation_enabled")
+        val IS_NOTIFICATION_BADGE_ENABLED =
+            booleanPreferencesKey("is_notification_badge_enabled")
         val IS_CLOCK_SHOWN = booleanPreferencesKey("is_clock_shown")
         val CLOCK_TYPE = stringPreferencesKey("clock_type")
         val APP_ICON_SIZE = floatPreferencesKey("app_icon_size")

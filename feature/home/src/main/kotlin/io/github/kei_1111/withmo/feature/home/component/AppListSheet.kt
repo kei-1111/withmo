@@ -103,6 +103,8 @@ internal fun AppListSheet(
                         appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                             state.currentUserSettings.appIconSettings.roundedCornerPercent,
                         ),
+                        isNotificationBadgeShown =
+                        state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
                         isNavigateSettingsButtonShown =
                         state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
                         onAppClick = { onAction(HomeAction.OnAppClick(it)) },

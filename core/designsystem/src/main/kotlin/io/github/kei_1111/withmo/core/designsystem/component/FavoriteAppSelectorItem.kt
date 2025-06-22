@@ -52,6 +52,7 @@ fun FavoriteAppSelectorItem(
                 backgroundColor = backgroundColor,
             ),
             appIconShape = appIconShape,
+            isNotificationBadgeShown = false,
             onClick = onClick,
         )
     }
