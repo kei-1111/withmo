@@ -58,7 +58,6 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
-import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
@@ -200,12 +199,7 @@ private fun AppTabContent(
         if (searchedAppList.isNotEmpty()) {
             AppList(
                 appList = searchedAppList,
-                appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
-                    state.currentUserSettings.appIconSettings.roundedCornerPercent,
-                ),
-                isNotificationBadgeShown = state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
-                isNavigateSettingsButtonShown =
-                state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                userSettings = state.currentUserSettings,
                 onAppClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
                 onAppLongClick = {},
                 modifier = Modifier.fillMaxSize(),

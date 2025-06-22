@@ -37,7 +37,6 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
-import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
@@ -100,13 +99,7 @@ internal fun AppListSheet(
                 if (searchedAppList.isNotEmpty()) {
                     AppList(
                         appList = searchedAppList,
-                        appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
-                            state.currentUserSettings.appIconSettings.roundedCornerPercent,
-                        ),
-                        isNotificationBadgeShown =
-                        state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
-                        isNavigateSettingsButtonShown =
-                        state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                        userSettings = state.currentUserSettings,
                         onAppClick = { onAction(HomeAction.OnAppClick(it)) },
                         onAppLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                         modifier = Modifier.fillMaxSize(),
