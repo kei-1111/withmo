@@ -6,6 +6,12 @@
 
 **withmo** は「デジタルフィギュア × ランチャー」のコンセプトで作られた日本語Androidランチャーアプリです。Unity as a Libraryを活用してホーム画面に3Dモデル（.vrm形式）を表示することができ、インタラクティブなランチャーとライブ壁紙の両方の役割を果たします。時間に応じた視覚変化や豊富なカスタマイズ機能が特徴です。
 
+## SDK要件
+
+- **minSdk**: 29 (Android 10.0)
+- **compileSdk**: 35 (Android 15)
+- **targetSdk**: 35 (Android 15)
+
 ## アーキテクチャ
 
 ### マルチモジュール Clean Architecture + MVI
