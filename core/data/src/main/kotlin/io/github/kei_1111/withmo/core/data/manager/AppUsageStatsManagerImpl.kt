@@ -47,11 +47,9 @@ class AppUsageStatsManagerImpl @Inject constructor(
         try {
             val events = usageStatsManager.queryEvents(startTime, endTime)
             val event = UsageEvents.Event()
-            var totalEventsProcessed = 0
 
             while (events.hasNextEvent()) {
                 events.getNextEvent(event)
-                totalEventsProcessed++
 
                 val isLaunch = when (event.eventType) {
                     UsageEvents.Event.ACTIVITY_RESUMED -> true // アプリが起動された
