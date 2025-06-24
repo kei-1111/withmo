@@ -140,6 +140,7 @@ git commit -m "feat: アプリをホーム画面上に追加でき、保存さ�
 - Issueと同じタイトルでPull Requestを作成
 - 変更内容の概要を説明
 - 関連するIssueをリンク
+- `.github/PULL_REQUEST_TEMPLATE.md`のテンプレートに従って記述
 
 ### 6. レビュー・マージ
 - コードレビューを実施
