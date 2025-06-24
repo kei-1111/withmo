@@ -81,6 +81,8 @@ internal fun PlaceableItemContent(
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,
                             ),
+                            isNotificationBadgeShown =
+                            state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                             startPadding = Paddings.Medium,

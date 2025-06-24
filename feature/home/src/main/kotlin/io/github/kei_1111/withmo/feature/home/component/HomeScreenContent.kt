@@ -118,6 +118,7 @@ private fun RowAppList(
                 onClick = { onAction(HomeAction.OnAppClick(it.info)) },
                 onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
                 appInfo = it.info,
+                isNotificationBadgeShown = it.info.notification,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),

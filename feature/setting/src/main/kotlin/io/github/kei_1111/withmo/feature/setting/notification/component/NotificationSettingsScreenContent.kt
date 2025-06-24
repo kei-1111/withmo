@@ -30,9 +30,16 @@ internal fun NotificationSettingsScreenContent(
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
         WithmoSettingItemWithSwitch(
-            title = "通知の受け取り",
+            title = "通知アニメーションの実行",
             checked = state.notificationSettings.isNotificationAnimationEnabled,
             onCheckedChange = { onAction(NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange(it)) },
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        WithmoSettingItemWithSwitch(
+            title = "バッジ表示",
+            checked = state.notificationSettings.isNotificationBadgeEnabled,
+            onCheckedChange = { onAction(NotificationSettingsAction.OnIsNotificationBadgeEnabledSwitchChange(it)) },
             modifier = Modifier.fillMaxWidth(),
         )
     }
@@ -47,8 +54,8 @@ private fun NotificationSettingsScreenContentLightPreview() {
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = true,
+                    isNotificationBadgeEnabled = true,
                 ),
-                isNotificationPermissionDialogShown = false,
                 isSaveButtonEnabled = true,
             ),
             onAction = {},
@@ -66,8 +73,8 @@ private fun NotificationSettingsScreenContentDarkPreview() {
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = false,
+                    isNotificationBadgeEnabled = false,
                 ),
-                isNotificationPermissionDialogShown = false,
                 isSaveButtonEnabled = false,
             ),
             onAction = {},

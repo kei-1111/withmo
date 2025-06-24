@@ -2,8 +2,6 @@ package io.github.kei_1111.withmo.feature.setting.notification
 
 import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
@@ -17,6 +15,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
@@ -24,6 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
@@ -32,7 +34,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.notification.component.NotificationPermissionDialog
 import io.github.kei_1111.withmo.feature.setting.notification.component.NotificationSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
@@ -45,25 +46,27 @@ fun NotificationSettingsScreen(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
-
-    val notificationListenerPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.StartActivityForResult(),
-    ) {
-        viewModel.onAction(NotificationSettingsAction.OnNotificationListenerPermissionResult)
-    }
 
     BackHandler {
         viewModel.onAction(NotificationSettingsAction.OnBackButtonClick)
     }
 
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onAction(NotificationSettingsAction.OnCheckPermissionOnResume)
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose { lifecycleOwner.lifecycle.removeObserver(observer) }
+    }
+
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is NotificationSettingsEffect.RequestNotificationListenerPermission ->
-                    notificationListenerPermissionLauncher.launch(effect.intent)
-
                 is NotificationSettingsEffect.NavigateBack -> currentOnBackButtonClick()
 
                 is NotificationSettingsEffect.ShowToast -> showToast(context, effect.message)
@@ -116,16 +119,6 @@ private fun NotificationSettingsScreen(
             )
         }
     }
-    if (state.isNotificationPermissionDialogShown) {
-        NotificationPermissionDialog(
-            onConfirm = {
-                onAction(NotificationSettingsAction.OnNotificationPermissionDialogConfirm)
-            },
-            onDismiss = {
-                onAction(NotificationSettingsAction.OnNotificationPermissionDialogDismiss)
-            },
-        )
-    }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -138,7 +131,6 @@ private fun NotificationSettingsScreenLightPreview() {
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = true,
                 ),
-                isNotificationPermissionDialogShown = false,
                 isSaveButtonEnabled = true,
             ),
             onAction = {},
@@ -157,7 +149,6 @@ private fun NotificationSettingsScreenDarkPreview() {
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = false,
                 ),
-                isNotificationPermissionDialogShown = true,
                 isSaveButtonEnabled = false,
             ),
             onAction = {},

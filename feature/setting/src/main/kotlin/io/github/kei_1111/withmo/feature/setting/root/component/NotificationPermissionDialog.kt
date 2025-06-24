@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.feature.setting.notification.component
+package io.github.kei_1111.withmo.feature.setting.root.component
 
 import android.os.Build
 import androidx.annotation.RequiresApi

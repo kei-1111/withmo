@@ -101,7 +101,6 @@ class MainActivity : ComponentActivity() {
                         val updatedAppInfo = currentAppInfo
                             .copy(
                                 info = currentAppInfo.info.copy(
-                                    notification = false,
                                     useCount = currentAppInfo.info.useCount + 1,
                                 ),
                             )
