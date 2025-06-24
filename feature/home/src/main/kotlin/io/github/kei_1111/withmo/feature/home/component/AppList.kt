@@ -32,7 +32,6 @@ import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.collections.immutable.ImmutableList
