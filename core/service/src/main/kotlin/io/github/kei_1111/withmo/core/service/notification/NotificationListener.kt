@@ -12,7 +12,7 @@ import io.github.kei_1111.withmo.core.common.IntentConstants
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
-import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,7 +26,7 @@ class NotificationListener : NotificationListenerService() {
     lateinit var getNotificationSettingsUseCase: GetNotificationSettingsUseCase
 
     @Inject
-    lateinit var appInfoRepository: AppInfoRepository
+    lateinit var appManager: AppManager
 
     private val serviceScope = CoroutineScope(Dispatchers.Default)
 
@@ -69,9 +69,9 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-    private suspend fun updateNotificationFlags() {
+    private fun updateNotificationFlags() {
         val currentNotifications = getCurrentNotifications()
-        appInfoRepository.updateNotificationFlags(currentNotifications)
+        appManager.updateNotifications(currentNotifications)
     }
 
     override fun onListenerConnected() {

@@ -37,6 +37,7 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
+import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
@@ -53,14 +54,15 @@ internal fun AppListSheet(
     modifier: Modifier = Modifier,
 ) {
     var appSearchQuery by remember { mutableStateOf("") }
+    val appList = LocalAppList.current
     val searchedAppList by remember(
         appSearchQuery,
-        state.appList,
+        appList,
         state.currentUserSettings.sortSettings.sortType,
     ) {
         derivedStateOf {
-            val filtered = state.appList.filter { appInfo ->
-                appInfo.info.label.contains(appSearchQuery, ignoreCase = true)
+            val filtered = appList.filter { appInfo ->
+                appInfo.label.contains(appSearchQuery, ignoreCase = true)
             }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,

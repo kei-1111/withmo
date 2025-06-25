@@ -16,6 +16,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSyste
 import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
@@ -23,7 +24,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 fun FavoriteAppListRow(
     favoriteAppList: ImmutableList<WithmoAppInfo>,
-    removeSelectedAppList: (WithmoAppInfo) -> Unit,
+    removeSelectedAppList: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
 ) {
@@ -40,8 +41,8 @@ fun FavoriteAppListRow(
                 appInfo = it.info,
                 isSelected = true,
                 addSelectedAppList = { },
-                removeSelectedAppList = { removeSelectedAppList(it) },
-                onClick = { removeSelectedAppList(it) },
+                removeSelectedAppList = { removeSelectedAppList(it.info) },
+                onClick = { removeSelectedAppList(it.info) },
                 backgroundColor = MaterialTheme.colorScheme.surface,
                 modifier = Modifier.weight(Weights.Medium),
                 appIconShape = appIconShape,

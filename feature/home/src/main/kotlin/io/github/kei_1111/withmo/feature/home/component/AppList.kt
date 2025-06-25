@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
@@ -39,7 +36,7 @@ import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 internal fun AppList(
-    appList: ImmutableList<WithmoAppInfo>,
+    appList: ImmutableList<AppInfo>,
     userSettings: UserSettings,
     onAppClick: (AppInfo) -> Unit,
     onAppLongClick: (AppInfo) -> Unit,
@@ -47,10 +44,10 @@ internal fun AppList(
 ) {
     val context = LocalContext.current
     val launchableAppList = appList
-        .filter { it.info.packageName != context.packageName }
+        .filter { it.packageName != context.packageName }
         .toPersistentList()
     val settingApp = appList
-        .filter { it.info.packageName == context.packageName }
+        .filter { it.packageName == context.packageName }
         .toPersistentList()
 
     val appIconShape = userSettings.appIconSettings.appIconShape.toShape(
@@ -104,7 +101,7 @@ internal fun AppList(
 
 @Composable
 private fun CustomAppInfoGridLayout(
-    items: ImmutableList<WithmoAppInfo>,
+    items: ImmutableList<AppInfo>,
     columns: Int,
     appIconShape: Shape,
     isNotificationBadgeShown: Boolean,
@@ -129,10 +126,10 @@ private fun CustomAppInfoGridLayout(
                         contentAlignment = Alignment.Center,
                     ) {
                         App(
-                            appInfo = item.info,
+                            appInfo = item,
                             isNotificationBadgeShown = isNotificationBadgeShown,
-                            onClick = { onClick(item.info) },
-                            onLongClick = { onLongClick(item.info) },
+                            onClick = { onClick(item) },
+                            onLongClick = { onLongClick(item) },
                             appIconShape = appIconShape,
                         )
                     }
@@ -163,15 +160,11 @@ private fun AppListLightPreview() {
 
         AppList(
             appList = List(18) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = if (it == 0) context.packageName else "io.github.kei_1111.withmo.app$it",
-                        notification = it % 3 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = Offset.Unspecified,
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = if (it == 0) context.packageName else "io.github.kei_1111.withmo.app$it",
+                    notification = it % 3 == 0,
                 )
             }.toPersistentList(),
             userSettings = UserSettings(),
@@ -198,15 +191,11 @@ private fun AppListDarkPreview() {
 
         AppList(
             appList = List(18) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = if (it == 0) context.packageName else "io.github.kei_1111.withmo.app$it",
-                        notification = it % 3 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = Offset.Unspecified,
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = if (it == 0) context.packageName else "io.github.kei_1111.withmo.app$it",
+                    notification = it % 3 == 0,
                 )
             }.toPersistentList(),
             userSettings = UserSettings(),

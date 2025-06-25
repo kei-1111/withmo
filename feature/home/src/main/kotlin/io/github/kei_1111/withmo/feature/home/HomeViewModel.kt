@@ -26,7 +26,6 @@ import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
@@ -87,7 +86,7 @@ class HomeViewModel @Inject constructor(
                 updateState {
                     copy(
                         currentUserSettings = userSettings,
-                        appList = sortAppList(userSettings.sortSettings.sortType, appList).toPersistentList(),
+                        appList = appList,
                     )
                 }
             }

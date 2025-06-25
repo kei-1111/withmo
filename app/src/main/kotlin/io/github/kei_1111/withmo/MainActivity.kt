@@ -14,6 +14,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -27,6 +28,7 @@ import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
@@ -35,6 +37,7 @@ import io.github.kei_1111.withmo.core.model.FavoriteOrder
 import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.AppListProvider
 import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider
 import io.github.kei_1111.withmo.core.ui.ClickBlockerProvider
 import io.github.kei_1111.withmo.core.ui.CurrentTimeProvider
@@ -43,6 +46,7 @@ import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.App
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -68,6 +72,9 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var modelFileManager: ModelFileManager
+
+    @Inject
+    lateinit var appManager: AppManager
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -162,27 +169,33 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val appInfoList by appManager.appInfoList.collectAsState()
+
             AppWidgetHostsProvider(
                 appWidgetHost = appWidgetHost,
                 appWidgetManager = appWidgetManager,
             ) {
-                CurrentTimeProvider {
-                    val currentTime = LocalCurrentTime.current
+                AppListProvider(
+                    appList = appInfoList.toPersistentList(),
+                ) {
+                    CurrentTimeProvider {
+                        val currentTime = LocalCurrentTime.current
 
-                    LaunchedEffect(currentTime) {
-                        if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                            TimeUtils.sendTimeBasedMessage(currentTime)
+                        LaunchedEffect(currentTime) {
+                            if (themeSettings.themeType == ThemeType.TIME_BASED) {
+                                TimeUtils.sendTimeBasedMessage(currentTime)
+                            }
                         }
-                    }
 
-                    ClickBlockerProvider {
-                        WithmoTheme(
-                            themeType = themeSettings.themeType,
-                        ) {
-                            viewModel.startScreen?.let {
-                                App(
-                                    startScreen = it,
-                                )
+                        ClickBlockerProvider {
+                            WithmoTheme(
+                                themeType = themeSettings.themeType,
+                            ) {
+                                viewModel.startScreen?.let {
+                                    App(
+                                        startScreen = it,
+                                    )
+                                }
                             }
                         }
                     }
