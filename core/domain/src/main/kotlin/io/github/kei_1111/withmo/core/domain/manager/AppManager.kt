@@ -9,4 +9,6 @@ interface AppManager {
     suspend fun refreshAppList()
 
     fun updateNotifications(notificationMap: Map<String, Boolean>)
+
+    suspend fun updateUsageCounts()
 }

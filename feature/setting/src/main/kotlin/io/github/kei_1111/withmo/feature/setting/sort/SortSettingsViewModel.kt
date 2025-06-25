@@ -3,8 +3,8 @@ package io.github.kei_1111.withmo.feature.setting.sort
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
-import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class SortSettingsViewModel @Inject constructor(
     private val getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
-    private val appInfoRepository: AppInfoRepository,
+    private val appManager: AppManager,
     private val permissionChecker: PermissionChecker,
 ) : BaseViewModel<SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
@@ -115,7 +115,7 @@ class SortSettingsViewModel @Inject constructor(
     private fun updateUsageCounts() {
         viewModelScope.launch {
             try {
-                appInfoRepository.updateUsageCounts()
+                appManager.updateUsageCounts()
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to update usage counts", e)
             }

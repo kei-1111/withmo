@@ -33,9 +33,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextFie
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
-import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.HomeAction
@@ -134,20 +131,7 @@ private fun AppListSheetLightPreview() {
 
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(
-                appList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
-            ),
+            state = HomeState(),
             onAction = {},
         )
     }
@@ -170,20 +154,7 @@ private fun AppListSheetDarkPreview() {
 
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(
-                appList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
-            ),
+            state = HomeState(),
             onAction = {},
         )
     }

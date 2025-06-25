@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +29,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteApp
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -145,15 +143,14 @@ private fun HomeScreenContentLightPreview() {
         HomeScreenContent(
             state = HomeState(
                 favoriteAppList = List(2) {
-                    WithmoAppInfo(
+                    FavoriteApp(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -179,15 +176,14 @@ private fun HomeScreenContentDarkPreview() {
         HomeScreenContent(
             state = HomeState(
                 favoriteAppList = List(3) {
-                    WithmoAppInfo(
+                    FavoriteApp(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -213,15 +209,14 @@ private fun RowAppListLightPreview() {
         RowAppList(
             state = HomeState(
                 favoriteAppList = List(4) {
-                    WithmoAppInfo(
+                    FavoriteApp(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -248,15 +243,14 @@ private fun RowAppListDarkPreview() {
         RowAppList(
             state = HomeState(
                 favoriteAppList = List(1) {
-                    WithmoAppInfo(
+                    FavoriteApp(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),

@@ -82,6 +82,24 @@ class AppManagerImpl @Inject constructor(
         }
     }
 
+    override suspend fun updateUsageCounts(): Unit = withContext(Dispatchers.IO) {
+        try {
+            val currentList = _appInfoList.value
+            val usageCounts = getAppUsageCounts()
+
+            val updatedList = currentList.map { appInfo ->
+                appInfo.copy(
+                    useCount = usageCounts[appInfo.packageName] ?: 0,
+                )
+            }
+
+            _appInfoList.value = updatedList
+            Log.d(TAG, "Usage counts updated for ${updatedList.size} apps")
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to update usage counts", e)
+        }
+    }
+
     // AppUtilsから移植
     private fun getAppList(): List<AppInfo> {
         val intent = Intent(Intent.ACTION_MAIN, null).apply {

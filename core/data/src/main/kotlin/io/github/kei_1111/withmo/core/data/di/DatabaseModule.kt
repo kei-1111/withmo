@@ -61,6 +61,14 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideWidgetInfoDao(database: WithmoDatabase) = database.withmoWidgetInfoDao()
+
+    @Provides
+    @Singleton
+    fun provideFavoriteAppDao(database: WithmoDatabase) = database.favoriteAppDao()
+
+    @Provides
+    @Singleton
+    fun providePlacedAppDao(database: WithmoDatabase) = database.placedAppDao()
 }
 
 @Qualifier

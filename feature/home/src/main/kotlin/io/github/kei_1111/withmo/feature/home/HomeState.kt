@@ -3,9 +3,9 @@ package io.github.kei_1111.withmo.feature.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.featurebase.State
+import io.github.kei_1111.withmo.core.model.FavoriteApp
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.WidgetInfo
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
@@ -15,7 +15,7 @@ import kotlinx.collections.immutable.persistentListOf
 data class HomeState(
     val isChangeModelScaleContentShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,
-    val isModelLoading: Boolean = true,
+    val isModelLoading: Boolean = false,
     val isAppListSheetOpened: Boolean = false,
     val isPlaceableItemListSheetOpened: Boolean = false,
     val placedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
@@ -24,8 +24,7 @@ data class HomeState(
     val isEditMode: Boolean = false,
     val resizingWidget: WithmoWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
-    val appList: ImmutableList<WithmoAppInfo> = persistentListOf(),
-    val favoriteAppList: ImmutableList<WithmoAppInfo> = persistentListOf(),
+    val favoriteAppList: ImmutableList<FavoriteApp> = persistentListOf(),
     val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
 ) : State

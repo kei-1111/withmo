@@ -33,7 +33,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShad
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.PlacedApp
 import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
@@ -75,9 +75,9 @@ internal fun PlaceableItemContent(
                         )
                     }
 
-                    is WithmoAppInfo -> {
+                    is PlacedApp -> {
                         WithmoApp(
-                            withmoAppInfo = placeableItem,
+                            placedApp = placeableItem,
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,
                             ),

@@ -21,13 +21,12 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.PlacedApp
 import io.github.kei_1111.withmo.core.util.ktx.toPx
 
 @Composable
 fun WithmoApp(
-    withmoAppInfo: WithmoAppInfo,
+    placedApp: PlacedApp,
     appIconShape: Shape,
     isNotificationBadgeShown: Boolean,
     topPadding: Dp,
@@ -46,7 +45,7 @@ fun WithmoApp(
     val appSize = CommonDimensions.AppIconSize + Paddings.Large
 
     PlaceableItemContainer(
-        placeableItem = withmoAppInfo,
+        placeableItem = placedApp,
         width = appSize,
         height = appSize,
         topPaddingPx = topPadding.toPx(),
@@ -58,7 +57,7 @@ fun WithmoApp(
         onDeleteBadgeClick = onDeleteBadgeClick,
     ) {
         App(
-            appInfo = withmoAppInfo.info,
+            appInfo = placedApp.info,
             appIconShape = appIconShape,
             isNotificationBadgeShown = isNotificationBadgeShown,
             isAppNameShown = false,
@@ -82,14 +81,14 @@ private fun WithmoAppLightPreview() {
         }
 
         WithmoApp(
-            withmoAppInfo = WithmoAppInfo(
+            placedApp = PlacedApp(
+                id = "withmo-app",
                 info = AppInfo(
                     appIcon = appIcon,
                     label = "withmo",
                     packageName = "io.github.kei_1111.withmo.app",
                     notification = false,
                 ),
-                favoriteOrder = FavoriteOrder.NotFavorite,
                 position = Offset.Zero,
             ),
             appIconShape = CircleShape,
@@ -120,14 +119,14 @@ private fun WithmoAppDarkPreview() {
         }
 
         WithmoApp(
-            withmoAppInfo = WithmoAppInfo(
+            placedApp = PlacedApp(
+                id = "withmo-app-dark",
                 info = AppInfo(
                     appIcon = appIcon,
                     label = "withmo",
                     packageName = "io.github.kei_1111.withmo.app",
                     notification = true,
                 ),
-                favoriteOrder = FavoriteOrder.NotFavorite,
                 position = Offset.Zero,
             ),
             appIconShape = RoundedCornerShape(3.dp),

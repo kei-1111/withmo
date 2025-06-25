@@ -13,7 +13,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
@@ -26,8 +25,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteApp
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
@@ -125,30 +123,18 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                searchedAppList = List(6) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 2 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
                 favoriteAppList = List(3) {
-                    WithmoAppInfo(
+                    FavoriteApp(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
+                initialFavoriteAppList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "search",
                 isSaveButtonEnabled = true,
@@ -167,7 +153,6 @@ private fun FavoriteAppSettingsScreenContentDarkPreview() {
     SettingDarkPreviewEnvironment {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                searchedAppList = persistentListOf(),
                 favoriteAppList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "",
