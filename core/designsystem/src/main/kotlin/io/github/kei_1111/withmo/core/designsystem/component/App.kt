@@ -42,6 +42,7 @@ private const val AppItemLabelMaxLines = 1
 @Composable
 fun App(
     appInfo: AppInfo,
+    isNotificationBadgeShown: Boolean,
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     onLongClick: () -> Unit = {},
@@ -65,7 +66,7 @@ fun App(
                 onLongClick = onLongClick,
                 appIconShape = appIconShape,
             )
-            if (appInfo.notification) {
+            if (appInfo.notification && isNotificationBadgeShown) {
                 Badge(
                     modifier = Modifier.align(Alignment.TopEnd),
                 )
@@ -184,6 +185,7 @@ private fun AppLightPreview() {
                 packageName = "io.github.kei_1111.withmo",
                 notification = true,
             ),
+            isNotificationBadgeShown = true,
         )
     }
 }
@@ -209,6 +211,7 @@ private fun AppDarkPreview() {
                 notification = true,
             ),
             isAppNameShown = false,
+            isNotificationBadgeShown = false,
         )
     }
 }

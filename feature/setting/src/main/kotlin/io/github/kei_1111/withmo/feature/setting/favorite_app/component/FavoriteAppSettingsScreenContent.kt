@@ -8,10 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
@@ -24,10 +25,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsState
 import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
@@ -35,6 +36,7 @@ import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvi
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
+@Suppress("LongMethod")
 @Composable
 internal fun FavoriteAppSettingsScreenContent(
     state: FavoriteAppSettingsState,
@@ -44,6 +46,17 @@ internal fun FavoriteAppSettingsScreenContent(
     val appIconShape = state.appIconSettings.appIconShape.toShape(
         state.appIconSettings.roundedCornerPercent,
     )
+    val appList = LocalAppList.current
+    val searchedAppList by remember(appList, state.appSearchQuery) {
+        derivedStateOf {
+            appList
+                .filter { appInfo ->
+                    appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
+                }
+                .sortedBy { it.label }
+                .toPersistentList()
+        }
+    }
 
     Column(
         modifier = modifier,
@@ -67,10 +80,10 @@ internal fun FavoriteAppSettingsScreenContent(
                 value = state.appSearchQuery,
                 onValueChange = { onAction(FavoriteAppSettingsAction.OnAppSearchQueryChange(it)) },
             )
-            if (state.searchedAppList.isNotEmpty()) {
+            if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
-                    appList = state.searchedAppList,
-                    favoriteAppList = state.favoriteAppList,
+                    appList = searchedAppList,
+                    favoriteAppInfoList = state.favoriteAppInfoList,
                     addSelectedAppList = { onAction(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
@@ -86,7 +99,7 @@ internal fun FavoriteAppSettingsScreenContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = state.favoriteAppList,
+            favoriteAppInfoList = state.favoriteAppInfoList,
             removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
@@ -110,30 +123,18 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                searchedAppList = List(6) {
-                    WithmoAppInfo(
+                favoriteAppInfoList = List(3) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
-                favoriteAppList = List(3) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 2 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
+                initialFavoriteAppInfoList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "search",
                 isSaveButtonEnabled = true,
@@ -152,8 +153,7 @@ private fun FavoriteAppSettingsScreenContentDarkPreview() {
     SettingDarkPreviewEnvironment {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                searchedAppList = persistentListOf(),
-                favoriteAppList = persistentListOf(),
+                favoriteAppInfoList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "",
                 isSaveButtonEnabled = false,

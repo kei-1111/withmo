@@ -14,35 +14,42 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.geometry.Offset
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.core.common.IntentConstants
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
-import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
+import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.core.ui.AppListProvider
 import io.github.kei_1111.withmo.core.ui.AppWidgetHostsProvider
 import io.github.kei_1111.withmo.core.ui.ClickBlockerProvider
 import io.github.kei_1111.withmo.core.ui.CurrentTimeProvider
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
-import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.App
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,9 +65,6 @@ class MainActivity : ComponentActivity() {
     lateinit var getModelFilePathUseCase: GetModelFilePathUseCase
 
     @Inject
-    lateinit var appInfoRepository: AppInfoRepository
-
-    @Inject
     lateinit var appWidgetHost: AppWidgetHost
 
     @Inject
@@ -69,51 +73,30 @@ class MainActivity : ComponentActivity() {
     @Inject
     lateinit var modelFileManager: ModelFileManager
 
+    @Inject
+    lateinit var appManager: AppManager
+
+    @Inject
+    lateinit var permissionChecker: PermissionChecker
+
+    @Inject
+    lateinit var getSortSettingsUseCase: GetSortSettingsUseCase
+
+    @Inject
+    lateinit var saveSortSettingsUseCase: SaveSortSettingsUseCase
+
+    @Inject
+    lateinit var getNotificationSettingsUseCase: GetNotificationSettingsUseCase
+
+    @Inject
+    lateinit var saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase
+
     private val viewModel: MainViewModel by viewModels()
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            val packageName = intent.getStringExtra(IntentConstants.ExtraKey.PackageName)
-
-            when (intent.action) {
-                IntentConstants.Action.NotificationReceived -> {
-                    lifecycleScope.launch {
-                        val currentAppInfo = packageName?.let { pkgName ->
-                            appInfoRepository.getByPackageName(pkgName)
-                        } ?: return@launch
-
-                        val updatedAppInfo = currentAppInfo
-                            .copy(
-                                info = currentAppInfo.info.copy(
-                                    notification = true,
-                                ),
-                            )
-                        appInfoRepository.update(updatedAppInfo)
-                    }
-                }
-
-                IntentConstants.Action.StartActivity -> {
-                    lifecycleScope.launch {
-                        val currentAppInfo = packageName?.let { pkgName ->
-                            appInfoRepository.getByPackageName(pkgName)
-                        } ?: return@launch
-
-                        val updatedAppInfo = currentAppInfo
-                            .copy(
-                                info = currentAppInfo.info.copy(
-                                    notification = false,
-                                    useCount = currentAppInfo.info.useCount + 1,
-                                ),
-                            )
-                        appInfoRepository.update(updatedAppInfo)
-                    }
-                }
-
-                else -> {
-                    lifecycleScope.launch {
-                        syncAppInfo()
-                    }
-                }
+            lifecycleScope.launch {
+                appManager.refreshAppList()
             }
         }
     }
@@ -135,20 +118,8 @@ class MainActivity : ComponentActivity() {
         observeThemeSettings()
 
         lifecycleScope.launchWhenCreated {
-            syncAppInfo()
+            appManager.refreshAppList()
         }
-
-        registerReceiver(
-            packageReceiver,
-            IntentFilter(IntentConstants.Action.NotificationReceived),
-            RECEIVER_NOT_EXPORTED,
-        )
-
-        registerReceiver(
-            packageReceiver,
-            IntentFilter(IntentConstants.Action.StartActivity),
-            RECEIVER_NOT_EXPORTED,
-        )
 
         registerReceiver(
             packageReceiver,
@@ -163,27 +134,33 @@ class MainActivity : ComponentActivity() {
         )
 
         setContent {
+            val appInfoList by appManager.appInfoList.collectAsState()
+
             AppWidgetHostsProvider(
                 appWidgetHost = appWidgetHost,
                 appWidgetManager = appWidgetManager,
             ) {
-                CurrentTimeProvider {
-                    val currentTime = LocalCurrentTime.current
+                AppListProvider(
+                    appList = appInfoList.toPersistentList(),
+                ) {
+                    CurrentTimeProvider {
+                        val currentTime = LocalCurrentTime.current
 
-                    LaunchedEffect(currentTime) {
-                        if (themeSettings.themeType == ThemeType.TIME_BASED) {
-                            TimeUtils.sendTimeBasedMessage(currentTime)
+                        LaunchedEffect(currentTime) {
+                            if (themeSettings.themeType == ThemeType.TIME_BASED) {
+                                TimeUtils.sendTimeBasedMessage(currentTime)
+                            }
                         }
-                    }
 
-                    ClickBlockerProvider {
-                        WithmoTheme(
-                            themeType = themeSettings.themeType,
-                        ) {
-                            viewModel.startScreen?.let {
-                                App(
-                                    startScreen = it,
-                                )
+                        ClickBlockerProvider {
+                            WithmoTheme(
+                                themeType = themeSettings.themeType,
+                            ) {
+                                viewModel.startScreen?.let {
+                                    App(
+                                        startScreen = it,
+                                    )
+                                }
                             }
                         }
                     }
@@ -200,6 +177,14 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         UnityManager.resumeForActivity()
+
+        // アプリがフォアグラウンドに戻った時に使用回数を更新
+        lifecycleScope.launch {
+            appManager.updateUsageCounts()
+
+            // 権限チェックして設定を更新
+            checkPermissionsAndUpdateSettings()
+        }
     }
 
     override fun onPause() {
@@ -215,18 +200,6 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(packageReceiver)
-    }
-
-    private suspend fun syncAppInfo() {
-        val installedApps = AppUtils.getAppList(this).map {
-            WithmoAppInfo(
-                info = it,
-                favoriteOrder = FavoriteOrder.NotFavorite,
-                position = Offset.Unspecified,
-            )
-        }
-
-        appInfoRepository.syncWithInstalledApps(installedApps)
     }
 
     private fun observeModelFilePath() {
@@ -254,6 +227,35 @@ class MainActivity : ComponentActivity() {
                 themeSettings = it
                 TimeUtils.themeMessage(themeSettings.themeType)
             }
+        }
+    }
+
+    private suspend fun checkPermissionsAndUpdateSettings() {
+        val hasUsageStatsPermission = permissionChecker.isUsageStatsPermissionGranted()
+        val hasNotificationListenerPermission = permissionChecker.isNotificationListenerEnabled()
+
+        // UsageStats権限がない かつ 現在のソートが使用回数順の場合、アルファベット順に変更
+        val currentSortSettings = getSortSettingsUseCase().first()
+        if (!hasUsageStatsPermission && currentSortSettings.sortType == SortType.USE_COUNT) {
+            saveSortSettingsUseCase(
+                SortSettings(sortType = SortType.ALPHABETICAL),
+            )
+        }
+
+        // 通知リスナー権限がない場合、通知関連設定をfalseに変更
+        val currentNotificationSettings = getNotificationSettingsUseCase().first()
+        if (!hasNotificationListenerPermission &&
+            (
+                currentNotificationSettings.isNotificationAnimationEnabled ||
+                    currentNotificationSettings.isNotificationBadgeEnabled
+                )
+        ) {
+            saveNotificationSettingsUseCase(
+                NotificationSettings(
+                    isNotificationAnimationEnabled = false,
+                    isNotificationBadgeEnabled = false,
+                ),
+            )
         }
     }
 }

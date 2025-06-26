@@ -10,6 +10,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,12 +24,14 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextFie
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
 import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
 @Composable
@@ -35,6 +40,20 @@ internal fun SelectFavoriteAppContent(
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val appInfoList = LocalAppList.current
+
+    // LocalAppListから動的に検索結果を計算
+    val searchedAppList by remember(appInfoList, state.appSearchQuery) {
+        derivedStateOf {
+            appInfoList
+                .filter { appInfo ->
+                    appInfo.label.contains(state.appSearchQuery, ignoreCase = true)
+                }
+                .sortedBy { it.label }
+                .toPersistentList()
+        }
+    }
+
     BackHandler {
         onAction(OnboardingAction.OnPreviousButtonClick)
     }
@@ -64,10 +83,10 @@ internal fun SelectFavoriteAppContent(
                 value = state.appSearchQuery,
                 onValueChange = { onAction(OnboardingAction.OnAppSearchQueryChange(it)) },
             )
-            if (state.searchedAppList.isNotEmpty()) {
+            if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
-                    appList = state.searchedAppList,
-                    favoriteAppList = state.selectedAppList,
+                    appList = searchedAppList,
+                    favoriteAppInfoList = state.selectedAppList,
                     addSelectedAppList = { onAction(OnboardingAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
@@ -82,7 +101,7 @@ internal fun SelectFavoriteAppContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = state.selectedAppList,
+            favoriteAppInfoList = state.selectedAppList,
             removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
         )

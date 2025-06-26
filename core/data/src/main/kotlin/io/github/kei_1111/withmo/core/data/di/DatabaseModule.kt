@@ -52,15 +52,18 @@ object DatabaseModule {
         .fallbackToDestructiveMigration()
         .build()
 
-//    AppInfoDao
+//    PlacedWidgetDao
     @Provides
     @Singleton
-    fun provideAppInfoDao(database: WithmoDatabase) = database.withmoAppInfoDao()
+    fun provideWidgetInfoDao(database: WithmoDatabase) = database.placedWidgetDao()
 
-//    WidgetInfoDao
     @Provides
     @Singleton
-    fun provideWidgetInfoDao(database: WithmoDatabase) = database.withmoWidgetInfoDao()
+    fun provideFavoriteAppDao(database: WithmoDatabase) = database.favoriteAppDao()
+
+    @Provides
+    @Singleton
+    fun providePlacedAppDao(database: WithmoDatabase) = database.placedAppDao()
 }
 
 @Qualifier

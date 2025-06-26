@@ -55,10 +55,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
-import io.github.kei_1111.withmo.core.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
@@ -83,15 +81,16 @@ internal fun PlaceableItemListSheet(
 ) {
     var selectedTab by remember { mutableIntStateOf(PlaceableItemTab.Widget.ordinal) }
 
+    val appList = LocalAppList.current
     var appSearchQuery by remember { mutableStateOf("") }
     val searchedAppList by remember(
         appSearchQuery,
-        state.appList,
+        appList,
         state.currentUserSettings.sortSettings.sortType,
     ) {
         derivedStateOf {
-            val filtered = state.appList.filter { appInfo ->
-                appInfo.info.label.contains(appSearchQuery, ignoreCase = true)
+            val filtered = appList.filter { appInfo ->
+                appInfo.label.contains(appSearchQuery, ignoreCase = true)
             }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,
@@ -180,7 +179,7 @@ private fun WidgetTabContent(
 private fun AppTabContent(
     appSearchQuery: String,
     onAppSearchQueryChange: (String) -> Unit,
-    searchedAppList: ImmutableList<WithmoAppInfo>,
+    searchedAppList: ImmutableList<AppInfo>,
     state: HomeState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
@@ -200,11 +199,7 @@ private fun AppTabContent(
         if (searchedAppList.isNotEmpty()) {
             AppList(
                 appList = searchedAppList,
-                appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
-                    state.currentUserSettings.appIconSettings.roundedCornerPercent,
-                ),
-                isNavigateSettingsButtonShown =
-                state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                userSettings = state.currentUserSettings,
                 onAppClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
                 onAppLongClick = {},
                 modifier = Modifier.fillMaxSize(),
@@ -416,15 +411,11 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                 appSearchQuery = "",
                 onAppSearchQueryChange = {},
                 searchedAppList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = androidx.compose.ui.geometry.Offset.Unspecified,
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 3 == 0,
                     )
                 }.toPersistentList(),
                 state = HomeState(),
@@ -474,15 +465,11 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                 appSearchQuery = "",
                 onAppSearchQueryChange = {},
                 searchedAppList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = androidx.compose.ui.geometry.Offset.Unspecified,
+                    AppInfo(
+                        appIcon = appIcon,
+                        label = "アプリ $it",
+                        packageName = "io.github.kei_1111.withmo.app$it",
+                        notification = it % 3 == 0,
                     )
                 }.toPersistentList(),
                 state = HomeState(),
@@ -511,15 +498,11 @@ private fun AppTabContentLightPreview() {
             appSearchQuery = "",
             onAppSearchQueryChange = {},
             searchedAppList = List(15) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = androidx.compose.ui.geometry.Offset.Unspecified,
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = "io.github.kei_1111.withmo.app$it",
+                    notification = it % 3 == 0,
                 )
             }.toPersistentList(),
             state = HomeState(),
@@ -546,15 +529,11 @@ private fun AppTabContentDarkPreview() {
             appSearchQuery = "",
             onAppSearchQueryChange = {},
             searchedAppList = List(15) {
-                WithmoAppInfo(
-                    info = AppInfo(
-                        appIcon = appIcon,
-                        label = "アプリ $it",
-                        packageName = "io.github.kei_1111.withmo.app$it",
-                        notification = it % 2 == 0,
-                    ),
-                    favoriteOrder = FavoriteOrder.NotFavorite,
-                    position = androidx.compose.ui.geometry.Offset.Unspecified,
+                AppInfo(
+                    appIcon = appIcon,
+                    label = "アプリ $it",
+                    packageName = "io.github.kei_1111.withmo.app$it",
+                    notification = it % 3 == 0,
                 )
             }.toPersistentList(),
             state = HomeState(),

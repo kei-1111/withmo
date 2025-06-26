@@ -23,21 +23,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
-import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.AppIcon
-import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
-import io.github.kei_1111.withmo.core.model.user_settings.toShape
+import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
@@ -54,14 +46,15 @@ internal fun AppListSheet(
     modifier: Modifier = Modifier,
 ) {
     var appSearchQuery by remember { mutableStateOf("") }
+    val appList = LocalAppList.current
     val searchedAppList by remember(
         appSearchQuery,
-        state.appList,
+        appList,
         state.currentUserSettings.sortSettings.sortType,
     ) {
         derivedStateOf {
-            val filtered = state.appList.filter { appInfo ->
-                appInfo.info.label.contains(appSearchQuery, ignoreCase = true)
+            val filtered = appList.filter { appInfo ->
+                appInfo.label.contains(appSearchQuery, ignoreCase = true)
             }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,
@@ -100,11 +93,7 @@ internal fun AppListSheet(
                 if (searchedAppList.isNotEmpty()) {
                     AppList(
                         appList = searchedAppList,
-                        appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
-                            state.currentUserSettings.appIconSettings.roundedCornerPercent,
-                        ),
-                        isNavigateSettingsButtonShown =
-                        state.currentUserSettings.sideButtonSettings.isNavigateSettingsButtonShown,
+                        userSettings = state.currentUserSettings,
                         onAppClick = { onAction(HomeAction.OnAppClick(it)) },
                         onAppLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                         modifier = Modifier.fillMaxSize(),
@@ -127,30 +116,9 @@ internal fun AppListSheet(
 @Composable
 private fun AppListSheetLightPreview() {
     HomeLightPreviewEnvironment {
-        val context = LocalContext.current
-        val appIcon = remember {
-            AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
-                backgroundIcon = null,
-            )
-        }
-
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(
-                appList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
-            ),
+            state = HomeState(),
             onAction = {},
         )
     }
@@ -163,30 +131,9 @@ private fun AppListSheetLightPreview() {
 @Composable
 private fun AppListSheetDarkPreview() {
     HomeDarkPreviewEnvironment {
-        val context = LocalContext.current
-        val appIcon = remember {
-            AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
-                backgroundIcon = null,
-            )
-        }
-
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(
-                appList = List(20) {
-                    WithmoAppInfo(
-                        info = AppInfo(
-                            appIcon = appIcon,
-                            label = "アプリ $it",
-                            packageName = "io.github.kei_1111.withmo.app$it",
-                            notification = it % 3 == 0,
-                        ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
-                    )
-                }.toPersistentList(),
-            ),
+            state = HomeState(),
             onAction = {},
         )
     }

@@ -26,15 +26,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoApp
+import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
+import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
@@ -62,9 +62,9 @@ internal fun PlaceableItemContent(
         state.placedItemList.forEach { placeableItem ->
             key(placeableItem.id) {
                 when (placeableItem) {
-                    is WithmoWidgetInfo -> {
-                        WithmoWidget(
-                            withmoWidgetInfo = placeableItem,
+                    is PlacedWidgetInfo -> {
+                        PlacedWidget(
+                            placedWidgetInfo = placeableItem,
                             startPadding = Paddings.Medium,
                             endPadding = Paddings.Medium,
                             topPadding = topPaddingValue,
@@ -75,12 +75,14 @@ internal fun PlaceableItemContent(
                         )
                     }
 
-                    is WithmoAppInfo -> {
-                        WithmoApp(
-                            withmoAppInfo = placeableItem,
+                    is PlacedAppInfo -> {
+                        PlacedApp(
+                            placedAppInfo = placeableItem,
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,
                             ),
+                            isNotificationBadgeShown =
+                            state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                             startPadding = Paddings.Medium,

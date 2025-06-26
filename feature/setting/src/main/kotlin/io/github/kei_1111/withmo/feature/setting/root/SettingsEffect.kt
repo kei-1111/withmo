@@ -15,4 +15,5 @@ sealed interface SettingsEffect : Effect {
     data object NavigateThemeSettings : SettingsEffect
     data object NavigateBack : SettingsEffect
     data class ShowToast(val message: String) : SettingsEffect
+    data class RequestNotificationListenerPermission(val intent: Intent) : SettingsEffect
 }

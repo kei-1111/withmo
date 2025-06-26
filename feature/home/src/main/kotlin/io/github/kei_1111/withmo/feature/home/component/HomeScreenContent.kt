@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,8 +29,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteOrder
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -83,7 +81,7 @@ internal fun HomeScreenContent(
                         .fillMaxWidth()
                         .weight(Weights.Medium),
                 )
-                if (!state.isEditMode && state.favoriteAppList.isNotEmpty()) {
+                if (!state.isEditMode && state.favoriteAppInfoList.isNotEmpty()) {
                     RowAppList(
                         state = state,
                         onAction = onAction,
@@ -104,7 +102,7 @@ private fun RowAppList(
     modifier: Modifier = Modifier,
 ) {
     val appIconSettings = state.currentUserSettings.appIconSettings
-    val appList = state.favoriteAppList
+    val appList = state.favoriteAppInfoList
 
     Row(
         modifier = modifier
@@ -118,6 +116,7 @@ private fun RowAppList(
                 onClick = { onAction(HomeAction.OnAppClick(it.info)) },
                 onLongClick = { onAction(HomeAction.OnAppLongClick(it.info)) },
                 appInfo = it.info,
+                isNotificationBadgeShown = it.info.notification,
                 appIconShape = appIconSettings.appIconShape.toShape(
                     roundedCornerPercent = appIconSettings.roundedCornerPercent,
                 ),
@@ -143,16 +142,15 @@ private fun HomeScreenContentLightPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(2) {
-                    WithmoAppInfo(
+                favoriteAppInfoList = List(2) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -177,16 +175,15 @@ private fun HomeScreenContentDarkPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(3) {
-                    WithmoAppInfo(
+                favoriteAppInfoList = List(3) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -211,16 +208,15 @@ private fun RowAppListLightPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(4) {
-                    WithmoAppInfo(
+                favoriteAppInfoList = List(4) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),
@@ -246,16 +242,15 @@ private fun RowAppListDarkPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(1) {
-                    WithmoAppInfo(
+                favoriteAppInfoList = List(1) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
                             packageName = "io.github.kei_1111.withmo.app$it",
                             notification = it % 2 == 0,
                         ),
-                        favoriteOrder = FavoriteOrder.NotFavorite,
-                        position = Offset.Unspecified,
+                        favoriteOrder = it,
                     )
                 }.toPersistentList(),
             ),

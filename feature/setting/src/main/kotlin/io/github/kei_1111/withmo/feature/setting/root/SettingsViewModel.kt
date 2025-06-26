@@ -3,10 +3,16 @@ package io.github.kei_1111.withmo.feature.setting.root
 import android.app.WallpaperManager
 import android.content.Intent
 import android.provider.Settings
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import javax.inject.Inject
 
-class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
+@Suppress("CyclomaticComplexMethod")
+@HiltViewModel
+class SettingsViewModel @Inject constructor(
+    private val permissionChecker: PermissionChecker,
+) : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
 
     override fun createInitialState(): SettingsState = SettingsState()
 
@@ -29,7 +35,13 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, Set
 
             is SettingsAction.OnNavigateSortSettingsButtonClick -> sendEffect(SettingsEffect.NavigateSortSettings)
 
-            is SettingsAction.OnNavigateNotificationSettingsButtonClick -> sendEffect(SettingsEffect.NavigateNotificationSettings)
+            is SettingsAction.OnNavigateNotificationSettingsButtonClick -> {
+                if (permissionChecker.isNotificationListenerEnabled()) {
+                    sendEffect(SettingsEffect.NavigateNotificationSettings)
+                } else {
+                    updateState { copy(isNotificationPermissionDialogVisible = true) }
+                }
+            }
 
             is SettingsAction.OnNavigateWallpaperSettingsButtonClick -> {
                 val intent = Intent(WallpaperManager.ACTION_LIVE_WALLPAPER_CHOOSER)
@@ -39,6 +51,24 @@ class SettingsViewModel @Inject constructor() : BaseViewModel<SettingsState, Set
             is SettingsAction.OnNavigateThemeSettingsButtonClick -> sendEffect(SettingsEffect.NavigateThemeSettings)
 
             is SettingsAction.OnBackButtonClick -> sendEffect(SettingsEffect.NavigateBack)
+
+            is SettingsAction.OnNotificationPermissionDialogConfirm -> {
+                updateState { copy(isNotificationPermissionDialogVisible = false) }
+                val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
+                sendEffect(SettingsEffect.RequestNotificationListenerPermission(intent))
+            }
+
+            is SettingsAction.OnNotificationPermissionDialogDismiss -> {
+                updateState { copy(isNotificationPermissionDialogVisible = false) }
+            }
+
+            is SettingsAction.OnNotificationListenerPermissionResult -> {
+                if (permissionChecker.isNotificationListenerEnabled()) {
+                    sendEffect(SettingsEffect.NavigateNotificationSettings)
+                } else {
+                    sendEffect(SettingsEffect.ShowToast("通知機能を使用するには\n通知アクセスを許可してください"))
+                }
+            }
         }
     }
 

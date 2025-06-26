@@ -14,25 +14,26 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.core.domain.repository.AppInfoRepository
+import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
-import io.github.kei_1111.withmo.core.domain.repository.WidgetInfoRepository
+import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
+import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.PlaceableItem
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
-import io.github.kei_1111.withmo.core.model.WithmoAppInfo
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
+import java.util.UUID
 import javax.inject.Inject
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -40,8 +41,9 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val appInfoRepository: AppInfoRepository,
-    private val widgetInfoRepository: WidgetInfoRepository,
+    private val favoriteAppRepository: FavoriteAppRepository,
+    private val placedAppRepository: PlacedAppRepository,
+    private val placedWidgetRepository: PlacedWidgetRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
     private val modelFileManager: ModelFileManager,
     private val widgetManager: WidgetManager,
@@ -76,7 +78,6 @@ class HomeViewModel @Inject constructor(
         UnityToAndroidMessenger.receiver = WeakReference(this)
 
         observeUserSettings()
-        observeAppList()
         observeFavoriteAppList()
         observePlaceableItemList()
     }
@@ -85,27 +86,16 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
                 updateState {
-                    copy(
-                        currentUserSettings = userSettings,
-                        appList = sortAppList(userSettings.sortSettings.sortType, appList).toPersistentList(),
-                    )
+                    copy(currentUserSettings = userSettings)
                 }
-            }
-        }
-    }
-
-    private fun observeAppList() {
-        viewModelScope.launch {
-            appInfoRepository.getAllList().collect { appList ->
-                updateState { copy(appList = appList.toPersistentList()) }
             }
         }
     }
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            appInfoRepository.getFavoriteList().collect { favoriteAppList ->
-                updateState { copy(favoriteAppList = favoriteAppList.toPersistentList()) }
+            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
+                updateState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
             }
         }
     }
@@ -113,10 +103,10 @@ class HomeViewModel @Inject constructor(
     private fun observePlaceableItemList() {
         viewModelScope.launch {
             combine(
-                widgetInfoRepository.getAllList(),
-                appInfoRepository.getPlacedList(),
-            ) { widgetList, appList ->
-                (widgetList + appList).toPersistentList()
+                placedWidgetRepository.getAllList(),
+                placedAppRepository.placedAppsInfo,
+            ) { widgetList, placedAppList ->
+                (widgetList + placedAppList).toPersistentList()
             }.collect { placedItemList ->
                 updateState {
                     copy(
@@ -169,19 +159,15 @@ class HomeViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            val addedWidgetList = addedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
-            val updatedWidgetList = updatedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
-            val deletedWidgetList = deletedPlacedItemList.filterIsInstance<WithmoWidgetInfo>()
-            widgetInfoRepository.insert(addedWidgetList)
-            widgetInfoRepository.update(updatedWidgetList)
-            widgetInfoRepository.delete(deletedWidgetList)
+            val addedWidgetList = addedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
+            val updatedWidgetList = updatedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
+            val deletedWidgetList = deletedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
+            placedWidgetRepository.insert(addedWidgetList)
+            placedWidgetRepository.update(updatedWidgetList)
+            placedWidgetRepository.delete(deletedWidgetList)
 
-            val addedAppList = addedPlacedItemList.filterIsInstance<WithmoAppInfo>()
-            val updatedAppList = updatedPlacedItemList.filterIsInstance<WithmoAppInfo>()
-            val deletedAppList = deletedPlacedItemList.filterIsInstance<WithmoAppInfo>()
-            addedAppList.forEach { appInfoRepository.insert(it) }
-            appInfoRepository.updateList(updatedAppList)
-            deletedAppList.forEach { appInfoRepository.delete(it) }
+            val placedAppInfoList = currentPlacedItemList.filterIsInstance<PlacedAppInfo>()
+            placedAppRepository.updatePlacedApps(placedAppInfoList)
         }
     }
 
@@ -307,10 +293,10 @@ class HomeViewModel @Inject constructor(
                         if (activityInfo != null && activityInfo.exported) {
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addPlaceableItem(WithmoWidgetInfo(widgetInfo))
+                            addPlaceableItem(PlacedWidgetInfo(widgetInfo))
                         }
                     } else {
-                        addPlaceableItem(WithmoWidgetInfo(widgetInfo))
+                        addPlaceableItem(PlacedWidgetInfo(widgetInfo))
                     }
                 } else {
                     val intent = widgetManager.buildBindIntent(widgetId, provider)
@@ -322,7 +308,8 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnPlaceableItemListSheetAppClick -> {
                 addPlaceableItem(
-                    WithmoAppInfo(
+                    PlacedAppInfo(
+                        id = UUID.randomUUID().toString(),
                         info = action.appInfo,
                         position = Offset.Zero,
                     ),
@@ -344,10 +331,10 @@ class HomeViewModel @Inject constructor(
                 updateState {
                     copy(
                         isWidgetResizing = true,
-                        resizingWidget = action.withmoWidgetInfo,
+                        resizingWidget = action.placedWidgetInfo,
                     )
                 }
-                deletePlaceableItem(action.withmoWidgetInfo)
+                deletePlaceableItem(action.placedWidgetInfo)
             }
 
             is HomeAction.OnWidgetResizeBottomSheetClose -> {
@@ -357,7 +344,7 @@ class HomeViewModel @Inject constructor(
                         resizingWidget = null,
                     )
                 }
-                addPlaceableItem(action.withmoWidgetInfo)
+                addPlaceableItem(action.placedWidgetInfo)
             }
 
             is HomeAction.OnOpenDocumentLauncherResult -> {
@@ -386,7 +373,7 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnConfigureWidgetLauncherResult -> {
                 state.value.pendingWidgetInfo?.let { widgetInfo ->
                     if (action.result.resultCode == RESULT_OK) {
-                        addPlaceableItem(WithmoWidgetInfo(widgetInfo))
+                        addPlaceableItem(PlacedWidgetInfo(widgetInfo))
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
                     }
@@ -400,7 +387,7 @@ class HomeViewModel @Inject constructor(
                             val intent = widgetManager.buildConfigureIntent(widgetInfo.id, widgetInfo.info.configure)
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addPlaceableItem(WithmoWidgetInfo(widgetInfo))
+                            addPlaceableItem(PlacedWidgetInfo(widgetInfo))
                         }
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
