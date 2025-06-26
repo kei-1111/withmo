@@ -5,7 +5,7 @@ import io.github.kei_1111.withmo.core.data.local.dao.FavoriteAppDao
 import io.github.kei_1111.withmo.core.data.local.entity.FavoriteAppEntity
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -19,14 +19,14 @@ class FavoriteAppRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : FavoriteAppRepository {
 
-    override val favoriteApps: Flow<List<FavoriteApp>> = combine(
+    override val favoriteAppsInfo: Flow<List<FavoriteAppInfo>> = combine(
         favoriteAppDao.getAll(),
         appManager.appInfoList,
     ) { favoriteAppEntities, appInfoList ->
         favoriteAppEntities.mapNotNull { entity ->
             val appInfo = appInfoList.find { it.packageName == entity.packageName }
             appInfo?.let {
-                FavoriteApp(
+                FavoriteAppInfo(
                     info = it,
                     favoriteOrder = entity.favoriteOrder,
                 )
@@ -34,9 +34,9 @@ class FavoriteAppRepositoryImpl @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun updateFavoriteApps(favoriteApps: List<FavoriteApp>) {
+    override suspend fun updateFavoriteApps(favoriteAppInfos: List<FavoriteAppInfo>) {
         withContext(ioDispatcher) {
-            val entities = favoriteApps.map { favoriteApp ->
+            val entities = favoriteAppInfos.map { favoriteApp ->
                 FavoriteAppEntity(
                     packageName = favoriteApp.info.packageName,
                     favoriteOrder = favoriteApp.favoriteOrder,

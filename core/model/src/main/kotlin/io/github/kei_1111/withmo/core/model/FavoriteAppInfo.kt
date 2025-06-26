@@ -5,7 +5,7 @@ package io.github.kei_1111.withmo.core.model
  * @param info アプリの基本情報
  * @param favoriteOrder お気に入りの順序（0から始まる）
  */
-data class FavoriteApp(
+data class FavoriteAppInfo(
     val info: AppInfo,
     val favoriteOrder: Int,
 )

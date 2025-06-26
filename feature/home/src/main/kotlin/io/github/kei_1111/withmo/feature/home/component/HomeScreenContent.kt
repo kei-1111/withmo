@@ -29,7 +29,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
@@ -81,7 +81,7 @@ internal fun HomeScreenContent(
                         .fillMaxWidth()
                         .weight(Weights.Medium),
                 )
-                if (!state.isEditMode && state.favoriteAppList.isNotEmpty()) {
+                if (!state.isEditMode && state.favoriteAppInfoList.isNotEmpty()) {
                     RowAppList(
                         state = state,
                         onAction = onAction,
@@ -102,7 +102,7 @@ private fun RowAppList(
     modifier: Modifier = Modifier,
 ) {
     val appIconSettings = state.currentUserSettings.appIconSettings
-    val appList = state.favoriteAppList
+    val appList = state.favoriteAppInfoList
 
     Row(
         modifier = modifier
@@ -142,8 +142,8 @@ private fun HomeScreenContentLightPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(2) {
-                    FavoriteApp(
+                favoriteAppInfoList = List(2) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
@@ -175,8 +175,8 @@ private fun HomeScreenContentDarkPreview() {
 
         HomeScreenContent(
             state = HomeState(
-                favoriteAppList = List(3) {
-                    FavoriteApp(
+                favoriteAppInfoList = List(3) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
@@ -208,8 +208,8 @@ private fun RowAppListLightPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(4) {
-                    FavoriteApp(
+                favoriteAppInfoList = List(4) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
@@ -242,8 +242,8 @@ private fun RowAppListDarkPreview() {
 
         RowAppList(
             state = HomeState(
-                favoriteAppList = List(1) {
-                    FavoriteApp(
+                favoriteAppInfoList = List(1) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",

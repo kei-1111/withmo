@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,13 +28,13 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteApps.collect { favoriteAppList ->
+            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
                 val immutableFavoriteAppList = favoriteAppList.toPersistentList()
 
                 updateState {
                     copy(
-                        favoriteAppList = immutableFavoriteAppList,
-                        initialFavoriteAppList = immutableFavoriteAppList,
+                        favoriteAppInfoList = immutableFavoriteAppList,
+                        initialFavoriteAppInfoList = immutableFavoriteAppList,
                     )
                 }
             }
@@ -50,19 +50,19 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     }
 
     private fun addFavoriteAppList(appInfo: AppInfo) {
-        val favoriteApp = FavoriteApp(
+        val favoriteAppInfo = FavoriteAppInfo(
             info = appInfo,
-            favoriteOrder = state.value.favoriteAppList.size,
+            favoriteOrder = state.value.favoriteAppInfoList.size,
         )
-        val addedFavoriteAppList = (state.value.favoriteAppList + favoriteApp).toPersistentList()
+        val addedFavoriteAppList = (state.value.favoriteAppInfoList + favoriteAppInfo).toPersistentList()
 
         updateState {
-            if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                favoriteAppList.none { it.info.packageName == appInfo.packageName }
+            if (favoriteAppInfoList.size < AppConstants.FavoriteAppListMaxSize &&
+                favoriteAppInfoList.none { it.info.packageName == appInfo.packageName }
             ) {
                 copy(
-                    favoriteAppList = addedFavoriteAppList,
-                    isSaveButtonEnabled = !addedFavoriteAppList.isSameAs(initialFavoriteAppList),
+                    favoriteAppInfoList = addedFavoriteAppList,
+                    isSaveButtonEnabled = !addedFavoriteAppList.isSameAs(initialFavoriteAppInfoList),
                 )
             } else {
                 this
@@ -71,21 +71,21 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     }
 
     private fun removeFavoriteAppList(appInfo: AppInfo) {
-        val removedFavoriteAppList = state.value.favoriteAppList
+        val removedFavoriteAppList = state.value.favoriteAppInfoList
             .filterNot { it.info.packageName == appInfo.packageName }
             .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
             .toPersistentList()
 
         updateState {
             copy(
-                favoriteAppList = removedFavoriteAppList,
-                isSaveButtonEnabled = (initialFavoriteAppList != removedFavoriteAppList),
+                favoriteAppInfoList = removedFavoriteAppList,
+                isSaveButtonEnabled = (initialFavoriteAppInfoList != removedFavoriteAppList),
             )
         }
     }
 
     private fun saveFavoriteAppList() {
-        val currentFavoriteAppList = state.value.favoriteAppList
+        val currentFavoriteAppList = state.value.favoriteAppInfoList
 
         updateState { copy(isSaveButtonEnabled = false) }
 
@@ -115,7 +115,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun List<FavoriteApp>.isSameAs(other: List<FavoriteApp>): Boolean {
+    private fun List<FavoriteAppInfo>.isSameAs(other: List<FavoriteAppInfo>): Boolean {
         return this.size == other.size &&
             this.zip(other).all { (a, b) -> a.info.packageName == b.info.packageName }
     }

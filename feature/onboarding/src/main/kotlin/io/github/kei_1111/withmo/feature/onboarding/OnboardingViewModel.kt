@@ -9,7 +9,7 @@ import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -33,22 +33,22 @@ class OnboardingViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteApps.collect { favoriteAppList ->
+            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
                 updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
 
     private fun addSelectedAppList(appInfo: AppInfo) {
-        val favoriteApp = FavoriteApp(
+        val favoriteAppInfo = FavoriteAppInfo(
             info = appInfo,
             favoriteOrder = state.value.selectedAppList.size,
         )
         updateState {
             if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                selectedAppList.none { it.info.packageName == favoriteApp.info.packageName }
+                selectedAppList.none { it.info.packageName == favoriteAppInfo.info.packageName }
             ) {
-                copy(selectedAppList = (selectedAppList + favoriteApp).toPersistentList())
+                copy(selectedAppList = (selectedAppList + favoriteAppInfo).toPersistentList())
             } else {
                 this
             }

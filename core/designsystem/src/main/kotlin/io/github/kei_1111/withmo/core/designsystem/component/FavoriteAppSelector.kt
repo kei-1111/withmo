@@ -25,14 +25,14 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppSelector(
     appList: ImmutableList<AppInfo>,
-    favoriteAppList: ImmutableList<FavoriteApp>,
+    favoriteAppInfoList: ImmutableList<FavoriteAppInfo>,
     addSelectedAppList: (AppInfo) -> Unit,
     removeSelectedAppList: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -49,7 +49,7 @@ fun FavoriteAppSelector(
         ),
     ) {
         items(appList) { appInfo ->
-            val isSelected = favoriteAppList
+            val isSelected = favoriteAppInfoList
                 .any { it.info.packageName == appInfo.packageName }
 
             FavoriteAppSelectorItem(
@@ -99,8 +99,8 @@ private fun FavoriteAppSelectorLightPreview() {
                     notification = it % 2 == 0,
                 )
             }.toPersistentList(),
-            favoriteAppList = List(2) {
-                FavoriteApp(
+            favoriteAppInfoList = List(2) {
+                FavoriteAppInfo(
                     info = AppInfo(
                         appIcon = appIcon,
                         label = "アプリ $it",
@@ -139,8 +139,8 @@ private fun FavoriteAppSelectorDarkPreview() {
                     notification = it % 2 == 0,
                 )
             }.toPersistentList(),
-            favoriteAppList = List(2) {
-                FavoriteApp(
+            favoriteAppInfoList = List(2) {
+                FavoriteAppInfo(
                     info = AppInfo(
                         appIcon = appIcon,
                         label = "アプリ $it",

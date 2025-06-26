@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.data.local.dao.PlacedWidgetDao
 import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
 import io.github.kei_1111.withmo.core.data.local.mapper.toWidgetInfo
 import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
-import io.github.kei_1111.withmo.core.model.PlacedWidget
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
@@ -20,7 +20,7 @@ class PlacedWidgetRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : PlacedWidgetRepository {
 
-    override fun getAllList(): Flow<List<PlacedWidget>> {
+    override fun getAllList(): Flow<List<PlacedWidgetInfo>> {
         return placedWidgetDao.getAllList()
             .map { entities ->
                 entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
@@ -28,21 +28,21 @@ class PlacedWidgetRepositoryImpl @Inject constructor(
             .flowOn(ioDispatcher)
     }
 
-    override suspend fun insert(placedWidgetList: List<PlacedWidget>) {
+    override suspend fun insert(placedWidgetInfoList: List<PlacedWidgetInfo>) {
         withContext(ioDispatcher) {
-            placedWidgetDao.insert(placedWidgetList.map { it.toEntity() })
+            placedWidgetDao.insert(placedWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun update(placedWidgetList: List<PlacedWidget>) {
+    override suspend fun update(placedWidgetInfoList: List<PlacedWidgetInfo>) {
         withContext(ioDispatcher) {
-            placedWidgetDao.update(placedWidgetList.map { it.toEntity() })
+            placedWidgetDao.update(placedWidgetInfoList.map { it.toEntity() })
         }
     }
 
-    override suspend fun delete(placedWidgetList: List<PlacedWidget>) {
+    override suspend fun delete(placedWidgetInfoList: List<PlacedWidgetInfo>) {
         withContext(ioDispatcher) {
-            placedWidgetDao.delete(placedWidgetList.map { it.toEntity() })
+            placedWidgetDao.delete(placedWidgetInfoList.map { it.toEntity() })
         }
     }
 

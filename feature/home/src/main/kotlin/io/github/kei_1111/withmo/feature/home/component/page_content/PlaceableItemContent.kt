@@ -33,8 +33,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShad
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.PlacedApp
-import io.github.kei_1111.withmo.core.model.PlacedWidget
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
@@ -62,9 +62,9 @@ internal fun PlaceableItemContent(
         state.placedItemList.forEach { placeableItem ->
             key(placeableItem.id) {
                 when (placeableItem) {
-                    is PlacedWidget -> {
+                    is PlacedWidgetInfo -> {
                         PlacedWidget(
-                            placedWidget = placeableItem,
+                            placedWidgetInfo = placeableItem,
                             startPadding = Paddings.Medium,
                             endPadding = Paddings.Medium,
                             topPadding = topPaddingValue,
@@ -75,9 +75,9 @@ internal fun PlaceableItemContent(
                         )
                     }
 
-                    is PlacedApp -> {
+                    is PlacedAppInfo -> {
                         PlacedApp(
-                            placedApp = placeableItem,
+                            placedAppInfo = placeableItem,
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,
                             ),

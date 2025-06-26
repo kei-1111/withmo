@@ -21,12 +21,12 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.PlacedApp
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.util.ktx.toPx
 
 @Composable
 fun PlacedApp(
-    placedApp: PlacedApp,
+    placedAppInfo: PlacedAppInfo,
     appIconShape: Shape,
     isNotificationBadgeShown: Boolean,
     topPadding: Dp,
@@ -45,7 +45,7 @@ fun PlacedApp(
     val appSize = CommonDimensions.AppIconSize + Paddings.Large
 
     PlaceableItemContainer(
-        placeableItem = placedApp,
+        placeableItem = placedAppInfo,
         width = appSize,
         height = appSize,
         topPaddingPx = topPadding.toPx(),
@@ -57,7 +57,7 @@ fun PlacedApp(
         onDeleteBadgeClick = onDeleteBadgeClick,
     ) {
         App(
-            appInfo = placedApp.info,
+            appInfo = placedAppInfo.info,
             appIconShape = appIconShape,
             isNotificationBadgeShown = isNotificationBadgeShown,
             isAppNameShown = false,
@@ -81,7 +81,7 @@ private fun WithmoAppLightPreview() {
         }
 
         PlacedApp(
-            placedApp = PlacedApp(
+            placedAppInfo = PlacedAppInfo(
                 id = "withmo-app",
                 info = AppInfo(
                     appIcon = appIcon,
@@ -119,7 +119,7 @@ private fun WithmoAppDarkPreview() {
         }
 
         PlacedApp(
-            placedApp = PlacedApp(
+            placedAppInfo = PlacedAppInfo(
                 id = "withmo-app-dark",
                 info = AppInfo(
                     appIcon = appIcon,

@@ -135,7 +135,7 @@ internal fun PagerContent(
                 currentPage = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth()
                     .then(
-                        if (state.favoriteAppList.isEmpty()) {
+                        if (state.favoriteAppInfoList.isEmpty()) {
                             Modifier.padding(bottom = bottomPaddingValue)
                         } else {
                             Modifier

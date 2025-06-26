@@ -25,7 +25,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
@@ -83,7 +83,7 @@ internal fun FavoriteAppSettingsScreenContent(
             if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = searchedAppList,
-                    favoriteAppList = state.favoriteAppList,
+                    favoriteAppInfoList = state.favoriteAppInfoList,
                     addSelectedAppList = { onAction(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
@@ -99,7 +99,7 @@ internal fun FavoriteAppSettingsScreenContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = state.favoriteAppList,
+            favoriteAppInfoList = state.favoriteAppInfoList,
             removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
@@ -123,8 +123,8 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                favoriteAppList = List(3) {
-                    FavoriteApp(
+                favoriteAppInfoList = List(3) {
+                    FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
                             label = "アプリ $it",
@@ -134,7 +134,7 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
                         favoriteOrder = it,
                     )
                 }.toPersistentList(),
-                initialFavoriteAppList = persistentListOf(),
+                initialFavoriteAppInfoList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "search",
                 isSaveButtonEnabled = true,
@@ -153,7 +153,7 @@ private fun FavoriteAppSettingsScreenContentDarkPreview() {
     SettingDarkPreviewEnvironment {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                favoriteAppList = persistentListOf(),
+                favoriteAppInfoList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "",
                 isSaveButtonEnabled = false,

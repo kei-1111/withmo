@@ -86,7 +86,7 @@ internal fun SelectFavoriteAppContent(
             if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = searchedAppList,
-                    favoriteAppList = state.selectedAppList,
+                    favoriteAppInfoList = state.selectedAppList,
                     addSelectedAppList = { onAction(OnboardingAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
@@ -101,7 +101,7 @@ internal fun SelectFavoriteAppContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppList = state.selectedAppList,
+            favoriteAppInfoList = state.selectedAppList,
             removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
         )

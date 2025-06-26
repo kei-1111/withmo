@@ -5,10 +5,10 @@ import android.appwidget.AppWidgetProviderInfo
 import android.util.Log
 import androidx.compose.ui.geometry.Offset
 import io.github.kei_1111.withmo.core.data.local.entity.PlacedWidgetEntity
-import io.github.kei_1111.withmo.core.model.PlacedWidget
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 
-fun PlacedWidget.toEntity(): PlacedWidgetEntity {
+fun PlacedWidgetInfo.toEntity(): PlacedWidgetEntity {
     return PlacedWidgetEntity(
         id = info.id,
         appWidgetProviderClassName = info.info.provider.className,
@@ -19,14 +19,14 @@ fun PlacedWidget.toEntity(): PlacedWidgetEntity {
     )
 }
 
-fun PlacedWidgetEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): PlacedWidget? {
+fun PlacedWidgetEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): PlacedWidgetInfo? {
     val info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
     if (info == null) {
         Log.e("toWidgetInfo", "AppWidgetProviderInfo not found: $appWidgetProviderClassName")
         return null
     }
 
-    return PlacedWidget(
+    return PlacedWidgetInfo(
         info = WidgetInfo(id, info),
         width = width,
         height = height,

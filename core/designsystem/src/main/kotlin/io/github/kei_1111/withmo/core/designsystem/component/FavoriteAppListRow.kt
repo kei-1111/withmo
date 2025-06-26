@@ -17,13 +17,13 @@ import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSyste
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 @Composable
 fun FavoriteAppListRow(
-    favoriteAppList: ImmutableList<FavoriteApp>,
+    favoriteAppInfoList: ImmutableList<FavoriteAppInfo>,
     removeSelectedAppList: (AppInfo) -> Unit,
     modifier: Modifier = Modifier,
     appIconShape: Shape = CircleShape,
@@ -36,7 +36,7 @@ fun FavoriteAppListRow(
             ),
         horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
     ) {
-        favoriteAppList.forEach {
+        favoriteAppInfoList.forEach {
             FavoriteAppSelectorItem(
                 appInfo = it.info,
                 isSelected = true,
@@ -49,7 +49,7 @@ fun FavoriteAppListRow(
             )
         }
 
-        repeat(AppConstants.FavoriteAppListMaxSize - favoriteAppList.size) {
+        repeat(AppConstants.FavoriteAppListMaxSize - favoriteAppInfoList.size) {
             EmptyAppItem(
                 modifier = Modifier.weight(Weights.Medium),
             )
@@ -63,7 +63,7 @@ fun FavoriteAppListRow(
 private fun FavoriteAppListRowLightPreview() {
     DesignSystemLightPreviewEnvironment {
         FavoriteAppListRow(
-            favoriteAppList = emptyList<FavoriteApp>().toPersistentList(),
+            favoriteAppInfoList = emptyList<FavoriteAppInfo>().toPersistentList(),
             removeSelectedAppList = { },
         )
     }
@@ -75,7 +75,7 @@ private fun FavoriteAppListRowLightPreview() {
 private fun FavoriteAppListRowDarkPreview() {
     DesignSystemDarkPreviewEnvironment {
         FavoriteAppListRow(
-            favoriteAppList = emptyList<FavoriteApp>().toPersistentList(),
+            favoriteAppInfoList = emptyList<FavoriteAppInfo>().toPersistentList(),
             removeSelectedAppList = { },
         )
     }

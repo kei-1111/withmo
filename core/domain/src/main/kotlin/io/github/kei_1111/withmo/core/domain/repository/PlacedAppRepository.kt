@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.core.domain.repository
 
-import io.github.kei_1111.withmo.core.model.PlacedApp
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import kotlinx.coroutines.flow.Flow
 
 interface PlacedAppRepository {
@@ -8,11 +8,11 @@ interface PlacedAppRepository {
     /**
      * 配置されたアプリのリストを取得
      */
-    val placedApps: Flow<List<PlacedApp>>
+    val placedAppsInfo: Flow<List<PlacedAppInfo>>
 
     /**
      * 配置されたアプリのリストを更新
-     * @param placedApps 新しい配置アプリのリスト
+     * @param placedAppInfos 新しい配置アプリのリスト
      */
-    suspend fun updatePlacedApps(placedApps: List<PlacedApp>)
+    suspend fun updatePlacedApps(placedAppInfos: List<PlacedAppInfo>)
 }

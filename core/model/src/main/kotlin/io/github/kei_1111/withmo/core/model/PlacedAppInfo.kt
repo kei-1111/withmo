@@ -8,7 +8,7 @@ import androidx.compose.ui.geometry.Offset
  * @param info アプリの基本情報
  * @param position 画面上の配置位置
  */
-data class PlacedApp(
+data class PlacedAppInfo(
     override val id: String,
     override var position: Offset,
     val info: AppInfo,

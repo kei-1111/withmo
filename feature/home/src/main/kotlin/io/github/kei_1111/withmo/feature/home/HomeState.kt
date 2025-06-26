@@ -3,9 +3,9 @@ package io.github.kei_1111.withmo.feature.home
 import android.os.Build
 import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.featurebase.State
-import io.github.kei_1111.withmo.core.model.FavoriteApp
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.PlaceableItem
-import io.github.kei_1111.withmo.core.model.PlacedWidget
+import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
@@ -22,9 +22,9 @@ data class HomeState(
     val initialPlacedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
     val pendingWidgetInfo: WidgetInfo? = null,
     val isEditMode: Boolean = false,
-    val resizingWidget: PlacedWidget? = null,
+    val resizingWidget: PlacedWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
-    val favoriteAppList: ImmutableList<FavoriteApp> = persistentListOf(),
+    val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
 ) : State

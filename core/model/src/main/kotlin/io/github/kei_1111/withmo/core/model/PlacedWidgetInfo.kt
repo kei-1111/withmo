@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.core.model
 
 import androidx.compose.ui.geometry.Offset
 
-data class PlacedWidget(
+data class PlacedWidgetInfo(
     val info: WidgetInfo,
     var width: Int = 0,
     var height: Int = 0,

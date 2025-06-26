@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.data.local.dao.PlacedAppDao
 import io.github.kei_1111.withmo.core.data.local.entity.PlacedAppEntity
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
-import io.github.kei_1111.withmo.core.model.PlacedApp
+import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -20,14 +20,14 @@ class PlacedAppRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : PlacedAppRepository {
 
-    override val placedApps: Flow<List<PlacedApp>> = combine(
+    override val placedAppsInfo: Flow<List<PlacedAppInfo>> = combine(
         placedAppDao.getAll(),
         appManager.appInfoList,
     ) { placedAppEntities, appInfoList ->
         placedAppEntities.mapNotNull { entity ->
             val appInfo = appInfoList.find { it.packageName == entity.packageName }
             appInfo?.let {
-                PlacedApp(
+                PlacedAppInfo(
                     id = entity.id,
                     info = it,
                     position = Offset(entity.positionX, entity.positionY),
@@ -36,9 +36,9 @@ class PlacedAppRepositoryImpl @Inject constructor(
         }
     }.flowOn(ioDispatcher)
 
-    override suspend fun updatePlacedApps(placedApps: List<PlacedApp>) {
+    override suspend fun updatePlacedApps(placedAppInfos: List<PlacedAppInfo>) {
         withContext(ioDispatcher) {
-            val entities = placedApps.map { placedApp ->
+            val entities = placedAppInfos.map { placedApp ->
                 PlacedAppEntity(
                     id = placedApp.id,
                     packageName = placedApp.info.packageName,
