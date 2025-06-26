@@ -23,16 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.core.content.ContextCompat
-import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.HomeAction
@@ -121,14 +116,6 @@ internal fun AppListSheet(
 @Composable
 private fun AppListSheetLightPreview() {
     HomeLightPreviewEnvironment {
-        val context = LocalContext.current
-        val appIcon = remember {
-            AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
-                backgroundIcon = null,
-            )
-        }
-
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
             state = HomeState(),
@@ -144,14 +131,6 @@ private fun AppListSheetLightPreview() {
 @Composable
 private fun AppListSheetDarkPreview() {
     HomeDarkPreviewEnvironment {
-        val context = LocalContext.current
-        val appIcon = remember {
-            AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, R.drawable.withmo_icon_wide)!!,
-                backgroundIcon = null,
-            )
-        }
-
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
             state = HomeState(),
