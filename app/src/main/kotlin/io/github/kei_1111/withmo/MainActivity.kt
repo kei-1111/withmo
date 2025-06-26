@@ -82,8 +82,10 @@ class MainActivity : ComponentActivity() {
                 }
 
                 IntentConstants.Action.StartActivity -> {
-                    // アプリ使用回数の更新はAppManagerで処理される
-                    // 必要に応じてAppManager.updateUsageCounts()を呼び出す
+                    // アプリ起動時に使用回数を更新
+                    lifecycleScope.launch {
+                        appManager.updateUsageCounts()
+                    }
                 }
 
                 else -> {
