@@ -144,3 +144,12 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 - **GitHub Actions**: コード品質チェックを含む自動CI/CD
 - **Convention-based構造**: カスタムGradleプラグインによる統一的な構成
 - **最小限のテストカバレッジ**: テスト追加時は重要なUnity統合ポイントを重視する
+
+## Git・GitHub運用規則
+詳細な運用規則は `docs/GIT_GITHUB_CONVENTIONS.md` を参照してください。
+
+### 主要なルール
+- **コミットメッセージ**: `<type>: <description>` 形式で日本語、過去形で記述
+- **ブランチ命名**: `<type>/#<issue-number>` 形式（例：`feature/#225`）
+- **Issue/PRタイトル**: `[<Type>]: <タイトル>` 形式で統一
+- **開発フロー**: Issue作成 → ブランチ作成 → 開発 → PR作成 → レビュー → マージ
