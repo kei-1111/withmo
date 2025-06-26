@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
-import io.github.kei_1111.withmo.core.common.IntentConstants
 
 private const val AppInfoDefaultUseCount = 0
 
@@ -26,8 +25,6 @@ data class AppInfo(
             val pm = context.packageManager
             val intent = pm.getLaunchIntentForPackage(packageName)
             if (intent != null) {
-                val startActivityIntent = Intent(IntentConstants.Action.StartActivity)
-                context.sendBroadcast(startActivityIntent)
                 context.startActivity(intent)
             } else {
                 Log.e("LauncherTest", "launchApp: intent is null")

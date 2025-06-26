@@ -21,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.core.common.IntentConstants
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
@@ -72,19 +71,8 @@ class MainActivity : ComponentActivity() {
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action) {
-                IntentConstants.Action.StartActivity -> {
-                    // アプリ起動時に使用回数を更新
-                    lifecycleScope.launch {
-                        appManager.updateUsageCounts()
-                    }
-                }
-
-                else -> {
-                    lifecycleScope.launch {
-                        appManager.refreshAppList()
-                    }
-                }
+            lifecycleScope.launch {
+                appManager.refreshAppList()
             }
         }
     }
@@ -108,12 +96,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launchWhenCreated {
             appManager.refreshAppList()
         }
-
-        registerReceiver(
-            packageReceiver,
-            IntentFilter(IntentConstants.Action.StartActivity),
-            RECEIVER_NOT_EXPORTED,
-        )
 
         registerReceiver(
             packageReceiver,
@@ -171,6 +153,11 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         UnityManager.resumeForActivity()
+        
+        // アプリがフォアグラウンドに戻った時に使用回数を更新
+        lifecycleScope.launch {
+            appManager.updateUsageCounts()
+        }
     }
 
     override fun onPause() {
