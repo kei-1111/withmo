@@ -177,11 +177,11 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         UnityManager.resumeForActivity()
-        
+
         // アプリがフォアグラウンドに戻った時に使用回数を更新
         lifecycleScope.launch {
             appManager.updateUsageCounts()
-            
+
             // 権限チェックして設定を更新
             checkPermissionsAndUpdateSettings()
         }
@@ -233,25 +233,28 @@ class MainActivity : ComponentActivity() {
     private suspend fun checkPermissionsAndUpdateSettings() {
         val hasUsageStatsPermission = permissionChecker.isUsageStatsPermissionGranted()
         val hasNotificationListenerPermission = permissionChecker.isNotificationListenerEnabled()
-        
+
         // UsageStats権限がない かつ 現在のソートが使用回数順の場合、アルファベット順に変更
         val currentSortSettings = getSortSettingsUseCase().first()
         if (!hasUsageStatsPermission && currentSortSettings.sortType == SortType.USE_COUNT) {
             saveSortSettingsUseCase(
-                SortSettings(sortType = SortType.ALPHABETICAL)
+                SortSettings(sortType = SortType.ALPHABETICAL),
             )
         }
-        
+
         // 通知リスナー権限がない場合、通知関連設定をfalseに変更
         val currentNotificationSettings = getNotificationSettingsUseCase().first()
-        if (!hasNotificationListenerPermission && 
-            (currentNotificationSettings.isNotificationAnimationEnabled || 
-             currentNotificationSettings.isNotificationBadgeEnabled)) {
+        if (!hasNotificationListenerPermission &&
+            (
+                currentNotificationSettings.isNotificationAnimationEnabled ||
+                    currentNotificationSettings.isNotificationBadgeEnabled
+                )
+        ) {
             saveNotificationSettingsUseCase(
                 NotificationSettings(
                     isNotificationAnimationEnabled = false,
-                    isNotificationBadgeEnabled = false
-                )
+                    isNotificationBadgeEnabled = false,
+                ),
             )
         }
     }
