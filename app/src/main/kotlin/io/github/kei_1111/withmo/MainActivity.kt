@@ -28,8 +28,16 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
+import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
+import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.AppListProvider
@@ -41,6 +49,7 @@ import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.core.util.TimeUtils
 import io.github.kei_1111.withmo.ui.App
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -66,6 +75,21 @@ class MainActivity : ComponentActivity() {
 
     @Inject
     lateinit var appManager: AppManager
+
+    @Inject
+    lateinit var permissionChecker: PermissionChecker
+
+    @Inject
+    lateinit var getSortSettingsUseCase: GetSortSettingsUseCase
+
+    @Inject
+    lateinit var saveSortSettingsUseCase: SaveSortSettingsUseCase
+
+    @Inject
+    lateinit var getNotificationSettingsUseCase: GetNotificationSettingsUseCase
+
+    @Inject
+    lateinit var saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase
 
     private val viewModel: MainViewModel by viewModels()
 
@@ -157,6 +181,9 @@ class MainActivity : ComponentActivity() {
         // アプリがフォアグラウンドに戻った時に使用回数を更新
         lifecycleScope.launch {
             appManager.updateUsageCounts()
+            
+            // 権限チェックして設定を更新
+            checkPermissionsAndUpdateSettings()
         }
     }
 
@@ -200,6 +227,32 @@ class MainActivity : ComponentActivity() {
                 themeSettings = it
                 TimeUtils.themeMessage(themeSettings.themeType)
             }
+        }
+    }
+
+    private suspend fun checkPermissionsAndUpdateSettings() {
+        val hasUsageStatsPermission = permissionChecker.isUsageStatsPermissionGranted()
+        val hasNotificationListenerPermission = permissionChecker.isNotificationListenerEnabled()
+        
+        // UsageStats権限がない かつ 現在のソートが使用回数順の場合、アルファベット順に変更
+        val currentSortSettings = getSortSettingsUseCase().first()
+        if (!hasUsageStatsPermission && currentSortSettings.sortType == SortType.USE_COUNT) {
+            saveSortSettingsUseCase(
+                SortSettings(sortType = SortType.ALPHABETICAL)
+            )
+        }
+        
+        // 通知リスナー権限がない場合、通知関連設定をfalseに変更
+        val currentNotificationSettings = getNotificationSettingsUseCase().first()
+        if (!hasNotificationListenerPermission && 
+            (currentNotificationSettings.isNotificationAnimationEnabled || 
+             currentNotificationSettings.isNotificationBadgeEnabled)) {
+            saveNotificationSettingsUseCase(
+                NotificationSettings(
+                    isNotificationAnimationEnabled = false,
+                    isNotificationBadgeEnabled = false
+                )
+            )
         }
     }
 }
