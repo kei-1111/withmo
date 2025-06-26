@@ -26,9 +26,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoApp
+import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
+import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoWidget
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -63,7 +63,7 @@ internal fun PlaceableItemContent(
             key(placeableItem.id) {
                 when (placeableItem) {
                     is PlacedWidget -> {
-                        WithmoWidget(
+                        PlacedWidget(
                             placedWidget = placeableItem,
                             startPadding = Paddings.Medium,
                             endPadding = Paddings.Medium,
@@ -76,7 +76,7 @@ internal fun PlaceableItemContent(
                     }
 
                     is PlacedApp -> {
-                        WithmoApp(
+                        PlacedApp(
                             placedApp = placeableItem,
                             appIconShape = state.currentUserSettings.appIconSettings.appIconShape.toShape(
                                 state.currentUserSettings.appIconSettings.roundedCornerPercent,

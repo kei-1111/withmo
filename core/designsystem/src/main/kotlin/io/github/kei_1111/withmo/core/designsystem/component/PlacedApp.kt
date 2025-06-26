@@ -25,7 +25,7 @@ import io.github.kei_1111.withmo.core.model.PlacedApp
 import io.github.kei_1111.withmo.core.util.ktx.toPx
 
 @Composable
-fun WithmoApp(
+fun PlacedApp(
     placedApp: PlacedApp,
     appIconShape: Shape,
     isNotificationBadgeShown: Boolean,
@@ -80,7 +80,7 @@ private fun WithmoAppLightPreview() {
             )
         }
 
-        WithmoApp(
+        PlacedApp(
             placedApp = PlacedApp(
                 id = "withmo-app",
                 info = AppInfo(
@@ -118,7 +118,7 @@ private fun WithmoAppDarkPreview() {
             )
         }
 
-        WithmoApp(
+        PlacedApp(
             placedApp = PlacedApp(
                 id = "withmo-app-dark",
                 info = AppInfo(

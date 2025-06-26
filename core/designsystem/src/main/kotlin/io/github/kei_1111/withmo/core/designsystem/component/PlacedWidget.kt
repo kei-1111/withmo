@@ -13,7 +13,7 @@ import io.github.kei_1111.withmo.core.util.ktx.toPx
 
 @Suppress("LongMethod")
 @Composable
-fun WithmoWidget(
+fun PlacedWidget(
     placedWidget: PlacedWidget,
     topPadding: Dp,
     bottomPadding: Dp,
