@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.data.manager
+package io.github.kei_1111.withmo.core.service.manager.app
 
 import android.app.usage.UsageEvents
 import android.app.usage.UsageStatsManager

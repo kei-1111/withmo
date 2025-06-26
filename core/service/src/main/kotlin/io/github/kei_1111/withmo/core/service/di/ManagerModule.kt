@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.data.di
+package io.github.kei_1111.withmo.core.service.di
 
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager
@@ -9,12 +9,12 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
-import io.github.kei_1111.withmo.core.data.manager.AppManagerImpl
-import io.github.kei_1111.withmo.core.data.manager.ModelFileManagerImpl
-import io.github.kei_1111.withmo.core.data.manager.WidgetManagerImpl
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
+import io.github.kei_1111.withmo.core.service.manager.app.AppManagerImpl
+import io.github.kei_1111.withmo.core.service.manager.file.ModelFileManagerImpl
+import io.github.kei_1111.withmo.core.service.manager.widget.WidgetManagerImpl
 import kotlinx.coroutines.CoroutineDispatcher
 import javax.inject.Singleton
 

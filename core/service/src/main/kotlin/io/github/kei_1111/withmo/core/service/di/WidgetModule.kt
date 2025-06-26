@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.data.di
+package io.github.kei_1111.withmo.core.service.di
 
 import android.appwidget.AppWidgetHost
 import android.appwidget.AppWidgetManager

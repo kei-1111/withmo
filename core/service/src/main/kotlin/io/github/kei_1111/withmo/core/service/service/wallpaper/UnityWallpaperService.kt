@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.service.wallpaper
+package io.github.kei_1111.withmo.core.service.service.wallpaper
 
 import android.os.Handler
 import android.os.Looper

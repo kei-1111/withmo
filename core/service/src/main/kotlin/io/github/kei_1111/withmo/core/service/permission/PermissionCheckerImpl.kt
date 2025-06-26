@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.data.permission
+package io.github.kei_1111.withmo.core.service.permission
 
 import android.app.AppOpsManager
 import android.content.Context

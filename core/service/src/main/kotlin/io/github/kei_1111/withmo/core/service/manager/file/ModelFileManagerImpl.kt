@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.core.data.manager
+package io.github.kei_1111.withmo.core.service.manager.file
 
 import android.content.Context
 import android.graphics.Bitmap

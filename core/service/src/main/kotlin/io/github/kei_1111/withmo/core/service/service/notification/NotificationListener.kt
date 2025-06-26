@@ -1,14 +1,12 @@
-package io.github.kei_1111.withmo.core.service.notification
+package io.github.kei_1111.withmo.core.service.service.notification
 
 import android.app.Notification
-import android.content.Intent
 import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
 import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.kei_1111.withmo.core.common.IntentConstants
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
@@ -89,9 +87,6 @@ class NotificationListener : NotificationListenerService() {
             val notificationSettings = getNotificationSettingsUseCase().first()
 
             if (notificationSettings.isNotificationAnimationEnabled) {
-                val intent = Intent(IntentConstants.Action.NotificationReceived)
-                intent.putExtra(IntentConstants.ExtraKey.PackageName, sbn.packageName)
-                sendBroadcast(intent)
                 AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
             }
 
