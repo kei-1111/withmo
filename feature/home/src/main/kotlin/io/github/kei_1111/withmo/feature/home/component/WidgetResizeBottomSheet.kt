@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.min
 import io.github.kei_1111.withmo.core.designsystem.component.Widget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidget
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlin.math.roundToInt
@@ -38,8 +38,8 @@ import kotlin.math.roundToInt
 @Suppress("LongMethod")
 @Composable
 internal fun WidgetResizeBottomSheet(
-    withmoWidgetInfo: WithmoWidgetInfo,
-    close: (WithmoWidgetInfo) -> Unit,
+    placedWidget: PlacedWidget,
+    close: (PlacedWidget) -> Unit,
 ) {
     val configuration = LocalConfiguration.current
 
@@ -50,14 +50,14 @@ internal fun WidgetResizeBottomSheet(
     val draggedSpaceHeight = screenHeight.dp - Paddings.Medium - Paddings.Medium
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
-    var widgetWidth by remember { mutableFloatStateOf(withmoWidgetInfo.width.toFloat()) }
-    var widgetHeight by remember { mutableFloatStateOf(withmoWidgetInfo.height.toFloat()) }
+    var widgetWidth by remember { mutableFloatStateOf(placedWidget.width.toFloat()) }
+    var widgetHeight by remember { mutableFloatStateOf(placedWidget.height.toFloat()) }
 
     ModalBottomSheet(
         sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = {
             close(
-                withmoWidgetInfo.copy(
+                placedWidget.copy(
                     width = widgetWidth.roundToInt(),
                     height = widgetHeight.roundToInt(),
                 ),
@@ -75,7 +75,7 @@ internal fun WidgetResizeBottomSheet(
                     .height(widgetHeight.dp),
             ) {
                 Widget(
-                    withmoWidgetInfo = withmoWidgetInfo.copy(
+                    placedWidget = placedWidget.copy(
                         width = widgetWidth.roundToInt(),
                         height = widgetHeight.roundToInt(),
                     ),

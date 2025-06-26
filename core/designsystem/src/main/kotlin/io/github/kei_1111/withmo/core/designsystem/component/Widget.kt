@@ -13,36 +13,36 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidget
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetHost
 
 @Composable
 fun Widget(
-    withmoWidgetInfo: WithmoWidgetInfo,
+    placedWidget: PlacedWidget,
     modifier: Modifier = Modifier,
 ) {
     val appWidgetHost = LocalAppWidgetHost.current
     val context = LocalContext.current
 
-    val hostView = remember(withmoWidgetInfo.info.id) {
+    val hostView = remember(placedWidget.info.id) {
         appWidgetHost.createView(
             context.applicationContext,
-            withmoWidgetInfo.info.id,
-            withmoWidgetInfo.info.info,
+            placedWidget.info.id,
+            placedWidget.info.info,
         ).apply {
             val widgetSizeBundle = Bundle().apply {
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, withmoWidgetInfo.width)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, withmoWidgetInfo.height)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, withmoWidgetInfo.width)
-                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, withmoWidgetInfo.height)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, placedWidget.width)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, placedWidget.height)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, placedWidget.width)
+                putInt(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, placedWidget.height)
             }
 
             updateAppWidgetSize(
                 widgetSizeBundle,
-                withmoWidgetInfo.width,
-                withmoWidgetInfo.height,
-                withmoWidgetInfo.width,
-                withmoWidgetInfo.height,
+                placedWidget.width,
+                placedWidget.height,
+                placedWidget.width,
+                placedWidget.height,
             )
         }
     }
@@ -50,7 +50,7 @@ fun Widget(
     AndroidView(
         factory = { hostView },
         modifier = modifier
-            .size(withmoWidgetInfo.width.dp, withmoWidgetInfo.height.dp)
+            .size(placedWidget.width.dp, placedWidget.height.dp)
             .padding(Paddings.Small)
             .clip(MaterialTheme.shapes.medium),
         update = { view ->

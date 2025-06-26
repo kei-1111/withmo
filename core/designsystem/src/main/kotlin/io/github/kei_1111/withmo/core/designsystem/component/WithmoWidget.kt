@@ -6,7 +6,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidget
 import io.github.kei_1111.withmo.core.util.ktx.toDp
 import io.github.kei_1111.withmo.core.util.ktx.toInt
 import io.github.kei_1111.withmo.core.util.ktx.toPx
@@ -14,7 +14,7 @@ import io.github.kei_1111.withmo.core.util.ktx.toPx
 @Suppress("LongMethod")
 @Composable
 fun WithmoWidget(
-    withmoWidgetInfo: WithmoWidgetInfo,
+    placedWidget: PlacedWidget,
     topPadding: Dp,
     bottomPadding: Dp,
     startPadding: Dp,
@@ -35,24 +35,24 @@ fun WithmoWidget(
     val draggedSpaceHeight = screenHeight.dp - topPadding - bottomPadding
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
-    if (withmoWidgetInfo.width == 0) {
-        withmoWidgetInfo.width = calculateWidgetWidth(
-            widgetWidth = withmoWidgetInfo.info.info.minWidth.toDp(),
+    if (placedWidget.width == 0) {
+        placedWidget.width = calculateWidgetWidth(
+            widgetWidth = placedWidget.info.info.minWidth.toDp(),
             minDraggedSpaceDimension = minDraggedSpaceDimension,
         )
     }
 
-    if (withmoWidgetInfo.height == 0) {
-        withmoWidgetInfo.height = calculateWidgetHeight(
-            widgetHeight = withmoWidgetInfo.info.info.minHeight.toDp(),
+    if (placedWidget.height == 0) {
+        placedWidget.height = calculateWidgetHeight(
+            widgetHeight = placedWidget.info.info.minHeight.toDp(),
             minDraggedSpaceDimension = minDraggedSpaceDimension,
         )
     }
 
     PlaceableItemContainer(
-        placeableItem = withmoWidgetInfo,
-        width = withmoWidgetInfo.width.dp,
-        height = withmoWidgetInfo.height.dp,
+        placeableItem = placedWidget,
+        width = placedWidget.width.dp,
+        height = placedWidget.height.dp,
         topPaddingPx = topPadding.toPx(),
         bottomPaddingPx = bottomPadding.toPx(),
         startPaddingPx = startPadding.toPx(),
@@ -63,7 +63,7 @@ fun WithmoWidget(
         onResizeBadgeClick = onResizeBadgeClick,
     ) {
         Widget(
-            withmoWidgetInfo = withmoWidgetInfo,
+            placedWidget = placedWidget,
         )
     }
 }

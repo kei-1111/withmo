@@ -52,10 +52,10 @@ object DatabaseModule {
         .fallbackToDestructiveMigration()
         .build()
 
-//    WidgetInfoDao
+//    PlacedWidgetDao
     @Provides
     @Singleton
-    fun provideWidgetInfoDao(database: WithmoDatabase) = database.withmoWidgetInfoDao()
+    fun provideWidgetInfoDao(database: WithmoDatabase) = database.placedWidgetDao()
 
     @Provides
     @Singleton

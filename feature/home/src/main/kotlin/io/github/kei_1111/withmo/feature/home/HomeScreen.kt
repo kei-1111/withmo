@@ -155,7 +155,7 @@ private fun HomeScreen(
     if (state.isWidgetResizing) {
         state.resizingWidget?.let { widgetInfo ->
             WidgetResizeBottomSheet(
-                withmoWidgetInfo = widgetInfo,
+                placedWidget = widgetInfo,
                 close = { onAction(HomeAction.OnWidgetResizeBottomSheetClose(it)) },
             )
         }

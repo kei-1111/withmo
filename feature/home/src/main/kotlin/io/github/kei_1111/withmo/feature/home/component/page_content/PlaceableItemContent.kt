@@ -34,7 +34,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.PlacedApp
-import io.github.kei_1111.withmo.core.model.WithmoWidgetInfo
+import io.github.kei_1111.withmo.core.model.PlacedWidget
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
@@ -62,9 +62,9 @@ internal fun PlaceableItemContent(
         state.placedItemList.forEach { placeableItem ->
             key(placeableItem.id) {
                 when (placeableItem) {
-                    is WithmoWidgetInfo -> {
+                    is PlacedWidget -> {
                         WithmoWidget(
-                            withmoWidgetInfo = placeableItem,
+                            placedWidget = placeableItem,
                             startPadding = Paddings.Medium,
                             endPadding = Paddings.Medium,
                             topPadding = topPaddingValue,

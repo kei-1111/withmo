@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "withmo_widget_info")
-data class WithmoWidgetInfoEntity(
+data class PlacedWidgetEntity(
     @PrimaryKey
     @ColumnInfo(name = "id")
     val id: Int,
