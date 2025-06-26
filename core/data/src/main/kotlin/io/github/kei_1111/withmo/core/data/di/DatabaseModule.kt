@@ -52,11 +52,6 @@ object DatabaseModule {
         .fallbackToDestructiveMigration()
         .build()
 
-//    AppInfoDao
-    @Provides
-    @Singleton
-    fun provideAppInfoDao(database: WithmoDatabase) = database.withmoAppInfoDao()
-
 //    WidgetInfoDao
     @Provides
     @Singleton
