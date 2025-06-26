@@ -72,15 +72,7 @@ class MainActivity : ComponentActivity() {
 
     private val packageReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            @Suppress("UnusedPrivateProperty")
-            val packageName = intent.getStringExtra(IntentConstants.ExtraKey.PackageName)
-
             when (intent.action) {
-                IntentConstants.Action.NotificationReceived -> {
-                    // 通知処理は新しいNotificationRepositoryで処理される
-                    // AppManagerが自動的に通知状態を更新するため、ここでは何もしない
-                }
-
                 IntentConstants.Action.StartActivity -> {
                     // アプリ起動時に使用回数を更新
                     lifecycleScope.launch {
@@ -116,12 +108,6 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launchWhenCreated {
             appManager.refreshAppList()
         }
-
-        registerReceiver(
-            packageReceiver,
-            IntentFilter(IntentConstants.Action.NotificationReceived),
-            RECEIVER_NOT_EXPORTED,
-        )
 
         registerReceiver(
             packageReceiver,

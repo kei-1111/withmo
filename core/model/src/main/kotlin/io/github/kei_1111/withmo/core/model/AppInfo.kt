@@ -26,10 +26,7 @@ data class AppInfo(
             val pm = context.packageManager
             val intent = pm.getLaunchIntentForPackage(packageName)
             if (intent != null) {
-                val startActivityIntent = Intent(IntentConstants.Action.StartActivity).apply {
-                    putExtra(IntentConstants.ExtraKey.PackageName, packageName)
-                    setPackage(context.packageName)
-                }
+                val startActivityIntent = Intent(IntentConstants.Action.StartActivity)
                 context.sendBroadcast(startActivityIntent)
                 context.startActivity(intent)
             } else {
