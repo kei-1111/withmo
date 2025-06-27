@@ -152,4 +152,5 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 - **コミットメッセージ**: `<type>: <description>` 形式で日本語、過去形で記述
 - **ブランチ命名**: `<type>/#<issue-number>` 形式（例：`feature/#225`）
 - **Issue/PRタイトル**: `[<Type>]: <タイトル>` 形式で統一
+- **プルリクエスト**: PRテンプレートは `.github/PULL_REQUEST_TEMPLATE.md` を参照
 - **開発フロー**: Issue作成 → ブランチ作成 → 開発 → PR作成 → レビュー → マージ

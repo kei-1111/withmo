@@ -112,7 +112,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        UnityManager.init(this)
+        UnityManager.init(applicationContext)
 
         observeModelFilePath()
         observeThemeSettings()
