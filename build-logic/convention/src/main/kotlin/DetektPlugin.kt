@@ -24,6 +24,8 @@ class DetektPlugin() : Plugin<Project> {
 
             tasks.withType<Detekt>().configureEach {
                 jvmTarget = "17"
+                // タスクの並列実行を促進
+                outputs.cacheIf { true }
             }
         }
     }
