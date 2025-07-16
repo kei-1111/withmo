@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.sort.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -111,7 +109,6 @@ private fun SortTypePickerItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerLightPreview() {
@@ -124,7 +121,6 @@ private fun SortTypePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerDarkPreview() {
@@ -137,7 +133,6 @@ private fun SortTypePickerDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerItemLightPreview() {
@@ -148,7 +143,6 @@ private fun SortTypePickerItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerItemDarkPreview() {

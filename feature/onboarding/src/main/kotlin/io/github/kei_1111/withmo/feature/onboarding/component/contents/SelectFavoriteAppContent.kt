@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -140,7 +138,6 @@ private fun SelectFavoriteAppContentBottomAppBar(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentLightPreview() {
@@ -153,7 +150,6 @@ private fun SelectFavoriteAppContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentDarkPreview() {
@@ -166,7 +162,6 @@ private fun SelectFavoriteAppContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
@@ -179,7 +174,6 @@ private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {

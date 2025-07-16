@@ -1,11 +1,9 @@
 package io.github.kei_1111.withmo.core.service.service.notification
 
 import android.app.Notification
-import android.os.Build
 import android.service.notification.NotificationListenerService
 import android.service.notification.StatusBarNotification
 import android.util.Log
-import androidx.annotation.RequiresApi
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
@@ -79,7 +77,6 @@ class NotificationListener : NotificationListenerService() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onNotificationPosted(sbn: StatusBarNotification?) {
         super.onNotificationPosted(sbn)
         if (sbn == null) return

@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -171,7 +169,6 @@ private fun ClockHorizontalDate(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockTopDateLightPreview() {
@@ -190,7 +187,6 @@ private fun WithmoClockTopDateLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockTopDateDarkPreview() {
@@ -209,7 +205,6 @@ private fun WithmoClockTopDateDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateLightPreview() {
@@ -228,7 +223,6 @@ private fun WithmoClockHorizontalDateLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateDarkPreview() {

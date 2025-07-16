@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -127,7 +125,6 @@ private fun RowAppList(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun HomeScreenContentLightPreview() {
@@ -160,7 +157,6 @@ private fun HomeScreenContentLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun HomeScreenContentDarkPreview() {
@@ -193,7 +189,6 @@ private fun HomeScreenContentDarkPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun RowAppListLightPreview() {
@@ -227,7 +222,6 @@ private fun RowAppListLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun RowAppListDarkPreview() {

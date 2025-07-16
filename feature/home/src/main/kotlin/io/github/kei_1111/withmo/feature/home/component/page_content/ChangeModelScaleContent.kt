@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -108,7 +106,6 @@ private fun ScaleSlider(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ChangeModelScaleContentLightPreview() {
@@ -121,7 +118,6 @@ private fun ChangeModelScaleContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ChangeModelScaleContentDarkPreview() {
@@ -134,7 +130,6 @@ private fun ChangeModelScaleContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ScaleSliderLightPreview() {
@@ -146,7 +141,6 @@ private fun ScaleSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ScaleSliderDarkPreview() {

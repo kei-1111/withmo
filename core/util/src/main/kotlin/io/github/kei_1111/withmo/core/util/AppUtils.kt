@@ -7,16 +7,14 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
 object AppUtils {
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun getAppList(context: Context): ImmutableList<AppInfo> {
         val pm = context.packageManager
 
@@ -51,7 +49,6 @@ object AppUtils {
             .toPersistentList()
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun getAppFromPackageName(context: Context, packageName: String): AppInfo? {
         val pm = context.packageManager
         return try {
@@ -97,7 +94,7 @@ object AppUtils {
      * @param icon アプリから取得したアイコン `Drawable`
      * @return [AppIcon] - 分離された 2 レイヤー、またはレガシー 1 レイヤー
      */
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun getAppIcon(icon: Drawable): AppIcon {
         val adaptive = icon as? AdaptiveIconDrawable
         val foregroundIcon: Drawable? = adaptive?.foreground

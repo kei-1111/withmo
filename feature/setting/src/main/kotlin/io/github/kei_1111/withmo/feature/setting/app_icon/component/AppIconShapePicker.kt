@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -130,7 +128,6 @@ private fun AppIconShapePickerItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerLightPreview() {
@@ -143,7 +140,6 @@ private fun AppIconShapePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerDarkPreview() {
@@ -156,7 +152,6 @@ private fun AppIconShapePickerDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerItemLightPreview() {
@@ -168,7 +163,6 @@ private fun AppIconShapePickerItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerItemDarkPreview() {

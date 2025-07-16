@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.runtime.Composable
@@ -26,7 +24,6 @@ internal fun OnboardingBottomAppBarPreviousButton(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarPreviousButtonLightPreview() {
@@ -38,7 +35,6 @@ private fun OnboardingBottomAppBarPreviousButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarPreviousButtonDarkPreview() {

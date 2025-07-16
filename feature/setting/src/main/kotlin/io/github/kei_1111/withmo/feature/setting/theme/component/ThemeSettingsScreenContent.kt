@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.theme.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -37,7 +35,6 @@ internal fun ThemeSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeSettingsScreenContentLightPreview() {
@@ -55,7 +52,6 @@ private fun ThemeSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeSettingsScreenContentDarkPreview() {

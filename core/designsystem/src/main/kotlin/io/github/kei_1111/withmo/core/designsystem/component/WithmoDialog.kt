@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -138,7 +136,6 @@ private fun WithmoDialogContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WithmoDialogLightPreview() {
@@ -155,7 +152,6 @@ private fun WithmoDialogLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WithmoDialogDarkPreview() {
@@ -172,7 +168,6 @@ private fun WithmoDialogDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WithmoDialogContentLightPreview() {
@@ -188,7 +183,6 @@ private fun WithmoDialogContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WithmoDialogContentDarkPreview() {

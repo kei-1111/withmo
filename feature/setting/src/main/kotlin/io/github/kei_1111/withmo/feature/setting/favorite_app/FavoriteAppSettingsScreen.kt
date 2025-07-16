@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.favorite_app
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -101,7 +99,6 @@ private fun FavoriteAppSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenLightPreview() {
@@ -114,7 +111,6 @@ private fun FavoriteAppSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenDarkPreview() {

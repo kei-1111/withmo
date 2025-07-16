@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.graphics.drawable.Drawable
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -165,7 +163,6 @@ private fun Badge(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppLightPreview() {
@@ -190,7 +187,6 @@ private fun AppLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppDarkPreview() {
@@ -216,7 +212,6 @@ private fun AppDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppIconLightPreview() {
@@ -237,7 +232,6 @@ private fun AppIconLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppIconDarkPreview() {
@@ -258,7 +252,6 @@ private fun AppIconDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BadgeLightPreview() {
@@ -267,7 +260,6 @@ private fun BadgeLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BadgeDarkPreview() {

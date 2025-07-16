@@ -287,7 +287,6 @@ private fun SelectDisplayModelContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarLightPreview() {
@@ -300,7 +299,6 @@ private fun SelectDisplayModelContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarDarkPreview() {

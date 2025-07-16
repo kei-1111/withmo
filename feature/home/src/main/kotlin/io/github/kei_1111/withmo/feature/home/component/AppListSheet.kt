@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -111,7 +109,6 @@ internal fun AppListSheet(
 
 @Suppress("MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListSheetLightPreview() {
@@ -126,7 +123,6 @@ private fun AppListSheetLightPreview() {
 
 @Suppress("MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListSheetDarkPreview() {

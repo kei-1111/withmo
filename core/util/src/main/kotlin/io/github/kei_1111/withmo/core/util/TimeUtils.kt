@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.util
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
@@ -12,7 +10,6 @@ import io.github.kei_1111.withmo.core.util.TimeUtils.TimePeriods.NightStartTime
 import java.time.LocalTime
 import java.time.ZonedDateTime
 
-@RequiresApi(Build.VERSION_CODES.O)
 data object TimeUtils {
     @Suppress("MagicNumber")
     data object TimePeriods {

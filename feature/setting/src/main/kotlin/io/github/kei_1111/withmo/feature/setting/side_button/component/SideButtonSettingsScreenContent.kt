@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.side_button.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,7 +54,6 @@ internal fun SideButtonSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenContentLightPreview() {
@@ -77,7 +74,6 @@ private fun SideButtonSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenContentDarkPreview() {

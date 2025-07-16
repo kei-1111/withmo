@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -75,7 +73,6 @@ private fun WelcomeContentBottomAppBar(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentLightPreview() {
@@ -87,7 +84,6 @@ private fun WelcomeContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentDarkPreview() {
@@ -99,7 +95,6 @@ private fun WelcomeContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentBottomAppBarLightPreview() {
@@ -111,7 +106,6 @@ private fun WelcomeContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentBottomAppBarDarkPreview() {

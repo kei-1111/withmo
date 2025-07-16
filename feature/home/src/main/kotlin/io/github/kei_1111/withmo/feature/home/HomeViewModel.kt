@@ -1,10 +1,8 @@
 package io.github.kei_1111.withmo.feature.home
 
 import android.app.Activity.RESULT_OK
-import android.os.Build
 import android.os.SystemClock
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -36,7 +34,6 @@ import java.lang.ref.WeakReference
 import java.util.UUID
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(

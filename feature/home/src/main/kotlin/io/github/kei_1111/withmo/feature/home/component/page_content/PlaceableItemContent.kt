@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -170,7 +168,6 @@ private fun CompleteEditButton(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemContentightPreview() {
@@ -185,7 +182,6 @@ private fun PlaceableItemContentightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemContentDarkPreview() {
@@ -200,7 +196,6 @@ private fun PlaceableItemContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun EditPlaceableItemContentLightPreview() {
@@ -212,7 +207,6 @@ private fun EditPlaceableItemContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun EditPlaceableItemContentDarkPreview() {
@@ -224,7 +218,6 @@ private fun EditPlaceableItemContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AddPlaceableItemButtonLightPreview() {
@@ -235,7 +228,6 @@ private fun AddPlaceableItemButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AddPlaceableItemButtonDarkPreview() {
@@ -246,7 +238,6 @@ private fun AddPlaceableItemButtonDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun CompleteEditButtonLightPreview() {
@@ -257,7 +248,6 @@ private fun CompleteEditButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun CompleteEditButtonDarkPreview() {

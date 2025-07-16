@@ -229,7 +229,6 @@ private fun SettingsScreenDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun LogoWithTextLightPreview() {
@@ -241,7 +240,6 @@ private fun LogoWithTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun LogoWithTextDarkPreview() {

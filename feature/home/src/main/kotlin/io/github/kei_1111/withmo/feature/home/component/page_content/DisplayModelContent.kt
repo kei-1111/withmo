@@ -2,8 +2,6 @@
 
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,7 +41,6 @@ import io.github.kei_1111.withmo.feature.home.R
 import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
 import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 internal fun DisplayModelContent(
     state: HomeState,
@@ -221,7 +218,6 @@ private fun SideButtonContainer(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayModelContentLightPreview() {
@@ -234,7 +230,6 @@ private fun DisplayModelContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayModelContentDarkPreview() {
@@ -247,7 +242,6 @@ private fun DisplayModelContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun NavigateSettingsButtonLightPreview() {
@@ -258,7 +252,6 @@ private fun NavigateSettingsButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun NavigateSettingsButtonDarkPreview() {
@@ -269,7 +262,6 @@ private fun NavigateSettingsButtonDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun SetDefaultModelButtonLightPreview() {
@@ -280,7 +272,6 @@ private fun SetDefaultModelButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun SetDefaultModelButtonDarkPreview() {
@@ -291,7 +282,6 @@ private fun SetDefaultModelButtonDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun OpenDocumentButtonLightPreview() {
@@ -302,7 +292,6 @@ private fun OpenDocumentButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun OpenDocumentButtonDarkPreview() {
@@ -313,7 +302,6 @@ private fun OpenDocumentButtonDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ShowScaleSliderButtonLightPreview() {
@@ -324,7 +312,6 @@ private fun ShowScaleSliderButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ShowScaleSliderButtonDarkPreview() {

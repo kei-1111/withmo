@@ -114,7 +114,6 @@ private fun FinishContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FinishContentBottomAppBarLightPreview() {
@@ -126,7 +125,6 @@ private fun FinishContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FinishContentBottomAppBarDarkPreview() {

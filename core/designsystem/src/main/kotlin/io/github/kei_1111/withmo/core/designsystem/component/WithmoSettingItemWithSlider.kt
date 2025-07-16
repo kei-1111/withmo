@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -47,7 +45,6 @@ fun WithmoSettingItemWithSlider(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderLightPreview() {
@@ -62,7 +59,6 @@ private fun WithmoSettingItemWithSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderDarkPreview() {

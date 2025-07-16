@@ -1,7 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
@@ -237,7 +236,6 @@ fun calculatePlaceableItemPosition(
     return Offset(x, y)
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DeleteWidgetBadgeLightPreview() {
@@ -248,7 +246,6 @@ private fun DeleteWidgetBadgeLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DeleteWidgetBadgeDarkPreview() {
@@ -259,7 +256,6 @@ private fun DeleteWidgetBadgeDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ResizeWidgetBadgeLightPreview() {
@@ -270,7 +266,6 @@ private fun ResizeWidgetBadgeLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ResizeWidgetBadgeDarkPreview() {

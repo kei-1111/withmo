@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -134,7 +132,6 @@ fun WithmoSearchTextField(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoTextFieldLightPreview() {
@@ -151,7 +148,6 @@ private fun WithmoTextFieldLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoTextFieldDarkPreview() {
@@ -168,7 +164,6 @@ private fun WithmoTextFieldDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSearchTextFieldLightPreview() {
@@ -180,7 +175,6 @@ private fun WithmoSearchTextFieldLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSearchTextFieldDarkPreview() {

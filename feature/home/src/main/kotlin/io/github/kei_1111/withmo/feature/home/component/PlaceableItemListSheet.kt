@@ -373,7 +373,6 @@ private fun WidgetItem(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemListSheetAppTabLightPreview() {
@@ -427,7 +426,6 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemListSheetAppTabDarkPreview() {
@@ -481,7 +479,6 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppTabContentLightPreview() {
@@ -512,7 +509,6 @@ private fun AppTabContentLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppTabContentDarkPreview() {

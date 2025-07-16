@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -84,7 +82,6 @@ private fun AppItemPreview(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewAreaLightPreview() {
@@ -98,7 +95,6 @@ private fun AppItemPreviewAreaLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewAreaDarkPreview() {
@@ -112,7 +108,6 @@ private fun AppItemPreviewAreaDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewLightPreview() {
@@ -125,7 +120,6 @@ private fun AppItemPreviewLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewDarkPreview() {

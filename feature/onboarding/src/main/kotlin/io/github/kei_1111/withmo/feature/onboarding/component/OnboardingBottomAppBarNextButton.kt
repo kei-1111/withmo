@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -38,7 +36,6 @@ internal fun OnboardingBottomAppBarNextButton(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarNextButtonLightPreview() {
@@ -51,7 +48,6 @@ private fun OnboardingBottomAppBarNextButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarNextButtonDarkPreview() {

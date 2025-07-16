@@ -2,8 +2,6 @@
 
 package io.github.kei_1111.withmo.feature.setting.root.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -315,7 +313,6 @@ private fun SettingItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SettingsScreenContentLightPreview() {
@@ -330,7 +327,6 @@ private fun SettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SettingsScreenContentDarkPreview() {
@@ -345,7 +341,6 @@ private fun SettingsScreenContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun HomeAppSettingsLightPreview() {
@@ -357,7 +352,6 @@ private fun HomeAppSettingsLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun HomeAppSettingsDarkPreview() {
@@ -369,7 +363,6 @@ private fun HomeAppSettingsDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun HomeScreenSettingsLightPreview() {
@@ -380,7 +373,6 @@ private fun HomeScreenSettingsLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun HomeScreenSettingsDarkPreview() {
@@ -391,7 +383,6 @@ private fun HomeScreenSettingsDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsLightPreview() {
@@ -402,7 +393,6 @@ private fun NotificationSettingsLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsDarkPreview() {
@@ -413,7 +403,6 @@ private fun NotificationSettingsDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WallpaperSettingsLightPreview() {
@@ -424,7 +413,6 @@ private fun WallpaperSettingsLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WallpaperSettingsDarkPreview() {
@@ -435,7 +423,6 @@ private fun WallpaperSettingsDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeSettingsLightPreview() {
@@ -446,7 +433,6 @@ private fun ThemeSettingsLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeSettingsDarkPreview() {
@@ -457,7 +443,6 @@ private fun ThemeSettingsDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SettingItemLightPreview() {
@@ -470,7 +455,6 @@ private fun SettingItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SettingItemDarkPreview() {

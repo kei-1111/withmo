@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.clock.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -82,7 +80,6 @@ private fun ClockTypePickerDivider(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ClockTypePickerLightPreview() {
@@ -96,7 +93,6 @@ private fun ClockTypePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ClockTypePickerDarkPreview() {

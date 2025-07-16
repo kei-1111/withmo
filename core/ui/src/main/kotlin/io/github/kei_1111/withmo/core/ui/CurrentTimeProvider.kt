@@ -1,10 +1,8 @@
 package io.github.kei_1111.withmo.core.ui
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
@@ -27,7 +25,6 @@ private const val OneSecondMillis = 1000L
 private const val NanoToMilliDivisor = 1_000_000L
 private const val DelayThreshold = 200L
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CurrentTimeProvider(content: @Composable () -> Unit) {
     val lifecycleOwner = LocalLifecycleOwner.current

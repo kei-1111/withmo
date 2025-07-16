@@ -2,8 +2,6 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -223,7 +221,6 @@ fun LabelSmallText(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayMediumTextLightPreview() {
@@ -235,7 +232,6 @@ private fun DisplayMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayMediumTextDarkPreview() {
@@ -247,7 +243,6 @@ private fun DisplayMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun TitleLargeTextLightPreview() {
@@ -259,7 +254,6 @@ private fun TitleLargeTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun TitleLargeTextDarkPreview() {
@@ -271,7 +265,6 @@ private fun TitleLargeTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BodyMediumTextLightPreview() {
@@ -283,7 +276,6 @@ private fun BodyMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BodyMediumTextDarkPreview() {
@@ -295,7 +287,6 @@ private fun BodyMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelMediumTextLightPreview() {
@@ -307,7 +298,6 @@ private fun LabelMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelMediumTextDarkPreview() {
@@ -319,7 +309,6 @@ private fun LabelMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelSmallTextLightPreview() {
@@ -331,7 +320,6 @@ private fun LabelSmallTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelSmallTextDarkPreview() {

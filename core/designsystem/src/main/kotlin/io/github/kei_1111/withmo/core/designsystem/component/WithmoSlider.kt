@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.indication
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.height
@@ -123,7 +121,6 @@ fun WithmoVerticalSlider(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSliderLightPreview() {
@@ -137,7 +134,6 @@ private fun WithmoSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSliderDarkPreview() {
@@ -151,7 +147,6 @@ private fun WithmoSliderDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoVerticalSliderLightPreview() {
@@ -165,7 +160,6 @@ private fun WithmoVerticalSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoVerticalSliderDarkPreview() {

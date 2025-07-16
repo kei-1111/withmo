@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -86,7 +84,6 @@ fun getFavoriteAppSelectorItemModifier(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun FavoriteAppSelectorItemLightPreview() {
@@ -116,7 +113,6 @@ private fun FavoriteAppSelectorItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun FavoriteAppSelectorItemDarkPreview() {

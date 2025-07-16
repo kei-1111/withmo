@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.sort.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,7 +25,6 @@ internal fun UsagePermissionDialog(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun UsagePermissionDialogLightPreview() {
@@ -39,7 +36,6 @@ private fun UsagePermissionDialogLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun UsagePermissionDialogDarkPreview() {

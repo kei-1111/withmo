@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.notification
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -121,7 +119,6 @@ private fun NotificationSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsScreenLightPreview() {
@@ -139,7 +136,6 @@ private fun NotificationSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsScreenDarkPreview() {

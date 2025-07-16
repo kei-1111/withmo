@@ -2,8 +2,6 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component.theme
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -74,7 +72,6 @@ private val darkScheme = darkColorScheme(
     inversePrimary = inversePrimaryDark,
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun WithmoTheme(
     themeType: ThemeType,

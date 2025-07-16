@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.theme.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -125,7 +123,6 @@ private fun ThemeTypePickerItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeTypePickerLightPreview() {
@@ -138,7 +135,6 @@ private fun ThemeTypePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeTypePickerDarkPreview() {
@@ -151,7 +147,6 @@ private fun ThemeTypePickerDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeTypePickerItemLightPreview() {
@@ -162,7 +157,6 @@ private fun ThemeTypePickerItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ThemeTypePickerItemDarkPreview() {

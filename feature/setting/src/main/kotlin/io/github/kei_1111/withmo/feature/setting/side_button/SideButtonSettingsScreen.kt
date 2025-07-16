@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.side_button
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -106,7 +104,6 @@ private fun SideButtonSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenLightPreview() {
@@ -127,7 +124,6 @@ private fun SideButtonSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenDarkPreview() {

@@ -116,7 +116,7 @@ fun ComponentName(
 #### Preview実装パターン
 **必須**: 全てのComposableにLight/Darkの両方のPreviewを実装する
 ```kotlin
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Preview
 @Composable
 private fun ComponentNameLightPreview() {
@@ -127,7 +127,7 @@ private fun ComponentNameLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Preview
 @Composable
 private fun ComponentNameDarkPreview() {
@@ -236,7 +236,7 @@ WithmoApp (最上位)
 - [ ] Composableが適切にstatelessか
 - [ ] `remember`の使用が適切か
 - [ ] Previewが正しく実装されているか（Light/Dark両方）
-- [ ] `@RequiresApi(Build.VERSION_CODES.O)`が設定されているか
+- [ ] ``が設定されているか
 
 #### 3. 命名規則
 - [ ] ファイル名がパターンに従っているか
@@ -295,7 +295,7 @@ class GetUserSettingsUseCase
 ```
 ❌ このファイルの命名がプロジェクトの規約に従っていません。`[FeatureName]Screen.kt`パターンに修正してください。
 
-❌ `@RequiresApi(Build.VERSION_CODES.O)`アノテーションが不足しています。Preview関数に追加してください。
+❌ ``アノテーションが不足しています。Preview関数に追加してください。
 
 ❌ Clean Architectureの層違反が発生しています。ドメイン層からデータ層の具象クラスを直接参照しないでください。
 ```

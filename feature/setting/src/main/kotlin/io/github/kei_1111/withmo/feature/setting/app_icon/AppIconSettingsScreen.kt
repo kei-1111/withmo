@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -112,7 +110,6 @@ private fun AppIconSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenLightPreview() {
@@ -128,7 +125,6 @@ private fun AppIconSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenDarkPreview() {

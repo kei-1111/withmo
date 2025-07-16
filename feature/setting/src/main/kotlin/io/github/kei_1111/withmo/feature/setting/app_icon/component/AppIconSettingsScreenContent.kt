@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -47,7 +45,6 @@ internal fun AppIconSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenContentLightPreview() {
@@ -63,7 +60,6 @@ private fun AppIconSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenContentDarkPreview() {

@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import io.github.kei_1111.withmo.core.featurebase.State
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.PlaceableItem
@@ -11,7 +9,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-@RequiresApi(Build.VERSION_CODES.O)
 data class HomeState(
     val isChangeModelScaleContentShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,
