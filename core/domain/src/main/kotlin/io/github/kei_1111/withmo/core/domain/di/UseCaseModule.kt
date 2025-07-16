@@ -4,11 +4,14 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelSettingsUseCase
@@ -27,6 +30,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
@@ -156,4 +161,17 @@ object UseCaseModule {
     fun provideSaveModelSettingsUseCase(
         userSettingsRepository: UserSettingsRepository,
     ): SaveModelSettingsUseCase = SaveModelSettingsUseCaseImpl(userSettingsRepository)
+
+    // FavoriteApps
+    @Provides
+    @Singleton
+    fun provideGetFavoriteAppsUseCase(
+        favoriteAppRepository: FavoriteAppRepository,
+    ): GetFavoriteAppsUseCase = GetFavoriteAppsUseCaseImpl(favoriteAppRepository)
+
+    @Provides
+    @Singleton
+    fun provideSaveFavoriteAppsUseCase(
+        favoriteAppRepository: FavoriteAppRepository,
+    ): SaveFavoriteAppsUseCase = SaveFavoriteAppsUseCaseImpl(favoriteAppRepository)
 }
