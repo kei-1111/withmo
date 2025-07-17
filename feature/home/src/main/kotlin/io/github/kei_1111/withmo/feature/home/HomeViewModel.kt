@@ -12,10 +12,10 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
@@ -38,7 +38,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val favoriteAppRepository: FavoriteAppRepository,
+    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val placedAppRepository: PlacedAppRepository,
     private val placedWidgetRepository: PlacedWidgetRepository,
     private val oneTimeEventRepository: OneTimeEventRepository,
@@ -91,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
+            getFavoriteAppsUseCase().collect { favoriteAppList ->
                 updateState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
             }
         }
