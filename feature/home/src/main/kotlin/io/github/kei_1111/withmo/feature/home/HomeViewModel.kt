@@ -12,11 +12,12 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelChangeWarningStatusUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShownUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
@@ -28,7 +29,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.UUID
@@ -41,7 +41,8 @@ class HomeViewModel @Inject constructor(
     private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val placedAppRepository: PlacedAppRepository,
     private val placedWidgetRepository: PlacedWidgetRepository,
-    private val oneTimeEventRepository: OneTimeEventRepository,
+    private val getModelChangeWarningStatusUseCase: GetModelChangeWarningStatusUseCase,
+    private val markModelChangeWarningShownUseCase: MarkModelChangeWarningShownUseCase,
     private val modelFileManager: ModelFileManager,
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
@@ -215,7 +216,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnOpenDocumentButtonClick -> {
                 viewModelScope.launch {
-                    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown.first()
+                    val isModelChangeWarningFirstShown = getModelChangeWarningStatusUseCase()
                     if (isModelChangeWarningFirstShown) {
                         sendEffect(HomeEffect.OpenDocument)
                     } else {
@@ -228,7 +229,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnModelChangeWarningDialogConfirm -> {
                 viewModelScope.launch {
-                    oneTimeEventRepository.markModelChangeWarningFirstShown()
+                    markModelChangeWarningShownUseCase()
                     updateState { copy(isModelChangeWarningDialogShown = false) }
                     sendEffect(HomeEffect.OpenDocument)
                 }

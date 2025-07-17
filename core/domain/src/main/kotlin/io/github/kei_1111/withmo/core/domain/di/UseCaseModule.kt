@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
+import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCaseImpl
@@ -12,12 +13,16 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetClockSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelChangeWarningStatusUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelChangeWarningStatusUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetOnboardingStatusUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetOnboardingStatusUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
@@ -26,6 +31,10 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetThemeSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShownUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShownUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveClockSettingsUseCase
@@ -174,4 +183,29 @@ object UseCaseModule {
     fun provideSaveFavoriteAppsUseCase(
         favoriteAppRepository: FavoriteAppRepository,
     ): SaveFavoriteAppsUseCase = SaveFavoriteAppsUseCaseImpl(favoriteAppRepository)
+
+    // OneTimeEvent
+    @Provides
+    @Singleton
+    fun provideGetOnboardingStatusUseCase(
+        oneTimeEventRepository: OneTimeEventRepository,
+    ): GetOnboardingStatusUseCase = GetOnboardingStatusUseCaseImpl(oneTimeEventRepository)
+
+    @Provides
+    @Singleton
+    fun provideMarkOnboardingShownUseCase(
+        oneTimeEventRepository: OneTimeEventRepository,
+    ): MarkOnboardingShownUseCase = MarkOnboardingShownUseCaseImpl(oneTimeEventRepository)
+
+    @Provides
+    @Singleton
+    fun provideGetModelChangeWarningStatusUseCase(
+        oneTimeEventRepository: OneTimeEventRepository,
+    ): GetModelChangeWarningStatusUseCase = GetModelChangeWarningStatusUseCaseImpl(oneTimeEventRepository)
+
+    @Provides
+    @Singleton
+    fun provideMarkModelChangeWarningShownUseCase(
+        oneTimeEventRepository: OneTimeEventRepository,
+    ): MarkModelChangeWarningShownUseCase = MarkModelChangeWarningShownUseCaseImpl(oneTimeEventRepository)
 }
