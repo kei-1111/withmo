@@ -12,14 +12,14 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
-import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelChangeWarningStatusUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetPlacedItemsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShownUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
@@ -28,7 +28,6 @@ import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.UUID
@@ -39,8 +38,8 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
     private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
-    private val placedAppRepository: PlacedAppRepository,
-    private val placedWidgetRepository: PlacedWidgetRepository,
+    private val getPlacedItemsUseCase: GetPlacedItemsUseCase,
+    private val savePlacedItemsUseCase: SavePlacedItemsUseCase,
     private val getModelChangeWarningStatusUseCase: GetModelChangeWarningStatusUseCase,
     private val markModelChangeWarningShownUseCase: MarkModelChangeWarningShownUseCase,
     private val modelFileManager: ModelFileManager,
@@ -100,16 +99,11 @@ class HomeViewModel @Inject constructor(
 
     private fun observePlaceableItemList() {
         viewModelScope.launch {
-            combine(
-                placedWidgetRepository.getAllList(),
-                placedAppRepository.placedAppsInfo,
-            ) { widgetList, placedAppList ->
-                (widgetList + placedAppList).toPersistentList()
-            }.collect { placedItemList ->
+            getPlacedItemsUseCase().collect { placedItemList ->
                 updateState {
                     copy(
-                        placedItemList = placedItemList,
-                        initialPlacedItemList = placedItemList,
+                        placedItemList = placedItemList.toPersistentList(),
+                        initialPlacedItemList = placedItemList.toPersistentList(),
                     )
                 }
             }
@@ -144,28 +138,8 @@ class HomeViewModel @Inject constructor(
         val currentPlacedItemList = state.value.placedItemList
         val initialPlacedItemList = state.value.initialPlacedItemList
 
-        val addedPlacedItemList = currentPlacedItemList.filterNot { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val updatedPlacedItemList = currentPlacedItemList.filter { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val deletedPlacedItemList = initialPlacedItemList.filterNot { initialPlaceableItem ->
-            currentPlacedItemList.any { currentPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
         viewModelScope.launch {
-            val addedWidgetList = addedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            val updatedWidgetList = updatedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            val deletedWidgetList = deletedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            placedWidgetRepository.insert(addedWidgetList)
-            placedWidgetRepository.update(updatedWidgetList)
-            placedWidgetRepository.delete(deletedWidgetList)
-
-            val placedAppInfoList = currentPlacedItemList.filterIsInstance<PlacedAppInfo>()
-            placedAppRepository.updatePlacedApps(placedAppInfoList)
+            savePlacedItemsUseCase(currentPlacedItemList, initialPlacedItemList)
         }
     }
 

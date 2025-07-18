@@ -6,6 +6,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
+import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
+import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCaseImpl
@@ -23,6 +25,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseC
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetOnboardingStatusUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetOnboardingStatusUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.GetPlacedItemsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetPlacedItemsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
@@ -47,6 +51,8 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCaseImpl
+import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCaseImpl
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
@@ -208,4 +214,19 @@ object UseCaseModule {
     fun provideMarkModelChangeWarningShownUseCase(
         oneTimeEventRepository: OneTimeEventRepository,
     ): MarkModelChangeWarningShownUseCase = MarkModelChangeWarningShownUseCaseImpl(oneTimeEventRepository)
+
+    // PlacedItems
+    @Provides
+    @Singleton
+    fun provideGetPlacedItemsUseCase(
+        placedAppRepository: PlacedAppRepository,
+        placedWidgetRepository: PlacedWidgetRepository,
+    ): GetPlacedItemsUseCase = GetPlacedItemsUseCaseImpl(placedAppRepository, placedWidgetRepository)
+
+    @Provides
+    @Singleton
+    fun provideSavePlacedItemsUseCase(
+        placedAppRepository: PlacedAppRepository,
+        placedWidgetRepository: PlacedWidgetRepository,
+    ): SavePlacedItemsUseCase = SavePlacedItemsUseCaseImpl(placedAppRepository, placedWidgetRepository)
 }
