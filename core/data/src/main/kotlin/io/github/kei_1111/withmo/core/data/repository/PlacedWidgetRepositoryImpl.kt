@@ -21,28 +21,18 @@ class PlacedWidgetRepositoryImpl @Inject constructor(
 ) : PlacedWidgetRepository {
 
     override fun getAllList(): Flow<List<PlacedWidgetInfo>> {
-        return placedWidgetDao.getAllList()
+        return placedWidgetDao.getAll()
             .map { entities ->
                 entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
             }
             .flowOn(ioDispatcher)
     }
 
-    override suspend fun insert(placedWidgetInfoList: List<PlacedWidgetInfo>) {
+    override suspend fun updatePlacedWidgets(placedWidgetInfoList: List<PlacedWidgetInfo>) {
         withContext(ioDispatcher) {
-            placedWidgetDao.insert(placedWidgetInfoList.map { it.toEntity() })
-        }
-    }
-
-    override suspend fun update(placedWidgetInfoList: List<PlacedWidgetInfo>) {
-        withContext(ioDispatcher) {
-            placedWidgetDao.update(placedWidgetInfoList.map { it.toEntity() })
-        }
-    }
-
-    override suspend fun delete(placedWidgetInfoList: List<PlacedWidgetInfo>) {
-        withContext(ioDispatcher) {
-            placedWidgetDao.delete(placedWidgetInfoList.map { it.toEntity() })
+            val entities = placedWidgetInfoList.map { it.toEntity() }
+            placedWidgetDao.deleteAll()
+            placedWidgetDao.insertAll(entities)
         }
     }
 

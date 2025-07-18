@@ -8,42 +8,20 @@ import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import javax.inject.Inject
 
 interface SavePlacedItemsUseCase {
-    suspend operator fun invoke(
-        currentPlacedItemList: List<PlaceableItem>,
-        initialPlacedItemList: List<PlaceableItem>,
-    )
+    suspend operator fun invoke(placedItemList: List<PlaceableItem>)
 }
 
 class SavePlacedItemsUseCaseImpl @Inject constructor(
     private val placedAppRepository: PlacedAppRepository,
     private val placedWidgetRepository: PlacedWidgetRepository,
 ) : SavePlacedItemsUseCase {
-    override suspend operator fun invoke(
-        currentPlacedItemList: List<PlaceableItem>,
-        initialPlacedItemList: List<PlaceableItem>,
-    ) {
-        val addedPlacedItemList = currentPlacedItemList.filterNot { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val updatedPlacedItemList = currentPlacedItemList.filter { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val deletedPlacedItemList = initialPlacedItemList.filterNot { initialPlaceableItem ->
-            currentPlacedItemList.any { currentPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
+    override suspend operator fun invoke(placedItemList: List<PlaceableItem>) {
         // Widget処理
-        val addedWidgetList = addedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-        val updatedWidgetList = updatedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-        val deletedWidgetList = deletedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-        placedWidgetRepository.insert(addedWidgetList)
-        placedWidgetRepository.update(updatedWidgetList)
-        placedWidgetRepository.delete(deletedWidgetList)
+        val placedWidgetInfoList = placedItemList.filterIsInstance<PlacedWidgetInfo>()
+        placedWidgetRepository.updatePlacedWidgets(placedWidgetInfoList)
 
         // App処理
-        val placedAppInfoList = currentPlacedItemList.filterIsInstance<PlacedAppInfo>()
+        val placedAppInfoList = placedItemList.filterIsInstance<PlacedAppInfo>()
         placedAppRepository.updatePlacedApps(placedAppInfoList)
     }
 }

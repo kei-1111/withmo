@@ -16,7 +16,6 @@ data class HomeState(
     val isAppListSheetOpened: Boolean = false,
     val isPlaceableItemListSheetOpened: Boolean = false,
     val placedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
-    val initialPlacedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
     val pendingWidgetInfo: WidgetInfo? = null,
     val isEditMode: Boolean = false,
     val resizingWidget: PlacedWidgetInfo? = null,

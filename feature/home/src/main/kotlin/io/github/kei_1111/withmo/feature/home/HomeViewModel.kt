@@ -100,12 +100,7 @@ class HomeViewModel @Inject constructor(
     private fun observePlaceableItemList() {
         viewModelScope.launch {
             getPlacedItemsUseCase().collect { placedItemList ->
-                updateState {
-                    copy(
-                        placedItemList = placedItemList.toPersistentList(),
-                        initialPlacedItemList = placedItemList.toPersistentList(),
-                    )
-                }
+                updateState { copy(placedItemList = placedItemList.toPersistentList()) }
             }
         }
     }
@@ -136,10 +131,9 @@ class HomeViewModel @Inject constructor(
 
     private fun savePlaceableItemList() {
         val currentPlacedItemList = state.value.placedItemList
-        val initialPlacedItemList = state.value.initialPlacedItemList
 
         viewModelScope.launch {
-            savePlacedItemsUseCase(currentPlacedItemList, initialPlacedItemList)
+            savePlacedItemsUseCase(currentPlacedItemList)
         }
     }
 
