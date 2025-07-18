@@ -4,7 +4,7 @@ import android.appwidget.AppWidgetManager
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.core.data.local.dao.PlacedWidgetDao
 import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
-import io.github.kei_1111.withmo.core.data.local.mapper.toWidgetInfo
+import io.github.kei_1111.withmo.core.data.local.mapper.toPlacedWidgetInfo
 import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import kotlinx.coroutines.CoroutineDispatcher
@@ -23,7 +23,7 @@ class PlacedWidgetRepositoryImpl @Inject constructor(
     override fun getAllList(): Flow<List<PlacedWidgetInfo>> {
         return placedWidgetDao.getAll()
             .map { entities ->
-                entities.mapNotNull { entity -> entity.toWidgetInfo(appWidgetManager) }
+                entities.mapNotNull { entity -> entity.toPlacedWidgetInfo(appWidgetManager) }
             }
             .flowOn(ioDispatcher)
     }

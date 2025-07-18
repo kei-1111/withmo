@@ -1,9 +1,9 @@
 package io.github.kei_1111.withmo.core.data.repository
 
-import androidx.compose.ui.geometry.Offset
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.core.data.local.dao.PlacedAppDao
-import io.github.kei_1111.withmo.core.data.local.entity.PlacedAppEntity
+import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
+import io.github.kei_1111.withmo.core.data.local.mapper.toPlacedAppInfo
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
@@ -26,26 +26,13 @@ class PlacedAppRepositoryImpl @Inject constructor(
     ) { placedAppEntities, appInfoList ->
         placedAppEntities.mapNotNull { entity ->
             val appInfo = appInfoList.find { it.packageName == entity.packageName }
-            appInfo?.let {
-                PlacedAppInfo(
-                    id = entity.id,
-                    info = it,
-                    position = Offset(entity.positionX, entity.positionY),
-                )
-            }
+            appInfo?.let { entity.toPlacedAppInfo(it) }
         }
     }.flowOn(ioDispatcher)
 
     override suspend fun updatePlacedApps(placedAppInfos: List<PlacedAppInfo>) {
         withContext(ioDispatcher) {
-            val entities = placedAppInfos.map { placedApp ->
-                PlacedAppEntity(
-                    id = placedApp.id,
-                    packageName = placedApp.info.packageName,
-                    positionX = placedApp.position.x,
-                    positionY = placedApp.position.y,
-                )
-            }
+            val entities = placedAppInfos.map { it.toEntity() }
             placedAppDao.deleteAll()
             placedAppDao.insertAll(entities)
         }
