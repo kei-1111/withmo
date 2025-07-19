@@ -57,7 +57,6 @@ class AppManagerImpl @Inject constructor(
             }
 
             _appInfoList.value = updatedList
-            Log.d(TAG, "App list refreshed with ${updatedList.size} apps")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to refresh app list", e)
         }
@@ -73,7 +72,6 @@ class AppManagerImpl @Inject constructor(
                     )
                 }
                 _appInfoList.value = updatedList
-                Log.d(TAG, "Notifications updated for ${notificationMap.size} apps")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to update notifications", e)
             }
@@ -92,7 +90,6 @@ class AppManagerImpl @Inject constructor(
             }
 
             _appInfoList.value = updatedList
-            Log.d(TAG, "Usage counts updated for ${updatedList.size} apps")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update usage counts", e)
         }

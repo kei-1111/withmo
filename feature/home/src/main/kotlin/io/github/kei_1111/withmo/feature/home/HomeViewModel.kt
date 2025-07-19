@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
                 updateState { copy(isModelLoading = false) }
             }
             else -> {
-                Log.d(TAG, "Unknown message from Unity: $message")
+                Log.e(TAG, "Unknown message from Unity: $message")
             }
         }
     }
