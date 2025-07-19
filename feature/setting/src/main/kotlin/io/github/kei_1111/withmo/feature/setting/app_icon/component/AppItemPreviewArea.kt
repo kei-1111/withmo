@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,16 +16,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 private const val PreviewAppItemSize = 4
 
@@ -84,11 +82,10 @@ private fun AppItemPreview(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewAreaLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppItemPreviewArea(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Circle,
@@ -98,11 +95,10 @@ private fun AppItemPreviewAreaLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewAreaDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppItemPreviewArea(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.RoundedCorner,
@@ -112,11 +108,10 @@ private fun AppItemPreviewAreaDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppItemPreview(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Circle,
@@ -125,11 +120,10 @@ private fun AppItemPreviewLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppItemPreviewDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppItemPreview(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Square,

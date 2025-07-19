@@ -2,8 +2,6 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -19,9 +17,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 fun DisplayMediumText(
@@ -223,11 +221,10 @@ fun LabelSmallText(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         DisplayMediumText(
             text = "Display Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -235,11 +232,10 @@ private fun DisplayMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun DisplayMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         DisplayMediumText(
             text = "Display Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -247,11 +243,10 @@ private fun DisplayMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun TitleLargeTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         TitleLargeText(
             text = "Title Large Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -259,11 +254,10 @@ private fun TitleLargeTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun TitleLargeTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         TitleLargeText(
             text = "Title Large Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -271,11 +265,10 @@ private fun TitleLargeTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BodyMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         BodyMediumText(
             text = "Body Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -283,11 +276,10 @@ private fun BodyMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun BodyMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         BodyMediumText(
             text = "Body Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -295,11 +287,10 @@ private fun BodyMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelMediumText(
             text = "Label Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -307,11 +298,10 @@ private fun LabelMediumTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         LabelMediumText(
             text = "Label Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -319,11 +309,10 @@ private fun LabelMediumTextDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelSmallTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelSmallText(
             text = "Label Small Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -331,11 +320,10 @@ private fun LabelSmallTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun LabelSmallTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         LabelSmallText(
             text = "Label Small Text",
             modifier = Modifier.padding(Paddings.Medium),

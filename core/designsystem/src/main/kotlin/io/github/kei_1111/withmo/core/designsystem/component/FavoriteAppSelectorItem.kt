@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -20,12 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
@@ -86,11 +84,10 @@ fun getFavoriteAppSelectorItemModifier(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun FavoriteAppSelectorItemLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -116,11 +113,10 @@ private fun FavoriteAppSelectorItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun FavoriteAppSelectorItemDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(

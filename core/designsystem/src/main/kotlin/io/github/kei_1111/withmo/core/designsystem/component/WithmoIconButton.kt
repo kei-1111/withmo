@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.CircleShape
@@ -15,8 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
@@ -42,11 +40,10 @@ fun WithmoIconButton(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoIconButtonLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoIconButton(
             onClick = {},
         ) {
@@ -59,11 +56,10 @@ private fun WithmoIconButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoIconButtonDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoIconButton(
             onClick = {},
         ) {

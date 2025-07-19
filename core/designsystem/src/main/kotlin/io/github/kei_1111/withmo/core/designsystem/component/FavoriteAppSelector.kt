@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,14 +16,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -76,12 +74,11 @@ fun FavoriteAppSelector(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("MagicNumber")
 @Preview
 @Composable
 private fun FavoriteAppSelectorLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -116,12 +113,11 @@ private fun FavoriteAppSelectorLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("MagicNumber")
 @Preview
 @Composable
 private fun FavoriteAppSelectorDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(

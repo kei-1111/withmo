@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -17,8 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
@@ -26,6 +23,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextSmal
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 fun WithmoClock(
@@ -171,11 +169,10 @@ private fun ClockHorizontalDate(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockTopDateLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoClock(
             clockType = ClockType.TOP_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -190,11 +187,10 @@ private fun WithmoClockTopDateLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockTopDateDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoClock(
             clockType = ClockType.TOP_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -209,11 +205,10 @@ private fun WithmoClockTopDateDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoClock(
             clockType = ClockType.HORIZONTAL_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -228,11 +223,10 @@ private fun WithmoClockHorizontalDateLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoClock(
             clockType = ClockType.HORIZONTAL_DATE,
             dateTimeInfo = DateTimeInfo(

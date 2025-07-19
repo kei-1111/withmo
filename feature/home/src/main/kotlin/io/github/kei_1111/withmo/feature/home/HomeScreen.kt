@@ -1,9 +1,7 @@
 package io.github.kei_1111.withmo.feature.home
 
-import android.os.Build
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +20,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.home.component.AppListSheet
@@ -30,13 +30,10 @@ import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.feature.home.component.ModelLoading
 import io.github.kei_1111.withmo.feature.home.component.PlaceableItemListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.coroutines.launch
 
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun HomeScreen(
     onNavigateSettingsButtonClick: () -> Unit,
@@ -181,12 +178,11 @@ private fun HomeScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun HomeScreenLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         HomeScreen(
             state = HomeState(),
             onAction = {},
@@ -196,12 +192,11 @@ private fun HomeScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun HomeScreenDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         HomeScreen(
             state = HomeState(),
             onAction = {},

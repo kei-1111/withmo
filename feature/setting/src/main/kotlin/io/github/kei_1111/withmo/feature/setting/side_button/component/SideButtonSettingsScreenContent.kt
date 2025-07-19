@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.side_button.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,10 +9,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.side_button.SideButtonSettingsAction
 import io.github.kei_1111.withmo.feature.setting.side_button.SideButtonSettingsState
 
@@ -56,11 +54,10 @@ internal fun SideButtonSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SideButtonSettingsScreenContent(
             state = SideButtonSettingsState(
                 sideButtonSettings = SideButtonSettings(
@@ -77,11 +74,10 @@ private fun SideButtonSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SideButtonSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SideButtonSettingsScreenContent(
             state = SideButtonSettingsState(
                 sideButtonSettings = SideButtonSettings(

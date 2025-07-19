@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -24,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
 @Composable
 internal fun ChangeModelScaleContent(
@@ -108,11 +106,10 @@ private fun ScaleSlider(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ChangeModelScaleContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ChangeModelScaleContent(
             state = HomeState(),
             onAction = {},
@@ -121,11 +118,10 @@ private fun ChangeModelScaleContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ChangeModelScaleContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ChangeModelScaleContent(
             state = HomeState(),
             onAction = {},
@@ -134,11 +130,10 @@ private fun ChangeModelScaleContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ScaleSliderLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ScaleSlider(
             state = HomeState(),
             onAction = {},
@@ -146,11 +141,10 @@ private fun ScaleSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ScaleSliderDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ScaleSlider(
             state = HomeState(),
             onAction = {},

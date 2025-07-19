@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,15 +20,15 @@ import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
@@ -140,11 +138,10 @@ private fun SelectFavoriteAppContentBottomAppBar(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContent(
             state = OnboardingState(),
             onAction = {},
@@ -153,11 +150,10 @@ private fun SelectFavoriteAppContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContent(
             state = OnboardingState(),
             onAction = {},
@@ -166,11 +162,10 @@ private fun SelectFavoriteAppContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},
@@ -179,11 +174,10 @@ private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},

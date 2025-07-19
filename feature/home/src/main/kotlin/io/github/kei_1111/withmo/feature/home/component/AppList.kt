@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -23,14 +21,14 @@ import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 
@@ -145,11 +143,10 @@ private fun CustomAppInfoGridLayout(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -176,11 +173,10 @@ private fun AppListLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(

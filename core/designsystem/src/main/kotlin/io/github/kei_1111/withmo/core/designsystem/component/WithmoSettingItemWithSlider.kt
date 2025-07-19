@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.os.Build
 import androidx.annotation.IntRange
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -10,9 +8,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 fun WithmoSettingItemWithSlider(
@@ -47,11 +45,10 @@ fun WithmoSettingItemWithSlider(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSettingItemWithSlider(
             title = "設定項目",
             value = 0.5f,
@@ -62,11 +59,10 @@ private fun WithmoSettingItemWithSliderLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSettingItemWithSlider(
             title = "設定項目",
             value = 0.5f,

@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,14 +20,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants.DefaultRoundedCornerPercent
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Composable
 internal fun AppIconShapePicker(
@@ -130,11 +128,10 @@ private fun AppIconShapePickerItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconShapePicker(
             selectedAppIconShape = AppIconShape.Circle,
             onAction = {},
@@ -143,11 +140,10 @@ private fun AppIconShapePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppIconShapePicker(
             selectedAppIconShape = AppIconShape.RoundedCorner,
             onAction = {},
@@ -156,11 +152,10 @@ private fun AppIconShapePickerDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerItemLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconShapePickerItem(
             title = "円形",
             appIconShape = AppIconShape.Circle,
@@ -168,11 +163,10 @@ private fun AppIconShapePickerItemLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconShapePickerItemDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppIconShapePickerItem(
             title = "角丸四角形",
             appIconShape = AppIconShape.RoundedCorner,

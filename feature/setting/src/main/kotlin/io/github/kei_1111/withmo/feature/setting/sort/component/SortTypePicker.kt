@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.sort.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,12 +17,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsAction
 
 @Composable
@@ -111,11 +109,10 @@ private fun SortTypePickerItem(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortTypePicker(
             selectedSortType = SortType.ALPHABETICAL,
             onAction = {},
@@ -124,11 +121,10 @@ private fun SortTypePickerLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortTypePicker(
             selectedSortType = SortType.USE_COUNT,
             onAction = {},
@@ -137,22 +133,20 @@ private fun SortTypePickerDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerItemLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortTypePickerItem(
             sortType = SortType.ALPHABETICAL,
         )
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortTypePickerItemDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortTypePickerItem(
             sortType = SortType.USE_COUNT,
         )

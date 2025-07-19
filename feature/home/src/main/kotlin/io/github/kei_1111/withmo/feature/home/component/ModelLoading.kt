@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -18,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 
 @Composable
 internal fun ModelLoading(
@@ -60,20 +58,18 @@ internal fun ModelLoading(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ModelLoadingLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ModelLoading()
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun ModelLoadingDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ModelLoading()
     }
 }

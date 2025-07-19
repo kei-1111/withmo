@@ -48,6 +48,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
@@ -55,6 +56,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
@@ -63,8 +65,6 @@ import io.github.kei_1111.withmo.core.util.WidgetUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
@@ -373,11 +373,10 @@ private fun WidgetItem(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemListSheetAppTabLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -427,11 +426,10 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun PlaceableItemListSheetAppTabDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -481,11 +479,10 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppTabContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -512,11 +509,10 @@ private fun AppTabContentLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppTabContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -547,7 +543,7 @@ private fun AppTabContentDarkPreview() {
 @Preview
 @Composable
 private fun WidgetContainerLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WidgetContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),
@@ -561,7 +557,7 @@ private fun WidgetContainerLightPreview() {
 @Preview
 @Composable
 private fun WidgetContainerDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WidgetContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),

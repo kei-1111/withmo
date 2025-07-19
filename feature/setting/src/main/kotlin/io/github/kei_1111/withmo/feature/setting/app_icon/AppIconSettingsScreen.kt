@@ -1,8 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon
 
-import android.os.Build
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,14 +25,14 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppIconSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppItemPreviewArea
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Suppress("ModifierMissing")
 @Composable
@@ -112,11 +110,10 @@ private fun AppIconSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconSettingsScreen(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),
@@ -128,11 +125,10 @@ private fun AppIconSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun AppIconSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppIconSettingsScreen(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),

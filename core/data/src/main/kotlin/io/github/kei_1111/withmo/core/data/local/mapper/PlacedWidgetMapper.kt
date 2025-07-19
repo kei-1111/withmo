@@ -19,7 +19,7 @@ fun PlacedWidgetInfo.toEntity(): PlacedWidgetEntity {
     )
 }
 
-fun PlacedWidgetEntity.toWidgetInfo(appWidgetManager: AppWidgetManager): PlacedWidgetInfo? {
+fun PlacedWidgetEntity.toPlacedWidgetInfo(appWidgetManager: AppWidgetManager): PlacedWidgetInfo? {
     val info = getAppWidgetProviderInfo(appWidgetManager, appWidgetProviderClassName)
     if (info == null) {
         Log.e("toWidgetInfo", "AppWidgetProviderInfo not found: $appWidgetProviderClassName")

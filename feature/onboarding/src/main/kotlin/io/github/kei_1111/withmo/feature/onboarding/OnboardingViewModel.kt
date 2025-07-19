@@ -4,8 +4,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
-import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
-import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -19,9 +20,10 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class OnboardingViewModel @Inject constructor(
-    private val favoriteAppRepository: FavoriteAppRepository,
+    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
-    private val oneTimeEventRepository: OneTimeEventRepository,
+    private val markOnboardingShownUseCase: MarkOnboardingShownUseCase,
     private val modelFileManager: ModelFileManager,
 ) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
 
@@ -33,7 +35,7 @@ class OnboardingViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
+            getFavoriteAppsUseCase().collect { favoriteAppList ->
                 updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
@@ -99,8 +101,8 @@ class OnboardingViewModel @Inject constructor(
         }
 
         viewModelScope.launch {
-            oneTimeEventRepository.markOnboardingFirstShown()
-            favoriteAppRepository.updateFavoriteApps(favoriteAppList.toPersistentList())
+            markOnboardingShownUseCase()
+            saveFavoriteAppsUseCase(favoriteAppList.toPersistentList())
             val modelFilePath = state.value.modelFilePath
             if (modelFilePath.path != null) {
                 saveModelFilePathUseCase(modelFilePath)

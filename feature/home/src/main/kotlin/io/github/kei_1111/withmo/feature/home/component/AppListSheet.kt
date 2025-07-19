@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -27,13 +25,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
@@ -111,11 +109,10 @@ internal fun AppListSheet(
 
 @Suppress("MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListSheetLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
             state = HomeState(),
@@ -126,11 +123,10 @@ private fun AppListSheetLightPreview() {
 
 @Suppress("MagicNumber")
 @OptIn(ExperimentalMaterial3Api::class)
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun AppListSheetDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
             state = HomeState(),

@@ -4,8 +4,9 @@ import android.util.Log
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.AppConstants
-import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -15,7 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteAppSettingsViewModel @Inject constructor(
-    private val favoriteAppRepository: FavoriteAppRepository,
+    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
 ) : BaseViewModel<FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
@@ -28,7 +30,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
+            getFavoriteAppsUseCase().collect { favoriteAppList ->
                 val immutableFavoriteAppList = favoriteAppList.toPersistentList()
 
                 updateState {
@@ -91,7 +93,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
 
         viewModelScope.launch {
             try {
-                favoriteAppRepository.updateFavoriteApps(currentFavoriteAppList)
+                saveFavoriteAppsUseCase(currentFavoriteAppList)
                 sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
                 sendEffect(FavoriteAppSettingsEffect.NavigateBack)
             } catch (e: Exception) {

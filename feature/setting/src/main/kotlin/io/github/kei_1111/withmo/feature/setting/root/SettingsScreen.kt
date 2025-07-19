@@ -35,12 +35,12 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.R
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.root.component.NotificationPermissionDialog
 import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenContent
 
@@ -203,7 +203,7 @@ private fun LogoWithText(
 @Composable
 @Preview
 private fun SettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SettingsScreen(
             state = SettingsState(
                 isDefaultHomeApp = true,
@@ -218,7 +218,7 @@ private fun SettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun SettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SettingsScreen(
             state = SettingsState(
                 isDefaultHomeApp = true,
@@ -229,11 +229,10 @@ private fun SettingsScreenDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun LogoWithTextLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         LogoWithText(
             text = "の設定",
             modifier = Modifier.padding(Paddings.Medium),
@@ -241,11 +240,10 @@ private fun LogoWithTextLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun LogoWithTextDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         LogoWithText(
             text = "の設定",
             modifier = Modifier.padding(Paddings.Medium),

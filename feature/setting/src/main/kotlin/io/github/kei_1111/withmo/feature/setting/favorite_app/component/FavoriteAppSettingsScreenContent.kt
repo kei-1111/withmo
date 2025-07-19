@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.favorite_app.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,18 +19,18 @@ import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppListRow
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -108,11 +106,10 @@ internal fun FavoriteAppSettingsScreenContent(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -146,11 +143,10 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
                 favoriteAppInfoList = persistentListOf(),

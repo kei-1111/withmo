@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.clock.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Composable
 internal fun ClockSettingsScreenContent(
@@ -44,11 +42,10 @@ internal fun ClockSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ClockSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockSettingsScreenContent(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(
@@ -62,11 +59,10 @@ private fun ClockSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun ClockSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ClockSettingsScreenContent(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(

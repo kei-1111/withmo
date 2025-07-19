@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
@@ -9,10 +7,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun OnboardingBottomAppBarNextButton(
@@ -38,11 +36,10 @@ internal fun OnboardingBottomAppBarNextButton(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarNextButtonLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         OnboardingBottomAppBarNextButton(
             text = "次へ",
             onClick = {},
@@ -51,11 +48,10 @@ private fun OnboardingBottomAppBarNextButtonLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun OnboardingBottomAppBarNextButtonDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         OnboardingBottomAppBarNextButton(
             text = "次へ",
             onClick = {},

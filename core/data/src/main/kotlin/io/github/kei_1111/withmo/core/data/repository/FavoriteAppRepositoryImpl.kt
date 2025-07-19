@@ -2,7 +2,8 @@ package io.github.kei_1111.withmo.core.data.repository
 
 import io.github.kei_1111.withmo.core.common.dispatcher.IoDispatcher
 import io.github.kei_1111.withmo.core.data.local.dao.FavoriteAppDao
-import io.github.kei_1111.withmo.core.data.local.entity.FavoriteAppEntity
+import io.github.kei_1111.withmo.core.data.local.mapper.toEntity
+import io.github.kei_1111.withmo.core.data.local.mapper.toFavoriteAppInfo
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -25,23 +26,13 @@ class FavoriteAppRepositoryImpl @Inject constructor(
     ) { favoriteAppEntities, appInfoList ->
         favoriteAppEntities.mapNotNull { entity ->
             val appInfo = appInfoList.find { it.packageName == entity.packageName }
-            appInfo?.let {
-                FavoriteAppInfo(
-                    info = it,
-                    favoriteOrder = entity.favoriteOrder,
-                )
-            }
+            appInfo?.let { entity.toFavoriteAppInfo(it) }
         }
     }.flowOn(ioDispatcher)
 
     override suspend fun updateFavoriteApps(favoriteAppInfos: List<FavoriteAppInfo>) {
         withContext(ioDispatcher) {
-            val entities = favoriteAppInfos.map { favoriteApp ->
-                FavoriteAppEntity(
-                    packageName = favoriteApp.info.packageName,
-                    favoriteOrder = favoriteApp.favoriteOrder,
-                )
-            }
+            val entities = favoriteAppInfos.map { it.toEntity() }
             favoriteAppDao.deleteAll()
             favoriteAppDao.insertAll(entities)
         }

@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.setting.notification.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,12 +9,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsAction
 import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 
 @Composable
 internal fun NotificationSettingsScreenContent(
@@ -45,11 +43,10 @@ internal fun NotificationSettingsScreenContent(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettingsScreenContent(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(
@@ -64,11 +61,10 @@ private fun NotificationSettingsScreenContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun NotificationSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettingsScreenContent(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(

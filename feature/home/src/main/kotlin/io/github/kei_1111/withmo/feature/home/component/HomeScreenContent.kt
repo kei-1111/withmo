@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.home.component
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -25,18 +23,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.App
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
 import kotlinx.collections.immutable.toPersistentList
 
 private const val BottomSheetShowDragHeight = -50f
@@ -127,11 +125,10 @@ private fun RowAppList(
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun HomeScreenContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -160,11 +157,10 @@ private fun HomeScreenContentLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun HomeScreenContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -193,11 +189,10 @@ private fun HomeScreenContentDarkPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun RowAppListLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -227,11 +222,10 @@ private fun RowAppListLightPreview() {
 }
 
 @Suppress("MagicNumber")
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 private fun RowAppListDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(

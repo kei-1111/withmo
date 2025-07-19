@@ -1,12 +1,10 @@
 package io.github.kei_1111.withmo.feature.setting.sort
 
 import android.content.Intent
-import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
@@ -30,13 +28,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSaveButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.sort.component.UsagePermissionDialog
 
@@ -130,11 +128,10 @@ private fun SortSettingsScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortSettingsScreen(
             state = SortSettingsState(
                 sortSettings = SortSettings(
@@ -148,11 +145,10 @@ private fun SortSettingsScreenLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SortSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortSettingsScreen(
             state = SortSettingsState(
                 sortSettings = SortSettings(

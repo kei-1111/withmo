@@ -19,7 +19,7 @@ fun ClickBlockerProvider(
     }
 }
 
-val LocalClickBlocker = staticCompositionLocalOf<ClickBlocker> { error("ClickBlocker not provided") }
+val LocalClickBlocker = staticCompositionLocalOf<ClickBlocker> { ClickBlocker(200L) }
 
 class ClickBlocker(private val delayMillis: Long) {
     private var lastClick = 0L

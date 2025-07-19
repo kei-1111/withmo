@@ -39,17 +39,17 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -265,7 +265,7 @@ private fun Modifier.dashedBorder(
 @Composable
 @Preview
 private fun SelectDisplayModelContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContent(
             state = OnboardingState(),
             onAction = {},
@@ -278,7 +278,7 @@ private fun SelectDisplayModelContentLightPreview() {
 @Composable
 @Preview
 private fun SelectDisplayModelContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContent(
             state = OnboardingState(),
             onAction = {},
@@ -287,11 +287,10 @@ private fun SelectDisplayModelContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},
@@ -300,11 +299,10 @@ private fun SelectDisplayModelContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},

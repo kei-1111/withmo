@@ -1,10 +1,8 @@
 package io.github.kei_1111.withmo.feature.home
 
 import android.app.Activity.RESULT_OK
-import android.os.Build
 import android.os.SystemClock
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -14,13 +12,14 @@ import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
 import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.manager.WidgetManager
-import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
-import io.github.kei_1111.withmo.core.domain.repository.OneTimeEventRepository
-import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
-import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetModelChangeWarningStatusUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.GetPlacedItemsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetUserSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShownUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
@@ -29,22 +28,20 @@ import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.UUID
 import javax.inject.Inject
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val favoriteAppRepository: FavoriteAppRepository,
-    private val placedAppRepository: PlacedAppRepository,
-    private val placedWidgetRepository: PlacedWidgetRepository,
-    private val oneTimeEventRepository: OneTimeEventRepository,
+    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    private val getPlacedItemsUseCase: GetPlacedItemsUseCase,
+    private val savePlacedItemsUseCase: SavePlacedItemsUseCase,
+    private val getModelChangeWarningStatusUseCase: GetModelChangeWarningStatusUseCase,
+    private val markModelChangeWarningShownUseCase: MarkModelChangeWarningShownUseCase,
     private val modelFileManager: ModelFileManager,
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
@@ -69,7 +66,7 @@ class HomeViewModel @Inject constructor(
                 updateState { copy(isModelLoading = false) }
             }
             else -> {
-                Log.d(TAG, "Unknown message from Unity: $message")
+                Log.e(TAG, "Unknown message from Unity: $message")
             }
         }
     }
@@ -94,7 +91,7 @@ class HomeViewModel @Inject constructor(
 
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            favoriteAppRepository.favoriteAppsInfo.collect { favoriteAppList ->
+            getFavoriteAppsUseCase().collect { favoriteAppList ->
                 updateState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
             }
         }
@@ -102,18 +99,8 @@ class HomeViewModel @Inject constructor(
 
     private fun observePlaceableItemList() {
         viewModelScope.launch {
-            combine(
-                placedWidgetRepository.getAllList(),
-                placedAppRepository.placedAppsInfo,
-            ) { widgetList, placedAppList ->
-                (widgetList + placedAppList).toPersistentList()
-            }.collect { placedItemList ->
-                updateState {
-                    copy(
-                        placedItemList = placedItemList,
-                        initialPlacedItemList = placedItemList,
-                    )
-                }
+            getPlacedItemsUseCase().collect { placedItemList ->
+                updateState { copy(placedItemList = placedItemList.toPersistentList()) }
             }
         }
     }
@@ -144,30 +131,9 @@ class HomeViewModel @Inject constructor(
 
     private fun savePlaceableItemList() {
         val currentPlacedItemList = state.value.placedItemList
-        val initialPlacedItemList = state.value.initialPlacedItemList
-
-        val addedPlacedItemList = currentPlacedItemList.filterNot { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val updatedPlacedItemList = currentPlacedItemList.filter { currentPlaceableItem ->
-            initialPlacedItemList.any { initialPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
-
-        val deletedPlacedItemList = initialPlacedItemList.filterNot { initialPlaceableItem ->
-            currentPlacedItemList.any { currentPlaceableItem -> initialPlaceableItem.id == currentPlaceableItem.id }
-        }
 
         viewModelScope.launch {
-            val addedWidgetList = addedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            val updatedWidgetList = updatedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            val deletedWidgetList = deletedPlacedItemList.filterIsInstance<PlacedWidgetInfo>()
-            placedWidgetRepository.insert(addedWidgetList)
-            placedWidgetRepository.update(updatedWidgetList)
-            placedWidgetRepository.delete(deletedWidgetList)
-
-            val placedAppInfoList = currentPlacedItemList.filterIsInstance<PlacedAppInfo>()
-            placedAppRepository.updatePlacedApps(placedAppInfoList)
+            savePlacedItemsUseCase(currentPlacedItemList)
         }
     }
 
@@ -218,7 +184,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnOpenDocumentButtonClick -> {
                 viewModelScope.launch {
-                    val isModelChangeWarningFirstShown = oneTimeEventRepository.isModelChangeWarningFirstShown.first()
+                    val isModelChangeWarningFirstShown = getModelChangeWarningStatusUseCase()
                     if (isModelChangeWarningFirstShown) {
                         sendEffect(HomeEffect.OpenDocument)
                     } else {
@@ -231,7 +197,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnModelChangeWarningDialogConfirm -> {
                 viewModelScope.launch {
-                    oneTimeEventRepository.markModelChangeWarningFirstShown()
+                    markModelChangeWarningShownUseCase()
                     updateState { copy(isModelChangeWarningDialogShown = false) }
                     sendEffect(HomeEffect.OpenDocument)
                 }

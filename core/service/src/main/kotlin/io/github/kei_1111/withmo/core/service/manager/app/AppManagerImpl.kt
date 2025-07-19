@@ -9,9 +9,7 @@ import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import dagger.hilt.android.qualifiers.ApplicationContext
 import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.model.AppIcon
@@ -59,7 +57,6 @@ class AppManagerImpl @Inject constructor(
             }
 
             _appInfoList.value = updatedList
-            Log.d(TAG, "App list refreshed with ${updatedList.size} apps")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to refresh app list", e)
         }
@@ -75,7 +72,6 @@ class AppManagerImpl @Inject constructor(
                     )
                 }
                 _appInfoList.value = updatedList
-                Log.d(TAG, "Notifications updated for ${notificationMap.size} apps")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to update notifications", e)
             }
@@ -94,7 +90,6 @@ class AppManagerImpl @Inject constructor(
             }
 
             _appInfoList.value = updatedList
-            Log.d(TAG, "Usage counts updated for ${updatedList.size} apps")
         } catch (e: Exception) {
             Log.e(TAG, "Failed to update usage counts", e)
         }
@@ -131,7 +126,6 @@ class AppManagerImpl @Inject constructor(
             .sortedBy { it.label }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getAppFromPackageName(packageName: String): AppInfo? {
         return try {
             val appInfo = packageManager.getApplicationInfo(packageName, 0)
@@ -153,7 +147,6 @@ class AppManagerImpl @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun getAppIcon(icon: Drawable): AppIcon {
         val adaptive = icon as? AdaptiveIconDrawable
         val foregroundIcon: Drawable? = adaptive?.foreground

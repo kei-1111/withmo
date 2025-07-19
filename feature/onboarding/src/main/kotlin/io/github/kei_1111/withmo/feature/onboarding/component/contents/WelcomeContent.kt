@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.component.contents
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,14 +16,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.R
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
 
 @Composable
 internal fun WelcomeContent(
@@ -75,11 +73,10 @@ private fun WelcomeContentBottomAppBar(
     )
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WelcomeContent(
             onAction = {},
             modifier = Modifier.fillMaxSize(),
@@ -87,11 +84,10 @@ private fun WelcomeContentLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WelcomeContent(
             onAction = {},
             modifier = Modifier.fillMaxSize(),
@@ -99,11 +95,10 @@ private fun WelcomeContentDarkPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WelcomeContentBottomAppBar(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
@@ -111,11 +106,10 @@ private fun WelcomeContentBottomAppBarLightPreview() {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 @Preview
 private fun WelcomeContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WelcomeContentBottomAppBar(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),

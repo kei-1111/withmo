@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.model
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import java.time.ZonedDateTime
 import java.time.format.TextStyle
 import java.util.Locale
@@ -15,7 +13,6 @@ data class DateTimeInfo(
     val minute: String = "00",
 )
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun ZonedDateTime.toDateTimeInfo(): DateTimeInfo {
     return DateTimeInfo(
         year = year.toString(),
