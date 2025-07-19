@@ -5,9 +5,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.kei_1111.withmo.core.model.AppInfo
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 
-val LocalAppList = compositionLocalOf<ImmutableList<AppInfo>> { persistentListOf() }
+val LocalAppList = compositionLocalOf<ImmutableList<AppInfo>> { error("No app info list provided") }
 
 @Composable
 fun AppListProvider(

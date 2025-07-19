@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
@@ -24,6 +23,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextSmal
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 fun WithmoClock(

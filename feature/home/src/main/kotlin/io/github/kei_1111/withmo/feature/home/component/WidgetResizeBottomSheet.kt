@@ -26,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.min
 import io.github.kei_1111.withmo.core.designsystem.component.Widget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
-import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlin.math.roundToInt
 
