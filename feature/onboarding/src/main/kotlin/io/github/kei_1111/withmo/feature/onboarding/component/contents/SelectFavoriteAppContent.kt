@@ -27,8 +27,8 @@ import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
@@ -141,7 +141,7 @@ private fun SelectFavoriteAppContentBottomAppBar(
 @Composable
 @Preview
 private fun SelectFavoriteAppContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContent(
             state = OnboardingState(),
             onAction = {},
@@ -153,7 +153,7 @@ private fun SelectFavoriteAppContentLightPreview() {
 @Composable
 @Preview
 private fun SelectFavoriteAppContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContent(
             state = OnboardingState(),
             onAction = {},
@@ -165,7 +165,7 @@ private fun SelectFavoriteAppContentDarkPreview() {
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},
@@ -177,7 +177,7 @@ private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
 @Composable
 @Preview
 private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},

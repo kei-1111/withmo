@@ -64,4 +64,4 @@ fun CurrentTimeProvider(content: @Composable () -> Unit) {
     }
 }
 
-val LocalCurrentTime = compositionLocalOf<ZonedDateTime> { error("No current time provided") }
+val LocalCurrentTime = compositionLocalOf<ZonedDateTime> { ZonedDateTime.now() }

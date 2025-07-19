@@ -29,8 +29,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.feature.setting.theme.component.ThemeSettingsScreenContent
 
 @Suppress("ModifierMissing")
@@ -108,7 +107,7 @@ private fun ThemeSettingsSceen(
 @Composable
 @Preview
 private fun ThemeSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeSettingsSceen(
             state = ThemeSettingsState(
                 themeSettings = ThemeSettings(
@@ -125,7 +124,7 @@ private fun ThemeSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun ThemeSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ThemeSettingsSceen(
             state = ThemeSettingsState(
                 themeSettings = ThemeSettings(

@@ -26,8 +26,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.favorite_app.component.FavoriteAppSettingsScreenContent
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Suppress("ModifierMissing")
 @Composable
@@ -102,7 +102,7 @@ private fun FavoriteAppSettingsScreen(
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         FavoriteAppSettingsScreen(
             state = FavoriteAppSettingsState(),
             onAction = {},
@@ -114,7 +114,7 @@ private fun FavoriteAppSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppSettingsScreen(
             state = FavoriteAppSettingsState(),
             onAction = {},

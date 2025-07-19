@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
@@ -47,7 +47,7 @@ fun WithmoSettingItemWithRadioButton(
 @Preview
 @Composable
 private fun WithmoSettingItemWithRadioButtonLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSettingItemWithRadioButton(
             item = {
                 BodyMediumText(text = "設定項目")
@@ -61,7 +61,7 @@ private fun WithmoSettingItemWithRadioButtonLightPreview() {
 @Preview
 @Composable
 private fun WithmoSettingItemWithRadioButtonDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSettingItemWithRadioButton(
             item = {
                 BodyMediumText(text = "設定項目")

@@ -29,8 +29,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.clock.component.ClockSettingsScreenContent
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Suppress("ModifierMissing")
 @Composable
@@ -106,7 +106,7 @@ private fun ClockSettingsScreen(
 @Composable
 @Preview
 private fun ClockSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockSettingsScreen(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(),
@@ -121,7 +121,7 @@ private fun ClockSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun ClockSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ClockSettingsScreen(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(),

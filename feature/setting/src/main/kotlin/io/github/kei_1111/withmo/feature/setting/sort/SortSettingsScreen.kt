@@ -33,8 +33,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.sort.component.UsagePermissionDialog
 
@@ -131,7 +131,7 @@ private fun SortSettingsScreen(
 @Composable
 @Preview
 private fun SortSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortSettingsScreen(
             state = SortSettingsState(
                 sortSettings = SortSettings(
@@ -148,7 +148,7 @@ private fun SortSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun SortSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortSettingsScreen(
             state = SortSettingsState(
                 sortSettings = SortSettings(

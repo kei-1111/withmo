@@ -4,8 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoDialog
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun NotificationPermissionDialog(
@@ -28,7 +28,7 @@ internal fun NotificationPermissionDialog(
 @Composable
 @Preview
 private fun NotificationPermissionDialogLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationPermissionDialog(
             onConfirm = {},
             onDismiss = {},
@@ -39,7 +39,7 @@ private fun NotificationPermissionDialogLightPreview() {
 @Composable
 @Preview
 private fun NotificationPermissionDialogDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NotificationPermissionDialog(
             onConfirm = {},
             onDismiss = {},

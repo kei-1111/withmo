@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun OnboardingBottomAppBarPreviousButton(
@@ -27,7 +27,7 @@ internal fun OnboardingBottomAppBarPreviousButton(
 @Composable
 @Preview
 private fun OnboardingBottomAppBarPreviousButtonLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         OnboardingBottomAppBarPreviousButton(
             onClick = {},
             modifier = Modifier.height(CommonDimensions.SettingItemHeight),
@@ -38,7 +38,7 @@ private fun OnboardingBottomAppBarPreviousButtonLightPreview() {
 @Composable
 @Preview
 private fun OnboardingBottomAppBarPreviousButtonDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         OnboardingBottomAppBarPreviousButton(
             onClick = {},
             modifier = Modifier.height(CommonDimensions.SettingItemHeight),

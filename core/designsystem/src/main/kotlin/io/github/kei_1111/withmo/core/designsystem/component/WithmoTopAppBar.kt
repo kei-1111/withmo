@@ -22,8 +22,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -94,7 +94,7 @@ fun WithmoTopAppBar(
 @Preview
 @Composable
 private fun WithmoTopAppBarLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoTopAppBar(
             navigateBack = {},
             content = {
@@ -107,7 +107,7 @@ private fun WithmoTopAppBarLightPreview() {
 @Preview
 @Composable
 private fun WithmoTopAppBarDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoTopAppBar(
             navigateBack = {},
             content = {

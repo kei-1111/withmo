@@ -23,8 +23,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 private val SliderThumbSize = 20.dp
 private val SliderTrackHeight = 4.dp
@@ -124,7 +124,7 @@ fun WithmoVerticalSlider(
 @Preview
 @Composable
 private fun WithmoSliderLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSlider(
             value = 0.5f,
             onValueChange = {},
@@ -137,7 +137,7 @@ private fun WithmoSliderLightPreview() {
 @Preview
 @Composable
 private fun WithmoSliderDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSlider(
             value = 0.5f,
             onValueChange = {},
@@ -150,7 +150,7 @@ private fun WithmoSliderDarkPreview() {
 @Preview
 @Composable
 private fun WithmoVerticalSliderLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoVerticalSlider(
             value = 0.5f,
             onValueChange = {},
@@ -163,7 +163,7 @@ private fun WithmoVerticalSliderLightPreview() {
 @Preview
 @Composable
 private fun WithmoVerticalSliderDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoVerticalSlider(
             value = 0.5f,
             onValueChange = {},

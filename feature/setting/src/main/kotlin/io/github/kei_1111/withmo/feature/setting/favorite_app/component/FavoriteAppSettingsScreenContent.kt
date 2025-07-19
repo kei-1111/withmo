@@ -29,8 +29,8 @@ import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsAction
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
@@ -109,7 +109,7 @@ internal fun FavoriteAppSettingsScreenContent(
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -146,7 +146,7 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 @Composable
 @Preview
 private fun FavoriteAppSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
                 favoriteAppInfoList = persistentListOf(),

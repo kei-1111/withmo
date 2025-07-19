@@ -25,8 +25,8 @@ import io.github.kei_1111.withmo.feature.onboarding.component.contents.FinishCon
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectDisplayModelContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.SelectFavoriteAppContent
 import io.github.kei_1111.withmo.feature.onboarding.component.contents.WelcomeContent
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "LongMethod")
@@ -121,7 +121,7 @@ private fun OnboardingScreen(
 @Composable
 @Preview
 private fun OnboardingScreenLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         OnboardingScreen(
             state = OnboardingState(),
             onAction = {},
@@ -134,7 +134,7 @@ private fun OnboardingScreenLightPreview() {
 @Composable
 @Preview
 private fun OnboardingScreenDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         OnboardingScreen(
             state = OnboardingState(),
             onAction = {},

@@ -41,8 +41,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Ic
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.root.SettingsAction
 import io.github.kei_1111.withmo.feature.setting.root.SettingsState
 
@@ -316,7 +316,7 @@ private fun SettingItem(
 @Composable
 @Preview
 private fun SettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SettingsScreenContent(
             state = SettingsState(
                 isDefaultHomeApp = true,
@@ -330,7 +330,7 @@ private fun SettingsScreenContentLightPreview() {
 @Composable
 @Preview
 private fun SettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SettingsScreenContent(
             state = SettingsState(
                 isDefaultHomeApp = true,
@@ -344,7 +344,7 @@ private fun SettingsScreenContentDarkPreview() {
 @Composable
 @Preview
 private fun HomeAppSettingsLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         HomeAppSettings(
             isDefaultHomeApp = true,
             onAction = {},
@@ -355,7 +355,7 @@ private fun HomeAppSettingsLightPreview() {
 @Composable
 @Preview
 private fun HomeAppSettingsDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         HomeAppSettings(
             isDefaultHomeApp = false,
             onAction = {},
@@ -366,7 +366,7 @@ private fun HomeAppSettingsDarkPreview() {
 @Composable
 @Preview
 private fun HomeScreenSettingsLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         HomeScreenSettings(
             onAction = {},
         )
@@ -376,7 +376,7 @@ private fun HomeScreenSettingsLightPreview() {
 @Composable
 @Preview
 private fun HomeScreenSettingsDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         HomeScreenSettings(
             onAction = {},
         )
@@ -386,7 +386,7 @@ private fun HomeScreenSettingsDarkPreview() {
 @Composable
 @Preview
 private fun NotificationSettingsLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettings(
             onAction = {},
         )
@@ -396,7 +396,7 @@ private fun NotificationSettingsLightPreview() {
 @Composable
 @Preview
 private fun NotificationSettingsDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettings(
             onAction = {},
         )
@@ -406,7 +406,7 @@ private fun NotificationSettingsDarkPreview() {
 @Composable
 @Preview
 private fun WallpaperSettingsLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WallpaperSettings(
             onAction = {},
         )
@@ -416,7 +416,7 @@ private fun WallpaperSettingsLightPreview() {
 @Composable
 @Preview
 private fun WallpaperSettingsDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WallpaperSettings(
             onAction = {},
         )
@@ -426,7 +426,7 @@ private fun WallpaperSettingsDarkPreview() {
 @Composable
 @Preview
 private fun ThemeSettingsLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeSettings(
             onAction = {},
         )
@@ -436,7 +436,7 @@ private fun ThemeSettingsLightPreview() {
 @Composable
 @Preview
 private fun ThemeSettingsDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ThemeSettings(
             onAction = {},
         )
@@ -446,7 +446,7 @@ private fun ThemeSettingsDarkPreview() {
 @Composable
 @Preview
 private fun SettingItemLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SettingItem(
             icon = Icons.Rounded.AccessTime,
             itemName = "時計",
@@ -458,7 +458,7 @@ private fun SettingItemLightPreview() {
 @Composable
 @Preview
 private fun SettingItemDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SettingItem(
             icon = Icons.Rounded.AccessTime,
             itemName = "時計",

@@ -33,8 +33,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.We
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.notification.component.NotificationSettingsScreenContent
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
@@ -122,7 +122,7 @@ private fun NotificationSettingsScreen(
 @Composable
 @Preview
 private fun NotificationSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettingsScreen(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(
@@ -139,7 +139,7 @@ private fun NotificationSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun NotificationSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettingsScreen(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(

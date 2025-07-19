@@ -38,8 +38,8 @@ import io.github.kei_1111.withmo.core.util.FileUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.R
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun DisplayModelContent(
@@ -221,7 +221,7 @@ private fun SideButtonContainer(
 @Preview
 @Composable
 private fun DisplayModelContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         DisplayModelContent(
             state = HomeState(),
             onAction = {},
@@ -233,7 +233,7 @@ private fun DisplayModelContentLightPreview() {
 @Preview
 @Composable
 private fun DisplayModelContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         DisplayModelContent(
             state = HomeState(),
             onAction = {},
@@ -245,7 +245,7 @@ private fun DisplayModelContentDarkPreview() {
 @Preview
 @Composable
 private fun NavigateSettingsButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NavigateSettingsButton(
             onClick = {},
         )
@@ -255,7 +255,7 @@ private fun NavigateSettingsButtonLightPreview() {
 @Preview
 @Composable
 private fun NavigateSettingsButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NavigateSettingsButton(
             onClick = {},
         )
@@ -265,7 +265,7 @@ private fun NavigateSettingsButtonDarkPreview() {
 @Preview
 @Composable
 private fun SetDefaultModelButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SetDefaultModelButton(
             onClick = {},
         )
@@ -275,7 +275,7 @@ private fun SetDefaultModelButtonLightPreview() {
 @Preview
 @Composable
 private fun SetDefaultModelButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SetDefaultModelButton(
             onClick = {},
         )
@@ -285,7 +285,7 @@ private fun SetDefaultModelButtonDarkPreview() {
 @Preview
 @Composable
 private fun OpenDocumentButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         OpenDocumentButton(
             onClick = {},
         )
@@ -295,7 +295,7 @@ private fun OpenDocumentButtonLightPreview() {
 @Preview
 @Composable
 private fun OpenDocumentButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         OpenDocumentButton(
             onClick = {},
         )
@@ -305,7 +305,7 @@ private fun OpenDocumentButtonDarkPreview() {
 @Preview
 @Composable
 private fun ShowScaleSliderButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ShowScaleSliderButton(
             onClick = {},
         )
@@ -315,7 +315,7 @@ private fun ShowScaleSliderButtonLightPreview() {
 @Preview
 @Composable
 private fun ShowScaleSliderButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ShowScaleSliderButton(
             onClick = {},
         )

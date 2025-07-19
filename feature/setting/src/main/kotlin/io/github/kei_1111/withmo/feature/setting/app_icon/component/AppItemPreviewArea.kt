@@ -24,8 +24,8 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 private const val PreviewAppItemSize = 4
 
@@ -85,7 +85,7 @@ private fun AppItemPreview(
 @Composable
 @Preview
 private fun AppItemPreviewAreaLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppItemPreviewArea(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Circle,
@@ -98,7 +98,7 @@ private fun AppItemPreviewAreaLightPreview() {
 @Composable
 @Preview
 private fun AppItemPreviewAreaDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppItemPreviewArea(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.RoundedCorner,
@@ -111,7 +111,7 @@ private fun AppItemPreviewAreaDarkPreview() {
 @Composable
 @Preview
 private fun AppItemPreviewLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppItemPreview(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Circle,
@@ -123,7 +123,7 @@ private fun AppItemPreviewLightPreview() {
 @Composable
 @Preview
 private fun AppItemPreviewDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppItemPreview(
             appIconSettings = AppIconSettings(
                 appIconShape = AppIconShape.Square,

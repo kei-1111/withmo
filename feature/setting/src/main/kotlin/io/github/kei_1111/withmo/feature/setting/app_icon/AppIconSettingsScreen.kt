@@ -31,8 +31,8 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppIconSettingsScreenContent
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppItemPreviewArea
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Suppress("ModifierMissing")
 @Composable
@@ -113,7 +113,7 @@ private fun AppIconSettingsScreen(
 @Composable
 @Preview
 private fun AppIconSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconSettingsScreen(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),
@@ -128,7 +128,7 @@ private fun AppIconSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun AppIconSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppIconSettingsScreen(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),

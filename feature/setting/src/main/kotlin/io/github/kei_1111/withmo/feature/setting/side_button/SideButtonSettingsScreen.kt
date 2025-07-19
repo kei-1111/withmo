@@ -28,8 +28,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.core.util.showToast
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.side_button.component.SideButtonSettingsScreenContent
 
 @Suppress("ModifierMissing")
@@ -107,7 +107,7 @@ private fun SideButtonSettingsScreen(
 @Composable
 @Preview
 private fun SideButtonSettingsScreenLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SideButtonSettingsScreen(
             state = SideButtonSettingsState(
                 sideButtonSettings = SideButtonSettings(
@@ -127,7 +127,7 @@ private fun SideButtonSettingsScreenLightPreview() {
 @Composable
 @Preview
 private fun SideButtonSettingsScreenDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SideButtonSettingsScreen(
             state = SideButtonSettingsState(
                 sideButtonSettings = SideButtonSettings(

@@ -13,8 +13,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsAction
 import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun NotificationSettingsScreenContent(
@@ -46,7 +46,7 @@ internal fun NotificationSettingsScreenContent(
 @Composable
 @Preview
 private fun NotificationSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettingsScreenContent(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(
@@ -64,7 +64,7 @@ private fun NotificationSettingsScreenContentLightPreview() {
 @Composable
 @Preview
 private fun NotificationSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettingsScreenContent(
             state = NotificationSettingsState(
                 notificationSettings = NotificationSettings(

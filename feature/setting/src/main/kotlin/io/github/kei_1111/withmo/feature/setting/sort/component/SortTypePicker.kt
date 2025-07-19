@@ -21,8 +21,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsAction
 
 @Composable
@@ -112,7 +112,7 @@ private fun SortTypePickerItem(
 @Composable
 @Preview
 private fun SortTypePickerLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortTypePicker(
             selectedSortType = SortType.ALPHABETICAL,
             onAction = {},
@@ -124,7 +124,7 @@ private fun SortTypePickerLightPreview() {
 @Composable
 @Preview
 private fun SortTypePickerDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortTypePicker(
             selectedSortType = SortType.USE_COUNT,
             onAction = {},
@@ -136,7 +136,7 @@ private fun SortTypePickerDarkPreview() {
 @Composable
 @Preview
 private fun SortTypePickerItemLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SortTypePickerItem(
             sortType = SortType.ALPHABETICAL,
         )
@@ -146,7 +146,7 @@ private fun SortTypePickerItemLightPreview() {
 @Composable
 @Preview
 private fun SortTypePickerItemDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SortTypePickerItem(
             sortType = SortType.USE_COUNT,
         )

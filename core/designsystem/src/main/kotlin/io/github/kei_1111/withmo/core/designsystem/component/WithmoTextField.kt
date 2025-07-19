@@ -1,3 +1,4 @@
+
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -29,12 +30,12 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 private val TextFieldHeight = 36.dp
 
@@ -135,7 +136,7 @@ fun WithmoSearchTextField(
 @Preview
 @Composable
 private fun WithmoTextFieldLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoTextField(
             value = "",
             onValueChange = {},
@@ -151,7 +152,7 @@ private fun WithmoTextFieldLightPreview() {
 @Preview
 @Composable
 private fun WithmoTextFieldDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoTextField(
             value = "",
             onValueChange = {},
@@ -167,7 +168,7 @@ private fun WithmoTextFieldDarkPreview() {
 @Preview
 @Composable
 private fun WithmoSearchTextFieldLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSearchTextField(
             value = "",
             onValueChange = {},
@@ -178,7 +179,7 @@ private fun WithmoSearchTextFieldLightPreview() {
 @Preview
 @Composable
 private fun WithmoSearchTextFieldDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSearchTextField(
             value = "",
             onValueChange = {},

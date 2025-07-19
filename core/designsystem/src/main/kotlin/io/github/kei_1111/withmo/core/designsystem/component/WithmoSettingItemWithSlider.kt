@@ -8,8 +8,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 
 @Composable
@@ -48,7 +48,7 @@ fun WithmoSettingItemWithSlider(
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSettingItemWithSlider(
             title = "設定項目",
             value = 0.5f,
@@ -62,7 +62,7 @@ private fun WithmoSettingItemWithSliderLightPreview() {
 @Preview
 @Composable
 private fun WithmoSettingItemWithSliderDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSettingItemWithSlider(
             title = "設定項目",
             value = 0.5f,

@@ -17,8 +17,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun ClockTypePicker(
@@ -83,7 +83,7 @@ private fun ClockTypePickerDivider(
 @Composable
 @Preview
 private fun ClockTypePickerLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockTypePicker(
             isClockShown = true,
             selectedClockType = ClockType.TOP_DATE,
@@ -96,7 +96,7 @@ private fun ClockTypePickerLightPreview() {
 @Composable
 @Preview
 private fun ClockTypePickerDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ClockTypePicker(
             isClockShown = false,
             selectedClockType = ClockType.HORIZONTAL_DATE,

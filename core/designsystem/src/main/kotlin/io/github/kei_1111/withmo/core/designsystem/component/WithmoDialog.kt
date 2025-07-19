@@ -15,8 +15,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
@@ -139,7 +139,7 @@ private fun WithmoDialogContent(
 @Composable
 @Preview
 private fun WithmoDialogLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoDialog(
             title = "タイトル",
             description = "ダイアログの内容がここに入ります。",
@@ -155,7 +155,7 @@ private fun WithmoDialogLightPreview() {
 @Composable
 @Preview
 private fun WithmoDialogDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoDialog(
             title = "タイトル",
             description = "ダイアログの内容がここに入ります。",
@@ -171,7 +171,7 @@ private fun WithmoDialogDarkPreview() {
 @Composable
 @Preview
 private fun WithmoDialogContentLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoDialogContent(
             title = "タイトル",
             description = "ダイアログの内容がここに入ります。",
@@ -186,7 +186,7 @@ private fun WithmoDialogContentLightPreview() {
 @Composable
 @Preview
 private fun WithmoDialogContentDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoDialogContent(
             title = "タイトル",
             description = "ダイアログの内容がここに入ります。",

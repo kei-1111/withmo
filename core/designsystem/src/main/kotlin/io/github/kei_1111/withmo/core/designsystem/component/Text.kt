@@ -17,8 +17,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 
 @Composable
@@ -224,7 +224,7 @@ fun LabelSmallText(
 @Preview
 @Composable
 private fun DisplayMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         DisplayMediumText(
             text = "Display Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -235,7 +235,7 @@ private fun DisplayMediumTextLightPreview() {
 @Preview
 @Composable
 private fun DisplayMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         DisplayMediumText(
             text = "Display Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -246,7 +246,7 @@ private fun DisplayMediumTextDarkPreview() {
 @Preview
 @Composable
 private fun TitleLargeTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         TitleLargeText(
             text = "Title Large Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -257,7 +257,7 @@ private fun TitleLargeTextLightPreview() {
 @Preview
 @Composable
 private fun TitleLargeTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         TitleLargeText(
             text = "Title Large Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -268,7 +268,7 @@ private fun TitleLargeTextDarkPreview() {
 @Preview
 @Composable
 private fun BodyMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         BodyMediumText(
             text = "Body Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -279,7 +279,7 @@ private fun BodyMediumTextLightPreview() {
 @Preview
 @Composable
 private fun BodyMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         BodyMediumText(
             text = "Body Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -290,7 +290,7 @@ private fun BodyMediumTextDarkPreview() {
 @Preview
 @Composable
 private fun LabelMediumTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelMediumText(
             text = "Label Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -301,7 +301,7 @@ private fun LabelMediumTextLightPreview() {
 @Preview
 @Composable
 private fun LabelMediumTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         LabelMediumText(
             text = "Label Medium Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -312,7 +312,7 @@ private fun LabelMediumTextDarkPreview() {
 @Preview
 @Composable
 private fun LabelSmallTextLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelSmallText(
             text = "Label Small Text",
             modifier = Modifier.padding(Paddings.Medium),
@@ -323,7 +323,7 @@ private fun LabelSmallTextLightPreview() {
 @Preview
 @Composable
 private fun LabelSmallTextDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         LabelSmallText(
             text = "Label Small Text",
             modifier = Modifier.padding(Paddings.Medium),

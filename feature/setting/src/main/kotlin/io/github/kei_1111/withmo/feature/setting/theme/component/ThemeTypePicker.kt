@@ -21,8 +21,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Al
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsAction
 
 @Composable
@@ -126,7 +125,7 @@ private fun ThemeTypePickerItem(
 @Composable
 @Preview
 private fun ThemeTypePickerLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeTypePicker(
             selectedThemeType = ThemeType.TIME_BASED,
             onAction = {},
@@ -138,7 +137,7 @@ private fun ThemeTypePickerLightPreview() {
 @Composable
 @Preview
 private fun ThemeTypePickerDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ThemeTypePicker(
             selectedThemeType = ThemeType.LIGHT,
             onAction = {},
@@ -150,7 +149,7 @@ private fun ThemeTypePickerDarkPreview() {
 @Composable
 @Preview
 private fun ThemeTypePickerItemLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeTypePickerItem(
             themeType = ThemeType.TIME_BASED,
         )
@@ -160,7 +159,7 @@ private fun ThemeTypePickerItemLightPreview() {
 @Composable
 @Preview
 private fun ThemeTypePickerItemDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ThemeTypePickerItem(
             themeType = ThemeType.DARK,
         )

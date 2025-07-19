@@ -28,8 +28,8 @@ import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
 import io.github.kei_1111.withmo.feature.home.component.ModelLoading
 import io.github.kei_1111.withmo.feature.home.component.PlaceableItemListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlinx.coroutines.launch
 
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
@@ -182,7 +182,7 @@ private fun HomeScreen(
 @Preview
 @Composable
 private fun HomeScreenLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         HomeScreen(
             state = HomeState(),
             onAction = {},
@@ -196,7 +196,7 @@ private fun HomeScreenLightPreview() {
 @Preview
 @Composable
 private fun HomeScreenDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         HomeScreen(
             state = HomeState(),
             onAction = {},

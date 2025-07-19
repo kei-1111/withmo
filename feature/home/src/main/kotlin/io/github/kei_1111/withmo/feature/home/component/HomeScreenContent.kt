@@ -33,8 +33,8 @@ import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlinx.collections.immutable.toPersistentList
 
 private const val BottomSheetShowDragHeight = -50f
@@ -128,7 +128,7 @@ private fun RowAppList(
 @Preview
 @Composable
 private fun HomeScreenContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -160,7 +160,7 @@ private fun HomeScreenContentLightPreview() {
 @Preview
 @Composable
 private fun HomeScreenContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -192,7 +192,7 @@ private fun HomeScreenContentDarkPreview() {
 @Preview
 @Composable
 private fun RowAppListLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
@@ -225,7 +225,7 @@ private fun RowAppListLightPreview() {
 @Preview
 @Composable
 private fun RowAppListDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(

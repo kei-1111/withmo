@@ -13,8 +13,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun ClockSettingsScreenContent(
@@ -45,7 +45,7 @@ internal fun ClockSettingsScreenContent(
 @Composable
 @Preview
 private fun ClockSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockSettingsScreenContent(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(
@@ -62,7 +62,7 @@ private fun ClockSettingsScreenContentLightPreview() {
 @Composable
 @Preview
 private fun ClockSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ClockSettingsScreenContent(
             state = ClockSettingsState(
                 clockSettings = ClockSettings(

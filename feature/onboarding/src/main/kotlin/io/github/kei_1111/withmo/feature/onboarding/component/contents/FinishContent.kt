@@ -27,8 +27,8 @@ import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.R
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun FinishContent(
@@ -94,7 +94,7 @@ private fun FinishContentBottomAppBar(
 @Composable
 @Preview
 private fun FinishContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         FinishContent(
             onAction = {},
             modifier = Modifier.fillMaxSize(),
@@ -106,7 +106,7 @@ private fun FinishContentLightPreview() {
 @Composable
 @Preview
 private fun FinishContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FinishContent(
             onAction = {},
             modifier = Modifier.fillMaxSize(),
@@ -117,7 +117,7 @@ private fun FinishContentDarkPreview() {
 @Composable
 @Preview
 private fun FinishContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         FinishContentBottomAppBar(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
@@ -128,7 +128,7 @@ private fun FinishContentBottomAppBarLightPreview() {
 @Composable
 @Preview
 private fun FinishContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FinishContentBottomAppBar(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),

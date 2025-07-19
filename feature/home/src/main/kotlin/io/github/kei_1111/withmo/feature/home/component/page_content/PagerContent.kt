@@ -38,8 +38,8 @@ import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.PageContent
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Suppress("LongMethod")
 @Composable
@@ -176,7 +176,7 @@ private fun PageIndicator(
 @Preview
 @Composable
 private fun PagerContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         PagerContent(
             state = HomeState(),
             onAction = {},
@@ -189,7 +189,7 @@ private fun PagerContentLightPreview() {
 @Preview
 @Composable
 private fun PagerContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         PagerContent(
             state = HomeState(
                 isEditMode = true,
@@ -205,7 +205,7 @@ private fun PagerContentDarkPreview() {
 @Preview
 @Composable
 private fun PageIndicatorLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         PageIndicator(
             pageCount = 3,
             currentPage = 1,
@@ -217,7 +217,7 @@ private fun PageIndicatorLightPreview() {
 @Preview
 @Composable
 private fun PageIndicatorDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         PageIndicator(
             pageCount = 3,
             currentPage = 1,

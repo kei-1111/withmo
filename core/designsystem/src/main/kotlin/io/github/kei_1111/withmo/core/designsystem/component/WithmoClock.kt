@@ -15,8 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtraSmallSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
@@ -172,7 +172,7 @@ private fun ClockHorizontalDate(
 @Preview
 @Composable
 private fun WithmoClockTopDateLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoClock(
             clockType = ClockType.TOP_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -190,7 +190,7 @@ private fun WithmoClockTopDateLightPreview() {
 @Preview
 @Composable
 private fun WithmoClockTopDateDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoClock(
             clockType = ClockType.TOP_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -208,7 +208,7 @@ private fun WithmoClockTopDateDarkPreview() {
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoClock(
             clockType = ClockType.HORIZONTAL_DATE,
             dateTimeInfo = DateTimeInfo(
@@ -226,7 +226,7 @@ private fun WithmoClockHorizontalDateLightPreview() {
 @Preview
 @Composable
 private fun WithmoClockHorizontalDateDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         WithmoClock(
             clockType = ClockType.HORIZONTAL_DATE,
             dateTimeInfo = DateTimeInfo(

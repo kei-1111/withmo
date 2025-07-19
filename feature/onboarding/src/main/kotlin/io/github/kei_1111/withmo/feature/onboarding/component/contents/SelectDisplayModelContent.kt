@@ -48,8 +48,8 @@ import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreenDimensions
 import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
 import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.onboarding.preview.OnboardingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.R)
@@ -265,7 +265,7 @@ private fun Modifier.dashedBorder(
 @Composable
 @Preview
 private fun SelectDisplayModelContentLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContent(
             state = OnboardingState(),
             onAction = {},
@@ -278,7 +278,7 @@ private fun SelectDisplayModelContentLightPreview() {
 @Composable
 @Preview
 private fun SelectDisplayModelContentDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContent(
             state = OnboardingState(),
             onAction = {},
@@ -290,7 +290,7 @@ private fun SelectDisplayModelContentDarkPreview() {
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarLightPreview() {
-    OnboardingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},
@@ -302,7 +302,7 @@ private fun SelectDisplayModelContentBottomAppBarLightPreview() {
 @Composable
 @Preview
 private fun SelectDisplayModelContentBottomAppBarDarkPreview() {
-    OnboardingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContentBottomAppBar(
             state = OnboardingState(),
             onAction = {},

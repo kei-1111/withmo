@@ -10,8 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -58,7 +58,7 @@ fun FavoriteAppListRow(
 @Preview
 @Composable
 private fun FavoriteAppListRowLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         FavoriteAppListRow(
             favoriteAppInfoList = emptyList<FavoriteAppInfo>().toPersistentList(),
             removeSelectedAppList = { },
@@ -69,7 +69,7 @@ private fun FavoriteAppListRowLightPreview() {
 @Preview
 @Composable
 private fun FavoriteAppListRowDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppListRow(
             favoriteAppInfoList = emptyList<FavoriteAppInfo>().toPersistentList(),
             removeSelectedAppList = { },

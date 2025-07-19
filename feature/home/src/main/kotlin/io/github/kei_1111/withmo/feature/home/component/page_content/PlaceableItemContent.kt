@@ -37,8 +37,8 @@ import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun PlaceableItemContent(
@@ -171,7 +171,7 @@ private fun CompleteEditButton(
 @Preview
 @Composable
 private fun PlaceableItemContentightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         PlaceableItemContent(
             state = HomeState(
                 isEditMode = true,
@@ -185,7 +185,7 @@ private fun PlaceableItemContentightPreview() {
 @Preview
 @Composable
 private fun PlaceableItemContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         PlaceableItemContent(
             state = HomeState(
                 isEditMode = true,
@@ -199,7 +199,7 @@ private fun PlaceableItemContentDarkPreview() {
 @Preview
 @Composable
 private fun EditPlaceableItemContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         EditPlaceableItemContent(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
@@ -210,7 +210,7 @@ private fun EditPlaceableItemContentLightPreview() {
 @Preview
 @Composable
 private fun EditPlaceableItemContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         EditPlaceableItemContent(
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
@@ -221,7 +221,7 @@ private fun EditPlaceableItemContentDarkPreview() {
 @Preview
 @Composable
 private fun AddPlaceableItemButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AddPlaceableItemButton(
             onClick = {},
         )
@@ -231,7 +231,7 @@ private fun AddPlaceableItemButtonLightPreview() {
 @Preview
 @Composable
 private fun AddPlaceableItemButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AddPlaceableItemButton(
             onClick = {},
         )
@@ -241,7 +241,7 @@ private fun AddPlaceableItemButtonDarkPreview() {
 @Preview
 @Composable
 private fun CompleteEditButtonLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         CompleteEditButton(
             onClick = {},
         )
@@ -251,7 +251,7 @@ private fun CompleteEditButtonLightPreview() {
 @Preview
 @Composable
 private fun CompleteEditButtonDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         CompleteEditButton(
             onClick = {},
         )

@@ -15,8 +15,8 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsState
-import io.github.kei_1111.withmo.feature.setting.preview.SettingDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.setting.preview.SettingLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun AppIconSettingsScreenContent(
@@ -48,7 +48,7 @@ internal fun AppIconSettingsScreenContent(
 @Composable
 @Preview
 private fun AppIconSettingsScreenContentLightPreview() {
-    SettingLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconSettingsScreenContent(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),
@@ -63,7 +63,7 @@ private fun AppIconSettingsScreenContentLightPreview() {
 @Composable
 @Preview
 private fun AppIconSettingsScreenContentDarkPreview() {
-    SettingDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         AppIconSettingsScreenContent(
             state = AppIconSettingsState(
                 appIconSettings = AppIconSettings(),

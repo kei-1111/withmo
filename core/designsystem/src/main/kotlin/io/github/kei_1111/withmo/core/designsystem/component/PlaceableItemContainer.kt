@@ -37,8 +37,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlaceableItem
@@ -239,7 +239,7 @@ fun calculatePlaceableItemPosition(
 @Preview
 @Composable
 private fun DeleteWidgetBadgeLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         DeleteBadge(
             onClick = {},
         )
@@ -249,7 +249,7 @@ private fun DeleteWidgetBadgeLightPreview() {
 @Preview
 @Composable
 private fun DeleteWidgetBadgeDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         DeleteBadge(
             onClick = {},
         )
@@ -259,7 +259,7 @@ private fun DeleteWidgetBadgeDarkPreview() {
 @Preview
 @Composable
 private fun ResizeWidgetBadgeLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ResizeBadge(
             onClick = {},
         )
@@ -269,7 +269,7 @@ private fun ResizeWidgetBadgeLightPreview() {
 @Preview
 @Composable
 private fun ResizeWidgetBadgeDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ResizeBadge(
             onClick = {},
         )

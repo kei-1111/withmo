@@ -28,8 +28,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.Widget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlin.math.roundToInt
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,7 +112,7 @@ internal fun WidgetResizeBottomSheet(
 @Preview
 @Composable
 private fun WidgetResizeBottomSheetLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -144,7 +144,7 @@ private fun WidgetResizeBottomSheetLightPreview() {
 @Preview
 @Composable
 private fun WidgetResizeBottomSheetDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()

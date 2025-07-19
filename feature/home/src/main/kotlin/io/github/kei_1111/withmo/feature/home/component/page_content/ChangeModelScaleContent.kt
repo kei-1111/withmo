@@ -27,8 +27,8 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Ic
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.preview.HomeDarkPreviewEnvironment
-import io.github.kei_1111.withmo.feature.home.preview.HomeLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 internal fun ChangeModelScaleContent(
@@ -109,7 +109,7 @@ private fun ScaleSlider(
 @Preview
 @Composable
 private fun ChangeModelScaleContentLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ChangeModelScaleContent(
             state = HomeState(),
             onAction = {},
@@ -121,7 +121,7 @@ private fun ChangeModelScaleContentLightPreview() {
 @Preview
 @Composable
 private fun ChangeModelScaleContentDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ChangeModelScaleContent(
             state = HomeState(),
             onAction = {},
@@ -133,7 +133,7 @@ private fun ChangeModelScaleContentDarkPreview() {
 @Preview
 @Composable
 private fun ScaleSliderLightPreview() {
-    HomeLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         ScaleSlider(
             state = HomeState(),
             onAction = {},
@@ -144,7 +144,7 @@ private fun ScaleSliderLightPreview() {
 @Preview
 @Composable
 private fun ScaleSliderDarkPreview() {
-    HomeDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         ScaleSlider(
             state = HomeState(),
             onAction = {},

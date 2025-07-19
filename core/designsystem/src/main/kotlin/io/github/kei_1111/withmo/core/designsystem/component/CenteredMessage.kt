@@ -6,8 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemDarkPreviewEnvironment
-import io.github.kei_1111.withmo.core.designsystem.component.preview.DesignSystemLightPreviewEnvironment
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
 fun CenteredMessage(
@@ -27,7 +27,7 @@ fun CenteredMessage(
 @Preview
 @Composable
 private fun CenteredMessageLightPreview() {
-    DesignSystemLightPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
         CenteredMessage(
             message = "This is a centered message.",
             modifier = Modifier.fillMaxSize(),
@@ -38,7 +38,7 @@ private fun CenteredMessageLightPreview() {
 @Preview
 @Composable
 private fun CenteredMessageDarkPreview() {
-    DesignSystemDarkPreviewEnvironment {
+    WithmoTheme(themeType = ThemeType.DARK) {
         CenteredMessage(
             message = "This is a centered message.",
             modifier = Modifier.fillMaxSize(),
