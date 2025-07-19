@@ -17,7 +17,7 @@ class GetPlacedItemsUseCaseImpl @Inject constructor(
 ) : GetPlacedItemsUseCase {
     override operator fun invoke(): Flow<List<PlaceableItem>> =
         combine(
-            placedWidgetRepository.getAllList(),
+            placedWidgetRepository.placedWidgetsInfo,
             placedAppRepository.placedAppsInfo,
         ) { widgetList, placedAppList ->
             (widgetList + placedAppList)
