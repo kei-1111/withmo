@@ -42,7 +42,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -179,10 +181,8 @@ private fun WidgetTabContent(
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
-    val groupedWidgetInfoMaps = appWidgetManager
-        .installedProviders
-        .groupBy { it.provider.packageName }
-        .toPersistentMap()
+    val groupedWidgetInfoMaps =
+        appWidgetManager.installedProviders.groupBy { it.provider.packageName }.toPersistentMap()
 
     WidgetList(
         groupedWidgetInfoMaps = groupedWidgetInfoMaps,
@@ -237,8 +237,10 @@ private fun WidgetList(
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val nestedScrollConnection = rememberNestedScrollInteropConnection()
+
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(nestedScrollConnection),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
         contentPadding = PaddingValues(Paddings.Medium),
     ) {
