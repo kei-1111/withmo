@@ -1,6 +1,8 @@
 import com.android.build.api.dsl.ApplicationExtension
 import io.github.kei_1111.withmo.configureAndroidCompose
 import io.github.kei_1111.withmo.configureKotlinAndroid
+import io.github.kei_1111.withmo.libs
+import io.github.kei_1111.withmo.versions
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -18,7 +20,7 @@ class AndroidApplicationPlugin : Plugin<Project> {
             extensions.configure<ApplicationExtension> {
                 configureKotlinAndroid(this)
                 configureAndroidCompose(this)
-                defaultConfig.targetSdk = 35
+                defaultConfig.targetSdk = libs.versions("androidTargetSdk").toInt()
                 buildFeatures {
                     buildConfig = true
                 }

@@ -18,3 +18,6 @@ fun DependencyHandler.detektPlugins(dependencyNotation: Any): Dependency? =
 
 val Project.libs
     get(): VersionCatalog = extensions.getByType<VersionCatalogsExtension>().named("libs")
+
+fun VersionCatalog.versions(name: String): String =
+    this.findVersion(name).get().requiredVersion
