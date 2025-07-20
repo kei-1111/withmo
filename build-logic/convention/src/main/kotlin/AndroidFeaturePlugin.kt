@@ -1,4 +1,5 @@
 import io.github.kei_1111.withmo.implementation
+import io.github.kei_1111.withmo.library
 import io.github.kei_1111.withmo.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -20,11 +21,11 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 implementation(project(":core:ui"))
                 implementation(project(":core:util"))
 
-                implementation(libs.findLibrary("androidx.activity.compose").get())
-                implementation(libs.findLibrary("androidx.hilt.navigation.compose").get())
-                implementation(libs.findLibrary("androidx.material.icons.extended").get())
-                implementation(libs.findLibrary("androidx.material3").get())
-                implementation(libs.findLibrary("kotlinx.collections.immutable").get())
+                implementation(libs.library("androidx.activity.compose"))
+                implementation(libs.library("androidx.hilt.navigation.compose"))
+                implementation(libs.library("androidx.material.icons.extended"))
+                implementation(libs.library("androidx.material3"))
+                implementation(libs.library("kotlinx.collections.immutable"))
             }
         }
     }

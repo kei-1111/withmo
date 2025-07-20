@@ -11,10 +11,9 @@ internal fun Project.configureAndroidCompose(
         buildFeatures.compose = true
 
         dependencies {
-            val bom = libs.findLibrary("androidx.compose.bom").get()
-            implementation(platform(bom))
-            implementation(libs.findLibrary("androidx.ui.tooling.preview").get())
-            debugImplementation(libs.findLibrary("androidx.ui.tooling").get())
+            implementation(platform(libs.library("androidx.compose.bom")))
+            implementation(libs.library("androidx.ui.tooling.preview"))
+            debugImplementation(libs.library("androidx.ui.tooling"))
         }
     }
 }

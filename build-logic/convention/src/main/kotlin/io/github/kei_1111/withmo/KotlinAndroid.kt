@@ -12,9 +12,9 @@ internal fun Project.configureKotlinAndroid(
     commonExtension: CommonExtension<*, *, *, *, *, *>,
 ) {
     commonExtension.apply {
-        compileSdk = 35
+        compileSdk = libs.versions("androidCompileSdk").toInt()
 
-        defaultConfig.minSdk = 29
+        defaultConfig.minSdk = libs.versions("androidMinSdk").toInt()
 
         compileOptions {
             sourceCompatibility = JavaVersion.VERSION_17

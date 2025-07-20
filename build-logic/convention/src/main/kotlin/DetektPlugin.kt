@@ -1,8 +1,10 @@
 import io.github.kei_1111.withmo.detektPlugins
+import io.github.kei_1111.withmo.library
 import io.github.kei_1111.withmo.libs
 import io.github.kei_1111.withmo.setupDetekt
 import io.gitlab.arturbosch.detekt.Detekt
 import io.gitlab.arturbosch.detekt.extensions.DetektExtension
+import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -18,12 +20,12 @@ class DetektPlugin() : Plugin<Project> {
             setupDetekt(extensions.getByType<DetektExtension>())
 
             dependencies {
-                detektPlugins(libs.findLibrary("detekt.compose").get())
-                detektPlugins(libs.findLibrary("detekt.formatting").get())
+                detektPlugins(libs.library("detekt.compose"))
+                detektPlugins(libs.library("detekt.formatting"))
             }
 
             tasks.withType<Detekt>().configureEach {
-                jvmTarget = "17"
+                jvmTarget = JavaVersion.VERSION_17.toString()
                 // タスクの並列実行を促進
                 outputs.cacheIf { true }
             }
