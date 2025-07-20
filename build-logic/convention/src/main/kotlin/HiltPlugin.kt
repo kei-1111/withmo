@@ -1,4 +1,5 @@
 import io.github.kei_1111.withmo.implementation
+import io.github.kei_1111.withmo.library
 import io.github.kei_1111.withmo.libs
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -12,8 +13,8 @@ class HiltPlugin : Plugin<Project> {
             apply(plugin = "com.google.dagger.hilt.android")
 
             dependencies {
-                "ksp"(libs.findLibrary("hilt.android.compiler").get())
-                implementation(libs.findLibrary("hilt.android").get())
+                "ksp"(libs.library("hilt.android.compiler"))
+                implementation(libs.library("hilt.android"))
             }
         }
     }
