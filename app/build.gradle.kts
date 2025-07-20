@@ -1,8 +1,11 @@
 plugins {
     alias(libs.plugins.withmo.android.application)
-    alias(libs.plugins.firebase.crashlytics)
-    alias(libs.plugins.google.services)
     alias(libs.plugins.serialization)
+}
+
+if (gradle.startParameter.taskRequests.toString().contains("Prod")) {
+    apply(plugin = libs.plugins.firebase.crashlytics.get().pluginId)
+    apply(plugin = libs.plugins.google.services.get().pluginId)
 }
 
 android {
@@ -18,6 +21,19 @@ android {
         // Unity
         ndk {
             abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+        }
+    }
+
+    flavorDimensions += "env"
+    productFlavors {
+        create("dev") {
+            dimension = "env"
+            applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev"
+            resValue("string", "app_name", "withmo-dev")
+        }
+        create("prod") {
+            dimension = "env"
         }
     }
 
@@ -43,9 +59,6 @@ dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.analytics)
-    implementation(libs.firebase.crashlytics)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.serialization.json)
     implementation(projects.core.common)
@@ -61,6 +74,11 @@ dependencies {
     implementation(projects.feature.setting)
     implementation(projects.unityLibrary)
     implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
+
+    "prodImplementation"(platform(libs.firebase.bom))
+    "prodImplementation"(libs.firebase.analytics)
+    "prodImplementation"(libs.firebase.crashlytics)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

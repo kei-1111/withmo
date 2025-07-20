@@ -19,6 +19,9 @@ class AndroidApplicationPlugin : Plugin<Project> {
                 configureKotlinAndroid(this)
                 configureAndroidCompose(this)
                 defaultConfig.targetSdk = 35
+                buildFeatures {
+                    buildConfig = true
+                }
             }
         }
     }
