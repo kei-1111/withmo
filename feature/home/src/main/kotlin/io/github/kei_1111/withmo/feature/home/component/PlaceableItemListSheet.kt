@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -32,9 +35,9 @@ import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,9 +72,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
+import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun PlaceableItemListSheet(
     placeableItemListSheetState: SheetState,
@@ -79,8 +83,6 @@ internal fun PlaceableItemListSheet(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedTab by remember { mutableIntStateOf(PlaceableItemTab.Widget.ordinal) }
-
     val appList = LocalAppList.current
     var appSearchQuery by remember { mutableStateOf("") }
     val searchedAppList by remember(
@@ -99,6 +101,9 @@ internal fun PlaceableItemListSheet(
         }
     }
 
+    val pagerState = rememberPagerState(pageCount = { PlaceableItemTab.entries.size })
+    val coroutineScope = rememberCoroutineScope()
+
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
         shape = BottomSheetShape,
@@ -110,40 +115,52 @@ internal fun PlaceableItemListSheet(
             modifier = Modifier.fillMaxSize(),
         ) {
             TabRow(
-                selectedTabIndex = selectedTab,
+                selectedTabIndex = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Tab(
-                    selected = selectedTab == PlaceableItemTab.Widget.ordinal,
-                    onClick = { selectedTab = PlaceableItemTab.Widget.ordinal },
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "ウィジェット") },
-                )
-                Tab(
-                    selected = selectedTab == PlaceableItemTab.App.ordinal,
-                    onClick = { selectedTab = PlaceableItemTab.App.ordinal },
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "アプリ") },
-                )
-            }
-
-            when (selectedTab) {
-                PlaceableItemTab.Widget.ordinal -> {
-                    WidgetTabContent(
-                        onAction = onAction,
-                        modifier = Modifier.fillMaxSize(),
+                PlaceableItemTab.entries.forEachIndexed { index, tab ->
+                    Tab(
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                        text = { 
+                            BodyMediumText(
+                                text = when (tab) {
+                                    PlaceableItemTab.Widget -> "ウィジェット"
+                                    PlaceableItemTab.App -> "アプリ"
+                                }
+                            ) 
+                        },
                     )
                 }
+            }
 
-                PlaceableItemTab.App.ordinal -> {
-                    AppTabContent(
-                        appSearchQuery = appSearchQuery,
-                        onAppSearchQueryChange = { appSearchQuery = it },
-                        searchedAppList = searchedAppList,
-                        state = state,
-                        onAction = onAction,
-                        modifier = Modifier.fillMaxSize(),
-                    )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize(),
+            ) { page ->
+                when (PlaceableItemTab.entries[page]) {
+                    PlaceableItemTab.Widget -> {
+                        WidgetTabContent(
+                            onAction = onAction,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
+
+                    PlaceableItemTab.App -> {
+                        AppTabContent(
+                            appSearchQuery = appSearchQuery,
+                            onAppSearchQueryChange = { appSearchQuery = it },
+                            searchedAppList = searchedAppList,
+                            state = state,
+                            onAction = onAction,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
             }
         }
