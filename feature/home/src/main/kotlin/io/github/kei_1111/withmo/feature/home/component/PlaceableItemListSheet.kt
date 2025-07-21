@@ -185,8 +185,9 @@ private fun WidgetTabContent(
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
-    val groupedWidgetInfoMaps =
+    val groupedWidgetInfoMaps = remember(appWidgetManager.installedProviders) {
         appWidgetManager.installedProviders.groupBy { it.provider.packageName }.toPersistentMap()
+    }
 
     WidgetList(
         groupedWidgetInfoMaps = groupedWidgetInfoMaps,
@@ -250,7 +251,8 @@ private fun WidgetList(
             start = Paddings.Medium,
             end = Paddings.Medium,
             top = Paddings.Medium,
-            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues()
+                .calculateBottomPadding(),
         ),
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
@@ -408,7 +410,10 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -461,7 +466,10 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -514,7 +522,10 @@ private fun AppTabContentLightPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -544,7 +555,10 @@ private fun AppTabContentDarkPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                )!!,
                 backgroundIcon = null,
             )
         }
