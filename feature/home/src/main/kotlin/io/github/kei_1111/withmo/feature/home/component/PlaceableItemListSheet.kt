@@ -129,13 +129,13 @@ internal fun PlaceableItemListSheet(
                             }
                         },
                         modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                        text = { 
+                        text = {
                             BodyMediumText(
                                 text = when (tab) {
                                     PlaceableItemTab.Widget -> "ウィジェット"
                                     PlaceableItemTab.App -> "アプリ"
-                                }
-                            ) 
+                                },
+                            )
                         },
                     )
                 }
