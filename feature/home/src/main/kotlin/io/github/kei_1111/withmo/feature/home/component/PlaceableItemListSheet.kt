@@ -4,20 +4,26 @@ import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
@@ -32,14 +38,16 @@ import androidx.compose.material3.TabRow
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
@@ -69,9 +77,10 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
+import kotlinx.coroutines.launch
 
 @Suppress("LongMethod")
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 internal fun PlaceableItemListSheet(
     placeableItemListSheetState: SheetState,
@@ -79,8 +88,6 @@ internal fun PlaceableItemListSheet(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedTab by remember { mutableIntStateOf(PlaceableItemTab.Widget.ordinal) }
-
     val appList = LocalAppList.current
     var appSearchQuery by remember { mutableStateOf("") }
     val searchedAppList by remember(
@@ -99,51 +106,67 @@ internal fun PlaceableItemListSheet(
         }
     }
 
+    val pagerState = rememberPagerState(pageCount = { PlaceableItemTab.entries.size })
+    val coroutineScope = rememberCoroutineScope()
+
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = placeableItemListSheetState,
         dragHandle = {},
+        contentWindowInsets = { WindowInsets(bottom = 0) },
         modifier = modifier,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
         ) {
             TabRow(
-                selectedTabIndex = selectedTab,
+                selectedTabIndex = pagerState.currentPage,
                 modifier = Modifier.fillMaxWidth(),
             ) {
-                Tab(
-                    selected = selectedTab == PlaceableItemTab.Widget.ordinal,
-                    onClick = { selectedTab = PlaceableItemTab.Widget.ordinal },
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "ウィジェット") },
-                )
-                Tab(
-                    selected = selectedTab == PlaceableItemTab.App.ordinal,
-                    onClick = { selectedTab = PlaceableItemTab.App.ordinal },
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "アプリ") },
-                )
-            }
-
-            when (selectedTab) {
-                PlaceableItemTab.Widget.ordinal -> {
-                    WidgetTabContent(
-                        onAction = onAction,
-                        modifier = Modifier.fillMaxSize(),
+                PlaceableItemTab.entries.forEachIndexed { index, tab ->
+                    Tab(
+                        selected = pagerState.currentPage == index,
+                        onClick = {
+                            coroutineScope.launch {
+                                pagerState.animateScrollToPage(index)
+                            }
+                        },
+                        modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                        text = {
+                            BodyMediumText(
+                                text = when (tab) {
+                                    PlaceableItemTab.Widget -> "ウィジェット"
+                                    PlaceableItemTab.App -> "アプリ"
+                                },
+                            )
+                        },
                     )
                 }
+            }
 
-                PlaceableItemTab.App.ordinal -> {
-                    AppTabContent(
-                        appSearchQuery = appSearchQuery,
-                        onAppSearchQueryChange = { appSearchQuery = it },
-                        searchedAppList = searchedAppList,
-                        state = state,
-                        onAction = onAction,
-                        modifier = Modifier.fillMaxSize(),
-                    )
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize(),
+            ) { page ->
+                when (PlaceableItemTab.entries[page]) {
+                    PlaceableItemTab.Widget -> {
+                        WidgetTabContent(
+                            onAction = onAction,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
+
+                    PlaceableItemTab.App -> {
+                        AppTabContent(
+                            appSearchQuery = appSearchQuery,
+                            onAppSearchQueryChange = { appSearchQuery = it },
+                            searchedAppList = searchedAppList,
+                            state = state,
+                            onAction = onAction,
+                            modifier = Modifier.fillMaxSize(),
+                        )
+                    }
                 }
             }
         }
@@ -162,10 +185,8 @@ private fun WidgetTabContent(
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
-    val groupedWidgetInfoMaps = appWidgetManager
-        .installedProviders
-        .groupBy { it.provider.packageName }
-        .toPersistentMap()
+    val groupedWidgetInfoMaps =
+        appWidgetManager.installedProviders.groupBy { it.provider.packageName }.toPersistentMap()
 
     WidgetList(
         groupedWidgetInfoMaps = groupedWidgetInfoMaps,
@@ -185,14 +206,14 @@ private fun AppTabContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(top = Paddings.Medium)
-            .padding(horizontal = Paddings.Medium),
+        modifier = modifier.padding(top = Paddings.Medium),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WithmoSearchTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = Paddings.Medium),
             value = appSearchQuery,
             onValueChange = onAppSearchQueryChange,
         )
@@ -220,10 +241,17 @@ private fun WidgetList(
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val nestedScrollConnection = rememberNestedScrollInteropConnection()
+
     LazyColumn(
-        modifier = modifier,
+        modifier = modifier.nestedScroll(nestedScrollConnection),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-        contentPadding = PaddingValues(Paddings.Medium),
+        contentPadding = PaddingValues(
+            start = Paddings.Medium,
+            end = Paddings.Medium,
+            top = Paddings.Medium,
+            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+        ),
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
             item {
