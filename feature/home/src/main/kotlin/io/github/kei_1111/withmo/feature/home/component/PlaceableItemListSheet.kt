@@ -11,9 +11,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
@@ -111,6 +114,7 @@ internal fun PlaceableItemListSheet(
         shape = BottomSheetShape,
         sheetState = placeableItemListSheetState,
         dragHandle = {},
+        contentWindowInsets = { WindowInsets(bottom = 0) },
         modifier = modifier,
     ) {
         Column(
@@ -181,8 +185,9 @@ private fun WidgetTabContent(
     modifier: Modifier = Modifier,
 ) {
     val appWidgetManager = LocalAppWidgetManager.current
-    val groupedWidgetInfoMaps =
+    val groupedWidgetInfoMaps = remember(appWidgetManager.installedProviders) {
         appWidgetManager.installedProviders.groupBy { it.provider.packageName }.toPersistentMap()
+    }
 
     WidgetList(
         groupedWidgetInfoMaps = groupedWidgetInfoMaps,
@@ -202,14 +207,14 @@ private fun AppTabContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(top = Paddings.Medium)
-            .padding(horizontal = Paddings.Medium),
+        modifier = modifier.padding(top = Paddings.Medium),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WithmoSearchTextField(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = Paddings.Medium),
             value = appSearchQuery,
             onValueChange = onAppSearchQueryChange,
         )
@@ -242,7 +247,13 @@ private fun WidgetList(
     LazyColumn(
         modifier = modifier.nestedScroll(nestedScrollConnection),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
-        contentPadding = PaddingValues(Paddings.Medium),
+        contentPadding = PaddingValues(
+            start = Paddings.Medium,
+            end = Paddings.Medium,
+            top = Paddings.Medium,
+            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues()
+                .calculateBottomPadding(),
+        ),
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
             item {
@@ -399,7 +410,10 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -452,7 +466,10 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -505,7 +522,10 @@ private fun AppTabContentLightPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
+                )!!,
                 backgroundIcon = null,
             )
         }
@@ -535,7 +555,10 @@ private fun AppTabContentDarkPreview() {
         val context = LocalContext.current
         val appIcon = remember {
             AppIcon(
-                foregroundIcon = ContextCompat.getDrawable(context, io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide)!!,
+                foregroundIcon = ContextCompat.getDrawable(
+                    context,
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
+                )!!,
                 backgroundIcon = null,
             )
         }

@@ -106,8 +106,7 @@ class AppManagerImpl @Inject constructor(
         return launchableApps
             .filter {
                 val packageName = it.activityInfo.packageName
-                packageName != context.packageName &&
-                    packageManager.getLaunchIntentForPackage(packageName) != null
+                packageManager.getLaunchIntentForPackage(packageName) != null
             }
             .map {
                 val icon = it.loadIcon(packageManager)

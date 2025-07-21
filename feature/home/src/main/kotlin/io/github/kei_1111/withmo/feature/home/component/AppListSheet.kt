@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
@@ -65,6 +66,7 @@ internal fun AppListSheet(
         onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = appListSheetState,
+        contentWindowInsets = { WindowInsets(bottom = 0.dp) },
         dragHandle = {},
     ) {
         Surface(
@@ -73,10 +75,7 @@ internal fun AppListSheet(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(
-                        top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding(),
-                    )
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()),
                 verticalArrangement = Arrangement.spacedBy(
                     Paddings.Medium,
                     Alignment.CenterVertically,
@@ -84,7 +83,9 @@ internal fun AppListSheet(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 WithmoSearchTextField(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = Paddings.Medium),
                     value = appSearchQuery,
                     onValueChange = { appSearchQuery = it },
                 )
