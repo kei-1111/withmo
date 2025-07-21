@@ -15,7 +15,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.component.App
@@ -52,8 +54,11 @@ internal fun AppList(
         userSettings.appIconSettings.roundedCornerPercent,
     )
 
+    val nestedScrollConnection = rememberNestedScrollInteropConnection()
+
     Column(
         modifier = modifier
+            .nestedScroll(nestedScrollConnection)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
     ) {
