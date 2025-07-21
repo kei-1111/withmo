@@ -412,7 +412,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
             AppIcon(
                 foregroundIcon = ContextCompat.getDrawable(
                     context,
-                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
                 )!!,
                 backgroundIcon = null,
             )
@@ -468,7 +468,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
             AppIcon(
                 foregroundIcon = ContextCompat.getDrawable(
                     context,
-                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
                 )!!,
                 backgroundIcon = null,
             )
@@ -524,7 +524,7 @@ private fun AppTabContentLightPreview() {
             AppIcon(
                 foregroundIcon = ContextCompat.getDrawable(
                     context,
-                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
                 )!!,
                 backgroundIcon = null,
             )
@@ -557,7 +557,7 @@ private fun AppTabContentDarkPreview() {
             AppIcon(
                 foregroundIcon = ContextCompat.getDrawable(
                     context,
-                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide
+                    io.github.kei_1111.withmo.core.designsystem.R.drawable.withmo_icon_wide,
                 )!!,
                 backgroundIcon = null,
             )
