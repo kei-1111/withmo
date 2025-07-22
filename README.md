@@ -3,14 +3,15 @@
 
 [![Watch the video](https://img.shields.io/badge/PV-YouTube-red?style=for-the-badge&logo=youtube&logoColor=white)](https://youtu.be/S2n97pJL9r0)
 [![Slide](https://img.shields.io/badge/Slide-GoogleSlides-blue?style=for-the-badge&logo=google-slides&logoColor=white)](https://docs.google.com/presentation/d/1P8pJtk8YnazgKQcsffUqSHlIYSe43K1r/edit?slide=id.p1#slide=id.p1)
-[![Download APK](https://img.shields.io/badge/Download-APK-brightgreen?style=for-the-badge&logo=android&logoColor=white)](https://drive.google.com/drive/u/2/folders/1OUCGfjTxtSnUwp8x5HOG94MYGUsn2uIL)
+
+
+[<img src="https://play.google.com/intl/ja/badges/static/images/badges/ja_badge_web_generic.png" height="50">](https://play.google.com/store/apps/details?id=io.github.kei_1111.withmo&hl=ja)
 
 
 ## withmoとは
 wihtmoは、デジタルフィギュア × ランチャーをコンセプトにした、お気に入りの3Dモデルをホーム画面に表示することができるランチャーアプリです！  
 withmoは、Unity as a Library を用いて作成されており、UnityプロジェクトをAndroidプロジェクトに取り込んでいるという構造になっています。本リポジトリは、そんなwithmoのAndroidリポジトリです。  
-⚠注意: unityLibraryはサイズが大きく、.gitignoreしています。そのため、このリポジトリをクローンしてもアプリを起動することはできません。ビルドしたapkファイルをまとめているDriveリンクがあるのでそこからダウンロードして使用してください。また、現在クローズドテスト中です。よろしければテスターとして参加していただけると幸いです。
-
+⚠注意: unityLibraryはサイズが大きく、.gitignoreしています。そのため、このリポジトリをクローンしてもアプリを起動することはできません。Google Play にて公開しておりますのでダウンロードして使用してください。
 
 ## UI
 withmoは、時間帯に応じて背景が変化します！
