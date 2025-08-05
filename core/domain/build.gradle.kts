@@ -8,6 +8,7 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.ui)
     implementation(projects.core.model)
 
     testImplementation(libs.junit)

@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  detekt:
+  ci:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,6 +17,9 @@ jobs:
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
+
+      - name: Run UseCase tests
+        run: ./gradlew :core:domain:test
 
       - name: Run detekt
         run: ./gradlew detekt
