@@ -102,13 +102,6 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 - `withmo.detekt` - カスタムルールによるコード品質管理
 - `withmo.hilt` - 依存性注入設定
 
-### 共通コマンド
-
-```bash
-# 静的解析を実行
-./gradlew detekt
-```
-
 ## 主要技術詳細
 
 ### データ層
@@ -140,10 +133,35 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 - データ層全体でFlowベースのリアクティブプログラミングを使用する
 
 ## テスト・品質管理
+
+### 静的解析
 - **Detekt**: Compose固有ルールを含む包括的な静的解析
-- **GitHub Actions**: コード品質チェックを含む自動CI/CD
 - **Convention-based構造**: カスタムGradleプラグインによる統一的な構成
+- **CI/CD**: GitHub Actionsによる自動テスト実行とコード品質チェック
+
+### テスト実行コマンド
+```bash
+# 静的解析を実行
+./gradlew detekt
+
+# 全てのユニットテストを実行
+./gradlew test
+
+# 特定モジュールのテストを実行
+./gradlew :core:data:test
+./gradlew :core:domain:test
+
+# テストレポートを生成
+./gradlew test --continue
+# レポートは各モジュールの build/reports/tests/test/index.html に生成される
+```
+
+### テスト戦略
+- **ユニットテスト**: Repository、UseCaseの主要ロジックをカバー
+- **モックライブラリ**: MockKを使用したモック作成とスタブ化
+- **テストフレームワーク**: JUnit、Kotlinx Coroutines Test、Turbineを使用
 - **最小限のテストカバレッジ**: テスト追加時は重要なUnity統合ポイントを重視する
+- **CI/CD**: GitHub Actionsによる自動テスト実行とコード品質チェック
 
 ## Git・GitHub運用規則
 詳細な運用規則は `docs/GIT_GITHUB_CONVENTIONS.md` を参照してください。
