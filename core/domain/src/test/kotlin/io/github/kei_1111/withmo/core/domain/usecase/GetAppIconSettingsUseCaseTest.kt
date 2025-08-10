@@ -40,10 +40,10 @@ class GetAppIconSettingsUseCaseTest {
     fun `変更されたアプリアイコン設定を取得できること`() = runTest {
         val customAppIconSettings = AppIconSettings(
             appIconShape = AppIconShape.RoundedCorner,
-            roundedCornerPercent = 25f
+            roundedCornerPercent = 25f,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(appIconSettings = customAppIconSettings)
+            UserSettings(appIconSettings = customAppIconSettings),
         )
 
         useCase().test {
@@ -58,7 +58,7 @@ class GetAppIconSettingsUseCaseTest {
     fun `アプリアイコン設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square)
+            appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 

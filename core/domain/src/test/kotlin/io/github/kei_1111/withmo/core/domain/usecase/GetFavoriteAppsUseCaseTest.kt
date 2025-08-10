@@ -42,18 +42,18 @@ class GetFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App2",
-                    packageName = "com.example.app2"
+                    packageName = "com.example.app2",
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
         every { mockRepository.favoriteAppsInfo } returns flowOf(favoriteApps)
 
@@ -77,28 +77,28 @@ class GetFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 0
-            )
+                favoriteOrder = 0,
+            ),
         )
         val updatedApps = listOf(
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App2",
-                    packageName = "com.example.app2"
+                    packageName = "com.example.app2",
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
         every { mockRepository.favoriteAppsInfo } returns flowOf(initialApps, updatedApps)
 
@@ -116,18 +116,18 @@ class GetFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App2",
-                    packageName = "com.example.app2"
+                    packageName = "com.example.app2",
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
         every { mockRepository.favoriteAppsInfo } returns flowOf(favoriteApps)
 

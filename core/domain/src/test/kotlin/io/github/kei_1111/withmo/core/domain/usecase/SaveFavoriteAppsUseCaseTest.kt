@@ -28,18 +28,18 @@ class SaveFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App2",
-                    packageName = "com.example.app2"
+                    packageName = "com.example.app2",
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
 
         useCase(favoriteApps)
@@ -63,10 +63,10 @@ class SaveFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "SingleApp",
-                    packageName = "com.example.single"
+                    packageName = "com.example.single",
                 ),
-                favoriteOrder = 0
-            )
+                favoriteOrder = 0,
+            ),
         )
 
         useCase(singleApp)
@@ -81,18 +81,18 @@ class SaveFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App2",
-                    packageName = "com.example.app2"
+                    packageName = "com.example.app2",
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App1",
-                    packageName = "com.example.app1"
+                    packageName = "com.example.app1",
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
 
         useCase(reorderedApps)
@@ -107,9 +107,9 @@ class SaveFavoriteAppsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "App$index",
-                    packageName = "com.example.app$index"
+                    packageName = "com.example.app$index",
                 ),
-                favoriteOrder = index
+                favoriteOrder = index,
             )
         }
 

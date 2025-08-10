@@ -34,7 +34,7 @@ class OneTimeEventRepositoryImplTest {
     @Test
     fun `オンボーディング初期状態でfalseを取得できること`() = runTest(testDispatcher) {
         every { mockDataStore.data } returns flowOf(emptyPreferences())
-        
+
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
 
         repository.isOnboardingFirstShown.test {
@@ -47,7 +47,7 @@ class OneTimeEventRepositoryImplTest {
     @Test
     fun `モデル変更警告初期状態でfalseを取得できること`() = runTest(testDispatcher) {
         every { mockDataStore.data } returns flowOf(emptyPreferences())
-        
+
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
 
         repository.isModelChangeWarningFirstShown.test {
@@ -62,7 +62,7 @@ class OneTimeEventRepositoryImplTest {
         val isOnboardingFirstShownKey = booleanPreferencesKey("is_onboarding_first_shown")
         val preferences = preferencesOf(isOnboardingFirstShownKey to true)
         every { mockDataStore.data } returns flowOf(preferences)
-        
+
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
 
         repository.isOnboardingFirstShown.test {
@@ -76,9 +76,9 @@ class OneTimeEventRepositoryImplTest {
     fun `オンボーディング表示済みをマークできること`() = runTest(testDispatcher) {
         val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
         val updatedPreferences = preferencesOf(booleanPreferencesKey("is_onboarding_first_shown") to true)
-        
+
         coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
-        
+
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
 
         repository.markOnboardingFirstShown()
@@ -86,14 +86,13 @@ class OneTimeEventRepositoryImplTest {
         coVerify(exactly = 1) { mockDataStore.updateData(any()) }
     }
 
-
     @Test
     fun `モデル変更警告表示済みをマークできること`() = runTest(testDispatcher) {
         val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
         val updatedPreferences = preferencesOf(booleanPreferencesKey("is_model_change_warning_first_shown") to true)
-        
+
         coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
-        
+
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
 
         repository.markModelChangeWarningFirstShown()

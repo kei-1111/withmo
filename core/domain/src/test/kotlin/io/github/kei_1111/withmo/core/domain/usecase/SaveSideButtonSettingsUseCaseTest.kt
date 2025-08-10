@@ -25,7 +25,7 @@ class SaveSideButtonSettingsUseCaseTest {
             isShowScaleSliderButtonShown = false,
             isOpenDocumentButtonShown = true,
             isSetDefaultModelButtonShown = false,
-            isNavigateSettingsButtonShown = true
+            isNavigateSettingsButtonShown = true,
         )
 
         useCase(sideButtonSettings)
@@ -48,7 +48,7 @@ class SaveSideButtonSettingsUseCaseTest {
             isShowScaleSliderButtonShown = false,
             isOpenDocumentButtonShown = false,
             isSetDefaultModelButtonShown = false,
-            isNavigateSettingsButtonShown = false
+            isNavigateSettingsButtonShown = false,
         )
 
         useCase(sideButtonSettings)
@@ -62,7 +62,7 @@ class SaveSideButtonSettingsUseCaseTest {
             isShowScaleSliderButtonShown = true,
             isOpenDocumentButtonShown = false,
             isSetDefaultModelButtonShown = true,
-            isNavigateSettingsButtonShown = false
+            isNavigateSettingsButtonShown = false,
         )
 
         useCase(sideButtonSettings)

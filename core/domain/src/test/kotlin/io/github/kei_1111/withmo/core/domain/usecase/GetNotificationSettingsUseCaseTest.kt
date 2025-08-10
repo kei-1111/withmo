@@ -39,10 +39,10 @@ class GetNotificationSettingsUseCaseTest {
     fun `変更された通知設定を取得できること`() = runTest {
         val customNotificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = true,
-            isNotificationBadgeEnabled = true
+            isNotificationBadgeEnabled = true,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(notificationSettings = customNotificationSettings)
+            UserSettings(notificationSettings = customNotificationSettings),
         )
 
         useCase().test {
@@ -57,7 +57,7 @@ class GetNotificationSettingsUseCaseTest {
     fun `通知設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            notificationSettings = NotificationSettings(isNotificationAnimationEnabled = true)
+            notificationSettings = NotificationSettings(isNotificationAnimationEnabled = true),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 

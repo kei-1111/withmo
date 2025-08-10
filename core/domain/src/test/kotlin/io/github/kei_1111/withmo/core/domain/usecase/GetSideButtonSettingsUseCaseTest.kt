@@ -43,10 +43,10 @@ class GetSideButtonSettingsUseCaseTest {
             isShowScaleSliderButtonShown = false,
             isOpenDocumentButtonShown = false,
             isSetDefaultModelButtonShown = true,
-            isNavigateSettingsButtonShown = true
+            isNavigateSettingsButtonShown = true,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(sideButtonSettings = customSideButtonSettings)
+            UserSettings(sideButtonSettings = customSideButtonSettings),
         )
 
         useCase().test {
@@ -67,8 +67,8 @@ class GetSideButtonSettingsUseCaseTest {
                 isShowScaleSliderButtonShown = false,
                 isOpenDocumentButtonShown = true,
                 isSetDefaultModelButtonShown = false,
-                isNavigateSettingsButtonShown = true
-            )
+                isNavigateSettingsButtonShown = true,
+            ),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
@@ -80,7 +80,7 @@ class GetSideButtonSettingsUseCaseTest {
             val second = awaitItem()
             assertEquals(false, second.isShowScaleSliderButtonShown)
             assertEquals(false, second.isSetDefaultModelButtonShown)
-            
+
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -91,7 +91,7 @@ class GetSideButtonSettingsUseCaseTest {
             isShowScaleSliderButtonShown = true,
             isOpenDocumentButtonShown = true,
             isSetDefaultModelButtonShown = true,
-            isNavigateSettingsButtonShown = true
+            isNavigateSettingsButtonShown = true,
         )
         val userSettings = UserSettings(sideButtonSettings = sameSettings)
         every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)

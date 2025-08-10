@@ -48,9 +48,9 @@ class SavePlacedItemsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "TestApp",
-                    packageName = "com.example.testapp"
-                )
-            )
+                    packageName = "com.example.testapp",
+                ),
+            ),
         )
 
         useCase(placedApps)
@@ -65,12 +65,12 @@ class SavePlacedItemsUseCaseTest {
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 123,
-                    info = mockk<AppWidgetProviderInfo>()
+                    info = mockk<AppWidgetProviderInfo>(),
                 ),
                 width = 200,
                 height = 100,
-                position = Offset(50f, 150f)
-            )
+                position = Offset(50f, 150f),
+            ),
         )
 
         useCase(placedWidgets)
@@ -87,17 +87,17 @@ class SavePlacedItemsUseCaseTest {
             info = AppInfo(
                 appIcon = mockk<AppIcon>(),
                 label = "TestApp",
-                packageName = "com.example.testapp"
-            )
+                packageName = "com.example.testapp",
+            ),
         )
         val placedWidget = PlacedWidgetInfo(
             info = WidgetInfo(
                 id = 123,
-                info = mockk<AppWidgetProviderInfo>()
+                info = mockk<AppWidgetProviderInfo>(),
             ),
             width = 200,
             height = 100,
-            position = Offset(50f, 150f)
+            position = Offset(50f, 150f),
         )
         val mixedItems = listOf<PlaceableItem>(placedApp, placedWidget)
 
@@ -116,8 +116,8 @@ class SavePlacedItemsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "TestApp1",
-                    packageName = "com.example.testapp1"
-                )
+                    packageName = "com.example.testapp1",
+                ),
             ),
             PlacedAppInfo(
                 id = "app2",
@@ -125,9 +125,9 @@ class SavePlacedItemsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "TestApp2",
-                    packageName = "com.example.testapp2"
-                )
-            )
+                    packageName = "com.example.testapp2",
+                ),
+            ),
         )
 
         useCase(placedApps)
@@ -142,21 +142,21 @@ class SavePlacedItemsUseCaseTest {
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 123,
-                    info = mockk<AppWidgetProviderInfo>()
+                    info = mockk<AppWidgetProviderInfo>(),
                 ),
                 width = 200,
                 height = 100,
-                position = Offset(50f, 150f)
+                position = Offset(50f, 150f),
             ),
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 456,
-                    info = mockk<AppWidgetProviderInfo>()
+                    info = mockk<AppWidgetProviderInfo>(),
                 ),
                 width = 300,
                 height = 150,
-                position = Offset(250f, 350f)
-            )
+                position = Offset(250f, 350f),
+            ),
         )
 
         useCase(placedWidgets)

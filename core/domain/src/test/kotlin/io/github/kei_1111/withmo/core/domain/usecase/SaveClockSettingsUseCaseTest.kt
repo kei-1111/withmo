@@ -24,7 +24,7 @@ class SaveClockSettingsUseCaseTest {
     fun `時計設定を保存できること`() = runTest {
         val clockSettings = ClockSettings(
             isClockShown = false,
-            clockType = ClockType.HORIZONTAL_DATE
+            clockType = ClockType.HORIZONTAL_DATE,
         )
 
         useCase(clockSettings)

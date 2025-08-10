@@ -24,7 +24,7 @@ class SaveAppIconSettingsUseCaseTest {
     fun `アプリアイコン設定を保存できること`() = runTest {
         val newAppIconSettings = AppIconSettings(
             appIconShape = AppIconShape.RoundedCorner,
-            roundedCornerPercent = 30f
+            roundedCornerPercent = 30f,
         )
 
         useCase(newAppIconSettings)
@@ -47,7 +47,7 @@ class SaveAppIconSettingsUseCaseTest {
     @Test
     fun `角丸パーセンテージのみを変更できること`() = runTest {
         val settings = AppIconSettings(appIconShape = AppIconShape.Circle, roundedCornerPercent = 75f)
-        
+
         useCase(settings)
 
         coVerify { mockRepository.saveAppIconSettings(settings) }

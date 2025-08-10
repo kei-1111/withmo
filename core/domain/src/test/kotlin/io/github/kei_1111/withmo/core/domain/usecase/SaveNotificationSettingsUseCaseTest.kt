@@ -23,7 +23,7 @@ class SaveNotificationSettingsUseCaseTest {
     fun `通知設定を保存できること`() = runTest {
         val notificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = true,
-            isNotificationBadgeEnabled = true
+            isNotificationBadgeEnabled = true,
         )
 
         useCase(notificationSettings)
@@ -44,7 +44,7 @@ class SaveNotificationSettingsUseCaseTest {
     fun `通知アニメーションのみ有効な設定を保存できること`() = runTest {
         val notificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = true,
-            isNotificationBadgeEnabled = false
+            isNotificationBadgeEnabled = false,
         )
 
         useCase(notificationSettings)
@@ -56,7 +56,7 @@ class SaveNotificationSettingsUseCaseTest {
     fun `通知バッジのみ有効な設定を保存できること`() = runTest {
         val notificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = false,
-            isNotificationBadgeEnabled = true
+            isNotificationBadgeEnabled = true,
         )
 
         useCase(notificationSettings)
@@ -68,7 +68,7 @@ class SaveNotificationSettingsUseCaseTest {
     fun `両方無効な通知設定を保存できること`() = runTest {
         val notificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = false,
-            isNotificationBadgeEnabled = false
+            isNotificationBadgeEnabled = false,
         )
 
         useCase(notificationSettings)

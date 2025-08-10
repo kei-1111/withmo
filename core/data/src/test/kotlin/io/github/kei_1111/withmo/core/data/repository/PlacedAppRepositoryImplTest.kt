@@ -35,14 +35,14 @@ class PlacedAppRepositoryImplTest {
         mockPlacedAppDao = mockk()
         mockAppManager = mockk()
         testDispatcher = UnconfinedTestDispatcher()
-        
+
         every { mockPlacedAppDao.getAll() } returns flowOf(emptyList())
         every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
-        
+
         repository = PlacedAppRepositoryImpl(
             placedAppDao = mockPlacedAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
     }
 
@@ -62,36 +62,36 @@ class PlacedAppRepositoryImplTest {
     fun `配置アプリリストを取得できること`() = runTest(testDispatcher) {
         val placedAppEntities = listOf(
             PlacedAppEntity("id1", "com.example.app1", 100f, 200f),
-            PlacedAppEntity("id2", "com.example.app2", 300f, 400f)
+            PlacedAppEntity("id2", "com.example.app2", 300f, 400f),
         )
         val appInfoList = listOf(
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 1",
                 packageName = "com.example.app1",
-                useCount = 10
+                useCount = 10,
             ),
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 2",
                 packageName = "com.example.app2",
-                useCount = 5
+                useCount = 5,
             ),
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 3",
                 packageName = "com.example.app3",
-                useCount = 3
-            )
+                useCount = 3,
+            ),
         )
 
         every { mockPlacedAppDao.getAll() } returns flowOf(placedAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
-        
+
         val testRepository = PlacedAppRepositoryImpl(
             placedAppDao = mockPlacedAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         testRepository.placedAppsInfo.test {
@@ -113,24 +113,24 @@ class PlacedAppRepositoryImplTest {
     fun `アンインストールされたアプリは除外されること`() = runTest(testDispatcher) {
         val placedAppEntities = listOf(
             PlacedAppEntity("id1", "com.example.app1", 100f, 200f),
-            PlacedAppEntity("id2", "com.example.uninstalled", 300f, 400f)
+            PlacedAppEntity("id2", "com.example.uninstalled", 300f, 400f),
         )
         val appInfoList = listOf(
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 1",
                 packageName = "com.example.app1",
-                useCount = 10
-            )
+                useCount = 10,
+            ),
         )
 
         every { mockPlacedAppDao.getAll() } returns flowOf(placedAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
-        
+
         val testRepository = PlacedAppRepositoryImpl(
             placedAppDao = mockPlacedAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         testRepository.placedAppsInfo.test {
@@ -151,9 +151,9 @@ class PlacedAppRepositoryImplTest {
                     appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                     label = "App 1",
                     packageName = "com.example.app1",
-                    useCount = 10
+                    useCount = 10,
                 ),
-                position = Offset(100f, 200f)
+                position = Offset(100f, 200f),
             ),
             PlacedAppInfo(
                 id = "id2",
@@ -161,10 +161,10 @@ class PlacedAppRepositoryImplTest {
                     appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                     label = "App 2",
                     packageName = "com.example.app2",
-                    useCount = 5
+                    useCount = 5,
                 ),
-                position = Offset(300f, 400f)
-            )
+                position = Offset(300f, 400f),
+            ),
         )
 
         coEvery { mockPlacedAppDao.deleteAll() } returns Unit
@@ -173,19 +173,19 @@ class PlacedAppRepositoryImplTest {
         repository.updatePlacedApps(placedAppInfos)
 
         coVerify { mockPlacedAppDao.deleteAll() }
-        coVerify { 
+        coVerify {
             mockPlacedAppDao.insertAll(
                 match { entities ->
                     entities.size == 2 &&
-                    entities[0].id == "id1" &&
-                    entities[0].packageName == "com.example.app1" &&
-                    entities[0].positionX == 100f &&
-                    entities[0].positionY == 200f &&
-                    entities[1].id == "id2" &&
-                    entities[1].packageName == "com.example.app2" &&
-                    entities[1].positionX == 300f &&
-                    entities[1].positionY == 400f
-                }
+                        entities[0].id == "id1" &&
+                        entities[0].packageName == "com.example.app1" &&
+                        entities[0].positionX == 100f &&
+                        entities[0].positionY == 200f &&
+                        entities[1].id == "id2" &&
+                        entities[1].packageName == "com.example.app2" &&
+                        entities[1].positionX == 300f &&
+                        entities[1].positionY == 400f
+                },
             )
         }
     }

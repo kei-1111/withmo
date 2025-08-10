@@ -42,7 +42,7 @@ class GetUserSettingsUseCaseTest {
     fun `カスタマイズされたユーザー設定を取得できること`() = runTest {
         val customSettings = UserSettings(
             clockSettings = ClockSettings(isClockShown = false, clockType = ClockType.HORIZONTAL_DATE),
-            appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square, roundedCornerPercent = 50f)
+            appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square, roundedCornerPercent = 50f),
         )
         every { mockRepository.userSettings } returns flowOf(customSettings)
 
@@ -60,7 +60,7 @@ class GetUserSettingsUseCaseTest {
     fun `ユーザー設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            clockSettings = ClockSettings(isClockShown = false)
+            clockSettings = ClockSettings(isClockShown = false),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 

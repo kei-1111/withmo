@@ -38,7 +38,7 @@ class GetModelSettingsUseCaseTest {
     fun `変更されたモデル設定を取得できること`() = runTest {
         val customModelSettings = ModelSettings(scale = 1.5f)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelSettings = customModelSettings)
+            UserSettings(modelSettings = customModelSettings),
         )
 
         useCase().test {
@@ -52,7 +52,7 @@ class GetModelSettingsUseCaseTest {
     fun `モデル設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            modelSettings = ModelSettings(scale = 2.0f)
+            modelSettings = ModelSettings(scale = 2.0f),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 

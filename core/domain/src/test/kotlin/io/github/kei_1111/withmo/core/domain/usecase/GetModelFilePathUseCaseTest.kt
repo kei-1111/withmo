@@ -38,7 +38,7 @@ class GetModelFilePathUseCaseTest {
     fun `設定されたモデルファイルパスを取得できること`() = runTest {
         val customModelFilePath = ModelFilePath("/storage/emulated/0/model.vrm")
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelFilePath = customModelFilePath)
+            UserSettings(modelFilePath = customModelFilePath),
         )
 
         useCase().test {
@@ -52,7 +52,7 @@ class GetModelFilePathUseCaseTest {
     fun `モデルファイルパスの変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            modelFilePath = ModelFilePath("/storage/emulated/0/new_model.vrm")
+            modelFilePath = ModelFilePath("/storage/emulated/0/new_model.vrm"),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
@@ -67,7 +67,7 @@ class GetModelFilePathUseCaseTest {
     fun `空文字のモデルファイルパスを取得できること`() = runTest {
         val emptyModelFilePath = ModelFilePath("")
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelFilePath = emptyModelFilePath)
+            UserSettings(modelFilePath = emptyModelFilePath),
         )
 
         useCase().test {

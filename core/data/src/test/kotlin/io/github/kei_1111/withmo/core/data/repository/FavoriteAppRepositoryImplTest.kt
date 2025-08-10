@@ -41,7 +41,7 @@ class FavoriteAppRepositoryImplTest {
         repository = FavoriteAppRepositoryImpl(
             favoriteAppDao = mockFavoriteAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
     }
 
@@ -58,36 +58,36 @@ class FavoriteAppRepositoryImplTest {
     fun `お気に入りアプリリストを取得できること`() = runTest(testDispatcher) {
         val favoriteAppEntities = listOf(
             FavoriteAppEntity("com.example.app1", 0),
-            FavoriteAppEntity("com.example.app2", 1)
+            FavoriteAppEntity("com.example.app2", 1),
         )
         val appInfoList = listOf(
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 1",
                 packageName = "com.example.app1",
-                useCount = 10
+                useCount = 10,
             ),
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 2",
                 packageName = "com.example.app2",
-                useCount = 5
+                useCount = 5,
             ),
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 3",
                 packageName = "com.example.app3",
-                useCount = 3
-            )
+                useCount = 3,
+            ),
         )
 
         every { mockFavoriteAppDao.getAll() } returns flowOf(favoriteAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
-        
+
         val testRepository = FavoriteAppRepositoryImpl(
             favoriteAppDao = mockFavoriteAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         testRepository.favoriteAppsInfo.test {
@@ -107,24 +107,24 @@ class FavoriteAppRepositoryImplTest {
     fun `アンインストールされたアプリは除外されること`() = runTest(testDispatcher) {
         val favoriteAppEntities = listOf(
             FavoriteAppEntity("com.example.app1", 0),
-            FavoriteAppEntity("com.example.uninstalled", 1)
+            FavoriteAppEntity("com.example.uninstalled", 1),
         )
         val appInfoList = listOf(
             AppInfo(
                 appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                 label = "App 1",
                 packageName = "com.example.app1",
-                useCount = 10
-            )
+                useCount = 10,
+            ),
         )
 
         every { mockFavoriteAppDao.getAll() } returns flowOf(favoriteAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
-        
+
         val testRepository = FavoriteAppRepositoryImpl(
             favoriteAppDao = mockFavoriteAppDao,
             appManager = mockAppManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         testRepository.favoriteAppsInfo.test {
@@ -143,19 +143,19 @@ class FavoriteAppRepositoryImplTest {
                     appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                     label = "App 1",
                     packageName = "com.example.app1",
-                    useCount = 10
+                    useCount = 10,
                 ),
-                favoriteOrder = 0
+                favoriteOrder = 0,
             ),
             FavoriteAppInfo(
                 info = AppInfo(
                     appIcon = AppIcon(foregroundIcon = mockk(), backgroundIcon = null),
                     label = "App 2",
                     packageName = "com.example.app2",
-                    useCount = 5
+                    useCount = 5,
                 ),
-                favoriteOrder = 1
-            )
+                favoriteOrder = 1,
+            ),
         )
 
         coEvery { mockFavoriteAppDao.deleteAll() } returns Unit
@@ -164,15 +164,15 @@ class FavoriteAppRepositoryImplTest {
         repository.updateFavoriteApps(favoriteAppInfos)
 
         coVerify { mockFavoriteAppDao.deleteAll() }
-        coVerify { 
+        coVerify {
             mockFavoriteAppDao.insertAll(
                 match { entities ->
                     entities.size == 2 &&
-                    entities[0].packageName == "com.example.app1" &&
-                    entities[0].favoriteOrder == 0 &&
-                    entities[1].packageName == "com.example.app2" &&
-                    entities[1].favoriteOrder == 1
-                }
+                        entities[0].packageName == "com.example.app1" &&
+                        entities[0].favoriteOrder == 0 &&
+                        entities[1].packageName == "com.example.app2" &&
+                        entities[1].favoriteOrder == 1
+                },
             )
         }
     }

@@ -40,10 +40,10 @@ class GetClockSettingsUseCaseTest {
     fun `変更された時計設定を取得できること`() = runTest {
         val customClockSettings = ClockSettings(
             isClockShown = false,
-            clockType = ClockType.HORIZONTAL_DATE
+            clockType = ClockType.HORIZONTAL_DATE,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(clockSettings = customClockSettings)
+            UserSettings(clockSettings = customClockSettings),
         )
 
         useCase().test {
@@ -58,7 +58,7 @@ class GetClockSettingsUseCaseTest {
     fun `時計表示の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            clockSettings = ClockSettings(isClockShown = false)
+            clockSettings = ClockSettings(isClockShown = false),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
@@ -73,7 +73,7 @@ class GetClockSettingsUseCaseTest {
     fun `時計タイプの変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            clockSettings = ClockSettings(clockType = ClockType.HORIZONTAL_DATE)
+            clockSettings = ClockSettings(clockType = ClockType.HORIZONTAL_DATE),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
@@ -88,7 +88,7 @@ class GetClockSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = ClockSettings(
             isClockShown = true,
-            clockType = ClockType.TOP_DATE
+            clockType = ClockType.TOP_DATE,
         )
         val userSettings = UserSettings(clockSettings = sameSettings)
         every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)

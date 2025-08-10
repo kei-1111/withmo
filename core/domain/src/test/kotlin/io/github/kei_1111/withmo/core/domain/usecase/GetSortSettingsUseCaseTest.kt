@@ -39,7 +39,7 @@ class GetSortSettingsUseCaseTest {
     fun `変更されたソート設定を取得できること`() = runTest {
         val customSortSettings = SortSettings(sortType = SortType.USE_COUNT)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(sortSettings = customSortSettings)
+            UserSettings(sortSettings = customSortSettings),
         )
 
         useCase().test {
@@ -53,7 +53,7 @@ class GetSortSettingsUseCaseTest {
     fun `ソート設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            sortSettings = SortSettings(sortType = SortType.USE_COUNT)
+            sortSettings = SortSettings(sortType = SortType.USE_COUNT),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 

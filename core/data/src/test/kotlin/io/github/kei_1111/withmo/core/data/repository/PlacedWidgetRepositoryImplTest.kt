@@ -37,11 +37,11 @@ class PlacedWidgetRepositoryImplTest {
         mockPlacedWidgetDao = mockk()
         mockAppWidgetManager = mockk(relaxed = true)
         testDispatcher = UnconfinedTestDispatcher()
-        
+
         mockkStatic(Log::class)
         every { Log.e(any(), any()) } returns 0
     }
-    
+
     @After
     fun tearDown() {
         unmockkStatic(Log::class)
@@ -51,11 +51,11 @@ class PlacedWidgetRepositoryImplTest {
     fun `空の配置ウィジェットリストを取得できること`() = runTest(testDispatcher) {
         every { mockPlacedWidgetDao.getAll() } returns flowOf(emptyList())
         every { mockAppWidgetManager.installedProviders } returns emptyList()
-        
+
         val repository = PlacedWidgetRepositoryImpl(
             placedWidgetDao = mockPlacedWidgetDao,
             appWidgetManager = mockAppWidgetManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         repository.placedWidgetsInfo.test {
@@ -74,7 +74,7 @@ class PlacedWidgetRepositoryImplTest {
                 width = 4,
                 height = 2,
                 positionX = 100f,
-                positionY = 200f
+                positionY = 200f,
             ),
             PlacedWidgetEntity(
                 id = 2,
@@ -82,29 +82,29 @@ class PlacedWidgetRepositoryImplTest {
                 width = 2,
                 height = 1,
                 positionX = 300f,
-                positionY = 400f
-            )
+                positionY = 400f,
+            ),
         )
 
         val mockProvider1 = mockk<android.content.ComponentName>(relaxed = true)
         every { mockProvider1.className } returns "com.example.widget.ExampleWidget"
-        
+
         val mockProvider2 = mockk<android.content.ComponentName>(relaxed = true)
         every { mockProvider2.className } returns "com.example.widget.AnotherWidget"
-        
+
         val mockProviderInfo1 = mockk<AppWidgetProviderInfo>(relaxed = true)
         mockProviderInfo1.provider = mockProvider1
-        
+
         val mockProviderInfo2 = mockk<AppWidgetProviderInfo>(relaxed = true)
         mockProviderInfo2.provider = mockProvider2
-        
+
         every { mockPlacedWidgetDao.getAll() } returns flowOf(placedWidgetEntities)
         every { mockAppWidgetManager.installedProviders } returns listOf(mockProviderInfo1, mockProviderInfo2)
-        
+
         val repository = PlacedWidgetRepositoryImpl(
             placedWidgetDao = mockPlacedWidgetDao,
             appWidgetManager = mockAppWidgetManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         repository.placedWidgetsInfo.test {
@@ -133,7 +133,7 @@ class PlacedWidgetRepositoryImplTest {
                 width = 4,
                 height = 2,
                 positionX = 100f,
-                positionY = 200f
+                positionY = 200f,
             ),
             PlacedWidgetEntity(
                 id = 2,
@@ -141,23 +141,23 @@ class PlacedWidgetRepositoryImplTest {
                 width = 2,
                 height = 1,
                 positionX = 300f,
-                positionY = 400f
-            )
+                positionY = 400f,
+            ),
         )
 
         val mockProvider1 = mockk<android.content.ComponentName>(relaxed = true)
         every { mockProvider1.className } returns "com.example.widget.ExampleWidget"
-        
+
         val mockProviderInfo1 = mockk<AppWidgetProviderInfo>(relaxed = true)
         mockProviderInfo1.provider = mockProvider1
-        
+
         every { mockPlacedWidgetDao.getAll() } returns flowOf(placedWidgetEntities)
         every { mockAppWidgetManager.installedProviders } returns listOf(mockProviderInfo1)
-        
+
         val repository = PlacedWidgetRepositoryImpl(
             placedWidgetDao = mockPlacedWidgetDao,
             appWidgetManager = mockAppWidgetManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         repository.placedWidgetsInfo.test {
@@ -173,35 +173,35 @@ class PlacedWidgetRepositoryImplTest {
     fun `配置ウィジェットリストを更新できること`() = runTest(testDispatcher) {
         val mockProvider1 = mockk<android.content.ComponentName>(relaxed = true)
         every { mockProvider1.className } returns "com.example.widget.ExampleWidget"
-        
+
         val mockProvider2 = mockk<android.content.ComponentName>(relaxed = true)
         every { mockProvider2.className } returns "com.example.widget.AnotherWidget"
-        
+
         val mockProviderInfo1 = mockk<AppWidgetProviderInfo>(relaxed = true)
         mockProviderInfo1.provider = mockProvider1
-        
+
         val mockProviderInfo2 = mockk<AppWidgetProviderInfo>(relaxed = true)
         mockProviderInfo2.provider = mockProvider2
-        
+
         val placedWidgetInfos = listOf(
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 1,
-                    info = mockProviderInfo1
+                    info = mockProviderInfo1,
                 ),
                 width = 4,
                 height = 2,
-                position = Offset(100f, 200f)
+                position = Offset(100f, 200f),
             ),
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 2,
-                    info = mockProviderInfo2
+                    info = mockProviderInfo2,
                 ),
                 width = 2,
                 height = 1,
-                position = Offset(300f, 400f)
-            )
+                position = Offset(300f, 400f),
+            ),
         )
 
         every { mockPlacedWidgetDao.getAll() } returns flowOf(emptyList())
@@ -211,29 +211,29 @@ class PlacedWidgetRepositoryImplTest {
         val repository = PlacedWidgetRepositoryImpl(
             placedWidgetDao = mockPlacedWidgetDao,
             appWidgetManager = mockAppWidgetManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         repository.updatePlacedWidgets(placedWidgetInfos)
 
         coVerify { mockPlacedWidgetDao.deleteAll() }
-        coVerify { 
+        coVerify {
             mockPlacedWidgetDao.insertAll(
                 match { entities ->
                     entities.size == 2 &&
-                    entities[0].id == 1 &&
-                    entities[0].appWidgetProviderClassName == "com.example.widget.ExampleWidget" &&
-                    entities[0].width == 4 &&
-                    entities[0].height == 2 &&
-                    entities[0].positionX == 100f &&
-                    entities[0].positionY == 200f &&
-                    entities[1].id == 2 &&
-                    entities[1].appWidgetProviderClassName == "com.example.widget.AnotherWidget" &&
-                    entities[1].width == 2 &&
-                    entities[1].height == 1 &&
-                    entities[1].positionX == 300f &&
-                    entities[1].positionY == 400f
-                }
+                        entities[0].id == 1 &&
+                        entities[0].appWidgetProviderClassName == "com.example.widget.ExampleWidget" &&
+                        entities[0].width == 4 &&
+                        entities[0].height == 2 &&
+                        entities[0].positionX == 100f &&
+                        entities[0].positionY == 200f &&
+                        entities[1].id == 2 &&
+                        entities[1].appWidgetProviderClassName == "com.example.widget.AnotherWidget" &&
+                        entities[1].width == 2 &&
+                        entities[1].height == 1 &&
+                        entities[1].positionX == 300f &&
+                        entities[1].positionY == 400f
+                },
             )
         }
     }
@@ -247,7 +247,7 @@ class PlacedWidgetRepositoryImplTest {
         val repository = PlacedWidgetRepositoryImpl(
             placedWidgetDao = mockPlacedWidgetDao,
             appWidgetManager = mockAppWidgetManager,
-            ioDispatcher = testDispatcher
+            ioDispatcher = testDispatcher,
         )
 
         repository.updatePlacedWidgets(emptyList())

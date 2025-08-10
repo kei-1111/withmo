@@ -53,9 +53,9 @@ class GetPlacedItemsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "TestApp",
-                    packageName = "com.example.testapp"
-                )
-            )
+                    packageName = "com.example.testapp",
+                ),
+            ),
         )
         every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
         every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(emptyList())
@@ -75,12 +75,12 @@ class GetPlacedItemsUseCaseTest {
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 123,
-                    info = mockk<AppWidgetProviderInfo>()
+                    info = mockk<AppWidgetProviderInfo>(),
                 ),
                 width = 200,
                 height = 100,
-                position = Offset(50f, 150f)
-            )
+                position = Offset(50f, 150f),
+            ),
         )
         every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(emptyList())
         every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
@@ -103,20 +103,20 @@ class GetPlacedItemsUseCaseTest {
                 info = AppInfo(
                     appIcon = mockk<AppIcon>(),
                     label = "TestApp",
-                    packageName = "com.example.testapp"
-                )
-            )
+                    packageName = "com.example.testapp",
+                ),
+            ),
         )
         val placedWidgets = listOf(
             PlacedWidgetInfo(
                 info = WidgetInfo(
                     id = 123,
-                    info = mockk<AppWidgetProviderInfo>()
+                    info = mockk<AppWidgetProviderInfo>(),
                 ),
                 width = 200,
                 height = 100,
-                position = Offset(50f, 150f)
-            )
+                position = Offset(50f, 150f),
+            ),
         )
         every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
         every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
@@ -124,17 +124,18 @@ class GetPlacedItemsUseCaseTest {
         useCase().test {
             val result = awaitItem()
             assertEquals(2, result.size)
-            
+
             // ウィジェットが先に来る（combine の順序）
             assertEquals("123", result[0].id)
             assertEquals(Offset(50f, 150f), result[0].position)
-            
+
             assertEquals("app1", result[1].id)
             assertEquals(Offset(100f, 200f), result[1].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
 
+    @Suppress("LongMethod")
     @Test
     fun `配置アイテムの変更が反映されること`() = runTest {
         val appsFlow = MutableStateFlow(
@@ -145,13 +146,13 @@ class GetPlacedItemsUseCaseTest {
                     info = AppInfo(
                         appIcon = mockk<AppIcon>(),
                         label = "TestApp",
-                        packageName = "com.example.testapp"
-                    )
-                )
-            )
+                        packageName = "com.example.testapp",
+                    ),
+                ),
+            ),
         )
         val widgetsFlow = MutableStateFlow(emptyList<PlacedWidgetInfo>())
-        
+
         every { mockPlacedAppRepository.placedAppsInfo } returns appsFlow
         every { mockPlacedWidgetRepository.placedWidgetsInfo } returns widgetsFlow
 
@@ -160,24 +161,24 @@ class GetPlacedItemsUseCaseTest {
             assertEquals(1, initial.size)
             assertEquals("app1", initial[0].id)
             assertEquals(Offset(100f, 200f), initial[0].position)
-            
+
             widgetsFlow.value = listOf(
                 PlacedWidgetInfo(
                     info = WidgetInfo(
                         id = 456,
-                        info = mockk<AppWidgetProviderInfo>()
+                        info = mockk<AppWidgetProviderInfo>(),
                     ),
                     width = 150,
                     height = 75,
-                    position = Offset(200f, 300f)
-                )
+                    position = Offset(200f, 300f),
+                ),
             )
-            
+
             val intermediate = awaitItem()
             assertEquals(2, intermediate.size)
             assertEquals("456", intermediate[0].id)
             assertEquals("app1", intermediate[1].id)
-            
+
             appsFlow.value = listOf(
                 PlacedAppInfo(
                     id = "app1",
@@ -185,8 +186,8 @@ class GetPlacedItemsUseCaseTest {
                     info = AppInfo(
                         appIcon = mockk<AppIcon>(),
                         label = "TestApp",
-                        packageName = "com.example.testapp"
-                    )
+                        packageName = "com.example.testapp",
+                    ),
                 ),
                 PlacedAppInfo(
                     id = "app2",
@@ -194,17 +195,17 @@ class GetPlacedItemsUseCaseTest {
                     info = AppInfo(
                         appIcon = mockk<AppIcon>(),
                         label = "TestApp2",
-                        packageName = "com.example.testapp2"
-                    )
-                )
+                        packageName = "com.example.testapp2",
+                    ),
+                ),
             )
-            
+
             val updated = awaitItem()
             assertEquals(3, updated.size)
-            
+
             assertEquals("456", updated[0].id)
             assertEquals(Offset(200f, 300f), updated[0].position)
-            
+
             assertEquals("app1", updated[1].id)
             assertEquals(Offset(150f, 250f), updated[1].position)
             assertEquals("app2", updated[2].id)

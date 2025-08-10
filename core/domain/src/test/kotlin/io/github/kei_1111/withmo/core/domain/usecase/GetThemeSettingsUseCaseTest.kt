@@ -39,7 +39,7 @@ class GetThemeSettingsUseCaseTest {
     fun `変更されたテーマ設定を取得できること`() = runTest {
         val customThemeSettings = ThemeSettings(themeType = ThemeType.DARK)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(themeSettings = customThemeSettings)
+            UserSettings(themeSettings = customThemeSettings),
         )
 
         useCase().test {
@@ -53,7 +53,7 @@ class GetThemeSettingsUseCaseTest {
     fun `テーマ設定の変更が反映されること`() = runTest {
         val initialSettings = UserSettings()
         val updatedSettings = UserSettings(
-            themeSettings = ThemeSettings(themeType = ThemeType.LIGHT)
+            themeSettings = ThemeSettings(themeType = ThemeType.LIGHT),
         )
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
