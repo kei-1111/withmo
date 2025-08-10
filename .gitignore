@@ -15,7 +15,4 @@
 .cxx
 local.properties
 
-# UnityLibraryを保存しない
-unityLibrary/
-
 /app/google-services.json
