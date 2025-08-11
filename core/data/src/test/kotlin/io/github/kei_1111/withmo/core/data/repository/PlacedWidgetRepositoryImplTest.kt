@@ -34,7 +34,7 @@ class PlacedWidgetRepositoryImplTest {
 
     @Before
     fun setup() {
-        mockPlacedWidgetDao = mockk()
+        mockPlacedWidgetDao = mockk(relaxUnitFun = true)
         mockAppWidgetManager = mockk(relaxed = true)
         testDispatcher = UnconfinedTestDispatcher()
 

@@ -27,7 +27,7 @@ class OneTimeEventRepositoryImplTest {
 
     @Before
     fun setup() {
-        mockDataStore = mockk()
+        mockDataStore = mockk(relaxed = true)
         testDispatcher = UnconfinedTestDispatcher()
     }
 
@@ -74,9 +74,7 @@ class OneTimeEventRepositoryImplTest {
 
     @Test
     fun `オンボーディング表示済みをマークできること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
         val updatedPreferences = preferencesOf(booleanPreferencesKey("is_onboarding_first_shown") to true)
-
         coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
 
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)
@@ -88,9 +86,7 @@ class OneTimeEventRepositoryImplTest {
 
     @Test
     fun `モデル変更警告表示済みをマークできること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
         val updatedPreferences = preferencesOf(booleanPreferencesKey("is_model_change_warning_first_shown") to true)
-
         coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
 
         val repository = OneTimeEventRepositoryImpl(mockDataStore, testDispatcher)

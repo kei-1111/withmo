@@ -37,7 +37,7 @@ class UserSettingsRepositoryImplTest {
 
     @Before
     fun setup() {
-        mockDataStore = mockk()
+        mockDataStore = mockk(relaxed = true)
         testDispatcher = UnconfinedTestDispatcher()
     }
 
@@ -66,10 +66,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `通知設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val notificationSettings = NotificationSettings(
             isNotificationAnimationEnabled = true,
@@ -85,10 +82,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `時計設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val clockSettings = ClockSettings(
             isClockShown = false,
@@ -104,10 +98,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `アプリアイコン設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val appIconSettings = AppIconSettings(
             appIconShape = AppIconShape.RoundedCorner,
@@ -123,10 +114,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `ソート設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val sortSettings = SortSettings(sortType = SortType.USE_COUNT)
 
@@ -139,10 +127,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `サイドボタン設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val sideButtonSettings = SideButtonSettings(
             isShowScaleSliderButtonShown = false,
@@ -160,10 +145,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `テーマ設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val themeSettings = ThemeSettings(themeType = ThemeType.DARK)
 
@@ -176,10 +158,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `モデルファイルパスを保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val modelFilePath = ModelFilePath("/storage/emulated/0/model.vrm")
 
@@ -192,10 +171,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `nullのモデルファイルパスを保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val modelFilePath = ModelFilePath(null)
 
@@ -208,10 +184,7 @@ class UserSettingsRepositoryImplTest {
 
     @Test
     fun `モデル設定を保存できること`() = runTest(testDispatcher) {
-        val mockDataStore = mockk<DataStore<Preferences>>(relaxed = true)
-        val updatedPreferences = emptyPreferences()
-
-        coEvery { mockDataStore.updateData(any()) } returns updatedPreferences
+        coEvery { mockDataStore.updateData(any()) } returns emptyPreferences()
 
         val modelSettings = ModelSettings(scale = 1.5f)
 

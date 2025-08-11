@@ -28,28 +28,24 @@ class PlacedAppRepositoryImplTest {
     private lateinit var mockPlacedAppDao: PlacedAppDao
     private lateinit var mockAppManager: AppManager
     private lateinit var testDispatcher: TestDispatcher
-    private lateinit var repository: PlacedAppRepositoryImpl
 
     @Before
     fun setup() {
-        mockPlacedAppDao = mockk()
+        mockPlacedAppDao = mockk(relaxUnitFun = true)
         mockAppManager = mockk()
         testDispatcher = UnconfinedTestDispatcher()
-
-        every { mockPlacedAppDao.getAll() } returns flowOf(emptyList())
-        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
-
-        repository = PlacedAppRepositoryImpl(
-            placedAppDao = mockPlacedAppDao,
-            appManager = mockAppManager,
-            ioDispatcher = testDispatcher,
-        )
     }
 
     @Test
     fun `空の配置アプリリストを取得できること`() = runTest(testDispatcher) {
         every { mockPlacedAppDao.getAll() } returns flowOf(emptyList())
         every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList<AppInfo>())
+
+        val repository = PlacedAppRepositoryImpl(
+            placedAppDao = mockPlacedAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
 
         repository.placedAppsInfo.test {
             val result = awaitItem()
@@ -88,13 +84,13 @@ class PlacedAppRepositoryImplTest {
         every { mockPlacedAppDao.getAll() } returns flowOf(placedAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
 
-        val testRepository = PlacedAppRepositoryImpl(
+        val repository = PlacedAppRepositoryImpl(
             placedAppDao = mockPlacedAppDao,
             appManager = mockAppManager,
             ioDispatcher = testDispatcher,
         )
 
-        testRepository.placedAppsInfo.test {
+        repository.placedAppsInfo.test {
             val result = awaitItem()
             assertEquals(2, result.size)
             assertEquals("id1", result[0].id)
@@ -127,13 +123,13 @@ class PlacedAppRepositoryImplTest {
         every { mockPlacedAppDao.getAll() } returns flowOf(placedAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
 
-        val testRepository = PlacedAppRepositoryImpl(
+        val repository = PlacedAppRepositoryImpl(
             placedAppDao = mockPlacedAppDao,
             appManager = mockAppManager,
             ioDispatcher = testDispatcher,
         )
 
-        testRepository.placedAppsInfo.test {
+        repository.placedAppsInfo.test {
             val result = awaitItem()
             assertEquals(1, result.size)
             assertEquals("id1", result[0].id)
@@ -144,6 +140,17 @@ class PlacedAppRepositoryImplTest {
 
     @Test
     fun `配置アプリリストを更新できること`() = runTest(testDispatcher) {
+        coEvery { mockPlacedAppDao.deleteAll() } returns Unit
+        coEvery { mockPlacedAppDao.insertAll(any()) } returns Unit
+        every { mockPlacedAppDao.getAll() } returns flowOf(emptyList())
+        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
+
+        val repository = PlacedAppRepositoryImpl(
+            placedAppDao = mockPlacedAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
+
         val placedAppInfos = listOf(
             PlacedAppInfo(
                 id = "id1",
@@ -166,9 +173,6 @@ class PlacedAppRepositoryImplTest {
                 position = Offset(300f, 400f),
             ),
         )
-
-        coEvery { mockPlacedAppDao.deleteAll() } returns Unit
-        coEvery { mockPlacedAppDao.insertAll(any()) } returns Unit
 
         repository.updatePlacedApps(placedAppInfos)
 
@@ -194,6 +198,14 @@ class PlacedAppRepositoryImplTest {
     fun `空の配置アプリリストで更新できること`() = runTest(testDispatcher) {
         coEvery { mockPlacedAppDao.deleteAll() } returns Unit
         coEvery { mockPlacedAppDao.insertAll(any()) } returns Unit
+        every { mockPlacedAppDao.getAll() } returns flowOf(emptyList())
+        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
+
+        val repository = PlacedAppRepositoryImpl(
+            placedAppDao = mockPlacedAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
 
         repository.updatePlacedApps(emptyList())
 

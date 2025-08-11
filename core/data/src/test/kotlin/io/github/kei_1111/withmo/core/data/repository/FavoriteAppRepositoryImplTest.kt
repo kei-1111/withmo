@@ -27,26 +27,25 @@ class FavoriteAppRepositoryImplTest {
     private lateinit var mockFavoriteAppDao: FavoriteAppDao
     private lateinit var mockAppManager: AppManager
     private lateinit var testDispatcher: TestDispatcher
-    private lateinit var repository: FavoriteAppRepositoryImpl
 
     @Before
     fun setup() {
-        mockFavoriteAppDao = mockk()
+        mockFavoriteAppDao = mockk(relaxUnitFun = true)
         mockAppManager = mockk()
         testDispatcher = UnconfinedTestDispatcher()
-
-        every { mockFavoriteAppDao.getAll() } returns flowOf(emptyList())
-        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
-
-        repository = FavoriteAppRepositoryImpl(
-            favoriteAppDao = mockFavoriteAppDao,
-            appManager = mockAppManager,
-            ioDispatcher = testDispatcher,
-        )
     }
 
     @Test
     fun `空のお気に入りアプリリストを取得できること`() = runTest(testDispatcher) {
+        every { mockFavoriteAppDao.getAll() } returns flowOf(emptyList())
+        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
+
+        val repository = FavoriteAppRepositoryImpl(
+            favoriteAppDao = mockFavoriteAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
+
         repository.favoriteAppsInfo.test {
             val result = awaitItem()
             assertEquals(0, result.size)
@@ -84,13 +83,13 @@ class FavoriteAppRepositoryImplTest {
         every { mockFavoriteAppDao.getAll() } returns flowOf(favoriteAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
 
-        val testRepository = FavoriteAppRepositoryImpl(
+        val repository = FavoriteAppRepositoryImpl(
             favoriteAppDao = mockFavoriteAppDao,
             appManager = mockAppManager,
             ioDispatcher = testDispatcher,
         )
 
-        testRepository.favoriteAppsInfo.test {
+        repository.favoriteAppsInfo.test {
             val result = awaitItem()
             assertEquals(2, result.size)
             assertEquals("com.example.app1", result[0].info.packageName)
@@ -121,13 +120,13 @@ class FavoriteAppRepositoryImplTest {
         every { mockFavoriteAppDao.getAll() } returns flowOf(favoriteAppEntities)
         every { mockAppManager.appInfoList } returns MutableStateFlow(appInfoList)
 
-        val testRepository = FavoriteAppRepositoryImpl(
+        val repository = FavoriteAppRepositoryImpl(
             favoriteAppDao = mockFavoriteAppDao,
             appManager = mockAppManager,
             ioDispatcher = testDispatcher,
         )
 
-        testRepository.favoriteAppsInfo.test {
+        repository.favoriteAppsInfo.test {
             val result = awaitItem()
             assertEquals(1, result.size)
             assertEquals("com.example.app1", result[0].info.packageName)
@@ -160,6 +159,14 @@ class FavoriteAppRepositoryImplTest {
 
         coEvery { mockFavoriteAppDao.deleteAll() } returns Unit
         coEvery { mockFavoriteAppDao.insertAll(any()) } returns Unit
+        every { mockFavoriteAppDao.getAll() } returns flowOf(emptyList())
+        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
+
+        val repository = FavoriteAppRepositoryImpl(
+            favoriteAppDao = mockFavoriteAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
 
         repository.updateFavoriteApps(favoriteAppInfos)
 
@@ -181,6 +188,14 @@ class FavoriteAppRepositoryImplTest {
     fun `空のお気に入りアプリリストで更新できること`() = runTest(testDispatcher) {
         coEvery { mockFavoriteAppDao.deleteAll() } returns Unit
         coEvery { mockFavoriteAppDao.insertAll(any()) } returns Unit
+        every { mockFavoriteAppDao.getAll() } returns flowOf(emptyList())
+        every { mockAppManager.appInfoList } returns MutableStateFlow(emptyList())
+
+        val repository = FavoriteAppRepositoryImpl(
+            favoriteAppDao = mockFavoriteAppDao,
+            appManager = mockAppManager,
+            ioDispatcher = testDispatcher,
+        )
 
         repository.updateFavoriteApps(emptyList())
 
