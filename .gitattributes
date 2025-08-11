@@ -1,0 +1,2 @@
+unityLibrary/** filter=lfs diff=lfs merge=lfs -text
+unityLibrary/.gitignore !filter !diff !merge text

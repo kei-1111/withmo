@@ -9,6 +9,7 @@ androidTargetSdk = "35"
 collectionsImmutable = "0.3.8"
 composeBom = "2024.09.03"
 coreKtx = "1.13.1"
+coroutinesTest = "1.7.3"
 datastorePreferences = "1.1.1"
 detekt = "1.23.7"
 detektCompose = "0.4.12"
@@ -24,11 +25,13 @@ kotlin = "2.0.0"
 ksp = "2.0.0-1.0.21"
 lifecycleRuntimeKtx = "2.8.4"
 materialIconsExtended = "1.7.2"
+mockk = "1.13.8"
 navigationCompose = "2.8.4"
 room = "2.6.1"
 serialization = "2.0.0"
 serializationJson = "1.7.3"
 splashScreen = "1.0.1"
+turbine = "1.0.0"
 
 
 [libraries]
@@ -67,6 +70,9 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
+kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
+turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 
 # Use build-logic
 android-gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

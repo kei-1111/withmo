@@ -1,12 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git add *)",
+      "Bash(git add:*)",
       "Bash(git status)",
-      "Bash(./gradlew detekt)",
-      "Bash(gh issue *)",
-      "Bash(gh pr *)",
-      "Bash(gh api *)"
+      "Bash(./gradlew:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh pr view:*)"
     ],
     "deny": [
       "Bash(curl:*)"
