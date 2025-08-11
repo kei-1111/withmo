@@ -193,6 +193,11 @@ private fun animatedColorScheme(
         animationSpec = tween(durationMillis = ThemeAnimationDuration),
         label = "onSurfaceVariant",
     )
+    val surfaceTint by animateColorAsState(
+        targetValue = targetScheme.surfaceTint,
+        animationSpec = tween(durationMillis = ThemeAnimationDuration),
+        label = "surfaceTint",
+    )
     val outline by animateColorAsState(
         targetValue = targetScheme.outline,
         animationSpec = tween(durationMillis = ThemeAnimationDuration),
@@ -279,7 +284,7 @@ private fun animatedColorScheme(
         onSurface = onSurface,
         surfaceVariant = surfaceVariant,
         onSurfaceVariant = onSurfaceVariant,
-        surfaceTint = targetScheme.surfaceTint,
+        surfaceTint = surfaceTint,
         inverseSurface = inverseSurface,
         inverseOnSurface = inverseOnSurface,
         error = error,
