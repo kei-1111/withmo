@@ -1,37 +1,37 @@
 [versions]
-activityCompose = "1.9.2"
-accompanistDrawablePainter = "0.30.1"
-accompanistPermissions = "0.27.1"
-androidGradlePlugin = "8.6.0"
-androidCompileSdk = "35"
+activityCompose = "1.10.1"
+accompanistDrawablePainter = "0.37.3"
+accompanistPermissions = "0.37.3"
+androidGradlePlugin = "8.11.0"
+androidCompileSdk = "36"
 androidMinSdk = "29"
-androidTargetSdk = "35"
-collectionsImmutable = "0.3.8"
-composeBom = "2024.09.03"
-coreKtx = "1.13.1"
-coroutinesTest = "1.7.3"
-datastorePreferences = "1.1.1"
-detekt = "1.23.7"
-detektCompose = "0.4.12"
-espressoCore = "3.6.1"
-firebaseBom = "33.13.0"
-firebaseCrashlytics = "3.0.3"
-googleServices = "4.4.2"
-hilt = "2.49"
+androidTargetSdk = "36"
+collectionsImmutable = "0.4.0"
+composeBom = "2025.08.00"
+coreKtx = "1.17.0"
+coroutinesTest = "1.10.2"
+datastorePreferences = "1.1.7"
+detekt = "1.23.8"
+detektCompose = "0.4.27"
+espressoCore = "3.7.0"
+firebaseBom = "34.1.0"
+firebaseCrashlytics = "3.0.6"
+googleServices = "4.4.3"
+hilt = "2.57"
 hiltNavigationCompose = "1.2.0"
 junit = "4.13.2"
-junitVersion = "1.2.1"
-kotlin = "2.0.0"
-ksp = "2.0.0-1.0.21"
-lifecycleRuntimeKtx = "2.8.4"
-materialIconsExtended = "1.7.2"
-mockk = "1.13.8"
-navigationCompose = "2.8.4"
-room = "2.6.1"
-serialization = "2.0.0"
-serializationJson = "1.7.3"
+junitVersion = "1.3.0"
+kotlin = "2.2.0"
+ksp = "2.2.0-2.0.2"
+lifecycleRuntimeKtx = "2.9.2"
+materialIconsExtended = "1.7.8"
+mockk = "1.14.5"
+navigationCompose = "2.9.3"
+room = "2.7.2"
+serialization = "2.2.0"
+serializationJson = "1.9.0"
 splashScreen = "1.0.1"
-turbine = "1.0.0"
+turbine = "1.2.1"
 
 
 [libraries]
@@ -93,9 +93,9 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "serialization" }
 
 # withmo Plugins
-withmo-android-application = { id = "withmo.android.application", version = "unspecified" }
-withmo-android-feature = { id = "withmo.android.feature", version = "unspecified" }
-withmo-android-library-compose = { id = "withmo.android.library.compose", version = "unspecified" }
-withmo-android-library = { id = "withmo.android.library", version = "unspecified" }
-withmo-detekt = { id = "withmo.detekt", version = "unspecified" }
-withmo-hilt = { id = "withmo.hilt", version = "unspecified" }
+withmo-android-application = { id = "withmo.android.application" }
+withmo-android-feature = { id = "withmo.android.feature" }
+withmo-android-library-compose = { id = "withmo.android.library.compose" }
+withmo-android-library = { id = "withmo.android.library" }
+withmo-detekt = { id = "withmo.detekt" }
+withmo-hilt = { id = "withmo.hilt" }
