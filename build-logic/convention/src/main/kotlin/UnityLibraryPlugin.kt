@@ -6,10 +6,10 @@ import java.io.File
 class UnityLibraryPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
-            val unityLibraryDir = File(rootDir, "libs/unity")
+            val unityLibraryAar = File(rootDir, "libs/unity/unityLibrary-release.aar")
             
             dependencies {
-                add("implementation", fileTree(mapOf("dir" to unityLibraryDir, "include" to listOf("*.aar"))))
+                add("implementation", files(unityLibraryAar))
             }
         }
     }
