@@ -53,7 +53,7 @@ android {
     }
 }
 
-val unityLibraryLibsDir = project(":unityLibrary").projectDir.resolve("libs")
+val unityLibraryDir = File(rootDir, "libs/unity")
 
 dependencies {
     implementation(libs.androidx.core.splashscreen)
@@ -72,8 +72,7 @@ dependencies {
     implementation(projects.feature.home)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.setting)
-    implementation(projects.unityLibrary)
-    implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to unityLibraryDir, "include" to listOf("*.aar"))))
 
     "prodImplementation"(platform(libs.firebase.bom))
     "prodImplementation"(libs.firebase.analytics)

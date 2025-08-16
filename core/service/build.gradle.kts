@@ -7,13 +7,12 @@ android {
     namespace = "io.github.kei_1111.withmo.core.service"
 }
 
-val unityLibraryLibsDir = project(":unityLibrary").projectDir.resolve("libs")
+val unityLibraryDir = File(rootDir, "libs/unity")
 
 dependencies {
     implementation(projects.core.common)
     implementation(projects.core.domain)
     implementation(projects.core.model)
     implementation(projects.core.util)
-    implementation(projects.unityLibrary)
-    implementation(fileTree(mapOf("dir" to unityLibraryLibsDir, "include" to listOf("*.jar"))))
+    implementation(fileTree(mapOf("dir" to unityLibraryDir, "include" to listOf("*.aar"))))
 }
