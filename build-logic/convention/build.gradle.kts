@@ -49,5 +49,9 @@ gradlePlugin {
             id = libs.plugins.withmo.hilt.get().pluginId
             implementationClass = "HiltPlugin"
         }
+        register("unityLibrary") {
+            id = libs.plugins.withmo.unity.library.get().pluginId
+            implementationClass = "UnityLibraryPlugin"
+        }
     }
 }

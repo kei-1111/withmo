@@ -99,3 +99,4 @@ withmo-android-library-compose = { id = "withmo.android.library.compose" }
 withmo-android-library = { id = "withmo.android.library" }
 withmo-detekt = { id = "withmo.detekt" }
 withmo-hilt = { id = "withmo.hilt" }
+withmo-unity-library = { id = "withmo.unity.library" }

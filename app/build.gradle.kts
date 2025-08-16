@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.withmo.android.application)
+    alias(libs.plugins.withmo.unity.library)
     alias(libs.plugins.serialization)
 }
 
@@ -53,8 +54,6 @@ android {
     }
 }
 
-val unityLibraryDir = File(rootDir, "libs/unity")
-
 dependencies {
     implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.material3)
@@ -72,7 +71,6 @@ dependencies {
     implementation(projects.feature.home)
     implementation(projects.feature.onboarding)
     implementation(projects.feature.setting)
-    implementation(fileTree(mapOf("dir" to unityLibraryDir, "include" to listOf("*.aar"))))
 
     "prodImplementation"(platform(libs.firebase.bom))
     "prodImplementation"(libs.firebase.analytics)
