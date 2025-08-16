@@ -18,4 +18,5 @@ plugins {
     alias(libs.plugins.withmo.android.library) apply false
     alias(libs.plugins.withmo.detekt) apply false
     alias(libs.plugins.withmo.hilt) apply false
+    alias(libs.plugins.withmo.unity.library) apply false
 }

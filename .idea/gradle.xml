@@ -39,7 +39,6 @@
             <option value="$PROJECT_DIR$/feature/home" />
             <option value="$PROJECT_DIR$/feature/onboarding" />
             <option value="$PROJECT_DIR$/feature/setting" />
-            <option value="$PROJECT_DIR$/unityLibrary" />
           </set>
         </option>
       </GradleProjectSettings>

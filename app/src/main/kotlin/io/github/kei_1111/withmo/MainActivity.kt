@@ -112,6 +112,8 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        window.isNavigationBarContrastEnforced = false
+
         UnityManager.init(applicationContext)
 
         observeModelFilePath()
