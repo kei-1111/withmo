@@ -54,7 +54,7 @@ internal fun AppListSheet(
         derivedStateOf {
             val filtered = appList.filter { appInfo ->
                 appInfo.label.contains(appSearchQuery, ignoreCase = true)
-            }
+            }.distinctBy { it.packageName }
             sortAppList(
                 sortType = state.currentUserSettings.sortSettings.sortType,
                 appList = filtered,

@@ -71,12 +71,16 @@ internal fun AppList(
                     text = "アプリ一覧",
                 )
             }
-            items(launchableAppList) { item ->
+            items(
+                items = launchableAppList,
+                key = { it.packageName },
+            ) { item ->
                 App(
                     appInfo = item,
                     appIconShape = appIconShape,
                     isNotificationBadgeShown =
                     userSettings.notificationSettings.isNotificationBadgeEnabled,
+                    modifier = Modifier.animateItem(),
                     onClick = { onAppClick(item) },
                     onLongClick = { onAppLongClick(item) },
                 )
@@ -91,11 +95,15 @@ internal fun AppList(
                     text = "カスタマイズ",
                 )
             }
-            items(settingApp) { item ->
+            items(
+                items = settingApp,
+                key = { it.packageName },
+            ) { item ->
                 App(
                     appInfo = item,
                     appIconShape = appIconShape,
                     isNotificationBadgeShown = false,
+                    modifier = Modifier.animateItem(),
                     onClick = { onAppClick(item) },
                     onLongClick = { onAppLongClick(item) },
                 )
