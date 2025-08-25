@@ -78,17 +78,14 @@ internal fun AppList(
                 App(
                     appInfo = item,
                     appIconShape = appIconShape,
-                    isNotificationBadgeShown =
-                    userSettings.notificationSettings.isNotificationBadgeEnabled,
+                    isNotificationBadgeShown = userSettings.notificationSettings.isNotificationBadgeEnabled,
                     modifier = Modifier.animateItem(),
                     onClick = { onAppClick(item) },
                     onLongClick = { onAppLongClick(item) },
                 )
             }
         }
-        if (settingApp.isNotEmpty() &&
-            !userSettings.sideButtonSettings.isNavigateSettingsButtonShown
-        ) {
+        if (settingApp.isNotEmpty() && !userSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             item(span = { GridItemSpan(maxLineSpan) }) {}
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LabelMediumText(
