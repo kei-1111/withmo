@@ -14,8 +14,8 @@ android {
 
     defaultConfig {
         applicationId = "io.github.kei_1111.withmo"
-        versionCode = 9
-        versionName = "2.0.0"
+        versionCode = 10
+        versionName = "2.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
