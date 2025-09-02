@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +44,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -283,6 +284,11 @@ private fun WidgetPreviewContainer(
 
     var expanded by remember { mutableStateOf(false) }
 
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "arrow_rotation",
+    )
+
     Surface(
         modifier = modifier.animateContentSize(),
         shape = MaterialTheme.shapes.medium,
@@ -310,13 +316,16 @@ private fun WidgetPreviewContainer(
                 appLabel?.let {
                     BodyMediumText(
                         text = appLabel,
-                        modifier = Modifier.weight(Weights.Medium),
                     )
                 }
+                Spacer(
+                    modifier = Modifier.weight(Weights.Medium),
+                )
                 Icon(
-                    imageVector = if (expanded) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
+                    imageVector = Icons.Rounded.ExpandMore,
                     contentDescription = if (expanded) "Close" else "Open",
                     tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.rotate(rotationAngle),
                 )
             }
 
