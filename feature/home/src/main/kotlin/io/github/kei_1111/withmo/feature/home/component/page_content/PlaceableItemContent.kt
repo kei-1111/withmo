@@ -94,39 +94,29 @@ internal fun PlaceableItemContent(
                 }
             }
         }
+
         if (state.isEditMode) {
-            EditPlaceableItemContent(
-                onAction = onAction,
+            Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
                     .padding(bottom = bottomPaddingValue + Paddings.ExtraSmall)
                     .padding(horizontal = Paddings.Medium),
-            )
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+            ) {
+                Spacer(
+                    modifier = Modifier.weight(Weights.Medium),
+                )
+                AddPlaceableItemButton(
+                    onClick = { onAction(HomeAction.OnAddPlaceableItemButtonClick) },
+                )
+                CompleteEditButton(
+                    onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
+                    modifier = Modifier.weight(Weights.Medium),
+                )
+            }
         }
-    }
-}
-
-@Composable
-private fun EditPlaceableItemContent(
-    onAction: (HomeAction) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        Spacer(
-            modifier = Modifier.weight(Weights.Medium),
-        )
-        AddPlaceableItemButton(
-            onClick = { onAction(HomeAction.OnAddPlaceableItemButtonClick) },
-        )
-        CompleteEditButton(
-            onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
-            modifier = Modifier.weight(Weights.Medium),
-        )
     }
 }
 
@@ -192,28 +182,6 @@ private fun PlaceableItemContentDarkPreview() {
             ),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun EditPlaceableItemContentLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        EditPlaceableItemContent(
-            onAction = {},
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun EditPlaceableItemContentDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        EditPlaceableItemContent(
-            onAction = {},
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }
