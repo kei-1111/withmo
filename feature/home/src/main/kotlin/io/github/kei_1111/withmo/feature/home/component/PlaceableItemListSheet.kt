@@ -257,7 +257,7 @@ private fun WidgetList(
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
             item {
-                WidgetContainer(
+                WidgetPreviewContainer(
                     packageName = packageName,
                     widgetInfoList = widgetInfoList.toPersistentList(),
                     selectWidget = selectWidget,
@@ -270,7 +270,7 @@ private fun WidgetList(
 @RequiresApi(Build.VERSION_CODES.S)
 @Suppress("LongMethod")
 @Composable
-private fun WidgetContainer(
+private fun WidgetPreviewContainer(
     packageName: String,
     widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
@@ -329,7 +329,7 @@ private fun WidgetContainer(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     widgetInfoList.forEach { widgetInfo ->
-                        WidgetItem(
+                        WidgetPreviewItem(
                             widgetInfo = widgetInfo,
                             selectWidget = selectWidget,
                             modifier = Modifier.fillMaxWidth(),
@@ -345,7 +345,7 @@ private const val WidgetDescriptionMaxLines = 3
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-private fun WidgetItem(
+private fun WidgetPreviewItem(
     widgetInfo: AppWidgetProviderInfo,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -586,7 +586,7 @@ private fun AppTabContentDarkPreview() {
 @Composable
 private fun WidgetContainerLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        WidgetContainer(
+        WidgetPreviewContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),
             selectWidget = {},
@@ -600,7 +600,7 @@ private fun WidgetContainerLightPreview() {
 @Composable
 private fun WidgetContainerDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        WidgetContainer(
+        WidgetPreviewContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),
             selectWidget = {},
