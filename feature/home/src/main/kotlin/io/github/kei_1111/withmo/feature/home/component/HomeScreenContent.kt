@@ -3,7 +3,6 @@ package io.github.kei_1111.withmo.feature.home.component
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
@@ -33,7 +32,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.component.page_content.ChangeModelScaleContent
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
 import kotlinx.collections.immutable.toPersistentList
 
@@ -49,46 +47,35 @@ internal fun HomeScreenContent(
     val targetBottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPaddingValue)
 
-    Box(
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .pointerInput(Unit) {
+                detectVerticalDragGestures(
+                    onVerticalDrag = { change, dragAmount ->
+                        if (dragAmount < BottomSheetShowDragHeight) {
+                            onAction(HomeAction.OnAppListSheetSwipeUp)
+                        }
+                    },
+                )
+            },
     ) {
-        if (state.isChangeModelScaleContentShown) {
-            ChangeModelScaleContent(
+        PagerContent(
+            state = state,
+            onAction = onAction,
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(Weights.Medium),
+        )
+
+        if (!state.isChangeModelScaleContentShown && !state.isEditMode && state.favoriteAppInfoList.isNotEmpty()) {
+            RowAppList(
                 state = state,
                 onAction = onAction,
-                modifier = Modifier.fillMaxSize(),
-            )
-        } else {
-            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .pointerInput(Unit) {
-                        detectVerticalDragGestures(
-                            onVerticalDrag = { change, dragAmount ->
-                                if (dragAmount < BottomSheetShowDragHeight) {
-                                    onAction(HomeAction.OnAppListSheetSwipeUp)
-                                }
-                            },
-                        )
-                    },
-            ) {
-                PagerContent(
-                    state = state,
-                    onAction = onAction,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .weight(Weights.Medium),
-                )
-                if (!state.isEditMode && state.favoriteAppInfoList.isNotEmpty()) {
-                    RowAppList(
-                        state = state,
-                        onAction = onAction,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = bottomPaddingValue),
-                    )
-                }
-            }
+                    .fillMaxWidth()
+                    .padding(bottom = bottomPaddingValue),
+            )
         }
     }
 }

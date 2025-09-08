@@ -71,31 +71,36 @@ internal fun AppList(
                     text = "アプリ一覧",
                 )
             }
-            items(launchableAppList) { item ->
+            items(
+                items = launchableAppList,
+                key = { it.packageName },
+            ) { item ->
                 App(
                     appInfo = item,
                     appIconShape = appIconShape,
-                    isNotificationBadgeShown =
-                    userSettings.notificationSettings.isNotificationBadgeEnabled,
+                    isNotificationBadgeShown = userSettings.notificationSettings.isNotificationBadgeEnabled,
+                    modifier = Modifier.animateItem(),
                     onClick = { onAppClick(item) },
                     onLongClick = { onAppLongClick(item) },
                 )
             }
         }
-        if (settingApp.isNotEmpty() &&
-            !userSettings.sideButtonSettings.isNavigateSettingsButtonShown
-        ) {
+        if (settingApp.isNotEmpty() && !userSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             item(span = { GridItemSpan(maxLineSpan) }) {}
             item(span = { GridItemSpan(maxLineSpan) }) {
                 LabelMediumText(
                     text = "カスタマイズ",
                 )
             }
-            items(settingApp) { item ->
+            items(
+                items = settingApp,
+                key = { it.packageName },
+            ) { item ->
                 App(
                     appInfo = item,
                     appIconShape = appIconShape,
                     isNotificationBadgeShown = false,
+                    modifier = Modifier.animateItem(),
                     onClick = { onAppClick(item) },
                     onLongClick = { onAppLongClick(item) },
                 )

@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetProviderInfo
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +26,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.ExpandLess
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -44,6 +44,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
@@ -257,7 +258,7 @@ private fun WidgetList(
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
             item {
-                WidgetContainer(
+                WidgetPreviewContainer(
                     packageName = packageName,
                     widgetInfoList = widgetInfoList.toPersistentList(),
                     selectWidget = selectWidget,
@@ -270,7 +271,7 @@ private fun WidgetList(
 @RequiresApi(Build.VERSION_CODES.S)
 @Suppress("LongMethod")
 @Composable
-private fun WidgetContainer(
+private fun WidgetPreviewContainer(
     packageName: String,
     widgetInfoList: ImmutableList<AppWidgetProviderInfo>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
@@ -282,6 +283,11 @@ private fun WidgetContainer(
     val appLabel = remember { WidgetUtils.loadAppLabel(context, packageName) }
 
     var expanded by remember { mutableStateOf(false) }
+
+    val rotationAngle by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        label = "arrow_rotation",
+    )
 
     Surface(
         modifier = modifier.animateContentSize(),
@@ -310,13 +316,16 @@ private fun WidgetContainer(
                 appLabel?.let {
                     BodyMediumText(
                         text = appLabel,
-                        modifier = Modifier.weight(Weights.Medium),
                     )
                 }
+                Spacer(
+                    modifier = Modifier.weight(Weights.Medium),
+                )
                 Icon(
-                    imageVector = if (expanded) Icons.Rounded.ExpandLess else Icons.Rounded.ExpandMore,
+                    imageVector = Icons.Rounded.ExpandMore,
                     contentDescription = if (expanded) "Close" else "Open",
                     tint = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.rotate(rotationAngle),
                 )
             }
 
@@ -329,7 +338,7 @@ private fun WidgetContainer(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     widgetInfoList.forEach { widgetInfo ->
-                        WidgetItem(
+                        WidgetPreviewItem(
                             widgetInfo = widgetInfo,
                             selectWidget = selectWidget,
                             modifier = Modifier.fillMaxWidth(),
@@ -345,7 +354,7 @@ private const val WidgetDescriptionMaxLines = 3
 
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
-private fun WidgetItem(
+private fun WidgetPreviewItem(
     widgetInfo: AppWidgetProviderInfo,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -586,7 +595,7 @@ private fun AppTabContentDarkPreview() {
 @Composable
 private fun WidgetContainerLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        WidgetContainer(
+        WidgetPreviewContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),
             selectWidget = {},
@@ -600,7 +609,7 @@ private fun WidgetContainerLightPreview() {
 @Composable
 private fun WidgetContainerDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        WidgetContainer(
+        WidgetPreviewContainer(
             packageName = "com.android.clock",
             widgetInfoList = listOf<AppWidgetProviderInfo>().toPersistentList(),
             selectWidget = {},
