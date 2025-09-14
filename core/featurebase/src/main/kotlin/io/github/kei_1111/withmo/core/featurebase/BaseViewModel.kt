@@ -73,7 +73,7 @@ abstract class BaseViewModelV2<VS : ViewModelState<S>, S : State, A : Action, E 
     protected abstract fun createInitialViewModelState(): VS
     protected abstract fun createInitialState(): S
 
-    protected abstract fun onAction(action: A)
+    abstract fun onAction(action: A)
 
     /**
      * 現在の状態 [viewModelState] を更新するためのユーティリティ関数。
