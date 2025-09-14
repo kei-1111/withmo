@@ -81,7 +81,7 @@ internal fun FavoriteAppSettingsScreenContent(
             if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = searchedAppList,
-                    favoriteAppInfoList = state.favoriteAppInfoList,
+                    favoriteAppInfoList = state.favoriteAppList,
                     addSelectedAppList = { onAction(FavoriteAppSettingsAction.OnAllAppListAppClick(it)) },
                     removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
@@ -97,7 +97,7 @@ internal fun FavoriteAppSettingsScreenContent(
             }
         }
         FavoriteAppListRow(
-            favoriteAppInfoList = state.favoriteAppInfoList,
+            favoriteAppInfoList = state.favoriteAppList,
             removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
             appIconShape = appIconShape,
             modifier = Modifier.fillMaxWidth(),
@@ -120,7 +120,7 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
 
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                favoriteAppInfoList = List(3) {
+                favoriteAppList = List(3) {
                     FavoriteAppInfo(
                         info = AppInfo(
                             appIcon = appIcon,
@@ -131,7 +131,6 @@ private fun FavoriteAppSettingsScreenContentLightPreview() {
                         favoriteOrder = it,
                     )
                 }.toPersistentList(),
-                initialFavoriteAppInfoList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "search",
                 isSaveButtonEnabled = true,
@@ -149,7 +148,7 @@ private fun FavoriteAppSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppSettingsScreenContent(
             state = FavoriteAppSettingsState(
-                favoriteAppInfoList = persistentListOf(),
+                favoriteAppList = persistentListOf(),
                 appIconSettings = AppIconSettings(),
                 appSearchQuery = "",
                 isSaveButtonEnabled = false,
