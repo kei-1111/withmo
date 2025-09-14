@@ -1,12 +1,16 @@
 package io.github.kei_1111.withmo.core.featurebase
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 
 @Suppress("VariableNaming")
@@ -49,5 +53,59 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 
     fun sendEffect(effect: E) {
         _effect.trySend(effect)
+    }
+}
+
+@Suppress("VariableNaming")
+abstract class BaseViewModelV2<VS : ViewModelState<S>, S : State, A : Action, E : Effect> : ViewModel() {
+    protected val _viewModelState = MutableStateFlow<VS>(createInitialViewModelState())
+    val state: StateFlow<S> = _viewModelState
+        .map { it.toState() }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            initialValue = createInitialState(),
+        )
+
+    protected val _effect = Channel<E>(Channel.BUFFERED)
+    val effect: Flow<E> = _effect.receiveAsFlow()
+
+    protected abstract fun createInitialViewModelState(): VS
+    protected abstract fun createInitialState(): S
+
+    protected abstract fun onAction(action: A)
+
+    /**
+     * 現在の状態 [viewModelState] を更新するためのユーティリティ関数。
+     *
+     * この関数は、`StateFlow` に保持されている現在の状態を引数 `update` で受け取ったラムダに渡し、
+     * ラムダの戻り値で新しい状態を生成し、それを [MutableStateFlow] に反映します。
+     * `copy()` を使った不変データクラスの状態更新に適しており、状態の変更を明確かつ安全に行えます。
+     *
+     * ### 使用例
+     * ```kotlin
+     * updateViewModelState {
+     *     copy(isModelChangeWarningDialogShown = false)
+     * }
+     * ```
+     * 上記の例では、`isModelChangeWarningDialogShown` フラグを false に変更した新しい状態を作成し、
+     * それを現在の状態として反映しています。
+     *
+     * ### 注意事項
+     * - この関数はスレッドセーフに状態を更新するため、`_viewModelState.update {}` を内部で使用しています。
+     * - 状態は `data class` で定義されている必要があります（`copy()` を使うため）。
+     *
+     * @param update 現在の状態 [S] を受け取り、新しい状態を返すラムダ関数
+     */
+    protected fun updateViewModelState(update: VS.() -> VS) {
+        _viewModelState.update { update(it) }
+    }
+
+    protected fun sendEffect(effect: E) {
+        _effect.trySend(effect)
+    }
+
+    private companion object {
+        const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }
