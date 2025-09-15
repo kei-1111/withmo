@@ -5,6 +5,5 @@ import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 
 data class SideButtonSettingsState(
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
-    val initialSideButtonSettings: SideButtonSettings = SideButtonSettings(),
     val isSaveButtonEnabled: Boolean = false,
 ) : State
