@@ -5,7 +5,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 
 data class SortSettingsState(
     val sortSettings: SortSettings = SortSettings(),
-    val initialSortSettings: SortSettings = SortSettings(),
     val isSaveButtonEnabled: Boolean = false,
     val isUsageStatsPermissionDialogVisible: Boolean = false,
 ) : State

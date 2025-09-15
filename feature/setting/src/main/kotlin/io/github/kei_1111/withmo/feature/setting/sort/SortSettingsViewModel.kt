@@ -7,7 +7,7 @@ import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,9 +18,10 @@ class SortSettingsViewModel @Inject constructor(
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
     private val appManager: AppManager,
     private val permissionChecker: PermissionChecker,
-) : BaseViewModel<SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
+) : BaseViewModelV2<SortSettingsViewModelState, SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
-    override fun createInitialState(): SortSettingsState = SortSettingsState()
+    override fun createInitialViewModelState() = SortSettingsViewModelState()
+    override fun createInitialState() = SortSettingsState()
 
     init {
         observerSortSettings()
@@ -29,7 +30,7 @@ class SortSettingsViewModel @Inject constructor(
     private fun observerSortSettings() {
         viewModelScope.launch {
             getSortSettingsUseCase().collect { sortSettings ->
-                updateState {
+                updateViewModelState {
                     copy(
                         sortSettings = sortSettings,
                         initialSortSettings = sortSettings,
@@ -39,85 +40,77 @@ class SortSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun saveSortSettings() {
-        updateState { copy(isSaveButtonEnabled = false) }
-        viewModelScope.launch {
-            try {
-                val sortSettings = state.value.sortSettings
-                saveSortSettingsUseCase(sortSettings)
-                sendEffect(SortSettingsEffect.ShowToast("保存しました"))
-                sendEffect(SortSettingsEffect.NavigateBack)
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to save sort settings", e)
-                sendEffect(SortSettingsEffect.ShowToast("保存に失敗しました"))
-            }
-        }
-    }
-
     override fun onAction(action: SortSettingsAction) {
         when (action) {
             is SortSettingsAction.OnSortTypeRadioButtonClick -> {
-                handleSortTypeSelection(action.sortType)
+                if (action.sortType == SortType.USE_COUNT) {
+                    if (!permissionChecker.isUsageStatsPermissionGranted()) {
+                        updateViewModelState { copy(isUsageStatsPermissionDialogVisible = true) }
+                    } else {
+                        updateViewModelState {
+                            val updatedSortSettings = sortSettings.copy(sortType = action.sortType)
+                            copy(sortSettings = updatedSortSettings)
+                        }
+                        viewModelScope.launch {
+                            try {
+                                appManager.updateUsageCounts()
+                            } catch (e: Exception) {
+                                Log.e(TAG, "Failed to update usage counts", e)
+                            }
+                        }
+                    }
+                } else {
+                    updateViewModelState {
+                        val updatedSortSettings = sortSettings.copy(sortType = action.sortType)
+                        copy(sortSettings = updatedSortSettings)
+                    }
+                }
             }
 
-            is SortSettingsAction.OnSaveButtonClick -> saveSortSettings()
+            is SortSettingsAction.OnSaveButtonClick -> {
+                viewModelScope.launch {
+                    try {
+                        val sortSettings = state.value.sortSettings
+                        saveSortSettingsUseCase(sortSettings)
+                        sendEffect(SortSettingsEffect.ShowToast("保存しました"))
+                        sendEffect(SortSettingsEffect.NavigateBack)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to save sort settings", e)
+                        sendEffect(SortSettingsEffect.ShowToast("保存に失敗しました"))
+                    }
+                }
+            }
 
-            is SortSettingsAction.OnBackButtonClick -> sendEffect(SortSettingsEffect.NavigateBack)
+            is SortSettingsAction.OnBackButtonClick -> {
+                sendEffect(SortSettingsEffect.NavigateBack)
+            }
 
             is SortSettingsAction.OnUsageStatsPermissionDialogConfirm -> {
-                updateState { copy(isUsageStatsPermissionDialogVisible = false) }
+                updateViewModelState { copy(isUsageStatsPermissionDialogVisible = false) }
                 sendEffect(SortSettingsEffect.RequestUsageStatsPermission)
             }
 
             is SortSettingsAction.OnUsageStatsPermissionDialogDismiss -> {
-                updateState { copy(isUsageStatsPermissionDialogVisible = false) }
+                updateViewModelState { copy(isUsageStatsPermissionDialogVisible = false) }
             }
 
             is SortSettingsAction.OnUsageStatsPermissionResult -> {
-                checkUsageStatsPermissionAndUpdate()
-            }
-        }
-    }
-
-    private fun handleSortTypeSelection(sortType: SortType) {
-        if (sortType == SortType.USE_COUNT) {
-            if (!permissionChecker.isUsageStatsPermissionGranted()) {
-                updateState { copy(isUsageStatsPermissionDialogVisible = true) }
-            } else {
-                updateSortType(sortType)
-                updateUsageCounts()
-            }
-        } else {
-            updateSortType(sortType)
-        }
-    }
-
-    private fun updateSortType(sortType: SortType) {
-        updateState {
-            val updatedSortSettings = sortSettings.copy(sortType = sortType)
-            copy(
-                sortSettings = updatedSortSettings,
-                isSaveButtonEnabled = updatedSortSettings != initialSortSettings,
-            )
-        }
-    }
-
-    private fun checkUsageStatsPermissionAndUpdate() {
-        if (permissionChecker.isUsageStatsPermissionGranted()) {
-            updateSortType(SortType.USE_COUNT)
-            updateUsageCounts()
-            sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が許可されました"))
-        } else {
-            sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が必要です"))
-        }
-    }
-
-    private fun updateUsageCounts() {
-        viewModelScope.launch {
-            try {
-                appManager.updateUsageCounts()
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to update usage counts", e)
+                if (permissionChecker.isUsageStatsPermissionGranted()) {
+                    updateViewModelState {
+                        val updatedSortSettings = sortSettings.copy(sortType = SortType.USE_COUNT)
+                        copy(sortSettings = updatedSortSettings)
+                    }
+                    viewModelScope.launch {
+                        try {
+                            appManager.updateUsageCounts()
+                        } catch (e: Exception) {
+                            Log.e(TAG, "Failed to update usage counts", e)
+                        }
+                    }
+                    sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が許可されました"))
+                } else {
+                    sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が必要です"))
+                }
             }
         }
     }
