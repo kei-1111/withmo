@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,9 +15,10 @@ class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
     private val permissionChecker: PermissionChecker,
-) : BaseViewModel<NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
+) : BaseViewModelV2<NotificationSettingsViewModelState, NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
 
-    override fun createInitialState(): NotificationSettingsState = NotificationSettingsState()
+    override fun createInitialViewModelState() = NotificationSettingsViewModelState()
+    override fun createInitialState() = NotificationSettingsState()
 
     init {
         observeNotificationSettings()
@@ -26,7 +27,7 @@ class NotificationSettingsViewModel @Inject constructor(
     private fun observeNotificationSettings() {
         viewModelScope.launch {
             getNotificationSettingsUseCase().collect { notificationSettings ->
-                updateState {
+                updateViewModelState {
                     copy(
                         notificationSettings = notificationSettings,
                         initialNotificationSettings = notificationSettings,
@@ -36,49 +37,40 @@ class NotificationSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun saveNotificationSettings() {
-        updateState { copy(isSaveButtonEnabled = false) }
-        viewModelScope.launch {
-            try {
-                saveNotificationSettingsUseCase(state.value.notificationSettings)
-                sendEffect(NotificationSettingsEffect.ShowToast("保存しました"))
-                sendEffect(NotificationSettingsEffect.NavigateBack)
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to save notification settings", e)
-                sendEffect(NotificationSettingsEffect.ShowToast("保存に失敗しました"))
-            }
-        }
-    }
-
     override fun onAction(action: NotificationSettingsAction) {
         when (action) {
             is NotificationSettingsAction.OnIsNotificationAnimationEnabledSwitchChange -> {
-                updateState {
+                updateViewModelState {
                     val updatedNotificationSettings = notificationSettings.copy(
                         isNotificationAnimationEnabled = action.isNotificationAnimationEnabled,
                     )
-                    copy(
-                        notificationSettings = updatedNotificationSettings,
-                        isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                    )
+                    copy(notificationSettings = updatedNotificationSettings)
                 }
             }
 
             is NotificationSettingsAction.OnIsNotificationBadgeEnabledSwitchChange -> {
-                updateState {
-                    val updatedNotificationSettings = notificationSettings.copy(
-                        isNotificationBadgeEnabled = action.isNotificationBadgeEnabled,
-                    )
-                    copy(
-                        notificationSettings = updatedNotificationSettings,
-                        isSaveButtonEnabled = updatedNotificationSettings != initialNotificationSettings,
-                    )
+                updateViewModelState {
+                    val updatedNotificationSettings = notificationSettings.copy(isNotificationBadgeEnabled = action.isNotificationBadgeEnabled)
+                    copy(notificationSettings = updatedNotificationSettings)
                 }
             }
 
-            is NotificationSettingsAction.OnSaveButtonClick -> saveNotificationSettings()
+            is NotificationSettingsAction.OnSaveButtonClick -> {
+                viewModelScope.launch {
+                    try {
+                        saveNotificationSettingsUseCase(state.value.notificationSettings)
+                        sendEffect(NotificationSettingsEffect.ShowToast("保存しました"))
+                        sendEffect(NotificationSettingsEffect.NavigateBack)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to save notification settings", e)
+                        sendEffect(NotificationSettingsEffect.ShowToast("保存に失敗しました"))
+                    }
+                }
+            }
 
-            is NotificationSettingsAction.OnBackButtonClick -> sendEffect(NotificationSettingsEffect.NavigateBack)
+            is NotificationSettingsAction.OnBackButtonClick -> {
+                sendEffect(NotificationSettingsEffect.NavigateBack)
+            }
 
             is NotificationSettingsAction.OnCheckPermissionOnResume -> {
                 if (!permissionChecker.isNotificationListenerEnabled()) {
