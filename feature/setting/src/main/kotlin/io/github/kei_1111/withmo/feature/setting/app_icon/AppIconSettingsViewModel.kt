@@ -64,7 +64,9 @@ class AppIconSettingsViewModel @Inject constructor(
                 }
             }
 
-            is AppIconSettingsAction.OnBackButtonClick -> sendEffect(AppIconSettingsEffect.NavigateBack)
+            is AppIconSettingsAction.OnBackButtonClick -> {
+                sendEffect(AppIconSettingsEffect.NavigateBack)
+            }
         }
     }
 

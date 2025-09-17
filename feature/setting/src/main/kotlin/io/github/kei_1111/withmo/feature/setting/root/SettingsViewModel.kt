@@ -15,7 +15,7 @@ class SettingsViewModel @Inject constructor(
 ) : BaseViewModel<SettingsViewModelState, SettingsState, SettingsAction, SettingsEffect>() {
 
     override fun createInitialViewModelState() = SettingsViewModelState()
-    override fun createInitialState(): SettingsState = SettingsState()
+    override fun createInitialState() = SettingsState()
 
     override fun onAction(action: SettingsAction) {
         when (action) {

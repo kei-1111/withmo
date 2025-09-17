@@ -27,7 +27,7 @@ class OnboardingViewModel @Inject constructor(
 ) : BaseViewModel<OnboardingViewModelState, OnboardingState, OnboardingAction, OnboardingEffect>() {
 
     override fun createInitialViewModelState() = OnboardingViewModelState()
-    override fun createInitialState(): OnboardingState = OnboardingState.Welcome
+    override fun createInitialState() = OnboardingState.Welcome
 
     init {
         observeFavoriteAppList()

@@ -88,7 +88,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                 }
             }
 
-            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> updateViewModelState { copy(appSearchQuery = action.query) }
+            is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
+                updateViewModelState { copy(appSearchQuery = action.query) }
+            }
 
             is FavoriteAppSettingsAction.OnSaveButtonClick -> {
                 val currentFavoriteAppList = state.value.favoriteAppList
@@ -107,7 +109,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                 }
             }
 
-            is FavoriteAppSettingsAction.OnBackButtonClick -> sendEffect(FavoriteAppSettingsEffect.NavigateBack)
+            is FavoriteAppSettingsAction.OnBackButtonClick -> {
+                sendEffect(FavoriteAppSettingsEffect.NavigateBack)
+            }
         }
     }
 

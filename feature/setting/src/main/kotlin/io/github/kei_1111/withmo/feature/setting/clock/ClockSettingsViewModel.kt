@@ -16,7 +16,7 @@ class ClockSettingsViewModel @Inject constructor(
 ) : BaseViewModel<ClockSettingsViewModelState, ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 
     override fun createInitialViewModelState() = ClockSettingsViewModelState()
-    override fun createInitialState(): ClockSettingsState = ClockSettingsState()
+    override fun createInitialState() = ClockSettingsState()
 
     init {
         observeClockSettings()
@@ -64,7 +64,9 @@ class ClockSettingsViewModel @Inject constructor(
                 }
             }
 
-            is ClockSettingsAction.OnBackButtonClick -> sendEffect(ClockSettingsEffect.NavigateBack)
+            is ClockSettingsAction.OnBackButtonClick -> {
+                sendEffect(ClockSettingsEffect.NavigateBack)
+            }
         }
     }
 
