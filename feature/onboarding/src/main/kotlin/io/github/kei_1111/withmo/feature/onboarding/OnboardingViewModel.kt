@@ -8,8 +8,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.core.model.AppInfo
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import kotlinx.collections.immutable.toPersistentList
@@ -25,9 +24,10 @@ class OnboardingViewModel @Inject constructor(
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val markOnboardingShownUseCase: MarkOnboardingShownUseCase,
     private val modelFileManager: ModelFileManager,
-) : BaseViewModel<OnboardingState, OnboardingAction, OnboardingEffect>() {
+) : BaseViewModelV2<OnboardingViewModelState, OnboardingState, OnboardingAction, OnboardingEffect>() {
 
-    override fun createInitialState(): OnboardingState = OnboardingState()
+    override fun createInitialViewModelState() = OnboardingViewModelState()
+    override fun createInitialState(): OnboardingState = OnboardingState.Welcome
 
     init {
         observeFavoriteAppList()
@@ -36,100 +36,84 @@ class OnboardingViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             getFavoriteAppsUseCase().collect { favoriteAppList ->
-                updateState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
+                updateViewModelState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
             }
         }
     }
 
-    private fun addSelectedAppList(appInfo: AppInfo) {
-        val favoriteAppInfo = FavoriteAppInfo(
-            info = appInfo,
-            favoriteOrder = state.value.selectedAppList.size,
-        )
-        updateState {
-            if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
-                selectedAppList.none { it.info.packageName == favoriteAppInfo.info.packageName }
-            ) {
-                copy(selectedAppList = (selectedAppList + favoriteAppInfo).toPersistentList())
-            } else {
-                this
-            }
-        }
-    }
-
-    private fun removeSelectedAppList(appInfo: AppInfo) {
-        updateState {
-            copy(
-                selectedAppList = selectedAppList
-                    .filterNot { it.info.packageName == appInfo.packageName }
-                    .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
-                    .toPersistentList(),
-            )
-        }
-    }
-
-    private fun setModelFileThumbnail(modelFilePath: ModelFilePath) {
-        viewModelScope.launch {
-            val thumbnails = modelFilePath.path?.let { File(it) }
-                ?.let { modelFileManager.getVrmThumbnail(it) }
-            updateState { copy(modelFileThumbnail = thumbnails) }
-        }
-    }
-
-    private fun navigateToNextPage() {
-        val currentPage = state.value.currentPage
-        val nextPage = currentPage.ordinal + 1
-        if (nextPage < OnboardingPage.entries.size) {
-            updateState { copy(currentPage = OnboardingPage.entries[nextPage]) }
-        } else {
-            saveSetting()
-            sendEffect(OnboardingEffect.NavigateHome)
-        }
-    }
-
-    private fun navigateToPreviousPage() {
-        val currentPage = state.value.currentPage
-        val previousPage = currentPage.ordinal - 1
-        if (previousPage >= 0) {
-            updateState { copy(currentPage = OnboardingPage.entries[previousPage]) }
-        }
-    }
-
-    private fun saveSetting() {
-        val favoriteAppList = state.value.selectedAppList.mapIndexed { index, favoriteApp ->
-            favoriteApp.copy(favoriteOrder = index)
-        }
-
-        viewModelScope.launch {
-            markOnboardingShownUseCase()
-            saveFavoriteAppsUseCase(favoriteAppList.toPersistentList())
-            val modelFilePath = state.value.modelFilePath
-            if (modelFilePath.path != null) {
-                saveModelFilePathUseCase(modelFilePath)
-            } else {
-                val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
-                saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
-            }
-        }
-    }
-
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
     override fun onAction(action: OnboardingAction) {
         when (action) {
-            is OnboardingAction.OnAllAppListAppClick -> addSelectedAppList(action.appInfo)
+            is OnboardingAction.OnAllAppListAppClick -> {
+                val favoriteAppInfo = FavoriteAppInfo(
+                    info = action.appInfo,
+                    favoriteOrder = _viewModelState.value.selectedAppList.size,
+                )
+                updateViewModelState {
+                    if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                        selectedAppList.none { it.info.packageName == favoriteAppInfo.info.packageName }
+                    ) {
+                        copy(selectedAppList = (selectedAppList + favoriteAppInfo).toPersistentList())
+                    } else {
+                        this
+                    }
+                }
+            }
 
-            is OnboardingAction.OnFavoriteAppListAppClick -> removeSelectedAppList(action.appInfo)
+            is OnboardingAction.OnFavoriteAppListAppClick -> {
+                updateViewModelState {
+                    copy(
+                        selectedAppList = selectedAppList
+                            .filterNot { it.info.packageName == action.appInfo.packageName }
+                            .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
+                            .toPersistentList(),
+                    )
+                }
+            }
 
-            is OnboardingAction.OnAppSearchQueryChange -> updateState { copy(appSearchQuery = action.query) }
+            is OnboardingAction.OnAppSearchQueryChange -> {
+                updateViewModelState { copy(appSearchQuery = action.query) }
+            }
 
-            is OnboardingAction.OnSelectDisplayModelAreaClick -> sendEffect(OnboardingEffect.OpenDocument)
+            is OnboardingAction.OnSelectDisplayModelAreaClick -> {
+                sendEffect(OnboardingEffect.OpenDocument)
+            }
 
-            is OnboardingAction.OnNextButtonClick -> navigateToNextPage()
+            is OnboardingAction.OnNextButtonClick -> {
+                val currentPage = _viewModelState.value.currentPage
+                val nextPage = currentPage.ordinal + 1
+                if (nextPage < OnboardingViewModelState.OnboardingPage.entries.size) {
+                    updateViewModelState { copy(currentPage = OnboardingViewModelState.OnboardingPage.entries[nextPage]) }
+                } else {
+                    val favoriteAppList = _viewModelState.value.selectedAppList.mapIndexed { index, favoriteApp ->
+                        favoriteApp.copy(favoriteOrder = index)
+                    }
+                    viewModelScope.launch {
+                        markOnboardingShownUseCase()
+                        saveFavoriteAppsUseCase(favoriteAppList.toPersistentList())
+                        val modelFilePath = _viewModelState.value.modelFilePath
+                        if (modelFilePath.path != null) {
+                            saveModelFilePathUseCase(modelFilePath)
+                        } else {
+                            val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
+                            saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
+                        }
+                    }
+                    sendEffect(OnboardingEffect.NavigateHome)
+                }
+            }
 
-            is OnboardingAction.OnPreviousButtonClick -> navigateToPreviousPage()
+            is OnboardingAction.OnPreviousButtonClick -> {
+                val currentPage = _viewModelState.value.currentPage
+                val previousPage = currentPage.ordinal - 1
+                if (previousPage >= 0) {
+                    updateViewModelState { copy(currentPage = OnboardingViewModelState.OnboardingPage.entries[previousPage]) }
+                }
+            }
 
             is OnboardingAction.OnOpenDocumentLauncherResult -> {
                 viewModelScope.launch {
-                    updateState { copy(isModelLoading = true) }
+                    updateViewModelState { copy(isModelLoading = true) }
                     if (action.uri == null) {
                         sendEffect(OnboardingEffect.ShowToast("ファイルが選択されませんでした"))
                     } else {
@@ -137,19 +121,21 @@ class OnboardingViewModel @Inject constructor(
                         if (filePath == null) {
                             sendEffect(OnboardingEffect.ShowToast("ファイルの読み込みに失敗しました"))
                         } else {
-                            updateState { copy(modelFilePath = ModelFilePath(filePath)) }
-                            setModelFileThumbnail(ModelFilePath(filePath))
+                            updateViewModelState { copy(modelFilePath = ModelFilePath(filePath)) }
+                            viewModelScope.launch {
+                                val thumbnails = ModelFilePath(filePath).path?.let { File(it) }
+                                    ?.let { modelFileManager.getVrmThumbnail(it) }
+                                updateViewModelState { copy(modelFileThumbnail = thumbnails) }
+                            }
                         }
                     }
-                    updateState { copy(isModelLoading = false) }
+                    updateViewModelState { copy(isModelLoading = false) }
                 }
             }
         }
     }
 
     private companion object {
-        const val TimeoutMillis = 5000L
-
         const val TAG = "OnboardingViewModel"
     }
 }

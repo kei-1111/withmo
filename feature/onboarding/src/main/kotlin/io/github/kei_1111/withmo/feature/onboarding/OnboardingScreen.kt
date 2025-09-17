@@ -78,8 +78,8 @@ private fun OnboardingScreen(
     Surface(
         modifier = modifier,
     ) {
-        when (state.currentPage) {
-            OnboardingPage.Welcome -> {
+        when (state) {
+            OnboardingState.Welcome -> {
                 WelcomeContent(
                     onAction = onAction,
                     modifier = Modifier
@@ -87,7 +87,7 @@ private fun OnboardingScreen(
                         .padding(bottom = bottomPaddingValue),
                 )
             }
-            OnboardingPage.SelectFavoriteApp -> {
+            is OnboardingState.SelectFavoriteApp -> {
                 SelectFavoriteAppContent(
                     state = state,
                     onAction = onAction,
@@ -96,7 +96,7 @@ private fun OnboardingScreen(
                         .padding(bottom = bottomPaddingValue),
                 )
             }
-            OnboardingPage.SelectDisplayModel -> {
+            is OnboardingState.SelectDisplayModel -> {
                 SelectDisplayModelContent(
                     state = state,
                     onAction = onAction,
@@ -105,7 +105,7 @@ private fun OnboardingScreen(
                         .padding(bottom = bottomPaddingValue),
                 )
             }
-            OnboardingPage.Finish -> {
+            OnboardingState.Finish -> {
                 FinishContent(
                     onAction = onAction,
                     modifier = Modifier
@@ -123,7 +123,7 @@ private fun OnboardingScreen(
 private fun OnboardingScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         OnboardingScreen(
-            state = OnboardingState(),
+            state = OnboardingState.Welcome,
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -136,7 +136,7 @@ private fun OnboardingScreenLightPreview() {
 private fun OnboardingScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         OnboardingScreen(
-            state = OnboardingState(),
+            state = OnboardingState.Welcome,
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

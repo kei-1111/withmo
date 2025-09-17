@@ -34,7 +34,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Suppress("LongMethod")
 @Composable
 internal fun SelectFavoriteAppContent(
-    state: OnboardingState,
+    state: OnboardingState.SelectFavoriteApp,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -113,7 +113,7 @@ internal fun SelectFavoriteAppContent(
 
 @Composable
 private fun SelectFavoriteAppContentBottomAppBar(
-    state: OnboardingState,
+    state: OnboardingState.SelectFavoriteApp,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -143,7 +143,7 @@ private fun SelectFavoriteAppContentBottomAppBar(
 private fun SelectFavoriteAppContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContent(
-            state = OnboardingState(),
+            state = OnboardingState.SelectFavoriteApp(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -155,7 +155,7 @@ private fun SelectFavoriteAppContentLightPreview() {
 private fun SelectFavoriteAppContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContent(
-            state = OnboardingState(),
+            state = OnboardingState.SelectFavoriteApp(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -167,7 +167,7 @@ private fun SelectFavoriteAppContentDarkPreview() {
 private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppContentBottomAppBar(
-            state = OnboardingState(),
+            state = OnboardingState.SelectFavoriteApp(),
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )
@@ -179,7 +179,7 @@ private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
 private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppContentBottomAppBar(
-            state = OnboardingState(),
+            state = OnboardingState.SelectFavoriteApp(),
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )
