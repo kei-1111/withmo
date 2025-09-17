@@ -5,14 +5,14 @@ import android.content.Intent
 import android.provider.Settings
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import javax.inject.Inject
 
 @Suppress("CyclomaticComplexMethod")
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
-) : BaseViewModelV2<SettingsViewModelState, SettingsState, SettingsAction, SettingsEffect>() {
+) : BaseViewModel<SettingsViewModelState, SettingsState, SettingsAction, SettingsEffect>() {
 
     override fun createInitialViewModelState() = SettingsViewModelState()
     override fun createInitialState(): SettingsState = SettingsState()

@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetNotificationSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveNotificationSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ class NotificationSettingsViewModel @Inject constructor(
     private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
     private val permissionChecker: PermissionChecker,
-) : BaseViewModelV2<NotificationSettingsViewModelState, NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
+) : BaseViewModel<NotificationSettingsViewModelState, NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
 
     override fun createInitialViewModelState() = NotificationSettingsViewModelState()
     override fun createInitialState() = NotificationSettingsState()

@@ -7,7 +7,7 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.launch
@@ -18,7 +18,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
     private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
-) : BaseViewModelV2<FavoriteAppSettingsViewModelState, FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
+) : BaseViewModel<FavoriteAppSettingsViewModelState, FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
     override fun createInitialViewModelState() = FavoriteAppSettingsViewModelState()
     override fun createInitialState() = FavoriteAppSettingsState()

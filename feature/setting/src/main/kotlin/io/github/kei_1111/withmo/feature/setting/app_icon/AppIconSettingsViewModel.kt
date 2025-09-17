@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.usecase.GetAppIconSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveAppIconSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : BaseViewModelV2<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
+) : BaseViewModel<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
 
     override fun createInitialViewModelState() = AppIconSettingsViewModelState()
     override fun createInitialState() = AppIconSettingsState()

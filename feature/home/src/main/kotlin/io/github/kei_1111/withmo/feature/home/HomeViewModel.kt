@@ -20,7 +20,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.MarkModelChangeWarningShown
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModelV2
+import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
@@ -45,7 +45,7 @@ class HomeViewModel @Inject constructor(
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val saveModelSettingsUseCase: SaveModelSettingsUseCase,
-) : BaseViewModelV2<HomeViewModelState, HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+) : BaseViewModel<HomeViewModelState, HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     private var lastScaleSentTime = 0L
 
