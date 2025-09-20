@@ -9,14 +9,13 @@ import kotlinx.collections.immutable.persistentListOf
 data class FavoriteAppSettingsViewModelState(
     val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val initialFavoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val isSaveButtonEnabled: Boolean = false,
     val appSearchQuery: String = "",
     val appIconSettings: AppIconSettings = AppIconSettings(),
 ) : ViewModelState<FavoriteAppSettingsState> {
     override fun toState() = FavoriteAppSettingsState(
         favoriteAppList = favoriteAppList,
         appSearchQuery = appSearchQuery,
-        isSaveButtonEnabled = isSaveButtonEnabled,
+        isSaveButtonEnabled = initialFavoriteAppList != favoriteAppList,
         appIconSettings = appIconSettings,
     )
 }

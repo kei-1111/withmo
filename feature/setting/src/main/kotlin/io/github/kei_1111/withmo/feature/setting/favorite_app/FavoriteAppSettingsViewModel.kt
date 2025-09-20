@@ -64,10 +64,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                     if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
                         favoriteAppList.none { it.info.packageName == action.appInfo.packageName }
                     ) {
-                        copy(
-                            favoriteAppList = addedFavoriteAppList,
-                            isSaveButtonEnabled = !addedFavoriteAppList.isSameAs(initialFavoriteAppList),
-                        )
+                        copy(favoriteAppList = addedFavoriteAppList)
                     } else {
                         this
                     }
@@ -80,12 +77,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                     .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
                     .toPersistentList()
 
-                updateViewModelState {
-                    copy(
-                        favoriteAppList = removedFavoriteAppList,
-                        isSaveButtonEnabled = (initialFavoriteAppList != removedFavoriteAppList),
-                    )
-                }
+                updateViewModelState { copy(favoriteAppList = removedFavoriteAppList) }
             }
 
             is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
@@ -93,13 +85,9 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             }
 
             is FavoriteAppSettingsAction.OnSaveButtonClick -> {
-                val currentFavoriteAppList = state.value.favoriteAppList
-
-                updateViewModelState { copy(isSaveButtonEnabled = false) }
-
                 viewModelScope.launch {
                     try {
-                        saveFavoriteAppsUseCase(currentFavoriteAppList)
+                        saveFavoriteAppsUseCase(state.value.favoriteAppList)
                         sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
                         sendEffect(FavoriteAppSettingsEffect.NavigateBack)
                     } catch (e: Exception) {
@@ -113,11 +101,6 @@ class FavoriteAppSettingsViewModel @Inject constructor(
                 sendEffect(FavoriteAppSettingsEffect.NavigateBack)
             }
         }
-    }
-
-    private fun List<FavoriteAppInfo>.isSameAs(other: List<FavoriteAppInfo>): Boolean {
-        return this.size == other.size &&
-            this.zip(other).all { (a, b) -> a.info.packageName == b.info.packageName }
     }
 
     private companion object {
