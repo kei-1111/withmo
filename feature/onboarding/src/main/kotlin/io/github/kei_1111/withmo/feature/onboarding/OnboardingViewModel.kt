@@ -121,11 +121,13 @@ class OnboardingViewModel @Inject constructor(
                         if (filePath == null) {
                             sendEffect(OnboardingEffect.ShowToast("ファイルの読み込みに失敗しました"))
                         } else {
-                            updateViewModelState { copy(modelFilePath = ModelFilePath(filePath)) }
-                            viewModelScope.launch {
-                                val thumbnails = ModelFilePath(filePath).path?.let { File(it) }
-                                    ?.let { modelFileManager.getVrmThumbnail(it) }
-                                updateViewModelState { copy(modelFileThumbnail = thumbnails) }
+                            val modelFilePath = ModelFilePath(filePath)
+                            val thumbnails = modelFilePath.path?.let { File(it) }?.let { modelFileManager.getVrmThumbnail(it) }
+                            updateViewModelState {
+                                copy(
+                                    modelFilePath = modelFilePath,
+                                    modelFileThumbnail = thumbnails,
+                                )
                             }
                         }
                     }

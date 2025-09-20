@@ -300,9 +300,9 @@ class HomeViewModel @Inject constructor(
                     copy(
                         isWidgetResizing = false,
                         resizingWidget = null,
+                        placedItemList = (placedItemList + action.placedWidgetInfo).toPersistentList(),
                     )
                 }
-                updateViewModelState { copy(placedItemList = (placedItemList + action.placedWidgetInfo).toPersistentList()) }
             }
 
             is HomeAction.OnOpenDocumentLauncherResult -> {
