@@ -40,6 +40,20 @@ class SortSettingsViewModel @Inject constructor(
         }
     }
 
+    private fun updateSortTypeToUseCount() {
+        updateViewModelState {
+            val updatedSortSettings = sortSettings.copy(sortType = SortType.USE_COUNT)
+            copy(sortSettings = updatedSortSettings)
+        }
+        viewModelScope.launch {
+            try {
+                appManager.updateUsageCounts()
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to update usage counts", e)
+            }
+        }
+    }
+
     override fun onAction(action: SortSettingsAction) {
         when (action) {
             is SortSettingsAction.OnSortTypeRadioButtonClick -> {
@@ -47,17 +61,7 @@ class SortSettingsViewModel @Inject constructor(
                     if (!permissionChecker.isUsageStatsPermissionGranted()) {
                         updateViewModelState { copy(isUsageStatsPermissionDialogVisible = true) }
                     } else {
-                        updateViewModelState {
-                            val updatedSortSettings = sortSettings.copy(sortType = action.sortType)
-                            copy(sortSettings = updatedSortSettings)
-                        }
-                        viewModelScope.launch {
-                            try {
-                                appManager.updateUsageCounts()
-                            } catch (e: Exception) {
-                                Log.e(TAG, "Failed to update usage counts", e)
-                            }
-                        }
+                        updateSortTypeToUseCount()
                     }
                 } else {
                     updateViewModelState {
@@ -96,17 +100,7 @@ class SortSettingsViewModel @Inject constructor(
 
             is SortSettingsAction.OnUsageStatsPermissionResult -> {
                 if (permissionChecker.isUsageStatsPermissionGranted()) {
-                    updateViewModelState {
-                        val updatedSortSettings = sortSettings.copy(sortType = SortType.USE_COUNT)
-                        copy(sortSettings = updatedSortSettings)
-                    }
-                    viewModelScope.launch {
-                        try {
-                            appManager.updateUsageCounts()
-                        } catch (e: Exception) {
-                            Log.e(TAG, "Failed to update usage counts", e)
-                        }
-                    }
+                    updateSortTypeToUseCount()
                     sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が許可されました"))
                 } else {
                     sendEffect(SortSettingsEffect.ShowToast("使用回数取得の権限が必要です"))
