@@ -12,34 +12,47 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingsViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
-) : BaseViewModel<SettingsState, SettingsAction, SettingsEffect>() {
+) : BaseViewModel<SettingsViewModelState, SettingsState, SettingsAction, SettingsEffect>() {
 
-    override fun createInitialState(): SettingsState = SettingsState()
+    override fun createInitialViewModelState() = SettingsViewModelState()
+    override fun createInitialState() = SettingsState()
 
     override fun onAction(action: SettingsAction) {
         when (action) {
-            is SettingsAction.OnSettingsScreenLifecycleChanged -> updateState { copy(isDefaultHomeApp = action.isDefaultHomeApp) }
+            is SettingsAction.OnSettingsScreenLifecycleChanged -> {
+                updateViewModelState { copy(isDefaultHomeApp = action.isDefaultHomeApp) }
+            }
 
             is SettingsAction.OnNavigateHomeAppSettingButtonClick -> {
                 val intent = Intent(Settings.ACTION_HOME_SETTINGS)
                 sendEffect(SettingsEffect.OpenHomeAppSettings(intent))
             }
 
-            is SettingsAction.OnNavigateClockSettingsButtonClick -> sendEffect(SettingsEffect.NavigateClockSettings)
+            is SettingsAction.OnNavigateClockSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateClockSettings)
+            }
 
-            is SettingsAction.OnNavigateAppIconSettingsButtonClick -> sendEffect(SettingsEffect.NavigateAppIconSettings)
+            is SettingsAction.OnNavigateAppIconSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateAppIconSettings)
+            }
 
-            is SettingsAction.OnNavigateFavoriteAppSettingsButtonClick -> sendEffect(SettingsEffect.NavigateFavoriteAppSettings)
+            is SettingsAction.OnNavigateFavoriteAppSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateFavoriteAppSettings)
+            }
 
-            is SettingsAction.OnNavigateSideButtonSettingsButtonClick -> sendEffect(SettingsEffect.NavigateSideButtonSettings)
+            is SettingsAction.OnNavigateSideButtonSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateSideButtonSettings)
+            }
 
-            is SettingsAction.OnNavigateSortSettingsButtonClick -> sendEffect(SettingsEffect.NavigateSortSettings)
+            is SettingsAction.OnNavigateSortSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateSortSettings)
+            }
 
             is SettingsAction.OnNavigateNotificationSettingsButtonClick -> {
                 if (permissionChecker.isNotificationListenerEnabled()) {
                     sendEffect(SettingsEffect.NavigateNotificationSettings)
                 } else {
-                    updateState { copy(isNotificationPermissionDialogVisible = true) }
+                    updateViewModelState { copy(isNotificationPermissionDialogVisible = true) }
                 }
             }
 
@@ -48,18 +61,22 @@ class SettingsViewModel @Inject constructor(
                 sendEffect(SettingsEffect.OpenWallpaperSettings(intent))
             }
 
-            is SettingsAction.OnNavigateThemeSettingsButtonClick -> sendEffect(SettingsEffect.NavigateThemeSettings)
+            is SettingsAction.OnNavigateThemeSettingsButtonClick -> {
+                sendEffect(SettingsEffect.NavigateThemeSettings)
+            }
 
-            is SettingsAction.OnBackButtonClick -> sendEffect(SettingsEffect.NavigateBack)
+            is SettingsAction.OnBackButtonClick -> {
+                sendEffect(SettingsEffect.NavigateBack)
+            }
 
             is SettingsAction.OnNotificationPermissionDialogConfirm -> {
-                updateState { copy(isNotificationPermissionDialogVisible = false) }
+                updateViewModelState { copy(isNotificationPermissionDialogVisible = false) }
                 val intent = Intent(Settings.ACTION_NOTIFICATION_LISTENER_SETTINGS)
                 sendEffect(SettingsEffect.RequestNotificationListenerPermission(intent))
             }
 
             is SettingsAction.OnNotificationPermissionDialogDismiss -> {
-                updateState { copy(isNotificationPermissionDialogVisible = false) }
+                updateViewModelState { copy(isNotificationPermissionDialogVisible = false) }
             }
 
             is SettingsAction.OnNotificationListenerPermissionResult -> {

@@ -55,7 +55,7 @@ import java.io.File
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun SelectDisplayModelContent(
-    state: OnboardingState,
+    state: OnboardingState.SelectDisplayModel,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -99,7 +99,7 @@ internal fun SelectDisplayModelContent(
 
 @Composable
 private fun SelectDisplayModelArea(
-    state: OnboardingState,
+    state: OnboardingState.SelectDisplayModel,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -211,7 +211,7 @@ private fun SelectedModelFileName(
 
 @Composable
 private fun SelectDisplayModelContentBottomAppBar(
-    state: OnboardingState,
+    state: OnboardingState.SelectDisplayModel,
     onAction: (OnboardingAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -267,7 +267,7 @@ private fun Modifier.dashedBorder(
 private fun SelectDisplayModelContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContent(
-            state = OnboardingState(),
+            state = OnboardingState.SelectDisplayModel(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -280,7 +280,7 @@ private fun SelectDisplayModelContentLightPreview() {
 private fun SelectDisplayModelContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContent(
-            state = OnboardingState(),
+            state = OnboardingState.SelectDisplayModel(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -292,7 +292,7 @@ private fun SelectDisplayModelContentDarkPreview() {
 private fun SelectDisplayModelContentBottomAppBarLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelContentBottomAppBar(
-            state = OnboardingState(),
+            state = OnboardingState.SelectDisplayModel(),
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )
@@ -304,7 +304,7 @@ private fun SelectDisplayModelContentBottomAppBarLightPreview() {
 private fun SelectDisplayModelContentBottomAppBarDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelContentBottomAppBar(
-            state = OnboardingState(),
+            state = OnboardingState.SelectDisplayModel(),
             onAction = {},
             modifier = Modifier.fillMaxWidth(),
         )

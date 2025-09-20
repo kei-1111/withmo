@@ -21,7 +21,6 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
 import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
-import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
@@ -46,16 +45,17 @@ class HomeViewModel @Inject constructor(
     private val widgetManager: WidgetManager,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val saveModelSettingsUseCase: SaveModelSettingsUseCase,
-) : BaseViewModel<HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
+) : BaseViewModel<HomeViewModelState, HomeState, HomeAction, HomeEffect>(), UnityToAndroidMessenger.MessageReceiverFromUnity {
 
     private var lastScaleSentTime = 0L
 
-    override fun createInitialState(): HomeState = HomeState()
+    override fun createInitialViewModelState() = HomeViewModelState()
+    override fun createInitialState() = HomeState()
 
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
             ModelLoadState.LoadingSuccess.name -> {
-                updateState { copy(isModelLoading = false) }
+                updateViewModelState { copy(isModelLoading = false) }
                 AndroidToUnityMessenger.sendMessage(
                     UnityObject.VRMloader,
                     UnityMethod.AdjustScale,
@@ -63,7 +63,7 @@ class HomeViewModel @Inject constructor(
                 )
             }
             ModelLoadState.LoadingFailure.name -> {
-                updateState { copy(isModelLoading = false) }
+                updateViewModelState { copy(isModelLoading = false) }
             }
             else -> {
                 Log.e(TAG, "Unknown message from Unity: $message")
@@ -82,9 +82,7 @@ class HomeViewModel @Inject constructor(
     private fun observeUserSettings() {
         viewModelScope.launch {
             getUserSettingsUseCase().collect { userSettings ->
-                updateState {
-                    copy(currentUserSettings = userSettings)
-                }
+                updateViewModelState { copy(currentUserSettings = userSettings) }
             }
         }
     }
@@ -92,7 +90,7 @@ class HomeViewModel @Inject constructor(
     private fun observeFavoriteAppList() {
         viewModelScope.launch {
             getFavoriteAppsUseCase().collect { favoriteAppList ->
-                updateState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
+                updateViewModelState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
             }
         }
     }
@@ -100,56 +98,28 @@ class HomeViewModel @Inject constructor(
     private fun observePlaceableItemList() {
         viewModelScope.launch {
             getPlacedItemsUseCase().collect { placedItemList ->
-                updateState { copy(placedItemList = placedItemList.toPersistentList()) }
+                updateViewModelState { copy(placedItemList = placedItemList.toPersistentList()) }
             }
-        }
-    }
-
-    /**
-     * 配置可能なアイテムをStateの配置済みリストに追加する
-     *
-     * @param placeableItem 追加するアイテム
-     */
-    private fun addPlaceableItem(placeableItem: PlaceableItem) {
-        updateState { copy(placedItemList = (placedItemList + placeableItem).toPersistentList()) }
-    }
-
-    /**
-     * 指定されたアイテムをStateの配置済みリストから削除する
-     *
-     * @param placeableItem 削除するアイテム
-     */
-    private fun deletePlaceableItem(placeableItem: PlaceableItem) {
-        updateState {
-            copy(
-                placedItemList = placedItemList
-                    .filterNot { it.id == placeableItem.id }
-                    .toPersistentList(),
-            )
-        }
-    }
-
-    private fun savePlaceableItemList() {
-        val currentPlacedItemList = state.value.placedItemList
-
-        viewModelScope.launch {
-            savePlacedItemsUseCase(currentPlacedItemList)
         }
     }
 
     @Suppress("LongMethod", "CyclomaticComplexMethod", "NestedBlockDepth")
     override fun onAction(action: HomeAction) {
         when (action) {
-            is HomeAction.OnAppClick -> sendEffect(HomeEffect.LaunchApp(action.appInfo))
+            is HomeAction.OnAppClick -> {
+                sendEffect(HomeEffect.LaunchApp(action.appInfo))
+            }
 
-            is HomeAction.OnAppLongClick -> sendEffect(HomeEffect.DeleteApp(action.appInfo))
+            is HomeAction.OnAppLongClick -> {
+                sendEffect(HomeEffect.DeleteApp(action.appInfo))
+            }
 
             is HomeAction.OnShowScaleSliderButtonClick -> {
-                updateState { copy(isChangeModelScaleContentShown = true) }
+                updateViewModelState { copy(isChangeModelScaleContentShown = true) }
             }
 
             is HomeAction.OnCloseScaleSliderButtonClick -> {
-                updateState { copy(isChangeModelScaleContentShown = false) }
+                updateViewModelState { copy(isChangeModelScaleContentShown = false) }
                 viewModelScope.launch {
                     saveModelSettingsUseCase(state.value.currentUserSettings.modelSettings)
                 }
@@ -159,7 +129,7 @@ class HomeViewModel @Inject constructor(
                 val now = SystemClock.elapsedRealtime()
                 if (now - lastScaleSentTime >= ScaleCooldownMillis) {
                     AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.AdjustScale, action.scale.toString())
-                    updateState {
+                    updateViewModelState {
                         copy(
                             currentUserSettings = currentUserSettings.copy(
                                 modelSettings = currentUserSettings.modelSettings.copy(scale = action.scale),
@@ -176,7 +146,7 @@ class HomeViewModel @Inject constructor(
                         state.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
 
                     if (!isDefaultModelFile) {
-                        updateState { copy(isModelLoading = true) }
+                        updateViewModelState { copy(isModelLoading = true) }
                         saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
                     }
                 }
@@ -188,51 +158,55 @@ class HomeViewModel @Inject constructor(
                     if (isModelChangeWarningFirstShown) {
                         sendEffect(HomeEffect.OpenDocument)
                     } else {
-                        updateState { copy(isModelChangeWarningDialogShown = true) }
+                        updateViewModelState { copy(isModelChangeWarningDialogShown = true) }
                     }
                 }
             }
 
-            is HomeAction.OnNavigateSettingsButtonClick -> sendEffect(HomeEffect.NavigateSettings)
+            is HomeAction.OnNavigateSettingsButtonClick -> {
+                sendEffect(HomeEffect.NavigateSettings)
+            }
 
             is HomeAction.OnModelChangeWarningDialogConfirm -> {
                 viewModelScope.launch {
                     markModelChangeWarningShownUseCase()
-                    updateState { copy(isModelChangeWarningDialogShown = false) }
+                    updateViewModelState { copy(isModelChangeWarningDialogShown = false) }
                     sendEffect(HomeEffect.OpenDocument)
                 }
             }
 
-            is HomeAction.OnModelChangeWarningDialogDismiss -> updateState { copy(isModelChangeWarningDialogShown = false) }
+            is HomeAction.OnModelChangeWarningDialogDismiss -> {
+                updateViewModelState { copy(isModelChangeWarningDialogShown = false) }
+            }
 
             is HomeAction.OnAppListSheetSwipeUp -> {
                 sendEffect(HomeEffect.ShowAppListSheet)
-                updateState { copy(isAppListSheetOpened = true) }
+                updateViewModelState { copy(isAppListSheetOpened = true) }
             }
 
             is HomeAction.OnAppListSheetSwipeDown -> {
                 sendEffect(HomeEffect.HideAppListSheet)
-                updateState { copy(isAppListSheetOpened = false) }
+                updateViewModelState { copy(isAppListSheetOpened = false) }
             }
 
             is HomeAction.OnAddPlaceableItemButtonClick -> {
                 sendEffect(HomeEffect.ShowPlaceableItemListSheet)
-                updateState { copy(isPlaceableItemListSheetOpened = true) }
+                updateViewModelState { copy(isPlaceableItemListSheetOpened = true) }
             }
 
             is HomeAction.OnPlaceableItemListSheetSwipeDown -> {
                 sendEffect(HomeEffect.HidePlaceableItemListSheet)
-                updateState { copy(isPlaceableItemListSheetOpened = false) }
+                updateViewModelState { copy(isPlaceableItemListSheetOpened = false) }
             }
 
             is HomeAction.OnDisplayModelContentSwipeLeft -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
-                updateState { copy(currentPage = PageContent.PlaceableItem) }
+                updateViewModelState { copy(currentPage = PageContent.PlaceableItem) }
             }
 
             is HomeAction.OnPlaceableItemContentSwipeRight -> {
                 AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
-                updateState { copy(currentPage = PageContent.DisplayModel) }
+                updateViewModelState { copy(currentPage = PageContent.DisplayModel) }
             }
 
             is HomeAction.OnDisplayModelContentClick -> {
@@ -249,7 +223,7 @@ class HomeViewModel @Inject constructor(
                 val result = widgetManager.bindAppWidgetId(widgetId, provider, action.widgetInfo.minWidth, action.widgetInfo.minHeight)
 
                 val widgetInfo = WidgetInfo(widgetId, action.widgetInfo)
-                updateState { copy(pendingWidgetInfo = widgetInfo) }
+                updateViewModelState { copy(pendingWidgetInfo = widgetInfo) }
 
                 if (result) {
                     if (action.widgetInfo.configure != null) {
@@ -259,58 +233,76 @@ class HomeViewModel @Inject constructor(
                         if (activityInfo != null && activityInfo.exported) {
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addPlaceableItem(PlacedWidgetInfo(widgetInfo))
+                            updateViewModelState { copy(placedItemList = (placedItemList + PlacedWidgetInfo(widgetInfo)).toPersistentList()) }
                         }
                     } else {
-                        addPlaceableItem(PlacedWidgetInfo(widgetInfo))
+                        updateViewModelState { copy(placedItemList = (placedItemList + PlacedWidgetInfo(widgetInfo)).toPersistentList()) }
                     }
                 } else {
                     val intent = widgetManager.buildBindIntent(widgetId, provider)
                     sendEffect(HomeEffect.BindWidget(intent))
                 }
                 sendEffect(HomeEffect.HidePlaceableItemListSheet)
-                updateState { copy(isPlaceableItemListSheetOpened = false) }
+                updateViewModelState { copy(isPlaceableItemListSheetOpened = false) }
             }
 
             is HomeAction.OnPlaceableItemListSheetAppClick -> {
-                addPlaceableItem(
-                    PlacedAppInfo(
-                        id = UUID.randomUUID().toString(),
-                        info = action.appInfo,
-                        position = Offset.Zero,
-                    ),
-                )
+                updateViewModelState {
+                    copy(
+                        placedItemList = (
+                            placedItemList + PlacedAppInfo(
+                                id = UUID.randomUUID().toString(),
+                                info = action.appInfo,
+                                position = Offset.Zero,
+                            )
+                            ).toPersistentList(),
+                    )
+                }
                 sendEffect(HomeEffect.HidePlaceableItemListSheet)
-                updateState { copy(isPlaceableItemListSheetOpened = false) }
+                updateViewModelState { copy(isPlaceableItemListSheetOpened = false) }
             }
 
-            is HomeAction.OnPlaceableItemContentLongClick -> updateState { copy(isEditMode = true) }
+            is HomeAction.OnPlaceableItemContentLongClick -> {
+                updateViewModelState { copy(isEditMode = true) }
+            }
 
             is HomeAction.OnCompleteEditButtonClick -> {
-                savePlaceableItemList()
-                updateState { copy(isEditMode = false) }
+                viewModelScope.launch {
+                    savePlacedItemsUseCase(state.value.placedItemList)
+                }
+                updateViewModelState { copy(isEditMode = false) }
             }
 
-            is HomeAction.OnDeletePlaceableItemBadgeClick -> deletePlaceableItem(action.placeableItem)
+            is HomeAction.OnDeletePlaceableItemBadgeClick -> {
+                updateViewModelState {
+                    copy(
+                        placedItemList = placedItemList
+                            .filterNot { it.id == action.placeableItem.id }
+                            .toPersistentList(),
+                    )
+                }
+            }
 
             is HomeAction.OnResizeWidgetBadgeClick -> {
-                updateState {
+                updateViewModelState {
                     copy(
                         isWidgetResizing = true,
                         resizingWidget = action.placedWidgetInfo,
+                        placedItemList = placedItemList
+                            .filterNot { it.id == action.placedWidgetInfo.id }
+                            .toPersistentList(),
                     )
                 }
-                deletePlaceableItem(action.placedWidgetInfo)
             }
 
             is HomeAction.OnWidgetResizeBottomSheetClose -> {
-                updateState {
+                updateViewModelState {
                     copy(
                         isWidgetResizing = false,
                         resizingWidget = null,
+                        placedItemList = (placedItemList + action.placedWidgetInfo).toPersistentList(),
                     )
                 }
-                addPlaceableItem(action.placedWidgetInfo)
             }
 
             is HomeAction.OnOpenDocumentLauncherResult -> {
@@ -318,16 +310,16 @@ class HomeViewModel @Inject constructor(
                     if (action.uri == null) {
                         sendEffect(HomeEffect.ShowToast("ファイルが選択されませんでした"))
                     } else {
-                        updateState { copy(isModelLoading = true) }
+                        updateViewModelState { copy(isModelLoading = true) }
                         modelFileManager.deleteCopiedCacheFiles()
                         val filePath = modelFileManager.copyVrmFileFromUri(action.uri)?.absolutePath
                         if (filePath == null) {
                             sendEffect(HomeEffect.ShowToast("ファイルの読み込みに失敗しました"))
-                            updateState { copy(isModelLoading = false) }
+                            updateViewModelState { copy(isModelLoading = false) }
                         } else {
                             if (filePath == state.value.currentUserSettings.modelFilePath.path) {
                                 sendEffect(HomeEffect.ShowToast("同じファイルが選択されています"))
-                                updateState { copy(isModelLoading = false) }
+                                updateViewModelState { copy(isModelLoading = false) }
                             } else {
                                 saveModelFilePathUseCase(ModelFilePath(filePath))
                             }
@@ -337,9 +329,9 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeAction.OnConfigureWidgetLauncherResult -> {
-                state.value.pendingWidgetInfo?.let { widgetInfo ->
+                _viewModelState.value.pendingWidgetInfo?.let { widgetInfo ->
                     if (action.result.resultCode == RESULT_OK) {
-                        addPlaceableItem(PlacedWidgetInfo(widgetInfo))
+                        updateViewModelState { copy(placedItemList = (placedItemList + PlacedWidgetInfo(widgetInfo)).toPersistentList()) }
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)
                     }
@@ -347,13 +339,13 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeAction.OnBindWidgetLauncherResult -> {
-                state.value.pendingWidgetInfo?.let { widgetInfo ->
+                _viewModelState.value.pendingWidgetInfo?.let { widgetInfo ->
                     if (action.result.resultCode == RESULT_OK) {
                         if (widgetInfo.info.configure != null) {
                             val intent = widgetManager.buildConfigureIntent(widgetInfo.id, widgetInfo.info.configure)
                             sendEffect(HomeEffect.ConfigureWidget(intent))
                         } else {
-                            addPlaceableItem(PlacedWidgetInfo(widgetInfo))
+                            updateViewModelState { copy(placedItemList = (placedItemList + PlacedWidgetInfo(widgetInfo)).toPersistentList()) }
                         }
                     } else {
                         widgetManager.deleteWidgetId(widgetInfo.id)

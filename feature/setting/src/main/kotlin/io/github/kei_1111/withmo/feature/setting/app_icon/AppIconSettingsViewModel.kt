@@ -13,9 +13,10 @@ import javax.inject.Inject
 class AppIconSettingsViewModel @Inject constructor(
     private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
-) : BaseViewModel<AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
+) : BaseViewModel<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
 
-    override fun createInitialState(): AppIconSettingsState = AppIconSettingsState()
+    override fun createInitialViewModelState() = AppIconSettingsViewModelState()
+    override fun createInitialState() = AppIconSettingsState()
 
     init {
         observeAppIconSettings()
@@ -24,7 +25,7 @@ class AppIconSettingsViewModel @Inject constructor(
     private fun observeAppIconSettings() {
         viewModelScope.launch {
             getAppIconSettingsUseCase().collect { appIconSettings ->
-                updateState {
+                updateViewModelState {
                     copy(
                         appIconSettings = appIconSettings,
                         initialAppIconSettings = appIconSettings,
@@ -34,45 +35,38 @@ class AppIconSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun saveAppIconSettings() {
-        updateState { copy(isSaveButtonEnabled = false) }
-        viewModelScope.launch {
-            try {
-                saveAppIconSettingsUseCase(state.value.appIconSettings)
-                sendEffect(AppIconSettingsEffect.ShowToast("保存しました"))
-                sendEffect(AppIconSettingsEffect.NavigateBack)
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to save app icon settings", e)
-                sendEffect(AppIconSettingsEffect.ShowToast("保存に失敗しました"))
-            }
-        }
-    }
-
     override fun onAction(action: AppIconSettingsAction) {
         when (action) {
             is AppIconSettingsAction.OnAppIconShapeRadioButtonClick -> {
-                updateState {
+                updateViewModelState {
                     val updatedAppIconSettings = appIconSettings.copy(appIconShape = action.appIconShape)
-                    copy(
-                        appIconSettings = updatedAppIconSettings,
-                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
-                    )
+                    copy(appIconSettings = updatedAppIconSettings)
                 }
             }
 
             is AppIconSettingsAction.OnRoundedCornerPercentSliderChange -> {
-                updateState {
+                updateViewModelState {
                     val updatedAppIconSettings = appIconSettings.copy(roundedCornerPercent = action.roundedCornerPercent)
-                    copy(
-                        appIconSettings = updatedAppIconSettings,
-                        isSaveButtonEnabled = updatedAppIconSettings != initialAppIconSettings,
-                    )
+                    copy(appIconSettings = updatedAppIconSettings)
                 }
             }
 
-            is AppIconSettingsAction.OnSaveButtonClick -> saveAppIconSettings()
+            is AppIconSettingsAction.OnSaveButtonClick -> {
+                viewModelScope.launch {
+                    try {
+                        saveAppIconSettingsUseCase(state.value.appIconSettings)
+                        sendEffect(AppIconSettingsEffect.ShowToast("保存しました"))
+                        sendEffect(AppIconSettingsEffect.NavigateBack)
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to save app icon settings", e)
+                        sendEffect(AppIconSettingsEffect.ShowToast("保存に失敗しました"))
+                    }
+                }
+            }
 
-            is AppIconSettingsAction.OnBackButtonClick -> sendEffect(AppIconSettingsEffect.NavigateBack)
+            is AppIconSettingsAction.OnBackButtonClick -> {
+                sendEffect(AppIconSettingsEffect.NavigateBack)
+            }
         }
     }
 

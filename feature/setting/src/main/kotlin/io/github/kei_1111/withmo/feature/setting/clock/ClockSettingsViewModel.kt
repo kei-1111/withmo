@@ -13,9 +13,10 @@ import javax.inject.Inject
 class ClockSettingsViewModel @Inject constructor(
     private val getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
-) : BaseViewModel<ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
+) : BaseViewModel<ClockSettingsViewModelState, ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 
-    override fun createInitialState(): ClockSettingsState = ClockSettingsState()
+    override fun createInitialViewModelState() = ClockSettingsViewModelState()
+    override fun createInitialState() = ClockSettingsState()
 
     init {
         observeClockSettings()
@@ -24,7 +25,7 @@ class ClockSettingsViewModel @Inject constructor(
     private fun observeClockSettings() {
         viewModelScope.launch {
             getClockSettingsUseCase().collect { clockSettings ->
-                updateState {
+                updateViewModelState {
                     copy(
                         clockSettings = clockSettings,
                         initialClockSettings = clockSettings,
@@ -34,45 +35,38 @@ class ClockSettingsViewModel @Inject constructor(
         }
     }
 
-    private fun saveClockSettings() {
-        updateState { copy(isSaveButtonEnabled = false) }
-        viewModelScope.launch {
-            try {
-                saveClockSettingsUseCase(state.value.clockSettings)
-                sendEffect(ClockSettingsEffect.NavigateBack)
-                sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
-            } catch (e: Exception) {
-                Log.e(TAG, "Failed to save clock settings", e)
-                sendEffect(ClockSettingsEffect.ShowToast("保存に失敗しました"))
-            }
-        }
-    }
-
     override fun onAction(action: ClockSettingsAction) {
         when (action) {
             is ClockSettingsAction.OnIsClockShownSwitchChange -> {
-                updateState {
+                updateViewModelState {
                     val updatedClockSettings = clockSettings.copy(isClockShown = action.isClockShown)
-                    copy(
-                        clockSettings = updatedClockSettings,
-                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
-                    )
+                    copy(clockSettings = updatedClockSettings)
                 }
             }
 
             is ClockSettingsAction.OnClockTypeRadioButtonClick -> {
-                updateState {
+                updateViewModelState {
                     val updatedClockSettings = clockSettings.copy(clockType = action.clockType)
-                    copy(
-                        clockSettings = updatedClockSettings,
-                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
-                    )
+                    copy(clockSettings = updatedClockSettings)
                 }
             }
 
-            is ClockSettingsAction.OnSaveButtonClick -> saveClockSettings()
+            is ClockSettingsAction.OnSaveButtonClick -> {
+                viewModelScope.launch {
+                    try {
+                        saveClockSettingsUseCase(state.value.clockSettings)
+                        sendEffect(ClockSettingsEffect.NavigateBack)
+                        sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
+                    } catch (e: Exception) {
+                        Log.e(TAG, "Failed to save clock settings", e)
+                        sendEffect(ClockSettingsEffect.ShowToast("保存に失敗しました"))
+                    }
+                }
+            }
 
-            is ClockSettingsAction.OnBackButtonClick -> sendEffect(ClockSettingsEffect.NavigateBack)
+            is ClockSettingsAction.OnBackButtonClick -> {
+                sendEffect(ClockSettingsEffect.NavigateBack)
+            }
         }
     }
 

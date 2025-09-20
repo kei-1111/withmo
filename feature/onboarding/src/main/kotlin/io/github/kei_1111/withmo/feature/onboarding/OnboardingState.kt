@@ -7,18 +7,19 @@ import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class OnboardingState(
-    val currentPage: OnboardingPage = OnboardingPage.Welcome,
-    val appSearchQuery: String = "",
-    val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val isModelLoading: Boolean = false,
-    val modelFilePath: ModelFilePath = ModelFilePath(null),
-    val modelFileThumbnail: Bitmap? = null,
-) : State
+sealed interface OnboardingState : State {
+    data object Welcome : OnboardingState
 
-enum class OnboardingPage {
-    Welcome,
-    SelectFavoriteApp,
-    SelectDisplayModel,
-    Finish,
+    data class SelectFavoriteApp(
+        val appSearchQuery: String = "",
+        val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+    ) : OnboardingState
+
+    data class SelectDisplayModel(
+        val isModelLoading: Boolean = false,
+        val modelFilePath: ModelFilePath = ModelFilePath(null),
+        val modelFileThumbnail: Bitmap? = null,
+    ) : OnboardingState
+
+    data object Finish : OnboardingState
 }

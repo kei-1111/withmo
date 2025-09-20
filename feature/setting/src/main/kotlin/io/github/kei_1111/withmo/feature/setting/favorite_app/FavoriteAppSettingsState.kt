@@ -7,8 +7,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class FavoriteAppSettingsState(
-    val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val initialFavoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+    val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val appSearchQuery: String = "",
     val isSaveButtonEnabled: Boolean = false,
     val appIconSettings: AppIconSettings = AppIconSettings(),
