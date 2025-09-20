@@ -15,7 +15,7 @@ data class FavoriteAppSettingsViewModelState(
     override fun toState() = FavoriteAppSettingsState(
         favoriteAppList = favoriteAppList,
         appSearchQuery = appSearchQuery,
-        isSaveButtonEnabled = initialFavoriteAppList != favoriteAppList,
+        isSaveButtonEnabled = favoriteAppList != initialFavoriteAppList,
         appIconSettings = appIconSettings,
     )
 }
