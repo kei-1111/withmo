@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.sort
 
-import io.github.kei_1111.withmo.core.featurebase.ViewModelState
+import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 
 data class SortSettingsViewModelState(

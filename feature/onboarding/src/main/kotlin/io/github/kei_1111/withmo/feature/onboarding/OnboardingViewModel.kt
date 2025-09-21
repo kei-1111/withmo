@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import kotlinx.collections.immutable.toPersistentList
@@ -24,7 +24,7 @@ class OnboardingViewModel @Inject constructor(
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val markOnboardingShownUseCase: MarkOnboardingShownUseCase,
     private val modelFileManager: ModelFileManager,
-) : BaseViewModel<OnboardingViewModelState, OnboardingState, OnboardingAction, OnboardingEffect>() {
+) : StatefulBaseViewModel<OnboardingViewModelState, OnboardingState, OnboardingAction, OnboardingEffect>() {
 
     override fun createInitialViewModelState() = OnboardingViewModelState()
     override fun createInitialState() = OnboardingState.Welcome

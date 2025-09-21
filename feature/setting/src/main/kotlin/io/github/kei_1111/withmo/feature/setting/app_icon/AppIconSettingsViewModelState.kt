@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.app_icon
 
-import io.github.kei_1111.withmo.core.featurebase.ViewModelState
+import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 
 data class AppIconSettingsViewModelState(

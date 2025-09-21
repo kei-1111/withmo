@@ -7,7 +7,7 @@ import io.github.kei_1111.withmo.core.domain.manager.AppManager
 import io.github.kei_1111.withmo.core.domain.permission.PermissionChecker
 import io.github.kei_1111.withmo.core.domain.usecase.GetSortSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSortSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,7 +18,7 @@ class SortSettingsViewModel @Inject constructor(
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
     private val appManager: AppManager,
     private val permissionChecker: PermissionChecker,
-) : BaseViewModel<SortSettingsViewModelState, SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
+) : StatefulBaseViewModel<SortSettingsViewModelState, SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
     override fun createInitialViewModelState() = SortSettingsViewModelState()
     override fun createInitialState() = SortSettingsState()
