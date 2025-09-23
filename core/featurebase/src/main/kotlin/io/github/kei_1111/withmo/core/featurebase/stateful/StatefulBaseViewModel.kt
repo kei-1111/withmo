@@ -88,14 +88,14 @@ abstract class StatefulBaseViewModel<VS : ViewModelState<S>, S : State, A : Acti
         .map(ViewModelState<S>::toState)
         .stateIn(
             scope = viewModelScope,
-            started = SharingStarted.Companion.WhileSubscribed(STOP_TIMEOUT_MILLIS),
+            started = SharingStarted.WhileSubscribed(STOP_TIMEOUT_MILLIS),
             initialValue = createInitialState(),
         )
 
     /**
      * エフェクトを送信するための内部チャンネル
      */
-    protected val _effect = Channel<E>(Channel.Factory.BUFFERED)
+    protected val _effect = Channel<E>(Channel.BUFFERED)
 
     /**
      * UIで観測されるエフェクトのFlow
@@ -172,7 +172,7 @@ abstract class StatefulBaseViewModel<VS : ViewModelState<S>, S : State, A : Acti
         _effect.trySend(effect)
     }
 
-    private companion object Companion {
+    private companion object {
         const val STOP_TIMEOUT_MILLIS = 5_000L
     }
 }
