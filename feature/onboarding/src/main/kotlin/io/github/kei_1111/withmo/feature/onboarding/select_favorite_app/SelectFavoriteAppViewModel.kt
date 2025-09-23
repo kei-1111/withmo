@@ -19,16 +19,20 @@ class SelectFavoriteAppViewModel @Inject constructor(
 ) : StatefulBaseViewModel<SelectFavoriteAppViewModelState, SelectFavoriteAppState, SelectFavoriteAppAction, SelectFavoriteAppEffect>() {
 
     override fun createInitialViewModelState() = SelectFavoriteAppViewModelState()
-    override fun createInitialState() = SelectFavoriteAppState()
+    override fun createInitialState() = SelectFavoriteAppState.Idle
+
+    private val selectFavoriteAppDataStream = getFavoriteAppsUseCase()
 
     init {
-        observeFavoriteAppList()
-    }
-
-    private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            getFavoriteAppsUseCase().collect { favoriteAppList ->
-                updateViewModelState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
+            updateViewModelState { copy(statusType = SelectFavoriteAppViewModelState.StatusType.LOADING) }
+            selectFavoriteAppDataStream.collect { data ->
+                updateViewModelState {
+                    copy(
+                        statusType = SelectFavoriteAppViewModelState.StatusType.STABLE,
+                        selectedAppList = data.toPersistentList(),
+                    )
+                }
             }
         }
     }
@@ -36,7 +40,7 @@ class SelectFavoriteAppViewModel @Inject constructor(
     private fun saveFavoriteApps() {
         viewModelScope.launch {
             try {
-                saveFavoriteAppsUseCase(state.value.selectedAppList)
+                saveFavoriteAppsUseCase(_viewModelState.value.selectedAppList)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save favorite app settings", e)
             }

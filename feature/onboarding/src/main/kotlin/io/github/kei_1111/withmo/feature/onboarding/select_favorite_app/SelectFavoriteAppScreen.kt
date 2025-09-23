@@ -74,43 +74,51 @@ private fun SelectFavoriteAppScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar {
-                TitleLargeText("お気に入りアプリは？")
-            }
-            SelectFavoriteAppScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-                horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+    when (state) {
+        SelectFavoriteAppState.Idle, SelectFavoriteAppState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is SelectFavoriteAppState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is SelectFavoriteAppState.Stable -> {
+            Surface(
+                modifier = modifier,
             ) {
-                WithmoBackButton(
-                    onClick = { onAction(SelectFavoriteAppAction.OnBackButtonClick) },
-                    modifier = Modifier.weight(1f),
-                )
-                WithmoButton(
-                    onClick = { onAction(SelectFavoriteAppAction.OnNextButtonClick) },
+                Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(CommonDimensions.SettingItemHeight),
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
                 ) {
-                    BodyMediumText(
-                        text = if (state.selectedAppList.isEmpty()) "スキップ" else "次へ",
+                    WithmoTopAppBar {
+                        TitleLargeText("お気に入りアプリは？")
+                    }
+                    SelectFavoriteAppScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                    ) {
+                        WithmoBackButton(
+                            onClick = { onAction(SelectFavoriteAppAction.OnBackButtonClick) },
+                            modifier = Modifier.weight(1f),
+                        )
+                        WithmoButton(
+                            onClick = { onAction(SelectFavoriteAppAction.OnNextButtonClick) },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(CommonDimensions.SettingItemHeight),
+                        ) {
+                            BodyMediumText(
+                                text = if (state.selectedAppList.isEmpty()) "スキップ" else "次へ",
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -122,7 +130,7 @@ private fun SelectFavoriteAppScreen(
 private fun SelectFavoriteAppScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppScreen(
-            state = SelectFavoriteAppState(
+            state = SelectFavoriteAppState.Stable(
                 appSearchQuery = "",
                 selectedAppList = persistentListOf(),
             ),
@@ -137,7 +145,7 @@ private fun SelectFavoriteAppScreenLightPreview() {
 private fun SelectFavoriteAppScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppScreen(
-            state = SelectFavoriteAppState(
+            state = SelectFavoriteAppState.Stable(
                 appSearchQuery = "",
                 selectedAppList = persistentListOf(),
             ),

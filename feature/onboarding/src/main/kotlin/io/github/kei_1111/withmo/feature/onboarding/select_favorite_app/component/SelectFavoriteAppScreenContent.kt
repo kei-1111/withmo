@@ -29,7 +29,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Suppress("LongMethod")
 @Composable
 internal fun SelectFavoriteAppScreenContent(
-    state: SelectFavoriteAppState,
+    state: SelectFavoriteAppState.Stable,
     onAction: (SelectFavoriteAppAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -99,7 +99,7 @@ internal fun SelectFavoriteAppScreenContent(
 private fun SelectFavoriteAppScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppScreenContent(
-            state = SelectFavoriteAppState(
+            state = SelectFavoriteAppState.Stable(
                 appSearchQuery = "",
                 selectedAppList = persistentListOf(),
             ),
@@ -114,7 +114,7 @@ private fun SelectFavoriteAppScreenContentLightPreview() {
 private fun SelectFavoriteAppScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppScreenContent(
-            state = SelectFavoriteAppState(
+            state = SelectFavoriteAppState.Stable(
                 appSearchQuery = "",
                 selectedAppList = persistentListOf(),
             ),

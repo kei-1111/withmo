@@ -6,11 +6,23 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class SelectFavoriteAppViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
     val appSearchQuery: String = "",
     val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
 ) : ViewModelState<SelectFavoriteAppState> {
-    override fun toState() = SelectFavoriteAppState(
-        appSearchQuery = appSearchQuery,
-        selectedAppList = selectedAppList,
-    )
+
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> SelectFavoriteAppState.Idle
+
+        StatusType.LOADING -> SelectFavoriteAppState.Loading
+
+        StatusType.STABLE -> SelectFavoriteAppState.Stable(
+            appSearchQuery = appSearchQuery,
+            selectedAppList = selectedAppList,
+        )
+
+        StatusType.ERROR -> SelectFavoriteAppState.Error(Throwable("An error occurred in SelectFavoriteAppViewModelState"))
+    }
 }
