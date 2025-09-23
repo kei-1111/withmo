@@ -33,7 +33,6 @@ fun WithmoOutlinedButton(
     content: @Composable RowScope.() -> Unit,
 ) {
     val clickBlocker = LocalClickBlocker.current
-//    val context = LocalContext.current
 
     OutlinedButton(
         onClick = {
