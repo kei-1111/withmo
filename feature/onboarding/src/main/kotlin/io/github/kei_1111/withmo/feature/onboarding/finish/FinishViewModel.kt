@@ -25,4 +25,8 @@ class FinishViewModel @Inject constructor(
             }
         }
     }
+
+    private companion object {
+        const val TAG = "FinishViewModel"
+    }
 }

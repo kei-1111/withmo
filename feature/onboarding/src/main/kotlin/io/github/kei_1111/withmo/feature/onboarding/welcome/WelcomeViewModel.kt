@@ -13,4 +13,8 @@ class WelcomeViewModel @Inject constructor() : StatelessBaseViewModel<WelcomeAct
             }
         }
     }
+
+    private companion object {
+        const val TAG = "WelcomeViewModel"
+    }
 }
