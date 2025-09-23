@@ -18,7 +18,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.github.kei_1111.withmo.feature.home.HomeScreen
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreen
+import io.github.kei_1111.withmo.feature.onboarding.finish.FinishScreen
+import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelScreen
+import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppScreen
+import io.github.kei_1111.withmo.feature.onboarding.welcome.WelcomeScreen
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreen
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsScreen
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsScreen
@@ -46,11 +49,65 @@ fun WithmoNavHost(
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { it } },
     ) {
-        composable<Screen.Onboarding>(
-            exitTransition = { slideOutVertically { it } },
+        composable<Screen.Welcome>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
         ) {
-            OnboardingScreen(
-                onFinishButtonClick = { navController.navigate(Screen.Home) },
+            WelcomeScreen(
+                navigateSelectFavoriteApp = { navController.navigate(Screen.SelectFavoriteApps) },
+            )
+        }
+        composable<Screen.SelectFavoriteApps>(
+            enterTransition = {
+                if (initialState.checkScreen(Screen.Welcome)) {
+                    slideInHorizontally { it }
+                } else { EnterTransition.None }
+            },
+            exitTransition = {
+                if (targetState.checkScreen(Screen.Welcome)) {
+                    slideOutHorizontally { it }
+                } else { ExitTransition.None }
+            },
+        ) {
+            SelectFavoriteAppScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateSelectDisplayModel = { navController.navigate(Screen.SelectDisplayModel) },
+            )
+        }
+        composable<Screen.SelectDisplayModel>(
+            enterTransition = {
+                if (initialState.checkScreen(Screen.SelectFavoriteApps)) {
+                    slideInHorizontally { it }
+                } else { EnterTransition.None }
+            },
+            exitTransition = {
+                if (targetState.checkScreen(Screen.SelectFavoriteApps)) {
+                    slideOutHorizontally { it }
+                } else { ExitTransition.None }
+            },
+        ) {
+            SelectDisplayModelScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateFinish = { navController.navigate(Screen.Finish) },
+            )
+        }
+        composable<Screen.Finish>(
+            enterTransition = {
+                if (initialState.checkScreen(Screen.SelectDisplayModel)) {
+                    slideInHorizontally { it }
+                } else { EnterTransition.None }
+            },
+            exitTransition = {
+                if (targetState.checkScreen(Screen.Home)) {
+                    slideOutVertically { it }
+                } else if (targetState.checkScreen(Screen.SelectDisplayModel)) {
+                    slideOutHorizontally { it }
+                } else { ExitTransition.None }
+            },
+        ) {
+            FinishScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateHome = { navController.navigate(Screen.Home) },
             )
         }
         composable<Screen.Home>(

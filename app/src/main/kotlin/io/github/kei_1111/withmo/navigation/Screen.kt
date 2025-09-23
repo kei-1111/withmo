@@ -3,8 +3,18 @@ package io.github.kei_1111.withmo.navigation
 import kotlinx.serialization.Serializable
 
 sealed interface Screen {
+
     @Serializable
-    data object Onboarding : Screen
+    data object Welcome : Screen
+
+    @Serializable
+    data object SelectFavoriteApps : Screen
+
+    @Serializable
+    data object SelectDisplayModel : Screen
+
+    @Serializable
+    data object Finish : Screen
 
     @Serializable
     data object Home : Screen

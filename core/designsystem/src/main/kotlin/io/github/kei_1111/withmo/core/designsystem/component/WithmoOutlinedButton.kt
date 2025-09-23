@@ -1,5 +1,7 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.R.attr.enabled
+import android.R.attr.onClick
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
@@ -7,8 +9,8 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -16,27 +18,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
 
 @Composable
-fun WithmoButton(
+fun WithmoOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.filledTonalShape,
-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+    shape: Shape = ButtonDefaults.outlinedShape,
+    colors: ButtonColors = ButtonDefaults.outlinedButtonColors(),
     elevation: Dp? = null,
-    border: BorderStroke? = null,
+    border: BorderStroke? = ButtonDefaults.outlinedButtonBorder(enabled),
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
     interactionSource: MutableInteractionSource? = null,
-    content: @Composable (RowScope.() -> Unit),
+    content: @Composable RowScope.() -> Unit,
 ) {
     val clickBlocker = LocalClickBlocker.current
 
-    FilledTonalButton(
+    OutlinedButton(
         onClick = {
             if (clickBlocker.tryClick()) {
                 onClick()
@@ -62,55 +63,23 @@ fun WithmoButton(
 }
 
 @Composable
-fun WithmoSaveButton(
-    onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    WithmoButton(
-        onClick = onClick,
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
-        enabled = enabled,
-    ) {
-        BodyMediumText(
-            text = "保存",
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-            },
-        )
-    }
-}
-
-@Composable
-fun WithmoNextButton(
+fun WithmoBackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true,
 ) {
-    WithmoButton(
+    WithmoOutlinedButton(
         onClick = onClick,
         modifier = modifier.height(CommonDimensions.SettingItemHeight),
-        enabled = enabled,
     ) {
-        BodyMediumText(
-            text = "次へ",
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-            },
-        )
+        BodyMediumText("戻る")
     }
 }
 
 @Preview
 @Composable
-private fun WithmoButtonLightPreview() {
+private fun WithmoOutlinedButtonLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        WithmoButton(
+        WithmoOutlinedButton(
             onClick = {},
         ) {}
     }
@@ -120,7 +89,7 @@ private fun WithmoButtonLightPreview() {
 @Composable
 private fun WithmoButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        WithmoButton(
+        WithmoOutlinedButton(
             onClick = {},
         ) {}
     }
@@ -128,44 +97,20 @@ private fun WithmoButtonDarkPreview() {
 
 @Preview
 @Composable
-private fun WithmoSaveButtonLightPreview() {
+private fun WithmoBackButtonLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        WithmoSaveButton(
+        WithmoBackButton(
             onClick = {},
-            enabled = true,
         )
     }
 }
 
 @Preview
 @Composable
-private fun WithmoSaveButtonDarkPreview() {
+private fun WithmoBackButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        WithmoSaveButton(
+        WithmoBackButton(
             onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        WithmoNextButton(
-            onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        WithmoNextButton(
-            onClick = {},
-            enabled = true,
         )
     }
 }
