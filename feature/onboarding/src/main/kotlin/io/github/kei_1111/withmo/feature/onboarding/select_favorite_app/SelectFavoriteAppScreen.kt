@@ -31,7 +31,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Co
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.component.SelectFavoriteAppScreenContent
-import kotlinx.collections.immutable.persistentListOf
 
 @Suppress("ModifierMissing")
 @Composable
@@ -130,10 +129,7 @@ private fun SelectFavoriteAppScreen(
 private fun SelectFavoriteAppScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppScreen(
-            state = SelectFavoriteAppState.Stable(
-                appSearchQuery = "",
-                selectedAppList = persistentListOf(),
-            ),
+            state = SelectFavoriteAppState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -145,10 +141,7 @@ private fun SelectFavoriteAppScreenLightPreview() {
 private fun SelectFavoriteAppScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppScreen(
-            state = SelectFavoriteAppState.Stable(
-                appSearchQuery = "",
-                selectedAppList = persistentListOf(),
-            ),
+            state = SelectFavoriteAppState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

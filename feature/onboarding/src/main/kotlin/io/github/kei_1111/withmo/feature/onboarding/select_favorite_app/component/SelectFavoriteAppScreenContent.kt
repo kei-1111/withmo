@@ -23,7 +23,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppAction
 import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppState
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
@@ -99,10 +98,7 @@ internal fun SelectFavoriteAppScreenContent(
 private fun SelectFavoriteAppScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectFavoriteAppScreenContent(
-            state = SelectFavoriteAppState.Stable(
-                appSearchQuery = "",
-                selectedAppList = persistentListOf(),
-            ),
+            state = SelectFavoriteAppState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -114,10 +110,7 @@ private fun SelectFavoriteAppScreenContentLightPreview() {
 private fun SelectFavoriteAppScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectFavoriteAppScreenContent(
-            state = SelectFavoriteAppState.Stable(
-                appSearchQuery = "",
-                selectedAppList = persistentListOf(),
-            ),
+            state = SelectFavoriteAppState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
