@@ -34,7 +34,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.onboarding.select_display_model.component.SelectDisplayModelScreenContent
@@ -126,7 +125,7 @@ private fun SelectDisplayModelScreen(
                         .height(CommonDimensions.SettingItemHeight),
                 ) {
                     BodyMediumText(
-                        text = if (state.modelFilePath.path == null) "スキップ" else "次へ",
+                        text = if (state.isDefaultModel) "スキップ" else "次へ",
                     )
                 }
             }
@@ -140,9 +139,7 @@ private fun SelectDisplayModelScreen(
 private fun SelectDisplayModelScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelScreen(
-            state = SelectDisplayModelState(
-                modelFilePath = ModelFilePath(null),
-            ),
+            state = SelectDisplayModelState(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -155,9 +152,7 @@ private fun SelectDisplayModelScreenLightPreview() {
 private fun SelectDisplayModelScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelScreen(
-            state = SelectDisplayModelState(
-                modelFilePath = ModelFilePath(null),
-            ),
+            state = SelectDisplayModelState(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

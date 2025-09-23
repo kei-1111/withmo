@@ -30,12 +30,10 @@ import io.github.kei_1111.withmo.core.designsystem.component.modifier.dashedBord
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelAction
 import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelState
-import java.io.File
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
@@ -54,11 +52,7 @@ internal fun SelectDisplayModelScreenContent(
             onClick = { onAction(SelectDisplayModelAction.OnSelectDisplayModelAreaClick) },
         )
         BodyMediumText(
-            text = if (state.modelFilePath.path != null) {
-                File(state.modelFilePath.path).name
-            } else {
-                "デフォルトモデル"
-            },
+            text = if (state.isDefaultModel) "デフォルトモデル" else state.modelFileName,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(Paddings.Medium),
         )
@@ -71,13 +65,11 @@ private fun SelectDisplayModelArea(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isModelFileThumbnail = state.modelFileThumbnail != null
-
     Surface(
         modifier = modifier
             .size(250.dp)
             .then(
-                if (isModelFileThumbnail) {
+                if (state.modelFileThumbnail != null && !state.isDefaultModel) {
                     Modifier.border(
                         color = MaterialTheme.colorScheme.primary,
                         shape = MaterialTheme.shapes.medium,
@@ -96,7 +88,7 @@ private fun SelectDisplayModelArea(
             .safeClickable { onClick() },
         shape = MaterialTheme.shapes.medium,
     ) {
-        if (isModelFileThumbnail) {
+        if (state.modelFileThumbnail != null && !state.isDefaultModel) {
             Image(
                 bitmap = state.modelFileThumbnail.asImageBitmap(),
                 contentDescription = "Model Thumbnail",
@@ -151,9 +143,7 @@ private fun SelectDisplayModelArea(
 private fun SelectDisplayModelScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelScreenContent(
-            state = SelectDisplayModelState(
-                modelFilePath = ModelFilePath(null),
-            ),
+            state = SelectDisplayModelState(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -166,9 +156,7 @@ private fun SelectDisplayModelScreenContentLightPreview() {
 private fun SelectDisplayModelScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelScreenContent(
-            state = SelectDisplayModelState(
-                modelFilePath = ModelFilePath(null),
-            ),
+            state = SelectDisplayModelState(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

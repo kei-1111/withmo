@@ -7,7 +7,6 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -29,17 +28,14 @@ class SelectDisplayModelViewModel @Inject constructor(
     private fun observeModelFilePath() {
         viewModelScope.launch {
             getModelFilePathUseCase().collect { modelFilePath ->
-                val isDefaultModel = modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) }
-                if (isDefaultModel == false) {
-                    val thumbnails = modelFilePath.path?.let { File(it) }?.let {
-                        modelFileManager.getVrmThumbnail(it)
-                    }
-                    updateViewModelState {
-                        copy(
-                            modelFilePath = modelFilePath,
-                            modelFileThumbnail = thumbnails,
-                        )
-                    }
+                val thumbnails = modelFilePath.path?.let { File(it) }?.let {
+                    modelFileManager.getVrmThumbnail(it)
+                }
+                updateViewModelState {
+                    copy(
+                        modelFilePath = modelFilePath,
+                        modelFileThumbnail = thumbnails,
+                    )
                 }
             }
         }
@@ -47,7 +43,7 @@ class SelectDisplayModelViewModel @Inject constructor(
 
     private fun saveModelFilePath() {
         viewModelScope.launch {
-            val modelFilePath = state.value.modelFilePath
+            val modelFilePath = _viewModelState.value.modelFilePath
             if (modelFilePath.path != null) {
                 saveModelFilePathUseCase(modelFilePath)
             } else {
