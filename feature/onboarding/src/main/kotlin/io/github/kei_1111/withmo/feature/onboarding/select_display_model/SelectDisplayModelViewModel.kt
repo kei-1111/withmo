@@ -19,20 +19,20 @@ class SelectDisplayModelViewModel @Inject constructor(
 ) : StatefulBaseViewModel<SelectDisplayModelViewModelState, SelectDisplayModelState, SelectDisplayModelAction, SelectDisplayModelEffect>() {
 
     override fun createInitialViewModelState() = SelectDisplayModelViewModelState()
-    override fun createInitialState() = SelectDisplayModelState()
+    override fun createInitialState() = SelectDisplayModelState.Idle
+
+    private val selectDisplayModelDataStream = getModelFilePathUseCase()
 
     init {
-        observeModelFilePath()
-    }
-
-    private fun observeModelFilePath() {
         viewModelScope.launch {
-            getModelFilePathUseCase().collect { modelFilePath ->
+            updateViewModelState { copy(statusType = SelectDisplayModelViewModelState.StatusType.LOADING) }
+            selectDisplayModelDataStream.collect { modelFilePath ->
                 val thumbnails = modelFilePath.path?.let { File(it) }?.let {
                     modelFileManager.getVrmThumbnail(it)
                 }
                 updateViewModelState {
                     copy(
+                        statusType = SelectDisplayModelViewModelState.StatusType.STABLE,
                         modelFilePath = modelFilePath,
                         modelFileThumbnail = thumbnails,
                     )

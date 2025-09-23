@@ -90,43 +90,51 @@ private fun SelectDisplayModelScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar {
-                TitleLargeText("表示したいVRMモデルは？")
-            }
-            SelectDisplayModelScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f),
-            )
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-                horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+    when (state) {
+        SelectDisplayModelState.Idle, SelectDisplayModelState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is SelectDisplayModelState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is SelectDisplayModelState.Stable -> {
+            Surface(
+                modifier = modifier,
             ) {
-                WithmoBackButton(
-                    onClick = { onAction(SelectDisplayModelAction.OnBackButtonClick) },
-                    modifier = Modifier.weight(1f),
-                )
-                WithmoButton(
-                    onClick = { onAction(SelectDisplayModelAction.OnNextButtonClick) },
+                Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .height(CommonDimensions.SettingItemHeight),
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
                 ) {
-                    BodyMediumText(
-                        text = if (state.isDefaultModel) "スキップ" else "次へ",
+                    WithmoTopAppBar {
+                        TitleLargeText("表示したいVRMモデルは？")
+                    }
+                    SelectDisplayModelScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     )
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                    ) {
+                        WithmoBackButton(
+                            onClick = { onAction(SelectDisplayModelAction.OnBackButtonClick) },
+                            modifier = Modifier.weight(1f),
+                        )
+                        WithmoButton(
+                            onClick = { onAction(SelectDisplayModelAction.OnNextButtonClick) },
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(CommonDimensions.SettingItemHeight),
+                        ) {
+                            BodyMediumText(
+                                text = if (state.isDefaultModel) "スキップ" else "次へ",
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -139,7 +147,7 @@ private fun SelectDisplayModelScreen(
 private fun SelectDisplayModelScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelScreen(
-            state = SelectDisplayModelState(),
+            state = SelectDisplayModelState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -152,7 +160,7 @@ private fun SelectDisplayModelScreenLightPreview() {
 private fun SelectDisplayModelScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelScreen(
-            state = SelectDisplayModelState(),
+            state = SelectDisplayModelState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
