@@ -1,7 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.R.attr.enabled
-import android.R.attr.onClick
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
@@ -10,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedTextFieldDefaults.contentPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -36,6 +33,7 @@ fun WithmoOutlinedButton(
     content: @Composable RowScope.() -> Unit,
 ) {
     val clickBlocker = LocalClickBlocker.current
+//    val context = LocalContext.current
 
     OutlinedButton(
         onClick = {
