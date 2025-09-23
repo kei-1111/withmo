@@ -54,10 +54,10 @@ fun WithmoNavHost(
             exitTransition = { ExitTransition.None },
         ) {
             WelcomeScreen(
-                navigateSelectFavoriteApp = { navController.navigate(Screen.SelectFavoriteApps) },
+                navigateSelectFavoriteApp = { navController.navigate(Screen.SelectFavoriteApp) },
             )
         }
-        composable<Screen.SelectFavoriteApps>(
+        composable<Screen.SelectFavoriteApp>(
             enterTransition = {
                 if (initialState.checkScreen(Screen.Welcome)) {
                     slideInHorizontally { it }
@@ -76,12 +76,12 @@ fun WithmoNavHost(
         }
         composable<Screen.SelectDisplayModel>(
             enterTransition = {
-                if (initialState.checkScreen(Screen.SelectFavoriteApps)) {
+                if (initialState.checkScreen(Screen.SelectFavoriteApp)) {
                     slideInHorizontally { it }
                 } else { EnterTransition.None }
             },
             exitTransition = {
-                if (targetState.checkScreen(Screen.SelectFavoriteApps)) {
+                if (targetState.checkScreen(Screen.SelectFavoriteApp)) {
                     slideOutHorizontally { it }
                 } else { ExitTransition.None }
             },

@@ -8,7 +8,7 @@ sealed interface Screen {
     data object Welcome : Screen
 
     @Serializable
-    data object SelectFavoriteApps : Screen
+    data object SelectFavoriteApp : Screen
 
     @Serializable
     data object SelectDisplayModel : Screen
