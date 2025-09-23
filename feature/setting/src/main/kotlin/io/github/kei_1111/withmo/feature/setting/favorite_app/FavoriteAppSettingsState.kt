@@ -6,9 +6,17 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class FavoriteAppSettingsState(
-    val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val appSearchQuery: String = "",
-    val isSaveButtonEnabled: Boolean = false,
-    val appIconSettings: AppIconSettings = AppIconSettings(),
-) : State
+sealed interface FavoriteAppSettingsState : State {
+    data object Idle : FavoriteAppSettingsState
+
+    data object Loading : FavoriteAppSettingsState
+
+    data class Stable(
+        val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+        val appSearchQuery: String = "",
+        val isSaveButtonEnabled: Boolean = false,
+        val appIconSettings: AppIconSettings = AppIconSettings(),
+    ) : FavoriteAppSettingsState
+
+    data class Error(val error: Throwable) : FavoriteAppSettingsState
+}
