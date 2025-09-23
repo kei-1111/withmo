@@ -87,7 +87,7 @@ private fun WithmoOutlinedButtonLightPreview() {
 
 @Preview
 @Composable
-private fun WithmoButtonDarkPreview() {
+private fun WithmoOutlinedButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         WithmoOutlinedButton(
             onClick = {},
