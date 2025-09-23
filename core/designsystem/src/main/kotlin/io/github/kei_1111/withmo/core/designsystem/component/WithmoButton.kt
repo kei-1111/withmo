@@ -84,6 +84,28 @@ fun WithmoSaveButton(
     }
 }
 
+@Composable
+fun WithmoNextButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+) {
+    WithmoButton(
+        onClick = onClick,
+        modifier = modifier.height(CommonDimensions.SettingItemHeight),
+        enabled = enabled,
+    ) {
+        BodyMediumText(
+            text = "次へ",
+            color = if (enabled) {
+                MaterialTheme.colorScheme.primary
+            } else {
+                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+            },
+        )
+    }
+}
+
 @Preview
 @Composable
 private fun WithmoButtonLightPreview() {
@@ -120,6 +142,28 @@ private fun WithmoSaveButtonLightPreview() {
 private fun WithmoSaveButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSaveButton(
+            onClick = {},
+            enabled = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun WithmoNextButtonLightPreview() {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
+        WithmoNextButton(
+            onClick = {},
+            enabled = true,
+        )
+    }
+}
+
+@Preview
+@Composable
+private fun WithmoNextButtonDarkPreview() {
+    WithmoTheme(themeType = ThemeType.DARK) {
+        WithmoNextButton(
             onClick = {},
             enabled = true,
         )

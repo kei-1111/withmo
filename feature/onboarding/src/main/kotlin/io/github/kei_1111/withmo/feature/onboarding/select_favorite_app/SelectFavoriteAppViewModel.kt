@@ -1,0 +1,95 @@
+package io.github.kei_1111.withmo.feature.onboarding.select_favorite_app
+
+import android.util.Log
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.kei_1111.withmo.core.common.AppConstants
+import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
+import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class SelectFavoriteAppViewModel @Inject constructor(
+    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
+) : StatefulBaseViewModel<SelectFavoriteAppViewModelState, SelectFavoriteAppState, SelectFavoriteAppAction, SelectFavoriteAppEffect>() {
+
+    override fun createInitialViewModelState() = SelectFavoriteAppViewModelState()
+    override fun createInitialState() = SelectFavoriteAppState()
+
+    init {
+        observeFavoriteAppList()
+    }
+
+    private fun observeFavoriteAppList() {
+        viewModelScope.launch {
+            getFavoriteAppsUseCase().collect { favoriteAppList ->
+                updateViewModelState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
+            }
+        }
+    }
+
+    private fun saveFavoriteApps() {
+        viewModelScope.launch {
+            try {
+                saveFavoriteAppsUseCase(state.value.selectedAppList)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to save favorite app settings", e)
+            }
+        }
+    }
+
+    @Suppress("LongMethod", "CyclomaticComplexMethod")
+    override fun onAction(action: SelectFavoriteAppAction) {
+        when (action) {
+            is SelectFavoriteAppAction.OnAllAppListAppClick -> {
+                val favoriteAppInfo = FavoriteAppInfo(
+                    info = action.appInfo,
+                    favoriteOrder = _viewModelState.value.selectedAppList.size,
+                )
+                updateViewModelState {
+                    if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                        selectedAppList.none { it.info.packageName == favoriteAppInfo.info.packageName }
+                    ) {
+                        copy(selectedAppList = (selectedAppList + favoriteAppInfo).toPersistentList())
+                    } else {
+                        this
+                    }
+                }
+            }
+
+            is SelectFavoriteAppAction.OnFavoriteAppListAppClick -> {
+                updateViewModelState {
+                    copy(
+                        selectedAppList = selectedAppList
+                            .filterNot { it.info.packageName == action.appInfo.packageName }
+                            .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
+                            .toPersistentList(),
+                    )
+                }
+            }
+
+            is SelectFavoriteAppAction.OnAppSearchQueryChange -> {
+                updateViewModelState { copy(appSearchQuery = action.query) }
+            }
+
+            is SelectFavoriteAppAction.OnBackButtonClick -> {
+                saveFavoriteApps()
+                sendEffect(SelectFavoriteAppEffect.NavigateBack)
+            }
+
+            is SelectFavoriteAppAction.OnNextButtonClick -> {
+                saveFavoriteApps()
+                sendEffect(SelectFavoriteAppEffect.NavigateSelectDisplayModel)
+            }
+        }
+    }
+
+    private companion object {
+        const val TAG = "SelectFavoriteAppViewModel"
+    }
+}

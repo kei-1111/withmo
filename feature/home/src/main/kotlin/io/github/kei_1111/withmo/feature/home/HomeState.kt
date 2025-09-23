@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.feature.home
 
-import io.github.kei_1111.withmo.core.featurebase.State
+import io.github.kei_1111.withmo.core.featurebase.stateful.State
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo

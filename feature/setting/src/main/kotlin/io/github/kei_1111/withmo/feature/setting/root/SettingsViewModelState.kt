@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.feature.setting.root
 
-import io.github.kei_1111.withmo.core.featurebase.ViewModelState
+import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 
 data class SettingsViewModelState(
     val isDefaultHomeApp: Boolean = true,

@@ -28,7 +28,7 @@ class MainViewModel @Inject constructor(
             startScreen = if (isOnboardingShown) {
                 Screen.Home
             } else {
-                Screen.Onboarding
+                Screen.Welcome
             }
         }
     }

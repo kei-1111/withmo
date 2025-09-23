@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
@@ -18,7 +19,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import io.github.kei_1111.withmo.feature.home.HomeScreen
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingScreen
+import io.github.kei_1111.withmo.feature.onboarding.finish.FinishScreen
+import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelScreen
+import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppScreen
+import io.github.kei_1111.withmo.feature.onboarding.welcome.WelcomeScreen
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreen
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsScreen
 import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsScreen
@@ -46,11 +50,45 @@ fun WithmoNavHost(
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { it } },
     ) {
-        composable<Screen.Onboarding>(
-            exitTransition = { slideOutVertically { it } },
+        composable<Screen.Welcome>(
+            enterTransition = { EnterTransition.None },
+            exitTransition = { ExitTransition.None },
         ) {
-            OnboardingScreen(
-                onFinishButtonClick = { navController.navigate(Screen.Home) },
+            WelcomeScreen(
+                navigateSelectFavoriteApp = { navController.navigate(Screen.SelectFavoriteApp) },
+            )
+        }
+        composable<Screen.SelectFavoriteApp>(
+            enterTransition = { slideInHorizontallyFrom(Screen.Welcome) },
+            exitTransition = { slideOutHorizontallyTo(Screen.Welcome) },
+        ) {
+            SelectFavoriteAppScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateSelectDisplayModel = { navController.navigate(Screen.SelectDisplayModel) },
+            )
+        }
+        composable<Screen.SelectDisplayModel>(
+            enterTransition = { slideInHorizontallyFrom(Screen.SelectFavoriteApp) },
+            exitTransition = { slideOutHorizontallyTo(Screen.SelectFavoriteApp) },
+        ) {
+            SelectDisplayModelScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateFinish = { navController.navigate(Screen.Finish) },
+            )
+        }
+        composable<Screen.Finish>(
+            enterTransition = { slideInHorizontallyFrom(Screen.SelectDisplayModel) },
+            exitTransition = {
+                if (targetState.checkScreen(Screen.Home)) {
+                    slideOutVertically { it }
+                } else {
+                    slideOutHorizontallyTo(Screen.SelectDisplayModel)
+                }
+            },
+        ) {
+            FinishScreen(
+                onBackButtonClick = { navController.popBackStack() },
+                navigateHome = { navController.navigate(Screen.Home) },
             )
         }
         composable<Screen.Home>(
@@ -62,16 +100,8 @@ fun WithmoNavHost(
             )
         }
         composable<Screen.Settings>(
-            enterTransition = {
-                if (initialState.checkScreen(Screen.Home)) {
-                    slideInVertically { it }
-                } else { EnterTransition.None }
-            },
-            exitTransition = {
-                if (targetState.checkScreen(Screen.Home)) {
-                    slideOutVertically { it }
-                } else { ExitTransition.None }
-            },
+            enterTransition = { slideInVerticallyFrom(Screen.Home) },
+            exitTransition = { slideOutVerticallyTo(Screen.Home) },
         ) {
             SettingsScreen(
                 onNavigateClockSettingsButtonClick = { navController.navigate(Screen.ClockSettings) },
@@ -122,6 +152,16 @@ fun WithmoNavHost(
     }
 }
 
-fun NavBackStackEntry.checkScreen(screen: Screen): Boolean {
-    return destination.route == screen::class.qualifiedName
-}
+fun NavBackStackEntry.checkScreen(screen: Screen): Boolean = destination.route == screen::class.qualifiedName
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInHorizontallyFrom(from: Screen): EnterTransition =
+    if (initialState.checkScreen(from)) slideInHorizontally { it } else EnterTransition.None
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutHorizontallyTo(to: Screen): ExitTransition =
+    if (targetState.checkScreen(to)) slideOutHorizontally { it } else ExitTransition.None
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInVerticallyFrom(from: Screen): EnterTransition =
+    if (initialState.checkScreen(from)) slideInVertically { it } else EnterTransition.None
+
+fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutVerticallyTo(to: Screen): ExitTransition =
+    if (targetState.checkScreen(to)) slideOutVertically { it } else ExitTransition.None

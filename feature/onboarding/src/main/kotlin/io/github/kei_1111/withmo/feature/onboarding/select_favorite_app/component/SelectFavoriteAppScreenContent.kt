@@ -1,9 +1,7 @@
-package io.github.kei_1111.withmo.feature.onboarding.component.contents
+package io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.component
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -17,25 +15,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppListRow
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
-import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalAppList
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingAction
-import io.github.kei_1111.withmo.feature.onboarding.OnboardingState
-import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarNextButton
-import io.github.kei_1111.withmo.feature.onboarding.component.OnboardingBottomAppBarPreviousButton
+import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppAction
+import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppState
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 
 @Suppress("LongMethod")
 @Composable
-internal fun SelectFavoriteAppContent(
-    state: OnboardingState.SelectFavoriteApp,
-    onAction: (OnboardingAction) -> Unit,
+internal fun SelectFavoriteAppScreenContent(
+    state: SelectFavoriteAppState,
+    onAction: (SelectFavoriteAppAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val appInfoList = LocalAppList.current
@@ -52,16 +47,9 @@ internal fun SelectFavoriteAppContent(
         }
     }
 
-    BackHandler {
-        onAction(OnboardingAction.OnPreviousButtonClick)
-    }
-
     Column(
         modifier = modifier,
     ) {
-        WithmoTopAppBar(
-            content = { TitleLargeText("お気に入りアプリは？") },
-        )
         Column(
             modifier = Modifier
                 .weight(Weights.Medium)
@@ -79,14 +67,14 @@ internal fun SelectFavoriteAppContent(
             WithmoSearchTextField(
                 modifier = Modifier.fillMaxWidth(),
                 value = state.appSearchQuery,
-                onValueChange = { onAction(OnboardingAction.OnAppSearchQueryChange(it)) },
+                onValueChange = { onAction(SelectFavoriteAppAction.OnAppSearchQueryChange(it)) },
             )
             if (searchedAppList.isNotEmpty()) {
                 FavoriteAppSelector(
                     appList = searchedAppList,
                     favoriteAppInfoList = state.selectedAppList,
-                    addSelectedAppList = { onAction(OnboardingAction.OnAllAppListAppClick(it)) },
-                    removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
+                    addSelectedAppList = { onAction(SelectFavoriteAppAction.OnAllAppListAppClick(it)) },
+                    removeSelectedAppList = { onAction(SelectFavoriteAppAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(Weights.Medium),
@@ -100,50 +88,21 @@ internal fun SelectFavoriteAppContent(
         }
         FavoriteAppListRow(
             favoriteAppInfoList = state.selectedAppList,
-            removeSelectedAppList = { onAction(OnboardingAction.OnFavoriteAppListAppClick(it)) },
+            removeSelectedAppList = { onAction(SelectFavoriteAppAction.OnFavoriteAppListAppClick(it)) },
             modifier = Modifier.fillMaxWidth(),
-        )
-        SelectFavoriteAppContentBottomAppBar(
-            state = state,
-            onAction = onAction,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun SelectFavoriteAppContentBottomAppBar(
-    state: OnboardingState.SelectFavoriteApp,
-    onAction: (OnboardingAction) -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Row(
-        modifier = modifier
-            .padding(Paddings.Medium),
-        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
-    ) {
-        OnboardingBottomAppBarPreviousButton(
-            onClick = { onAction(OnboardingAction.OnPreviousButtonClick) },
-            modifier = Modifier.weight(Weights.Medium),
-        )
-        OnboardingBottomAppBarNextButton(
-            text = if (state.selectedAppList.isEmpty()) {
-                "スキップ"
-            } else {
-                "次へ"
-            },
-            onClick = { onAction(OnboardingAction.OnNextButtonClick) },
-            modifier = Modifier.weight(Weights.Medium),
         )
     }
 }
 
 @Composable
 @Preview
-private fun SelectFavoriteAppContentLightPreview() {
+private fun SelectFavoriteAppScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        SelectFavoriteAppContent(
-            state = OnboardingState.SelectFavoriteApp(),
+        SelectFavoriteAppScreenContent(
+            state = SelectFavoriteAppState(
+                appSearchQuery = "",
+                selectedAppList = persistentListOf(),
+            ),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -152,36 +111,15 @@ private fun SelectFavoriteAppContentLightPreview() {
 
 @Composable
 @Preview
-private fun SelectFavoriteAppContentDarkPreview() {
+private fun SelectFavoriteAppScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        SelectFavoriteAppContent(
-            state = OnboardingState.SelectFavoriteApp(),
+        SelectFavoriteAppScreenContent(
+            state = SelectFavoriteAppState(
+                appSearchQuery = "",
+                selectedAppList = persistentListOf(),
+            ),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun SelectFavoriteAppContentBottomAppBarLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        SelectFavoriteAppContentBottomAppBar(
-            state = OnboardingState.SelectFavoriteApp(),
-            onAction = {},
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-@Preview
-private fun SelectFavoriteAppContentBottomAppBarDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        SelectFavoriteAppContentBottomAppBar(
-            state = OnboardingState.SelectFavoriteApp(),
-            onAction = {},
-            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.usecase.GetSideButtonSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveSideButtonSettingsUseCase
-import io.github.kei_1111.withmo.core.featurebase.BaseViewModel
+import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -13,7 +13,7 @@ import javax.inject.Inject
 class SideButtonSettingsViewModel @Inject constructor(
     private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
-) : BaseViewModel<SideButtonSettingsViewModelState, SideButtonSettingsState, SideButtonSettingsAction, SideButtonSettingsEffect>() {
+) : StatefulBaseViewModel<SideButtonSettingsViewModelState, SideButtonSettingsState, SideButtonSettingsAction, SideButtonSettingsEffect>() {
 
     override fun createInitialViewModelState() = SideButtonSettingsViewModelState()
     override fun createInitialState() = SideButtonSettingsState()
