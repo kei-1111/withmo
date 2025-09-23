@@ -44,7 +44,7 @@ internal fun SelectDisplayModelScreenContent(
 ) {
     Column(
         modifier = modifier.padding(Paddings.Medium),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SelectDisplayModelArea(
@@ -54,7 +54,6 @@ internal fun SelectDisplayModelScreenContent(
         BodyMediumText(
             text = if (state.isDefaultModel) "デフォルトモデル" else state.modelFileName,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -145,7 +144,6 @@ private fun SelectDisplayModelScreenContentLightPreview() {
         SelectDisplayModelScreenContent(
             state = SelectDisplayModelState.Stable(),
             onAction = {},
-            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -158,7 +156,6 @@ private fun SelectDisplayModelScreenContentDarkPreview() {
         SelectDisplayModelScreenContent(
             state = SelectDisplayModelState.Stable(),
             onAction = {},
-            modifier = Modifier.fillMaxSize(),
         )
     }
 }
