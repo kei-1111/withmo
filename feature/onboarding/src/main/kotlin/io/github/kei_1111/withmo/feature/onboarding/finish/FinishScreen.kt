@@ -41,7 +41,7 @@ fun FinishScreen(
     val currentNavigateHome by rememberUpdatedState(navigateHome)
 
     BackHandler {
-        currentOnBackButtonClick()
+        viewModel.onAction(FinishAction.OnBackButtonClick)
     }
 
     LaunchedEffect(viewModel) {
