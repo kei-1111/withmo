@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.Surface
@@ -25,11 +26,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoNextButton
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -116,11 +119,16 @@ private fun SelectDisplayModelScreen(
                     onClick = { onAction(SelectDisplayModelAction.OnBackButtonClick) },
                     modifier = Modifier.weight(1f),
                 )
-                WithmoNextButton(
+                WithmoButton(
                     onClick = { onAction(SelectDisplayModelAction.OnNextButtonClick) },
-                    enabled = state.isNextButtonEnabled,
-                    modifier = Modifier.weight(1f),
-                )
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(CommonDimensions.SettingItemHeight),
+                ) {
+                    BodyMediumText(
+                        text = if (state.modelFilePath.path == null) "スキップ" else "次へ",
+                    )
+                }
             }
         }
     }
