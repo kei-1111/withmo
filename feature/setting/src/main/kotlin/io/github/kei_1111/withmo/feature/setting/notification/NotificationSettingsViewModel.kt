@@ -18,17 +18,17 @@ class NotificationSettingsViewModel @Inject constructor(
 ) : StatefulBaseViewModel<NotificationSettingsViewModelState, NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {
 
     override fun createInitialViewModelState() = NotificationSettingsViewModelState()
-    override fun createInitialState() = NotificationSettingsState()
+    override fun createInitialState() = NotificationSettingsState.Idle
+
+    private val notificationSettingsDataStream = getNotificationSettingsUseCase()
 
     init {
-        observeNotificationSettings()
-    }
-
-    private fun observeNotificationSettings() {
         viewModelScope.launch {
-            getNotificationSettingsUseCase().collect { notificationSettings ->
+            updateViewModelState { copy(statusType = NotificationSettingsViewModelState.StatusType.LOADING) }
+            notificationSettingsDataStream.collect { notificationSettings ->
                 updateViewModelState {
                     copy(
+                        statusType = NotificationSettingsViewModelState.StatusType.STABLE,
                         notificationSettings = notificationSettings,
                         initialNotificationSettings = notificationSettings,
                     )
@@ -58,7 +58,7 @@ class NotificationSettingsViewModel @Inject constructor(
             is NotificationSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        saveNotificationSettingsUseCase(state.value.notificationSettings)
+                        saveNotificationSettingsUseCase(_viewModelState.value.notificationSettings)
                         sendEffect(NotificationSettingsEffect.ShowToast("保存しました"))
                         sendEffect(NotificationSettingsEffect.NavigateBack)
                     } catch (e: Exception) {
