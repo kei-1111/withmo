@@ -4,11 +4,23 @@ import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 
 data class AppIconSettingsViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
     val appIconSettings: AppIconSettings = AppIconSettings(),
     val initialAppIconSettings: AppIconSettings = AppIconSettings(),
 ) : ViewModelState<AppIconSettingsState> {
-    override fun toState() = AppIconSettingsState(
-        appIconSettings = appIconSettings,
-        isSaveButtonEnabled = appIconSettings != initialAppIconSettings,
-    )
+
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> AppIconSettingsState.Idle
+
+        StatusType.LOADING -> AppIconSettingsState.Loading
+
+        StatusType.STABLE -> AppIconSettingsState.Stable(
+            appIconSettings = appIconSettings,
+            isSaveButtonEnabled = appIconSettings != initialAppIconSettings,
+        )
+
+        StatusType.ERROR -> AppIconSettingsState.Error(Throwable("An error occurred in AppIconSettingsViewModelState"))
+    }
 }

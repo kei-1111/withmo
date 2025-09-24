@@ -28,7 +28,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppIconSettingsScreenContent
@@ -74,38 +73,46 @@ private fun AppIconSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "アプリアイコン") },
-                navigateBack = { onAction(AppIconSettingsAction.OnBackButtonClick) },
-            )
-            AppItemPreviewArea(
-                appIconSettings = state.appIconSettings,
-                modifier = Modifier.fillMaxWidth(),
-            )
-            HorizontalDivider(Modifier.fillMaxWidth())
-            AppIconSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(AppIconSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        AppIconSettingsState.Idle, AppIconSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is AppIconSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is AppIconSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "アプリアイコン") },
+                        navigateBack = { onAction(AppIconSettingsAction.OnBackButtonClick) },
+                    )
+                    AppItemPreviewArea(
+                        appIconSettings = state.appIconSettings,
+                        modifier = Modifier.fillMaxWidth(),
+                    )
+                    HorizontalDivider(Modifier.fillMaxWidth())
+                    AppIconSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(AppIconSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -115,10 +122,7 @@ private fun AppIconSettingsScreen(
 private fun AppIconSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconSettingsScreen(
-            state = AppIconSettingsState(
-                appIconSettings = AppIconSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = AppIconSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -130,10 +134,7 @@ private fun AppIconSettingsScreenLightPreview() {
 private fun AppIconSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         AppIconSettingsScreen(
-            state = AppIconSettingsState(
-                appIconSettings = AppIconSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = AppIconSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
