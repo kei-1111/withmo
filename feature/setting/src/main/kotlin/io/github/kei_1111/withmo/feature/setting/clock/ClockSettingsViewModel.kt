@@ -16,17 +16,17 @@ class ClockSettingsViewModel @Inject constructor(
 ) : StatefulBaseViewModel<ClockSettingsViewModelState, ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 
     override fun createInitialViewModelState() = ClockSettingsViewModelState()
-    override fun createInitialState() = ClockSettingsState()
+    override fun createInitialState() = ClockSettingsState.Idle
+
+    private val clockSettingsDataStream = getClockSettingsUseCase()
 
     init {
-        observeClockSettings()
-    }
-
-    private fun observeClockSettings() {
         viewModelScope.launch {
-            getClockSettingsUseCase().collect { clockSettings ->
+            updateViewModelState { copy(statusType = ClockSettingsViewModelState.StatusType.LOADING) }
+            clockSettingsDataStream.collect { clockSettings ->
                 updateViewModelState {
                     copy(
+                        statusType = ClockSettingsViewModelState.StatusType.STABLE,
                         clockSettings = clockSettings,
                         initialClockSettings = clockSettings,
                     )
@@ -54,7 +54,7 @@ class ClockSettingsViewModel @Inject constructor(
             is ClockSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        saveClockSettingsUseCase(state.value.clockSettings)
+                        saveClockSettingsUseCase(_viewModelState.value.clockSettings)
                         sendEffect(ClockSettingsEffect.NavigateBack)
                         sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
                     } catch (e: Exception) {

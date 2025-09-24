@@ -11,14 +11,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSwitch
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsAction
 import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsState
 
 @Composable
 internal fun ClockSettingsScreenContent(
-    state: ClockSettingsState,
+    state: ClockSettingsState.Stable,
     onAction: (ClockSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -47,12 +46,7 @@ internal fun ClockSettingsScreenContent(
 private fun ClockSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockSettingsScreenContent(
-            state = ClockSettingsState(
-                clockSettings = ClockSettings(
-                    isClockShown = true,
-                ),
-                isSaveButtonEnabled = true,
-            ),
+            state = ClockSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -64,12 +58,7 @@ private fun ClockSettingsScreenContentLightPreview() {
 private fun ClockSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         ClockSettingsScreenContent(
-            state = ClockSettingsState(
-                clockSettings = ClockSettings(
-                    isClockShown = false,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = ClockSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
