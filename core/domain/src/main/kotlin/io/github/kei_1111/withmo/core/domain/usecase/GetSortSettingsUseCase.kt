@@ -3,7 +3,6 @@ package io.github.kei_1111.withmo.core.domain.usecase
 import io.github.kei_1111.withmo.core.domain.repository.UserSettingsRepository
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,8 +16,8 @@ class GetSortSettingsUseCaseImpl @Inject constructor(
 ) : GetSortSettingsUseCase {
     override operator fun invoke(): Flow<Result<SortSettings>> =
         userSettingsRepository.userSettings
-            .map { it.sortSettings }
+            .map { result ->
+                result.map { it.sortSettings }
+            }
             .distinctUntilChanged()
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
 }

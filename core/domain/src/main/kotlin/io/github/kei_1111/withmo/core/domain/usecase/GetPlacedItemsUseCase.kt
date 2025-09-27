@@ -4,9 +4,7 @@ import io.github.kei_1111.withmo.core.domain.repository.PlacedAppRepository
 import io.github.kei_1111.withmo.core.domain.repository.PlacedWidgetRepository
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetPlacedItemsUseCase {
@@ -21,9 +19,11 @@ class GetPlacedItemsUseCaseImpl @Inject constructor(
         combine(
             placedWidgetRepository.placedWidgetsInfo,
             placedAppRepository.placedAppsInfo,
-        ) { widgetList, placedAppList ->
-            (widgetList + placedAppList)
+        ) { widgetListResult, placedAppListResult ->
+            runCatching {
+                val widgetList = widgetListResult.getOrThrow()
+                val placedAppList = placedAppListResult.getOrThrow()
+                (widgetList + placedAppList)
+            }
         }
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
 }

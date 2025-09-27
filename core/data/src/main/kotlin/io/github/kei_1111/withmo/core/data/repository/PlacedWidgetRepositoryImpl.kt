@@ -20,9 +20,11 @@ class PlacedWidgetRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : PlacedWidgetRepository {
 
-    override val placedWidgetsInfo: Flow<List<PlacedWidgetInfo>> = placedWidgetDao.getAll()
+    override val placedWidgetsInfo: Flow<Result<List<PlacedWidgetInfo>>> = placedWidgetDao.getAll()
         .map { entities ->
-            entities.mapNotNull { entity -> entity.toPlacedWidgetInfo(appWidgetManager) }
+            runCatching {
+                entities.mapNotNull { entity -> entity.toPlacedWidgetInfo(appWidgetManager) }
+            }
         }
         .flowOn(ioDispatcher)
 

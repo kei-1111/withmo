@@ -3,8 +3,6 @@ package io.github.kei_1111.withmo.core.domain.usecase
 import io.github.kei_1111.withmo.core.domain.repository.FavoriteAppRepository
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetFavoriteAppsUseCase {
@@ -16,6 +14,4 @@ class GetFavoriteAppsUseCaseImpl @Inject constructor(
 ) : GetFavoriteAppsUseCase {
     override operator fun invoke(): Flow<Result<List<FavoriteAppInfo>>> =
         favoriteAppRepository.favoriteAppsInfo
-            .map { Result.success(it) }
-            .catch { emit(Result.failure(it)) }
 }

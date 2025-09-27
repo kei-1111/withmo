@@ -8,7 +8,7 @@ interface FavoriteAppRepository {
     /**
      * お気に入りアプリのリストを順序順で取得
      */
-    val favoriteAppsInfo: Flow<List<FavoriteAppInfo>>
+    val favoriteAppsInfo: Flow<Result<List<FavoriteAppInfo>>>
 
     /**
      * お気に入りアプリのリストを更新

@@ -8,7 +8,7 @@ interface PlacedAppRepository {
     /**
      * 配置されたアプリのリストを取得
      */
-    val placedAppsInfo: Flow<List<PlacedAppInfo>>
+    val placedAppsInfo: Flow<Result<List<PlacedAppInfo>>>
 
     /**
      * 配置されたアプリのリストを更新

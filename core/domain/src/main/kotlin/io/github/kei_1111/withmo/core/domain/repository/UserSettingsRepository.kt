@@ -12,7 +12,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.coroutines.flow.Flow
 
 interface UserSettingsRepository {
-    val userSettings: Flow<UserSettings>
+    val userSettings: Flow<Result<UserSettings>>
 
     suspend fun saveSortSettings(sortSettings: SortSettings)
 

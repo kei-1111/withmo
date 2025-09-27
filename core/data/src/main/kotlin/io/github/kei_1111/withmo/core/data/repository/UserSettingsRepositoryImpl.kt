@@ -39,7 +39,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : UserSettingsRepository {
 
-    override val userSettings: Flow<UserSettings> = dataStore.data
+    override val userSettings: Flow<Result<UserSettings>> = dataStore.data
         .catch {
             if (it is IOException) {
                 Log.e(TAG, "Error reading preferences", it)
@@ -49,50 +49,52 @@ class UserSettingsRepositoryImpl @Inject constructor(
             }
         }
         .map { preferences ->
-            UserSettings(
-                notificationSettings = NotificationSettings(
-                    isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED]
-                        ?: false,
-                    isNotificationBadgeEnabled = preferences[IS_NOTIFICATION_BADGE_ENABLED]
-                        ?: false,
-                ),
-                clockSettings = ClockSettings(
-                    isClockShown = preferences[IS_CLOCK_SHOWN] ?: true,
-                    clockType = preferences[CLOCK_TYPE]?.let { ClockType.valueOf(it) }
-                        ?: ClockType.TOP_DATE,
-                ),
-                appIconSettings = AppIconSettings(
-                    appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
-                        when (shape) {
-                            AppIconShape.Circle.toString() -> AppIconShape.Circle
-                            AppIconShape.RoundedCorner.toString() -> AppIconShape.RoundedCorner
-                            AppIconShape.Square.toString() -> AppIconShape.Square
-                            else -> AppIconShape.Circle
-                        }
-                    } ?: AppIconShape.Circle,
-                    roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: AppConstants.DefaultRoundedCornerPercent,
-                ),
-                sortSettings = SortSettings(
-                    sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
-                        ?: SortType.ALPHABETICAL,
-                ),
-                sideButtonSettings = SideButtonSettings(
-                    isShowScaleSliderButtonShown = preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
-                    isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
-                    isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
-                    isNavigateSettingsButtonShown = preferences[IS_NAVIGATE_SETTINGS_BUTTON_SHOWN] ?: true,
-                ),
-                themeSettings = ThemeSettings(
-                    themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
-                        ?: ThemeType.TIME_BASED,
-                ),
-                modelFilePath = ModelFilePath(
-                    path = preferences[MODEL_FILE_PATH],
-                ),
-                modelSettings = ModelSettings(
-                    scale = preferences[SCALE] ?: AppConstants.DefaultModelScale,
-                ),
-            )
+            runCatching {
+                UserSettings(
+                    notificationSettings = NotificationSettings(
+                        isNotificationAnimationEnabled = preferences[IS_NOTIFICATION_ANIMATION_ENABLED]
+                            ?: false,
+                        isNotificationBadgeEnabled = preferences[IS_NOTIFICATION_BADGE_ENABLED]
+                            ?: false,
+                    ),
+                    clockSettings = ClockSettings(
+                        isClockShown = preferences[IS_CLOCK_SHOWN] ?: true,
+                        clockType = preferences[CLOCK_TYPE]?.let { ClockType.valueOf(it) }
+                            ?: ClockType.TOP_DATE,
+                    ),
+                    appIconSettings = AppIconSettings(
+                        appIconShape = preferences[APP_ICON_SHAPE]?.let { shape ->
+                            when (shape) {
+                                AppIconShape.Circle.toString() -> AppIconShape.Circle
+                                AppIconShape.RoundedCorner.toString() -> AppIconShape.RoundedCorner
+                                AppIconShape.Square.toString() -> AppIconShape.Square
+                                else -> AppIconShape.Circle
+                            }
+                        } ?: AppIconShape.Circle,
+                        roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: AppConstants.DefaultRoundedCornerPercent,
+                    ),
+                    sortSettings = SortSettings(
+                        sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
+                            ?: SortType.ALPHABETICAL,
+                    ),
+                    sideButtonSettings = SideButtonSettings(
+                        isShowScaleSliderButtonShown = preferences[IS_SHOW_SCALE_SLIDER_BUTTON_SHOWN] ?: true,
+                        isOpenDocumentButtonShown = preferences[IS_OPEN_DOCUMENT_BUTTON_SHOWN] ?: true,
+                        isSetDefaultModelButtonShown = preferences[IS_SET_DEFAULT_MODEL_BUTTON_SHOWN] ?: true,
+                        isNavigateSettingsButtonShown = preferences[IS_NAVIGATE_SETTINGS_BUTTON_SHOWN] ?: true,
+                    ),
+                    themeSettings = ThemeSettings(
+                        themeType = preferences[THEME_TYPE]?.let { ThemeType.valueOf(it) }
+                            ?: ThemeType.TIME_BASED,
+                    ),
+                    modelFilePath = ModelFilePath(
+                        path = preferences[MODEL_FILE_PATH],
+                    ),
+                    modelSettings = ModelSettings(
+                        scale = preferences[SCALE] ?: AppConstants.DefaultModelScale,
+                    ),
+                )
+            }
         }
 
     override suspend fun saveSortSettings(sortSettings: SortSettings) {
