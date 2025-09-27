@@ -208,26 +208,36 @@ class MainActivity : ComponentActivity() {
         lifecycleScope.launch {
             val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
 
-            getModelFilePathUseCase().collect { modelFilePath ->
-                val path = modelFilePath.path
-                if (path != null) {
-                    if (FileUtils.fileExists(path)) {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
-                    } else {
+            getModelFilePathUseCase().collect { result ->
+                result
+                    .onSuccess { modelFilePath ->
+                        val path = modelFilePath.path
+                        if (path != null) {
+                            if (FileUtils.fileExists(path)) {
+                                AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
+                            } else {
+                                defaultModelFilePath?.let {
+                                    AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
+                                }
+                            }
+                        }
+                    }
+                    .onFailure {
                         defaultModelFilePath?.let {
                             AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
                         }
                     }
-                }
             }
         }
     }
 
     private fun observeThemeSettings() {
         lifecycleScope.launch {
-            getThemeSettingsUseCase().collect {
-                themeSettings = it
-                TimeUtils.themeMessage(themeSettings.themeType)
+            getThemeSettingsUseCase().collect { result ->
+                result.onSuccess {
+                    themeSettings = it
+                    TimeUtils.themeMessage(themeSettings.themeType)
+                }
             }
         }
     }
@@ -237,27 +247,28 @@ class MainActivity : ComponentActivity() {
         val hasNotificationListenerPermission = permissionChecker.isNotificationListenerEnabled()
 
         // UsageStats権限がない かつ 現在のソートが使用回数順の場合、アルファベット順に変更
-        val currentSortSettings = getSortSettingsUseCase().first()
-        if (!hasUsageStatsPermission && currentSortSettings.sortType == SortType.USE_COUNT) {
-            saveSortSettingsUseCase(
-                SortSettings(sortType = SortType.ALPHABETICAL),
-            )
+        val sortSettingsResult = getSortSettingsUseCase().first()
+        sortSettingsResult.onSuccess { sortSettings ->
+            if (!hasUsageStatsPermission && sortSettings.sortType == SortType.USE_COUNT) {
+                saveSortSettingsUseCase(
+                    SortSettings(sortType = SortType.ALPHABETICAL),
+                )
+            }
         }
 
         // 通知リスナー権限がない場合、通知関連設定をfalseに変更
-        val currentNotificationSettings = getNotificationSettingsUseCase().first()
-        if (!hasNotificationListenerPermission &&
-            (
-                currentNotificationSettings.isNotificationAnimationEnabled ||
-                    currentNotificationSettings.isNotificationBadgeEnabled
+        val notificationSettingsResult = getNotificationSettingsUseCase().first()
+        notificationSettingsResult.onSuccess { notificationSettings ->
+            if (!hasNotificationListenerPermission &&
+                (notificationSettings.isNotificationAnimationEnabled || notificationSettings.isNotificationBadgeEnabled)
+            ) {
+                saveNotificationSettingsUseCase(
+                    NotificationSettings(
+                        isNotificationAnimationEnabled = false,
+                        isNotificationBadgeEnabled = false,
+                    ),
                 )
-        ) {
-            saveNotificationSettingsUseCase(
-                NotificationSettings(
-                    isNotificationAnimationEnabled = false,
-                    isNotificationBadgeEnabled = false,
-                ),
-            )
+            }
         }
     }
 }
