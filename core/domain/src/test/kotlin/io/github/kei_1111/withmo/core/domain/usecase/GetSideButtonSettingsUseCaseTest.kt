@@ -6,9 +6,11 @@ import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -29,10 +31,12 @@ class GetSideButtonSettingsUseCaseTest {
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(true, result.isShowScaleSliderButtonShown)
-            assertEquals(true, result.isOpenDocumentButtonShown)
-            assertEquals(true, result.isSetDefaultModelButtonShown)
-            assertEquals(true, result.isNavigateSettingsButtonShown)
+            assert(result.isSuccess)
+            val sideButtonSettings = result.getOrThrow()
+            assertEquals(true, sideButtonSettings.isShowScaleSliderButtonShown)
+            assertEquals(true, sideButtonSettings.isOpenDocumentButtonShown)
+            assertEquals(true, sideButtonSettings.isSetDefaultModelButtonShown)
+            assertEquals(true, sideButtonSettings.isNavigateSettingsButtonShown)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -51,10 +55,12 @@ class GetSideButtonSettingsUseCaseTest {
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(false, result.isShowScaleSliderButtonShown)
-            assertEquals(false, result.isOpenDocumentButtonShown)
-            assertEquals(true, result.isSetDefaultModelButtonShown)
-            assertEquals(true, result.isNavigateSettingsButtonShown)
+            assert(result.isSuccess)
+            val sideButtonSettings = result.getOrThrow()
+            assertEquals(false, sideButtonSettings.isShowScaleSliderButtonShown)
+            assertEquals(false, sideButtonSettings.isOpenDocumentButtonShown)
+            assertEquals(true, sideButtonSettings.isSetDefaultModelButtonShown)
+            assertEquals(true, sideButtonSettings.isNavigateSettingsButtonShown)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -73,11 +79,15 @@ class GetSideButtonSettingsUseCaseTest {
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
         useCase().test {
-            val first = awaitItem()
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            val first = firstResult.getOrThrow()
             assertEquals(true, first.isShowScaleSliderButtonShown)
             assertEquals(true, first.isSetDefaultModelButtonShown)
 
-            val second = awaitItem()
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            val second = secondResult.getOrThrow()
             assertEquals(false, second.isShowScaleSliderButtonShown)
             assertEquals(false, second.isSetDefaultModelButtonShown)
 
@@ -99,6 +109,19 @@ class GetSideButtonSettingsUseCaseTest {
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flow { throw exception }
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

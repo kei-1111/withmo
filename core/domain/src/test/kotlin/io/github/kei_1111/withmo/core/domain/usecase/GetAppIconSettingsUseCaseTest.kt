@@ -7,9 +7,11 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -30,8 +32,10 @@ class GetAppIconSettingsUseCaseTest {
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(AppIconShape.Circle, result.appIconShape)
-            assertEquals(20f, result.roundedCornerPercent, 0.001f)
+            assert(result.isSuccess)
+            val appIconSettings = result.getOrThrow()
+            assertEquals(AppIconShape.Circle, appIconSettings.appIconShape)
+            assertEquals(20f, appIconSettings.roundedCornerPercent, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -48,8 +52,10 @@ class GetAppIconSettingsUseCaseTest {
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(AppIconShape.RoundedCorner, result.appIconShape)
-            assertEquals(25f, result.roundedCornerPercent, 0.001f)
+            assert(result.isSuccess)
+            val appIconSettings = result.getOrThrow()
+            assertEquals(AppIconShape.RoundedCorner, appIconSettings.appIconShape)
+            assertEquals(25f, appIconSettings.roundedCornerPercent, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -63,8 +69,13 @@ class GetAppIconSettingsUseCaseTest {
         every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
 
         useCase().test {
-            assertEquals(AppIconShape.Circle, awaitItem().appIconShape)
-            assertEquals(AppIconShape.Square, awaitItem().appIconShape)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(AppIconShape.Circle, firstResult.getOrThrow().appIconShape)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(AppIconShape.Square, secondResult.getOrThrow().appIconShape)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -78,6 +89,19 @@ class GetAppIconSettingsUseCaseTest {
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flow { throw exception }
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }
