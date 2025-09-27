@@ -28,14 +28,25 @@ class SortSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = SortSettingsViewModelState.StatusType.LOADING) }
-            sortSettingsDataStream.collect { sortSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = SortSettingsViewModelState.StatusType.STABLE,
-                        sortSettings = sortSettings,
-                        initialSortSettings = sortSettings,
-                    )
-                }
+            sortSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { sortSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SortSettingsViewModelState.StatusType.STABLE,
+                                sortSettings = sortSettings,
+                                initialSortSettings = sortSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SortSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

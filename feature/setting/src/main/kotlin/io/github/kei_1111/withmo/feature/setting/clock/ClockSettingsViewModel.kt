@@ -23,14 +23,25 @@ class ClockSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = ClockSettingsViewModelState.StatusType.LOADING) }
-            clockSettingsDataStream.collect { clockSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = ClockSettingsViewModelState.StatusType.STABLE,
-                        clockSettings = clockSettings,
-                        initialClockSettings = clockSettings,
-                    )
-                }
+            clockSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { clockSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ClockSettingsViewModelState.StatusType.STABLE,
+                                clockSettings = clockSettings,
+                                initialClockSettings = clockSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ClockSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

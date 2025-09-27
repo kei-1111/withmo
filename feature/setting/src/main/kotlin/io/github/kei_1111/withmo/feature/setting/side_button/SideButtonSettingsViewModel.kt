@@ -23,14 +23,25 @@ class SideButtonSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = SideButtonSettingsViewModelState.StatusType.LOADING) }
-            sideButtonSettingsDataStream.collect { sideButtonSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = SideButtonSettingsViewModelState.StatusType.STABLE,
-                        sideButtonSettings = sideButtonSettings,
-                        initialSideButtonSettings = sideButtonSettings,
-                    )
-                }
+            sideButtonSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { sideButtonSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SideButtonSettingsViewModelState.StatusType.STABLE,
+                                sideButtonSettings = sideButtonSettings,
+                                initialSideButtonSettings = sideButtonSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SideButtonSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

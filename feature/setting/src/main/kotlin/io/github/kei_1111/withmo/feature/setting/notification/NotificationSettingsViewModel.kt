@@ -25,14 +25,25 @@ class NotificationSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = NotificationSettingsViewModelState.StatusType.LOADING) }
-            notificationSettingsDataStream.collect { notificationSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = NotificationSettingsViewModelState.StatusType.STABLE,
-                        notificationSettings = notificationSettings,
-                        initialNotificationSettings = notificationSettings,
-                    )
-                }
+            notificationSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { notificationSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = NotificationSettingsViewModelState.StatusType.STABLE,
+                                notificationSettings = notificationSettings,
+                                initialNotificationSettings = notificationSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = NotificationSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

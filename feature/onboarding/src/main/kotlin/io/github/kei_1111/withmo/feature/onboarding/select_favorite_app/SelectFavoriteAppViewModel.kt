@@ -9,6 +9,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,18 +22,29 @@ class SelectFavoriteAppViewModel @Inject constructor(
     override fun createInitialViewModelState() = SelectFavoriteAppViewModelState()
     override fun createInitialState() = SelectFavoriteAppState.Idle
 
-    private val selectFavoriteAppDataStream = getFavoriteAppsUseCase()
+    private val selectFavoriteAppDataStream: Flow<Result<List<FavoriteAppInfo>>> = getFavoriteAppsUseCase()
 
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = SelectFavoriteAppViewModelState.StatusType.LOADING) }
-            selectFavoriteAppDataStream.collect { data ->
-                updateViewModelState {
-                    copy(
-                        statusType = SelectFavoriteAppViewModelState.StatusType.STABLE,
-                        selectedAppList = data.toPersistentList(),
-                    )
-                }
+            selectFavoriteAppDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectFavoriteAppViewModelState.StatusType.STABLE,
+                                selectedAppList = data.toPersistentList(),
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectFavoriteAppViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

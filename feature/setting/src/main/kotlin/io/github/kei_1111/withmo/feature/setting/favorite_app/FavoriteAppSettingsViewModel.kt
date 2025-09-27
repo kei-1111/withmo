@@ -34,25 +34,42 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         getFavoriteAppsUseCase(),
         getAppIconSettingsUseCase(),
     ) { favoriteAppList, appIconSettings ->
-        FavoriteAppSettingsData(
-            favoriteAppList = favoriteAppList,
-            initialFavoriteAppList = favoriteAppList,
-            appIconSettings = appIconSettings,
-        )
+        when {
+            favoriteAppList.isFailure -> Result.failure(favoriteAppList.exceptionOrNull()!!)
+            appIconSettings.isFailure -> Result.failure(appIconSettings.exceptionOrNull()!!)
+            else -> Result.success(
+                FavoriteAppSettingsData(
+                    favoriteAppList = favoriteAppList.getOrThrow(),
+                    initialFavoriteAppList = favoriteAppList.getOrThrow(),
+                    appIconSettings = appIconSettings.getOrThrow(),
+                ),
+            )
+        }
     }
 
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = FavoriteAppSettingsViewModelState.StatusType.LOADING) }
-            favoriteAppSettingsDataStream.collect { data ->
-                updateViewModelState {
-                    copy(
-                        statusType = FavoriteAppSettingsViewModelState.StatusType.STABLE,
-                        favoriteAppList = data.favoriteAppList.toPersistentList(),
-                        initialFavoriteAppList = data.initialFavoriteAppList.toPersistentList(),
-                        appIconSettings = data.appIconSettings,
-                    )
-                }
+            favoriteAppSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = FavoriteAppSettingsViewModelState.StatusType.STABLE,
+                                favoriteAppList = data.favoriteAppList.toPersistentList(),
+                                initialFavoriteAppList = data.initialFavoriteAppList.toPersistentList(),
+                                appIconSettings = data.appIconSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = FavoriteAppSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

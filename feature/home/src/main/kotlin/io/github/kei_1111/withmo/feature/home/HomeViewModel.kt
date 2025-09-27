@@ -29,8 +29,8 @@ import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.core.util.FileUtils
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
@@ -59,19 +59,26 @@ class HomeViewModel @Inject constructor(
 
     private data class HomeData(
         val userSettings: UserSettings,
-        val favoriteAppList: ImmutableList<FavoriteAppInfo>,
-        val placedItemList: ImmutableList<PlaceableItem>,
+        val favoriteAppList: List<FavoriteAppInfo>,
+        val placedItemList: List<PlaceableItem>,
     )
-    private val homeDataStream = combine(
+    private val homeDataStream: Flow<Result<HomeData>> = combine(
         getUserSettingsUseCase(),
         getFavoriteAppsUseCase(),
         getPlacedItemsUseCase(),
     ) { userSettings, favoriteAppList, placedItemList ->
-        HomeData(
-            userSettings = userSettings,
-            favoriteAppList = favoriteAppList.toPersistentList(),
-            placedItemList = placedItemList.toPersistentList(),
-        )
+        when {
+            userSettings.isFailure -> Result.failure(userSettings.exceptionOrNull()!!)
+            favoriteAppList.isFailure -> Result.failure(favoriteAppList.exceptionOrNull()!!)
+            placedItemList.isFailure -> Result.failure(placedItemList.exceptionOrNull()!!)
+            else -> Result.success(
+                HomeData(
+                    userSettings = userSettings.getOrThrow(),
+                    favoriteAppList = favoriteAppList.getOrThrow(),
+                    placedItemList = placedItemList.getOrThrow(),
+                ),
+            )
+        }
     }
 
     override fun onMessageReceivedFromUnity(message: String) {
@@ -98,15 +105,26 @@ class HomeViewModel @Inject constructor(
 
         viewModelScope.launch {
             updateViewModelState { copy(statusType = HomeViewModelState.StatusType.LOADING) }
-            homeDataStream.collect { data ->
-                updateViewModelState {
-                    copy(
-                        statusType = HomeViewModelState.StatusType.STABLE,
-                        currentUserSettings = data.userSettings,
-                        favoriteAppInfoList = data.favoriteAppList,
-                        placedItemList = data.placedItemList,
-                    )
-                }
+            homeDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = HomeViewModelState.StatusType.STABLE,
+                                currentUserSettings = data.userSettings,
+                                favoriteAppInfoList = data.favoriteAppList.toPersistentList(),
+                                placedItemList = data.placedItemList.toPersistentList(),
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = HomeViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

@@ -23,14 +23,25 @@ class ThemeSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = ThemeSettingsViewModelState.StatusType.LOADING) }
-            themeSettingsDataStream.collect { themeSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = ThemeSettingsViewModelState.StatusType.STABLE,
-                        themeSettings = themeSettings,
-                        initialThemeSettings = themeSettings,
-                    )
-                }
+            themeSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { themeSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ThemeSettingsViewModelState.StatusType.STABLE,
+                                themeSettings = themeSettings,
+                                initialThemeSettings = themeSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ThemeSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

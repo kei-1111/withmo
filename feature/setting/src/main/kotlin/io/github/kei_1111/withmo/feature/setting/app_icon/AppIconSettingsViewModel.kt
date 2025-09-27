@@ -23,14 +23,25 @@ class AppIconSettingsViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = AppIconSettingsViewModelState.StatusType.LOADING) }
-            appIconSettingsDataStream.collect { appIconSettings ->
-                updateViewModelState {
-                    copy(
-                        statusType = AppIconSettingsViewModelState.StatusType.STABLE,
-                        appIconSettings = appIconSettings,
-                        initialAppIconSettings = appIconSettings,
-                    )
-                }
+            appIconSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { appIconSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = AppIconSettingsViewModelState.StatusType.STABLE,
+                                appIconSettings = appIconSettings,
+                                initialAppIconSettings = appIconSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = AppIconSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }

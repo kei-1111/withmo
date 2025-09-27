@@ -7,6 +7,7 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
@@ -21,22 +22,33 @@ class SelectDisplayModelViewModel @Inject constructor(
     override fun createInitialViewModelState() = SelectDisplayModelViewModelState()
     override fun createInitialState() = SelectDisplayModelState.Idle
 
-    private val selectDisplayModelDataStream = getModelFilePathUseCase()
+    private val selectDisplayModelDataStream: Flow<Result<ModelFilePath>> = getModelFilePathUseCase()
 
     init {
         viewModelScope.launch {
             updateViewModelState { copy(statusType = SelectDisplayModelViewModelState.StatusType.LOADING) }
-            selectDisplayModelDataStream.collect { modelFilePath ->
-                val thumbnails = modelFilePath.path?.let { File(it) }?.let {
-                    modelFileManager.getVrmThumbnail(it)
-                }
-                updateViewModelState {
-                    copy(
-                        statusType = SelectDisplayModelViewModelState.StatusType.STABLE,
-                        modelFilePath = modelFilePath,
-                        modelFileThumbnail = thumbnails,
-                    )
-                }
+            selectDisplayModelDataStream.collect { result ->
+                result
+                    .onSuccess { modelFilePath ->
+                        val thumbnails = modelFilePath.path?.let { File(it) }?.let {
+                            modelFileManager.getVrmThumbnail(it)
+                        }
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectDisplayModelViewModelState.StatusType.STABLE,
+                                modelFilePath = modelFilePath,
+                                modelFileThumbnail = thumbnails,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectDisplayModelViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
