@@ -144,6 +144,7 @@ private fun SelectDisplayModelScreenContentLightPreview() {
         SelectDisplayModelScreenContent(
             state = SelectDisplayModelState.Stable(),
             onAction = {},
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
@@ -156,6 +157,7 @@ private fun SelectDisplayModelScreenContentDarkPreview() {
         SelectDisplayModelScreenContent(
             state = SelectDisplayModelState.Stable(),
             onAction = {},
+            modifier = Modifier.fillMaxSize(),
         )
     }
 }
