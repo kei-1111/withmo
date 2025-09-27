@@ -8,18 +8,22 @@ import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 interface GetPlacedItemsUseCase {
-    operator fun invoke(): Flow<List<PlaceableItem>>
+    operator fun invoke(): Flow<Result<List<PlaceableItem>>>
 }
 
 class GetPlacedItemsUseCaseImpl @Inject constructor(
     private val placedAppRepository: PlacedAppRepository,
     private val placedWidgetRepository: PlacedWidgetRepository,
 ) : GetPlacedItemsUseCase {
-    override operator fun invoke(): Flow<List<PlaceableItem>> =
+    override operator fun invoke(): Flow<Result<List<PlaceableItem>>> =
         combine(
             placedWidgetRepository.placedWidgetsInfo,
             placedAppRepository.placedAppsInfo,
-        ) { widgetList, placedAppList ->
-            (widgetList + placedAppList)
+        ) { widgetListResult, placedAppListResult ->
+            runCatching {
+                val widgetList = widgetListResult.getOrThrow()
+                val placedAppList = placedAppListResult.getOrThrow()
+                (widgetList + placedAppList)
+            }
         }
 }

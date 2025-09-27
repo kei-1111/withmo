@@ -130,51 +130,59 @@ private fun HomeScreen(
 ) {
     val topPaddingValue = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()
 
-    if (state.isAppListSheetOpened) {
-        AppListSheet(
-            appListSheetState = appListSheetState,
-            state = state,
-            onAction = onAction,
-        )
-    }
+    when (state) {
+        HomeState.Idle, HomeState.Loading -> { /* TODO: デザインが決まっていないため */ }
 
-    if (state.isPlaceableItemListSheetOpened) {
-        PlaceableItemListSheet(
-            placeableItemListSheetState = widgetListSheetState,
-            state = state,
-            onAction = onAction,
-            modifier = Modifier.padding(
-                top = topPaddingValue,
-            ),
-        )
-    }
+        is HomeState.Error -> { /* TODO: デザインが決まっていないため */ }
 
-    if (state.isWidgetResizing) {
-        state.resizingWidget?.let { widgetInfo ->
-            WidgetResizeBottomSheet(
-                placedWidgetInfo = widgetInfo,
-                close = { onAction(HomeAction.OnWidgetResizeBottomSheetClose(it)) },
+        is HomeState.Stable -> {
+            if (state.isAppListSheetOpened) {
+                AppListSheet(
+                    appListSheetState = appListSheetState,
+                    state = state,
+                    onAction = onAction,
+                )
+            }
+
+            if (state.isPlaceableItemListSheetOpened) {
+                PlaceableItemListSheet(
+                    placeableItemListSheetState = widgetListSheetState,
+                    state = state,
+                    onAction = onAction,
+                    modifier = Modifier.padding(
+                        top = topPaddingValue,
+                    ),
+                )
+            }
+
+            if (state.isWidgetResizing) {
+                state.resizingWidget?.let { widgetInfo ->
+                    WidgetResizeBottomSheet(
+                        placedWidgetInfo = widgetInfo,
+                        close = { onAction(HomeAction.OnWidgetResizeBottomSheetClose(it)) },
+                    )
+                }
+            }
+
+            HomeScreenContent(
+                state = state,
+                onAction = onAction,
+                modifier = modifier,
             )
+
+            if (state.isModelChangeWarningDialogShown) {
+                ModelChangeWarningDialog(
+                    onConfirm = { onAction(HomeAction.OnModelChangeWarningDialogConfirm) },
+                    onDismiss = { onAction(HomeAction.OnModelChangeWarningDialogDismiss) },
+                )
+            }
+
+            if (state.isModelLoading) {
+                ModelLoading(
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
-    }
-
-    HomeScreenContent(
-        state = state,
-        onAction = onAction,
-        modifier = modifier,
-    )
-
-    if (state.isModelChangeWarningDialogShown) {
-        ModelChangeWarningDialog(
-            onConfirm = { onAction(HomeAction.OnModelChangeWarningDialogConfirm) },
-            onDismiss = { onAction(HomeAction.OnModelChangeWarningDialogDismiss) },
-        )
-    }
-
-    if (state.isModelLoading) {
-        ModelLoading(
-            modifier = Modifier.fillMaxSize(),
-        )
     }
 }
 
@@ -184,7 +192,7 @@ private fun HomeScreen(
 private fun HomeScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         HomeScreen(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
@@ -198,7 +206,7 @@ private fun HomeScreenLightPreview() {
 private fun HomeScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         HomeScreen(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
             widgetListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),

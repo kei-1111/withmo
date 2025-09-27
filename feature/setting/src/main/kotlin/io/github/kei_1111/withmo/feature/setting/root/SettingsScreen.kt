@@ -144,33 +144,37 @@ private fun SettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { LogoWithText("の設定") },
-                navigateClose = { onAction(SettingsAction.OnBackButtonClick) },
-            )
-            SettingsScreenContent(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                state = state,
-                onAction = onAction,
-            )
-        }
-    }
+    when (state) {
+        is SettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { LogoWithText("の設定") },
+                        navigateClose = { onAction(SettingsAction.OnBackButtonClick) },
+                    )
+                    SettingsScreenContent(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .verticalScroll(rememberScrollState()),
+                        state = state,
+                        onAction = onAction,
+                    )
+                }
+            }
 
-    if (state.isNotificationPermissionDialogVisible) {
-        NotificationPermissionDialog(
-            onConfirm = { onAction(SettingsAction.OnNotificationPermissionDialogConfirm) },
-            onDismiss = { onAction(SettingsAction.OnNotificationPermissionDialogDismiss) },
-        )
+            if (state.isNotificationPermissionDialogVisible) {
+                NotificationPermissionDialog(
+                    onConfirm = { onAction(SettingsAction.OnNotificationPermissionDialogConfirm) },
+                    onDismiss = { onAction(SettingsAction.OnNotificationPermissionDialogDismiss) },
+                )
+            }
+        }
     }
 }
 
@@ -205,7 +209,7 @@ private fun LogoWithText(
 private fun SettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SettingsScreen(
-            state = SettingsState(
+            state = SettingsState.Stable(
                 isDefaultHomeApp = true,
             ),
             onAction = {},
@@ -220,7 +224,7 @@ private fun SettingsScreenLightPreview() {
 private fun SettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SettingsScreen(
-            state = SettingsState(
+            state = SettingsState.Stable(
                 isDefaultHomeApp = true,
             ),
             onAction = {},

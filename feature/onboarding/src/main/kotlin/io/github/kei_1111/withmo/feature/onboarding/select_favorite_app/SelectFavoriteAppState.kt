@@ -5,7 +5,15 @@ import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class SelectFavoriteAppState(
-    val appSearchQuery: String = "",
-    val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-) : State
+sealed interface SelectFavoriteAppState : State {
+    data object Idle : SelectFavoriteAppState
+
+    data object Loading : SelectFavoriteAppState
+
+    data class Stable(
+        val appSearchQuery: String = "",
+        val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+    ) : SelectFavoriteAppState
+
+    data class Error(val error: Throwable) : SelectFavoriteAppState
+}

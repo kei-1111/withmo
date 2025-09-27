@@ -31,8 +31,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
-import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.sort.component.SortSettingsScreenContent
@@ -90,41 +88,49 @@ private fun SortSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "並び順") },
-                navigateBack = { onAction(SortSettingsAction.OnBackButtonClick) },
-            )
-            SortSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(SortSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
-        }
-    }
+    when (state) {
+        SortSettingsState.Idle, SortSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
 
-    if (state.isUsageStatsPermissionDialogVisible) {
-        UsagePermissionDialog(
-            onDismiss = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
-            onConfirm = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogConfirm) },
-        )
+        is SortSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is SortSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "並び順") },
+                        navigateBack = { onAction(SortSettingsAction.OnBackButtonClick) },
+                    )
+                    SortSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(SortSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
+
+            if (state.isUsageStatsPermissionDialogVisible) {
+                UsagePermissionDialog(
+                    onDismiss = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogDismiss) },
+                    onConfirm = { onAction(SortSettingsAction.OnUsageStatsPermissionDialogConfirm) },
+                )
+            }
+        }
     }
 }
 
@@ -133,12 +139,7 @@ private fun SortSettingsScreen(
 private fun SortSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SortSettingsScreen(
-            state = SortSettingsState(
-                sortSettings = SortSettings(
-                    sortType = SortType.ALPHABETICAL,
-                ),
-                isSaveButtonEnabled = true,
-            ),
+            state = SortSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -150,12 +151,7 @@ private fun SortSettingsScreenLightPreview() {
 private fun SortSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SortSettingsScreen(
-            state = SortSettingsState(
-                sortSettings = SortSettings(
-                    sortType = SortType.USE_COUNT,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = SortSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

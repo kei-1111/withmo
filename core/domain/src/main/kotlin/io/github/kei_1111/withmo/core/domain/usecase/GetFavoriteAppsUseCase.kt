@@ -6,12 +6,12 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface GetFavoriteAppsUseCase {
-    operator fun invoke(): Flow<List<FavoriteAppInfo>>
+    operator fun invoke(): Flow<Result<List<FavoriteAppInfo>>>
 }
 
 class GetFavoriteAppsUseCaseImpl @Inject constructor(
     private val favoriteAppRepository: FavoriteAppRepository,
 ) : GetFavoriteAppsUseCase {
-    override operator fun invoke(): Flow<List<FavoriteAppInfo>> =
+    override operator fun invoke(): Flow<Result<List<FavoriteAppInfo>>> =
         favoriteAppRepository.favoriteAppsInfo
 }

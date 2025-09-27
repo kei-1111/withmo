@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsState
 
 @Composable
 internal fun SortSettingsScreenContent(
-    state: SortSettingsState,
+    state: SortSettingsState.Stable,
     onAction: (SortSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -40,7 +40,7 @@ internal fun SortSettingsScreenContent(
 private fun SortSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SortSettingsScreenContent(
-            state = SortSettingsState(
+            state = SortSettingsState.Stable(
                 sortSettings = SortSettings(
                     sortType = SortType.ALPHABETICAL,
                 ),
@@ -57,7 +57,7 @@ private fun SortSettingsScreenContentLightPreview() {
 private fun SortSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SortSettingsScreenContent(
-            state = SortSettingsState(
+            state = SortSettingsState.Stable(
                 sortSettings = SortSettings(
                     sortType = SortType.USE_COUNT,
                 ),

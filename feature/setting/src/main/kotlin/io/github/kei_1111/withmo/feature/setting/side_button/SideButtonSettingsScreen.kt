@@ -27,7 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.side_button.component.SideButtonSettingsScreenContent
@@ -73,33 +72,41 @@ private fun SideButtonSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "サイドボタン") },
-                navigateBack = { onAction(SideButtonSettingsAction.OnBackButtonClick) },
-            )
-            SideButtonSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(SideButtonSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        SideButtonSettingsState.Idle, SideButtonSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is SideButtonSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is SideButtonSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "サイドボタン") },
+                        navigateBack = { onAction(SideButtonSettingsAction.OnBackButtonClick) },
+                    )
+                    SideButtonSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(SideButtonSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -109,15 +116,7 @@ private fun SideButtonSettingsScreen(
 private fun SideButtonSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SideButtonSettingsScreen(
-            state = SideButtonSettingsState(
-                sideButtonSettings = SideButtonSettings(
-                    isShowScaleSliderButtonShown = true,
-                    isOpenDocumentButtonShown = true,
-                    isSetDefaultModelButtonShown = false,
-                    isNavigateSettingsButtonShown = true,
-                ),
-                isSaveButtonEnabled = true,
-            ),
+            state = SideButtonSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -129,15 +128,7 @@ private fun SideButtonSettingsScreenLightPreview() {
 private fun SideButtonSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SideButtonSettingsScreen(
-            state = SideButtonSettingsState(
-                sideButtonSettings = SideButtonSettings(
-                    isShowScaleSliderButtonShown = false,
-                    isOpenDocumentButtonShown = false,
-                    isSetDefaultModelButtonShown = true,
-                    isNavigateSettingsButtonShown = false,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = SideButtonSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetThemeSettingsUseCase {
-    operator fun invoke(): Flow<ThemeSettings>
+    operator fun invoke(): Flow<Result<ThemeSettings>>
 }
 
 class GetThemeSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetThemeSettingsUseCase {
-    override operator fun invoke() =
+    override operator fun invoke(): Flow<Result<ThemeSettings>> =
         userSettingsRepository.userSettings
-            .map { it.themeSettings }
+            .map { result ->
+                result.map { it.themeSettings }
+            }
             .distinctUntilChanged()
 }

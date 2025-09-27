@@ -6,11 +6,12 @@ import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 interface GetUserSettingsUseCase {
-    operator fun invoke(): Flow<UserSettings>
+    operator fun invoke(): Flow<Result<UserSettings>>
 }
 
 class GetUserSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetUserSettingsUseCase {
-    override operator fun invoke() = userSettingsRepository.userSettings
+    override operator fun invoke(): Flow<Result<UserSettings>> =
+        userSettingsRepository.userSettings
 }

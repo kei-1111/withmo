@@ -10,6 +10,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -26,11 +27,13 @@ class GetSortSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのソート設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(SortType.ALPHABETICAL, result.sortType)
+            assert(result.isSuccess)
+            val sortSettings = result.getOrThrow()
+            assertEquals(SortType.ALPHABETICAL, sortSettings.sortType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -39,12 +42,14 @@ class GetSortSettingsUseCaseTest {
     fun `変更されたソート設定を取得できること`() = runTest {
         val customSortSettings = SortSettings(sortType = SortType.USE_COUNT)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(sortSettings = customSortSettings),
+            Result.success(UserSettings(sortSettings = customSortSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(SortType.USE_COUNT, result.sortType)
+            assert(result.isSuccess)
+            val sortSettings = result.getOrThrow()
+            assertEquals(SortType.USE_COUNT, sortSettings.sortType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -55,11 +60,19 @@ class GetSortSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             sortSettings = SortSettings(sortType = SortType.USE_COUNT),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(SortType.ALPHABETICAL, awaitItem().sortType)
-            assertEquals(SortType.USE_COUNT, awaitItem().sortType)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(SortType.ALPHABETICAL, firstResult.getOrThrow().sortType)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(SortType.USE_COUNT, secondResult.getOrThrow().sortType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -68,11 +81,28 @@ class GetSortSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = SortSettings(sortType = SortType.ALPHABETICAL)
         val userSettings = UserSettings(sortSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

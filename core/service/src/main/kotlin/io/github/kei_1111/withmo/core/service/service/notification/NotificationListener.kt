@@ -81,15 +81,21 @@ class NotificationListener : NotificationListenerService() {
         super.onNotificationPosted(sbn)
         if (sbn == null) return
         serviceScope.launch {
-            val notificationSettings = getNotificationSettingsUseCase().first()
+            val result = getNotificationSettingsUseCase().first()
 
-            if (notificationSettings.isNotificationAnimationEnabled) {
-                AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
-            }
+            result
+                .onSuccess { notificationSettings ->
+                    if (notificationSettings.isNotificationAnimationEnabled) {
+                        AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
+                    }
 
-            if (notificationSettings.isNotificationBadgeEnabled) {
-                updateNotificationFlags()
-            }
+                    if (notificationSettings.isNotificationBadgeEnabled) {
+                        updateNotificationFlags()
+                    }
+                }
+                .onFailure { error ->
+                    Log.e(TAG, "Failed to get notification settings", error)
+                }
         }
     }
 
@@ -97,11 +103,17 @@ class NotificationListener : NotificationListenerService() {
         super.onNotificationRemoved(sbn)
         if (sbn == null) return
         serviceScope.launch {
-            val notificationSettings = getNotificationSettingsUseCase().first()
+            val result = getNotificationSettingsUseCase().first()
 
-            if (notificationSettings.isNotificationBadgeEnabled) {
-                updateNotificationFlags()
-            }
+            result
+                .onSuccess { notificationSettings ->
+                    if (notificationSettings.isNotificationBadgeEnabled) {
+                        updateNotificationFlags()
+                    }
+                }
+                .onFailure { error ->
+                    Log.e(TAG, "Failed to get notification settings", error)
+                }
         }
     }
 

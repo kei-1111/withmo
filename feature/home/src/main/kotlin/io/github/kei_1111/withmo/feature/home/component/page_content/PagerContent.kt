@@ -44,7 +44,7 @@ import io.github.kei_1111.withmo.feature.home.PageContent
 @Suppress("LongMethod")
 @Composable
 internal fun PagerContent(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -178,7 +178,7 @@ private fun PageIndicator(
 private fun PagerContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         PagerContent(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
             modifier = Modifier
                 .fillMaxSize(),
@@ -191,7 +191,7 @@ private fun PagerContentLightPreview() {
 private fun PagerContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         PagerContent(
-            state = HomeState(
+            state = HomeState.Stable(
                 isEditMode = true,
                 currentPage = PageContent.PlaceableItem,
             ),

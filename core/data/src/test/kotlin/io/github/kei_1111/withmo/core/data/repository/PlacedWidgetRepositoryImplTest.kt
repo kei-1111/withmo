@@ -60,7 +60,9 @@ class PlacedWidgetRepositoryImplTest {
 
         repository.placedWidgetsInfo.test {
             val result = awaitItem()
-            assertEquals(0, result.size)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(0, data.size)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -109,17 +111,19 @@ class PlacedWidgetRepositoryImplTest {
 
         repository.placedWidgetsInfo.test {
             val result = awaitItem()
-            assertEquals(2, result.size)
-            assertEquals("1", result[0].id)
-            assertEquals(1, result[0].info.id)
-            assertEquals(4, result[0].width)
-            assertEquals(2, result[0].height)
-            assertEquals(Offset(100f, 200f), result[0].position)
-            assertEquals("2", result[1].id)
-            assertEquals(2, result[1].info.id)
-            assertEquals(2, result[1].width)
-            assertEquals(1, result[1].height)
-            assertEquals(Offset(300f, 400f), result[1].position)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(2, data.size)
+            assertEquals("1", data[0].id)
+            assertEquals(1, data[0].info.id)
+            assertEquals(4, data[0].width)
+            assertEquals(2, data[0].height)
+            assertEquals(Offset(100f, 200f), data[0].position)
+            assertEquals("2", data[1].id)
+            assertEquals(2, data[1].info.id)
+            assertEquals(2, data[1].width)
+            assertEquals(1, data[1].height)
+            assertEquals(Offset(300f, 400f), data[1].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -162,9 +166,11 @@ class PlacedWidgetRepositoryImplTest {
 
         repository.placedWidgetsInfo.test {
             val result = awaitItem()
-            assertEquals(1, result.size)
-            assertEquals("1", result[0].id)
-            assertEquals(1, result[0].info.id)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(1, data.size)
+            assertEquals("1", data[0].id)
+            assertEquals(1, data[0].info.id)
             cancelAndIgnoreRemainingEvents()
         }
     }

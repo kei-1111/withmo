@@ -12,6 +12,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -28,12 +29,14 @@ class GetUserSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのユーザー設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(true, result.clockSettings.isClockShown)
-            assertEquals(AppIconShape.Circle, result.appIconSettings.appIconShape)
+            assert(result.isSuccess)
+            val userSettings = result.getOrThrow()
+            assertEquals(true, userSettings.clockSettings.isClockShown)
+            assertEquals(AppIconShape.Circle, userSettings.appIconSettings.appIconShape)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -44,14 +47,16 @@ class GetUserSettingsUseCaseTest {
             clockSettings = ClockSettings(isClockShown = false, clockType = ClockType.HORIZONTAL_DATE),
             appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square, roundedCornerPercent = 50f),
         )
-        every { mockRepository.userSettings } returns flowOf(customSettings)
+        every { mockRepository.userSettings } returns flowOf(Result.success(customSettings))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(false, result.clockSettings.isClockShown)
-            assertEquals(ClockType.HORIZONTAL_DATE, result.clockSettings.clockType)
-            assertEquals(AppIconShape.Square, result.appIconSettings.appIconShape)
-            assertEquals(50f, result.appIconSettings.roundedCornerPercent, 0.001f)
+            assert(result.isSuccess)
+            val userSettings = result.getOrThrow()
+            assertEquals(false, userSettings.clockSettings.isClockShown)
+            assertEquals(ClockType.HORIZONTAL_DATE, userSettings.clockSettings.clockType)
+            assertEquals(AppIconShape.Square, userSettings.appIconSettings.appIconShape)
+            assertEquals(50f, userSettings.appIconSettings.roundedCornerPercent, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -62,11 +67,32 @@ class GetUserSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(isClockShown = false),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(true, awaitItem().clockSettings.isClockShown)
-            assertEquals(false, awaitItem().clockSettings.isClockShown)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(true, firstResult.getOrThrow().clockSettings.isClockShown)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(false, secondResult.getOrThrow().clockSettings.isClockShown)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
             cancelAndIgnoreRemainingEvents()
         }
     }

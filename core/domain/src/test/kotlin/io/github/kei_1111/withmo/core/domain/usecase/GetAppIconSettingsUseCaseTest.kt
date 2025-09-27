@@ -10,6 +10,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -26,12 +27,14 @@ class GetAppIconSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのアプリアイコン設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(AppIconShape.Circle, result.appIconShape)
-            assertEquals(20f, result.roundedCornerPercent, 0.001f)
+            assert(result.isSuccess)
+            val appIconSettings = result.getOrThrow()
+            assertEquals(AppIconShape.Circle, appIconSettings.appIconShape)
+            assertEquals(20f, appIconSettings.roundedCornerPercent, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -43,13 +46,15 @@ class GetAppIconSettingsUseCaseTest {
             roundedCornerPercent = 25f,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(appIconSettings = customAppIconSettings),
+            Result.success(UserSettings(appIconSettings = customAppIconSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(AppIconShape.RoundedCorner, result.appIconShape)
-            assertEquals(25f, result.roundedCornerPercent, 0.001f)
+            assert(result.isSuccess)
+            val appIconSettings = result.getOrThrow()
+            assertEquals(AppIconShape.RoundedCorner, appIconSettings.appIconShape)
+            assertEquals(25f, appIconSettings.roundedCornerPercent, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -60,11 +65,19 @@ class GetAppIconSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(AppIconShape.Circle, awaitItem().appIconShape)
-            assertEquals(AppIconShape.Square, awaitItem().appIconShape)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(AppIconShape.Circle, firstResult.getOrThrow().appIconShape)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(AppIconShape.Square, secondResult.getOrThrow().appIconShape)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -73,11 +86,28 @@ class GetAppIconSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = AppIconSettings(appIconShape = AppIconShape.Circle)
         val userSettings = UserSettings(appIconSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

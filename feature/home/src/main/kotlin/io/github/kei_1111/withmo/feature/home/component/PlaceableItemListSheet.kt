@@ -85,7 +85,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun PlaceableItemListSheet(
     placeableItemListSheetState: SheetState,
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -203,7 +203,7 @@ private fun AppTabContent(
     appSearchQuery: String,
     onAppSearchQueryChange: (String) -> Unit,
     searchedAppList: ImmutableList<AppInfo>,
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -459,7 +459,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                         notification = it % 3 == 0,
                     )
                 }.toPersistentList(),
-                state = HomeState(),
+                state = HomeState.Stable(),
                 onAction = {},
                 modifier = Modifier.fillMaxSize(),
             )
@@ -515,7 +515,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                         notification = it % 3 == 0,
                     )
                 }.toPersistentList(),
-                state = HomeState(),
+                state = HomeState.Stable(),
                 onAction = {},
                 modifier = Modifier.fillMaxSize(),
             )
@@ -550,7 +550,7 @@ private fun AppTabContentLightPreview() {
                     notification = it % 3 == 0,
                 )
             }.toPersistentList(),
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }
@@ -583,7 +583,7 @@ private fun AppTabContentDarkPreview() {
                     notification = it % 3 == 0,
                 )
             }.toPersistentList(),
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }

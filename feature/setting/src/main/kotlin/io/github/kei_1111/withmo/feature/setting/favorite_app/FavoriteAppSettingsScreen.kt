@@ -69,32 +69,40 @@ private fun FavoriteAppSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "お気に入りアプリ") },
-                navigateBack = { onAction(FavoriteAppSettingsAction.OnBackButtonClick) },
-            )
-            FavoriteAppSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(FavoriteAppSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        FavoriteAppSettingsState.Idle, FavoriteAppSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is FavoriteAppSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is FavoriteAppSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "お気に入りアプリ") },
+                        navigateBack = { onAction(FavoriteAppSettingsAction.OnBackButtonClick) },
+                    )
+                    FavoriteAppSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(FavoriteAppSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -104,7 +112,7 @@ private fun FavoriteAppSettingsScreen(
 private fun FavoriteAppSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         FavoriteAppSettingsScreen(
-            state = FavoriteAppSettingsState(),
+            state = FavoriteAppSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -116,7 +124,7 @@ private fun FavoriteAppSettingsScreenLightPreview() {
 private fun FavoriteAppSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         FavoriteAppSettingsScreen(
-            state = FavoriteAppSettingsState(),
+            state = FavoriteAppSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

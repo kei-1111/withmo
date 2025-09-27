@@ -17,7 +17,7 @@ import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsState
 
 @Composable
 internal fun ThemeSettingsScreenContent(
-    state: ThemeSettingsState,
+    state: ThemeSettingsState.Stable,
     onAction: (ThemeSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -39,7 +39,7 @@ internal fun ThemeSettingsScreenContent(
 private fun ThemeSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeSettingsScreenContent(
-            state = ThemeSettingsState(
+            state = ThemeSettingsState.Stable(
                 themeSettings = ThemeSettings(
                     themeType = ThemeType.TIME_BASED,
                 ),
@@ -56,7 +56,7 @@ private fun ThemeSettingsScreenContentLightPreview() {
 private fun ThemeSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         ThemeSettingsScreenContent(
-            state = ThemeSettingsState(
+            state = ThemeSettingsState.Stable(
                 themeSettings = ThemeSettings(
                     themeType = ThemeType.DARK,
                 ),

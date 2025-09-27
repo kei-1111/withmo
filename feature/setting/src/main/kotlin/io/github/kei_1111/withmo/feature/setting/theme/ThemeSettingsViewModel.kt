@@ -11,26 +11,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThemeSettingsViewModel @Inject constructor(
-    private val getThemeSettingsUseCase: GetThemeSettingsUseCase,
+    getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val saveThemeSettingsUseCase: SaveThemeSettingsUseCase,
 ) : StatefulBaseViewModel<ThemeSettingsViewModelState, ThemeSettingsState, ThemeSettingsAction, ThemeSettingsEffect>() {
 
     override fun createInitialViewModelState() = ThemeSettingsViewModelState()
-    override fun createInitialState() = ThemeSettingsState()
+    override fun createInitialState() = ThemeSettingsState.Idle
+
+    private val themeSettingsDataStream = getThemeSettingsUseCase()
 
     init {
-        observeThemeSettings()
-    }
-
-    private fun observeThemeSettings() {
         viewModelScope.launch {
-            getThemeSettingsUseCase().collect { themeSettings ->
-                updateViewModelState {
-                    copy(
-                        themeSettings = themeSettings,
-                        initialThemeSettings = themeSettings,
-                    )
-                }
+            updateViewModelState { copy(statusType = ThemeSettingsViewModelState.StatusType.LOADING) }
+            themeSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { themeSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ThemeSettingsViewModelState.StatusType.STABLE,
+                                themeSettings = themeSettings,
+                                initialThemeSettings = themeSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ThemeSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -47,8 +58,7 @@ class ThemeSettingsViewModel @Inject constructor(
             is ThemeSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        val themeSettings = state.value.themeSettings
-                        saveThemeSettingsUseCase(themeSettings)
+                        saveThemeSettingsUseCase(_viewModelState.value.themeSettings)
                         sendEffect(ThemeSettingsEffect.ShowToast("保存しました"))
                         sendEffect(ThemeSettingsEffect.NavigateBack)
                     } catch (e: Exception) {

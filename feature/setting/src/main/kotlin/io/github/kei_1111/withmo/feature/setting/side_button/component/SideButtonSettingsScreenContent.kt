@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.feature.setting.side_button.SideButtonSettingsS
 
 @Composable
 internal fun SideButtonSettingsScreenContent(
-    state: SideButtonSettingsState,
+    state: SideButtonSettingsState.Stable,
     onAction: (SideButtonSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -59,7 +59,7 @@ internal fun SideButtonSettingsScreenContent(
 private fun SideButtonSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SideButtonSettingsScreenContent(
-            state = SideButtonSettingsState(
+            state = SideButtonSettingsState.Stable(
                 sideButtonSettings = SideButtonSettings(
                     isShowScaleSliderButtonShown = true,
                     isOpenDocumentButtonShown = true,
@@ -79,7 +79,7 @@ private fun SideButtonSettingsScreenContentLightPreview() {
 private fun SideButtonSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SideButtonSettingsScreenContent(
-            state = SideButtonSettingsState(
+            state = SideButtonSettingsState.Stable(
                 sideButtonSettings = SideButtonSettings(
                     isShowScaleSliderButtonShown = false,
                     isOpenDocumentButtonShown = false,

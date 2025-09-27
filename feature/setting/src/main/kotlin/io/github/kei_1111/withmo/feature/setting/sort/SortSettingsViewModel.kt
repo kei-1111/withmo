@@ -14,28 +14,39 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SortSettingsViewModel @Inject constructor(
-    private val getSortSettingsUseCase: GetSortSettingsUseCase,
+    getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
     private val appManager: AppManager,
     private val permissionChecker: PermissionChecker,
 ) : StatefulBaseViewModel<SortSettingsViewModelState, SortSettingsState, SortSettingsAction, SortSettingsEffect>() {
 
     override fun createInitialViewModelState() = SortSettingsViewModelState()
-    override fun createInitialState() = SortSettingsState()
+    override fun createInitialState() = SortSettingsState.Idle
+
+    private val sortSettingsDataStream = getSortSettingsUseCase()
 
     init {
-        observerSortSettings()
-    }
-
-    private fun observerSortSettings() {
         viewModelScope.launch {
-            getSortSettingsUseCase().collect { sortSettings ->
-                updateViewModelState {
-                    copy(
-                        sortSettings = sortSettings,
-                        initialSortSettings = sortSettings,
-                    )
-                }
+            updateViewModelState { copy(statusType = SortSettingsViewModelState.StatusType.LOADING) }
+            sortSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { sortSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SortSettingsViewModelState.StatusType.STABLE,
+                                sortSettings = sortSettings,
+                                initialSortSettings = sortSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SortSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -74,8 +85,7 @@ class SortSettingsViewModel @Inject constructor(
             is SortSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        val sortSettings = state.value.sortSettings
-                        saveSortSettingsUseCase(sortSettings)
+                        saveSortSettingsUseCase(_viewModelState.value.sortSettings)
                         sendEffect(SortSettingsEffect.ShowToast("保存しました"))
                         sendEffect(SortSettingsEffect.NavigateBack)
                     } catch (e: Exception) {

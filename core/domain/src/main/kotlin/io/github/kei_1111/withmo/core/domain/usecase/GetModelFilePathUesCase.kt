@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetModelFilePathUseCase {
-    operator fun invoke(): Flow<ModelFilePath>
+    operator fun invoke(): Flow<Result<ModelFilePath>>
 }
 
 class GetModelFilePathUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetModelFilePathUseCase {
-    override operator fun invoke(): Flow<ModelFilePath> =
+    override operator fun invoke(): Flow<Result<ModelFilePath>> =
         userSettingsRepository.userSettings
-            .map { it.modelFilePath }
+            .map { result ->
+                result.map { it.modelFilePath }
+            }
             .distinctUntilChanged()
 }

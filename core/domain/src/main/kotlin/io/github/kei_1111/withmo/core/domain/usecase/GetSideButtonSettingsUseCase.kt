@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetSideButtonSettingsUseCase {
-    operator fun invoke(): Flow<SideButtonSettings>
+    operator fun invoke(): Flow<Result<SideButtonSettings>>
 }
 
 class GetSideButtonSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetSideButtonSettingsUseCase {
-    override operator fun invoke() =
+    override operator fun invoke(): Flow<Result<SideButtonSettings>> =
         userSettingsRepository.userSettings
-            .map { it.sideButtonSettings }
+            .map { result ->
+                result.map { it.sideButtonSettings }
+            }
             .distinctUntilChanged()
 }

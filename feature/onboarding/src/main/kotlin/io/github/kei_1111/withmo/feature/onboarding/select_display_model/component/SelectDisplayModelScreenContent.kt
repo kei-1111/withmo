@@ -38,13 +38,13 @@ import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectD
 @RequiresApi(Build.VERSION_CODES.R)
 @Composable
 internal fun SelectDisplayModelScreenContent(
-    state: SelectDisplayModelState,
+    state: SelectDisplayModelState.Stable,
     onAction: (SelectDisplayModelAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.padding(Paddings.Medium),
-        verticalArrangement = Arrangement.Center,
+        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SelectDisplayModelArea(
@@ -54,14 +54,13 @@ internal fun SelectDisplayModelScreenContent(
         BodyMediumText(
             text = if (state.isDefaultModel) "デフォルトモデル" else state.modelFileName,
             color = MaterialTheme.colorScheme.onSurface,
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
 
 @Composable
 private fun SelectDisplayModelArea(
-    state: SelectDisplayModelState,
+    state: SelectDisplayModelState.Stable,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -143,7 +142,7 @@ private fun SelectDisplayModelArea(
 private fun SelectDisplayModelScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SelectDisplayModelScreenContent(
-            state = SelectDisplayModelState(),
+            state = SelectDisplayModelState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -156,7 +155,7 @@ private fun SelectDisplayModelScreenContentLightPreview() {
 private fun SelectDisplayModelScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SelectDisplayModelScreenContent(
-            state = SelectDisplayModelState(),
+            state = SelectDisplayModelState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

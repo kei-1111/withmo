@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetSortSettingsUseCase {
-    operator fun invoke(): Flow<SortSettings>
+    operator fun invoke(): Flow<Result<SortSettings>>
 }
 
 class GetSortSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetSortSettingsUseCase {
-    override operator fun invoke() =
+    override operator fun invoke(): Flow<Result<SortSettings>> =
         userSettingsRepository.userSettings
-            .map { it.sortSettings }
+            .map { result ->
+                result.map { it.sortSettings }
+            }
             .distinctUntilChanged()
 }

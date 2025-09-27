@@ -48,7 +48,7 @@ import io.github.kei_1111.withmo.feature.setting.root.SettingsState
 
 @Composable
 internal fun SettingsScreenContent(
-    state: SettingsState,
+    state: SettingsState.Stable,
     onAction: (SettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -318,7 +318,7 @@ private fun SettingItem(
 private fun SettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         SettingsScreenContent(
-            state = SettingsState(
+            state = SettingsState.Stable(
                 isDefaultHomeApp = true,
             ),
             onAction = {},
@@ -332,7 +332,7 @@ private fun SettingsScreenContentLightPreview() {
 private fun SettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         SettingsScreenContent(
-            state = SettingsState(
+            state = SettingsState.Stable(
                 isDefaultHomeApp = true,
             ),
             onAction = {},

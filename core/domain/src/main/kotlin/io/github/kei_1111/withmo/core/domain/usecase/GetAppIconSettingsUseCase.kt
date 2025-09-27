@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetAppIconSettingsUseCase {
-    operator fun invoke(): Flow<AppIconSettings>
+    operator fun invoke(): Flow<Result<AppIconSettings>>
 }
 
 class GetAppIconSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetAppIconSettingsUseCase {
-    override fun invoke(): Flow<AppIconSettings> =
+    override fun invoke(): Flow<Result<AppIconSettings>> =
         userSettingsRepository.userSettings
-            .map { it.appIconSettings }
+            .map { result ->
+                result.map { it.appIconSettings }
+            }
             .distinctUntilChanged()
 }

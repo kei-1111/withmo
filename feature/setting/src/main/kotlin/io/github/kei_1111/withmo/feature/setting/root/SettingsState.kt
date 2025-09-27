@@ -2,7 +2,9 @@ package io.github.kei_1111.withmo.feature.setting.root
 
 import io.github.kei_1111.withmo.core.featurebase.stateful.State
 
-data class SettingsState(
-    val isDefaultHomeApp: Boolean = true,
-    val isNotificationPermissionDialogVisible: Boolean = false,
-) : State
+sealed interface SettingsState : State {
+    data class Stable(
+        val isDefaultHomeApp: Boolean = true,
+        val isNotificationPermissionDialogVisible: Boolean = false,
+    ) : SettingsState
+}

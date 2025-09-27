@@ -20,13 +20,15 @@ class PlacedAppRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : PlacedAppRepository {
 
-    override val placedAppsInfo: Flow<List<PlacedAppInfo>> = combine(
+    override val placedAppsInfo: Flow<Result<List<PlacedAppInfo>>> = combine(
         placedAppDao.getAll(),
         appManager.appInfoList,
     ) { placedAppEntities, appInfoList ->
-        placedAppEntities.mapNotNull { entity ->
-            val appInfo = appInfoList.find { it.packageName == entity.packageName }
-            appInfo?.let { entity.toPlacedAppInfo(it) }
+        runCatching {
+            placedAppEntities.mapNotNull { entity ->
+                val appInfo = appInfoList.find { it.packageName == entity.packageName }
+                appInfo?.let { entity.toPlacedAppInfo(it) }
+            }
         }
     }.flowOn(ioDispatcher)
 

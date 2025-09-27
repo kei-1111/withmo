@@ -8,20 +8,28 @@ import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class HomeState(
-    val isChangeModelScaleContentShown: Boolean = false,
-    val isModelChangeWarningDialogShown: Boolean = false,
-    val isModelLoading: Boolean = false,
-    val isAppListSheetOpened: Boolean = false,
-    val isPlaceableItemListSheetOpened: Boolean = false,
-    val placedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
-    val isEditMode: Boolean = false,
-    val resizingWidget: PlacedWidgetInfo? = null,
-    val isWidgetResizing: Boolean = false,
-    val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val currentPage: PageContent = PageContent.DisplayModel,
-    val currentUserSettings: UserSettings = UserSettings(),
-) : State
+sealed interface HomeState : State {
+    data object Idle : HomeState
+
+    data object Loading : HomeState
+
+    data class Stable(
+        val isChangeModelScaleContentShown: Boolean = false,
+        val isModelChangeWarningDialogShown: Boolean = false,
+        val isModelLoading: Boolean = false,
+        val isAppListSheetOpened: Boolean = false,
+        val isPlaceableItemListSheetOpened: Boolean = false,
+        val placedItemList: ImmutableList<PlaceableItem> = persistentListOf(),
+        val isEditMode: Boolean = false,
+        val resizingWidget: PlacedWidgetInfo? = null,
+        val isWidgetResizing: Boolean = false,
+        val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+        val currentPage: PageContent = PageContent.DisplayModel,
+        val currentUserSettings: UserSettings = UserSettings(),
+    ) : HomeState
+
+    data class Error(val error: Throwable) : HomeState
+}
 
 enum class PageContent {
     DisplayModel,

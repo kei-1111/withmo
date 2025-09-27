@@ -11,26 +11,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppIconSettingsViewModel @Inject constructor(
-    private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
+    getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
 ) : StatefulBaseViewModel<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
 
     override fun createInitialViewModelState() = AppIconSettingsViewModelState()
-    override fun createInitialState() = AppIconSettingsState()
+    override fun createInitialState() = AppIconSettingsState.Idle
+
+    private val appIconSettingsDataStream = getAppIconSettingsUseCase()
 
     init {
-        observeAppIconSettings()
-    }
-
-    private fun observeAppIconSettings() {
         viewModelScope.launch {
-            getAppIconSettingsUseCase().collect { appIconSettings ->
-                updateViewModelState {
-                    copy(
-                        appIconSettings = appIconSettings,
-                        initialAppIconSettings = appIconSettings,
-                    )
-                }
+            updateViewModelState { copy(statusType = AppIconSettingsViewModelState.StatusType.LOADING) }
+            appIconSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { appIconSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = AppIconSettingsViewModelState.StatusType.STABLE,
+                                appIconSettings = appIconSettings,
+                                initialAppIconSettings = appIconSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = AppIconSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -54,7 +65,7 @@ class AppIconSettingsViewModel @Inject constructor(
             is AppIconSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        saveAppIconSettingsUseCase(state.value.appIconSettings)
+                        saveAppIconSettingsUseCase(_viewModelState.value.appIconSettings)
                         sendEffect(AppIconSettingsEffect.ShowToast("保存しました"))
                         sendEffect(AppIconSettingsEffect.NavigateBack)
                     } catch (e: Exception) {

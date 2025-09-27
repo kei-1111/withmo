@@ -9,26 +9,42 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SelectFavoriteAppViewModel @Inject constructor(
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
 ) : StatefulBaseViewModel<SelectFavoriteAppViewModelState, SelectFavoriteAppState, SelectFavoriteAppAction, SelectFavoriteAppEffect>() {
 
     override fun createInitialViewModelState() = SelectFavoriteAppViewModelState()
-    override fun createInitialState() = SelectFavoriteAppState()
+    override fun createInitialState() = SelectFavoriteAppState.Idle
+
+    private val selectFavoriteAppDataStream: Flow<Result<List<FavoriteAppInfo>>> = getFavoriteAppsUseCase()
 
     init {
-        observeFavoriteAppList()
-    }
-
-    private fun observeFavoriteAppList() {
         viewModelScope.launch {
-            getFavoriteAppsUseCase().collect { favoriteAppList ->
-                updateViewModelState { copy(selectedAppList = favoriteAppList.toPersistentList()) }
+            updateViewModelState { copy(statusType = SelectFavoriteAppViewModelState.StatusType.LOADING) }
+            selectFavoriteAppDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectFavoriteAppViewModelState.StatusType.STABLE,
+                                selectedAppList = data.toPersistentList(),
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SelectFavoriteAppViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -36,7 +52,7 @@ class SelectFavoriteAppViewModel @Inject constructor(
     private fun saveFavoriteApps() {
         viewModelScope.launch {
             try {
-                saveFavoriteAppsUseCase(state.value.selectedAppList)
+                saveFavoriteAppsUseCase(_viewModelState.value.selectedAppList)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to save favorite app settings", e)
             }

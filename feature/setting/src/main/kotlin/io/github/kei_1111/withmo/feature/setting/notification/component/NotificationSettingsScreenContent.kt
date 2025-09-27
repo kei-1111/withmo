@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettin
 
 @Composable
 internal fun NotificationSettingsScreenContent(
-    state: NotificationSettingsState,
+    state: NotificationSettingsState.Stable,
     onAction: (NotificationSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -48,7 +48,7 @@ internal fun NotificationSettingsScreenContent(
 private fun NotificationSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettingsScreenContent(
-            state = NotificationSettingsState(
+            state = NotificationSettingsState.Stable(
                 notificationSettings = NotificationSettings(
                     isNotificationAnimationEnabled = true,
                     isNotificationBadgeEnabled = true,
@@ -66,13 +66,7 @@ private fun NotificationSettingsScreenContentLightPreview() {
 private fun NotificationSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettingsScreenContent(
-            state = NotificationSettingsState(
-                notificationSettings = NotificationSettings(
-                    isNotificationAnimationEnabled = false,
-                    isNotificationBadgeEnabled = false,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = NotificationSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

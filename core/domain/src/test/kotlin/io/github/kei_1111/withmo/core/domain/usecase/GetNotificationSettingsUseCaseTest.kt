@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -25,12 +26,14 @@ class GetNotificationSettingsUseCaseTest {
 
     @Test
     fun `デフォルトの通知設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(false, result.isNotificationAnimationEnabled)
-            assertEquals(false, result.isNotificationBadgeEnabled)
+            assert(result.isSuccess)
+            val notificationSettings = result.getOrThrow()
+            assertEquals(false, notificationSettings.isNotificationAnimationEnabled)
+            assertEquals(false, notificationSettings.isNotificationBadgeEnabled)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -42,13 +45,15 @@ class GetNotificationSettingsUseCaseTest {
             isNotificationBadgeEnabled = true,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(notificationSettings = customNotificationSettings),
+            Result.success(UserSettings(notificationSettings = customNotificationSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(true, result.isNotificationAnimationEnabled)
-            assertEquals(true, result.isNotificationBadgeEnabled)
+            assert(result.isSuccess)
+            val notificationSettings = result.getOrThrow()
+            assertEquals(true, notificationSettings.isNotificationAnimationEnabled)
+            assertEquals(true, notificationSettings.isNotificationBadgeEnabled)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -59,11 +64,19 @@ class GetNotificationSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             notificationSettings = NotificationSettings(isNotificationAnimationEnabled = true),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(false, awaitItem().isNotificationAnimationEnabled)
-            assertEquals(true, awaitItem().isNotificationAnimationEnabled)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(false, firstResult.getOrThrow().isNotificationAnimationEnabled)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(true, secondResult.getOrThrow().isNotificationAnimationEnabled)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -72,11 +85,28 @@ class GetNotificationSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = NotificationSettings()
         val userSettings = UserSettings(notificationSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

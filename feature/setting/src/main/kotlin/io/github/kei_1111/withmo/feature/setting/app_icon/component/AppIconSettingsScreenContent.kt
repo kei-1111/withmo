@@ -12,7 +12,6 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsAction
@@ -20,7 +19,7 @@ import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsState
 
 @Composable
 internal fun AppIconSettingsScreenContent(
-    state: AppIconSettingsState,
+    state: AppIconSettingsState.Stable,
     onAction: (AppIconSettingsAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -50,10 +49,7 @@ internal fun AppIconSettingsScreenContent(
 private fun AppIconSettingsScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         AppIconSettingsScreenContent(
-            state = AppIconSettingsState(
-                appIconSettings = AppIconSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = AppIconSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -65,10 +61,7 @@ private fun AppIconSettingsScreenContentLightPreview() {
 private fun AppIconSettingsScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         AppIconSettingsScreenContent(
-            state = AppIconSettingsState(
-                appIconSettings = AppIconSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = AppIconSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

@@ -40,7 +40,7 @@ import kotlinx.collections.immutable.toPersistentList
 @Composable
 internal fun AppListSheet(
     appListSheetState: SheetState,
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -116,7 +116,7 @@ private fun AppListSheetLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }
@@ -130,7 +130,7 @@ private fun AppListSheetDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         AppListSheet(
             appListSheetState = rememberModalBottomSheetState(skipPartiallyExpanded = false),
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }

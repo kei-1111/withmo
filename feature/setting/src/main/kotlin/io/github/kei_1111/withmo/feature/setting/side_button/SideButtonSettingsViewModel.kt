@@ -11,26 +11,37 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SideButtonSettingsViewModel @Inject constructor(
-    private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
+    getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
 ) : StatefulBaseViewModel<SideButtonSettingsViewModelState, SideButtonSettingsState, SideButtonSettingsAction, SideButtonSettingsEffect>() {
 
     override fun createInitialViewModelState() = SideButtonSettingsViewModelState()
-    override fun createInitialState() = SideButtonSettingsState()
+    override fun createInitialState() = SideButtonSettingsState.Idle
+
+    private val sideButtonSettingsDataStream = getSideButtonSettingsUseCase()
 
     init {
-        observeSideButtonSettings()
-    }
-
-    private fun observeSideButtonSettings() {
         viewModelScope.launch {
-            getSideButtonSettingsUseCase().collect { sideButtonSettings ->
-                updateViewModelState {
-                    copy(
-                        sideButtonSettings = sideButtonSettings,
-                        initialSideButtonSettings = sideButtonSettings,
-                    )
-                }
+            updateViewModelState { copy(statusType = SideButtonSettingsViewModelState.StatusType.LOADING) }
+            sideButtonSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { sideButtonSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SideButtonSettingsViewModelState.StatusType.STABLE,
+                                sideButtonSettings = sideButtonSettings,
+                                initialSideButtonSettings = sideButtonSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = SideButtonSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -68,7 +79,7 @@ class SideButtonSettingsViewModel @Inject constructor(
             is SideButtonSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        saveSideButtonSettingsUseCase(state.value.sideButtonSettings)
+                        saveSideButtonSettingsUseCase(_viewModelState.value.sideButtonSettings)
                         sendEffect(SideButtonSettingsEffect.ShowToast("保存しました"))
                         sendEffect(SideButtonSettingsEffect.NavigateBack)
                     } catch (e: Exception) {
