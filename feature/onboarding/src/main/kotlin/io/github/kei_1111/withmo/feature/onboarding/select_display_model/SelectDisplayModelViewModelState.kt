@@ -11,6 +11,7 @@ data class SelectDisplayModelViewModelState(
     val isModelLoading: Boolean = false,
     val modelFilePath: ModelFilePath = ModelFilePath(null),
     val modelFileThumbnail: Bitmap? = null,
+    val error: Throwable? = null,
 ) : ViewModelState<SelectDisplayModelState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -27,6 +28,6 @@ data class SelectDisplayModelViewModelState(
             isNextButtonEnabled = !isModelLoading,
         )
 
-        StatusType.ERROR -> SelectDisplayModelState.Error(Throwable("An error occurred in SelectDisplayModelViewModelState"))
+        StatusType.ERROR -> SelectDisplayModelState.Error(error ?: Throwable("Unknown error"))
     }
 }

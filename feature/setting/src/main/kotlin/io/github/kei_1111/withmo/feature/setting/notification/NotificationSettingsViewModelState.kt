@@ -7,6 +7,7 @@ data class NotificationSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val notificationSettings: NotificationSettings = NotificationSettings(),
     val initialNotificationSettings: NotificationSettings = NotificationSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<NotificationSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -21,6 +22,6 @@ data class NotificationSettingsViewModelState(
             isSaveButtonEnabled = notificationSettings != initialNotificationSettings,
         )
 
-        StatusType.ERROR -> NotificationSettingsState.Error(Throwable("An error occurred in NotificationSettingsViewModelState"))
+        StatusType.ERROR -> NotificationSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

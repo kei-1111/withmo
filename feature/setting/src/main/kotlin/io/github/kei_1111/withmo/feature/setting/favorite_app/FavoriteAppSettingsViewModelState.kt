@@ -13,6 +13,7 @@ data class FavoriteAppSettingsViewModelState(
     val isSaveButtonEnabled: Boolean = false,
     val appSearchQuery: String = "",
     val appIconSettings: AppIconSettings = AppIconSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<FavoriteAppSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -29,6 +30,6 @@ data class FavoriteAppSettingsViewModelState(
             appIconSettings = appIconSettings,
         )
 
-        StatusType.ERROR -> FavoriteAppSettingsState.Error(Throwable("An error occurred in FavoriteAppSettingsViewModelState"))
+        StatusType.ERROR -> FavoriteAppSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

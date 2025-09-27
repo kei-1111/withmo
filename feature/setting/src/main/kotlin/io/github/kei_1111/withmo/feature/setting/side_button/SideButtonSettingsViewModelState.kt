@@ -7,6 +7,7 @@ data class SideButtonSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
     val initialSideButtonSettings: SideButtonSettings = SideButtonSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<SideButtonSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -21,6 +22,6 @@ data class SideButtonSettingsViewModelState(
             isSaveButtonEnabled = sideButtonSettings != initialSideButtonSettings,
         )
 
-        StatusType.ERROR -> SideButtonSettingsState.Error(Throwable("An error occurred in SideButtonSettingsViewModelState"))
+        StatusType.ERROR -> SideButtonSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

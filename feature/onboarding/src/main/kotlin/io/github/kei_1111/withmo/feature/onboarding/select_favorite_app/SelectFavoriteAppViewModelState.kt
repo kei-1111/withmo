@@ -9,6 +9,7 @@ data class SelectFavoriteAppViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val appSearchQuery: String = "",
     val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+    val error: Throwable? = null,
 ) : ViewModelState<SelectFavoriteAppState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -23,6 +24,6 @@ data class SelectFavoriteAppViewModelState(
             selectedAppList = selectedAppList,
         )
 
-        StatusType.ERROR -> SelectFavoriteAppState.Error(Throwable("An error occurred in SelectFavoriteAppViewModelState"))
+        StatusType.ERROR -> SelectFavoriteAppState.Error(error ?: Throwable("Unknown error"))
     }
 }

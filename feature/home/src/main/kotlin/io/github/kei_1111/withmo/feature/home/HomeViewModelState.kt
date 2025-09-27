@@ -49,6 +49,6 @@ data class HomeViewModelState(
             currentUserSettings = currentUserSettings,
         )
 
-        StatusType.ERROR -> HomeState.Error(Throwable("An error occurred in HomeViewModelState"))
+        StatusType.ERROR -> HomeState.Error(error ?: Throwable("Unknown error"))
     }
 }

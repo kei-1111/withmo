@@ -7,6 +7,7 @@ data class ThemeSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val themeSettings: ThemeSettings = ThemeSettings(),
     val initialThemeSettings: ThemeSettings = ThemeSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<ThemeSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -21,6 +22,6 @@ data class ThemeSettingsViewModelState(
             isSaveButtonEnabled = themeSettings != initialThemeSettings,
         )
 
-        StatusType.ERROR -> ThemeSettingsState.Error(Throwable("An error occurred in ThemeSettingsViewModelState"))
+        StatusType.ERROR -> ThemeSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

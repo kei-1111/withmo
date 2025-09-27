@@ -7,6 +7,7 @@ data class AppIconSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val appIconSettings: AppIconSettings = AppIconSettings(),
     val initialAppIconSettings: AppIconSettings = AppIconSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<AppIconSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -21,6 +22,6 @@ data class AppIconSettingsViewModelState(
             isSaveButtonEnabled = appIconSettings != initialAppIconSettings,
         )
 
-        StatusType.ERROR -> AppIconSettingsState.Error(Throwable("An error occurred in AppIconSettingsViewModelState"))
+        StatusType.ERROR -> AppIconSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

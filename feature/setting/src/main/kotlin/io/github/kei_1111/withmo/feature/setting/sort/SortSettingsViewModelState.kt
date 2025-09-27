@@ -8,6 +8,7 @@ data class SortSettingsViewModelState(
     val sortSettings: SortSettings = SortSettings(),
     val initialSortSettings: SortSettings = SortSettings(),
     val isUsageStatsPermissionDialogVisible: Boolean = false,
+    val error: Throwable? = null,
 ) : ViewModelState<SortSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -23,6 +24,6 @@ data class SortSettingsViewModelState(
             isUsageStatsPermissionDialogVisible = isUsageStatsPermissionDialogVisible,
         )
 
-        StatusType.ERROR -> SortSettingsState.Error(Throwable("An error occurred in SortSettingsViewModelState"))
+        StatusType.ERROR -> SortSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }

@@ -7,6 +7,7 @@ data class ClockSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val clockSettings: ClockSettings = ClockSettings(),
     val initialClockSettings: ClockSettings = ClockSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<ClockSettingsState> {
 
     enum class StatusType { IDLE, LOADING, STABLE, ERROR }
@@ -21,6 +22,6 @@ data class ClockSettingsViewModelState(
             isSaveButtonEnabled = clockSettings != initialClockSettings,
         )
 
-        StatusType.ERROR -> ClockSettingsState.Error(Throwable("An error occurred in ClockSettingsViewModelState"))
+        StatusType.ERROR -> ClockSettingsState.Error(error ?: Throwable("Unknown error"))
     }
 }
