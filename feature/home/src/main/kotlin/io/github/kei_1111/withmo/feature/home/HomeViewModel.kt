@@ -67,16 +67,11 @@ class HomeViewModel @Inject constructor(
         getFavoriteAppsUseCase(),
         getPlacedItemsUseCase(),
     ) { userSettings, favoriteAppList, placedItemList ->
-        when {
-            userSettings.isFailure -> Result.failure(userSettings.exceptionOrNull()!!)
-            favoriteAppList.isFailure -> Result.failure(favoriteAppList.exceptionOrNull()!!)
-            placedItemList.isFailure -> Result.failure(placedItemList.exceptionOrNull()!!)
-            else -> Result.success(
-                HomeData(
-                    userSettings = userSettings.getOrThrow(),
-                    favoriteAppList = favoriteAppList.getOrThrow(),
-                    placedItemList = placedItemList.getOrThrow(),
-                ),
+        runCatching {
+            HomeData(
+                userSettings = userSettings.getOrThrow(),
+                favoriteAppList = favoriteAppList.getOrThrow(),
+                placedItemList = placedItemList.getOrThrow(),
             )
         }
     }
