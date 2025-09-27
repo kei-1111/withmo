@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectFavoriteAppViewModel @Inject constructor(
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
 ) : StatefulBaseViewModel<SelectFavoriteAppViewModelState, SelectFavoriteAppState, SelectFavoriteAppAction, SelectFavoriteAppEffect>() {
 

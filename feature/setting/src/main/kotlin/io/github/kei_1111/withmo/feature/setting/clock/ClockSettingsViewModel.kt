@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ClockSettingsViewModel @Inject constructor(
-    private val getClockSettingsUseCase: GetClockSettingsUseCase,
+    getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
 ) : StatefulBaseViewModel<ClockSettingsViewModelState, ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 

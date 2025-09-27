@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SortSettingsViewModel @Inject constructor(
-    private val getSortSettingsUseCase: GetSortSettingsUseCase,
+    getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
     private val appManager: AppManager,
     private val permissionChecker: PermissionChecker,

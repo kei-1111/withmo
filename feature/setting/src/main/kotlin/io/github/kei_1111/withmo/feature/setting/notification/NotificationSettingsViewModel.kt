@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationSettingsViewModel @Inject constructor(
-    private val getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
+    getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
     private val permissionChecker: PermissionChecker,
 ) : StatefulBaseViewModel<NotificationSettingsViewModelState, NotificationSettingsState, NotificationSettingsAction, NotificationSettingsEffect>() {

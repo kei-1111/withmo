@@ -17,9 +17,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteAppSettingsViewModel @Inject constructor(
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
-    private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
 ) : StatefulBaseViewModel<FavoriteAppSettingsViewModelState, FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
     override fun createInitialViewModelState() = FavoriteAppSettingsViewModelState()

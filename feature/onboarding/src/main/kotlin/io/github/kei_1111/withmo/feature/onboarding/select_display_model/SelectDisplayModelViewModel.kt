@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SelectDisplayModelViewModel @Inject constructor(
-    private val getModelFilePathUseCase: GetModelFilePathUseCase,
+    getModelFilePathUseCase: GetModelFilePathUseCase,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val modelFileManager: ModelFileManager,
 ) : StatefulBaseViewModel<SelectDisplayModelViewModelState, SelectDisplayModelState, SelectDisplayModelAction, SelectDisplayModelEffect>() {

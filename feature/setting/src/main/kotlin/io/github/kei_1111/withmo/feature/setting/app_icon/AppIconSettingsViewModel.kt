@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AppIconSettingsViewModel @Inject constructor(
-    private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
+    getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
 ) : StatefulBaseViewModel<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {
 

@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SideButtonSettingsViewModel @Inject constructor(
-    private val getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
+    getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
 ) : StatefulBaseViewModel<SideButtonSettingsViewModelState, SideButtonSettingsState, SideButtonSettingsAction, SideButtonSettingsEffect>() {
 

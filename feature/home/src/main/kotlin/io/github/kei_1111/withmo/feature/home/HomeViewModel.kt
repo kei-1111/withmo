@@ -40,9 +40,9 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
-    private val getPlacedItemsUseCase: GetPlacedItemsUseCase,
+    getUserSettingsUseCase: GetUserSettingsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getPlacedItemsUseCase: GetPlacedItemsUseCase,
     private val savePlacedItemsUseCase: SavePlacedItemsUseCase,
     private val getModelChangeWarningStatusUseCase: GetModelChangeWarningStatusUseCase,
     private val markModelChangeWarningShownUseCase: MarkModelChangeWarningShownUseCase,

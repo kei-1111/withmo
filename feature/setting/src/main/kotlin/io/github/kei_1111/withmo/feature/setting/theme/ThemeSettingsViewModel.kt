@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ThemeSettingsViewModel @Inject constructor(
-    private val getThemeSettingsUseCase: GetThemeSettingsUseCase,
+    getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val saveThemeSettingsUseCase: SaveThemeSettingsUseCase,
 ) : StatefulBaseViewModel<ThemeSettingsViewModelState, ThemeSettingsState, ThemeSettingsAction, ThemeSettingsEffect>() {
 
