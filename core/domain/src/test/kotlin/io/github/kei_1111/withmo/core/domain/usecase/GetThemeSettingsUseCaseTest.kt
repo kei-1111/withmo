@@ -7,7 +7,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -28,7 +27,7 @@ class GetThemeSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのテーマ設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
@@ -43,7 +42,7 @@ class GetThemeSettingsUseCaseTest {
     fun `変更されたテーマ設定を取得できること`() = runTest {
         val customThemeSettings = ThemeSettings(themeType = ThemeType.DARK)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(themeSettings = customThemeSettings),
+            Result.success(UserSettings(themeSettings = customThemeSettings)),
         )
 
         useCase().test {
@@ -61,7 +60,10 @@ class GetThemeSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             themeSettings = ThemeSettings(themeType = ThemeType.LIGHT),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -79,7 +81,11 @@ class GetThemeSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = ThemeSettings(themeType = ThemeType.TIME_BASED)
         val userSettings = UserSettings(themeSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
@@ -90,7 +96,7 @@ class GetThemeSettingsUseCaseTest {
     @Test
     fun `エラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Database error")
-        every { mockRepository.userSettings } returns flow { throw exception }
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

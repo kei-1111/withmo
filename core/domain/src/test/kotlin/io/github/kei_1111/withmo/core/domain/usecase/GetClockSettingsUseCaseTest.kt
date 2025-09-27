@@ -7,7 +7,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -28,7 +27,7 @@ class GetClockSettingsUseCaseTest {
 
     @Test
     fun `デフォルトの時計設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
@@ -47,7 +46,7 @@ class GetClockSettingsUseCaseTest {
             clockType = ClockType.HORIZONTAL_DATE,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(clockSettings = customClockSettings),
+            Result.success(UserSettings(clockSettings = customClockSettings)),
         )
 
         useCase().test {
@@ -66,7 +65,10 @@ class GetClockSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(isClockShown = false),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -86,7 +88,10 @@ class GetClockSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(clockType = ClockType.HORIZONTAL_DATE),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -107,7 +112,11 @@ class GetClockSettingsUseCaseTest {
             clockType = ClockType.TOP_DATE,
         )
         val userSettings = UserSettings(clockSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
@@ -118,7 +127,7 @@ class GetClockSettingsUseCaseTest {
     @Test
     fun `エラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Database error")
-        every { mockRepository.userSettings } returns flow { throw exception }
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

@@ -9,7 +9,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -30,7 +29,7 @@ class GetUserSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのユーザー設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
@@ -48,7 +47,7 @@ class GetUserSettingsUseCaseTest {
             clockSettings = ClockSettings(isClockShown = false, clockType = ClockType.HORIZONTAL_DATE),
             appIconSettings = AppIconSettings(appIconShape = AppIconShape.Square, roundedCornerPercent = 50f),
         )
-        every { mockRepository.userSettings } returns flowOf(customSettings)
+        every { mockRepository.userSettings } returns flowOf(Result.success(customSettings))
 
         useCase().test {
             val result = awaitItem()
@@ -68,7 +67,10 @@ class GetUserSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(isClockShown = false),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -85,7 +87,7 @@ class GetUserSettingsUseCaseTest {
     @Test
     fun `エラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Database error")
-        every { mockRepository.userSettings } returns flow { throw exception }
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

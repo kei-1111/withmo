@@ -49,7 +49,9 @@ class PlacedAppRepositoryImplTest {
 
         repository.placedAppsInfo.test {
             val result = awaitItem()
-            assertEquals(0, result.size)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(0, data.size)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -92,15 +94,17 @@ class PlacedAppRepositoryImplTest {
 
         repository.placedAppsInfo.test {
             val result = awaitItem()
-            assertEquals(2, result.size)
-            assertEquals("id1", result[0].id)
-            assertEquals("com.example.app1", result[0].info.packageName)
-            assertEquals("App 1", result[0].info.label)
-            assertEquals(Offset(100f, 200f), result[0].position)
-            assertEquals("id2", result[1].id)
-            assertEquals("com.example.app2", result[1].info.packageName)
-            assertEquals("App 2", result[1].info.label)
-            assertEquals(Offset(300f, 400f), result[1].position)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(2, data.size)
+            assertEquals("id1", data[0].id)
+            assertEquals("com.example.app1", data[0].info.packageName)
+            assertEquals("App 1", data[0].info.label)
+            assertEquals(Offset(100f, 200f), data[0].position)
+            assertEquals("id2", data[1].id)
+            assertEquals("com.example.app2", data[1].info.packageName)
+            assertEquals("App 2", data[1].info.label)
+            assertEquals(Offset(300f, 400f), data[1].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -131,9 +135,11 @@ class PlacedAppRepositoryImplTest {
 
         repository.placedAppsInfo.test {
             val result = awaitItem()
-            assertEquals(1, result.size)
-            assertEquals("id1", result[0].id)
-            assertEquals("com.example.app1", result[0].info.packageName)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(1, data.size)
+            assertEquals("id1", data[0].id)
+            assertEquals("com.example.app1", data[0].info.packageName)
             cancelAndIgnoreRemainingEvents()
         }
     }

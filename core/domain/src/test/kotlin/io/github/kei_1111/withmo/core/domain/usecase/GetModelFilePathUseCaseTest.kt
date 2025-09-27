@@ -6,7 +6,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -27,7 +26,7 @@ class GetModelFilePathUseCaseTest {
 
     @Test
     fun `デフォルトのモデルファイルパスを取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
@@ -42,7 +41,7 @@ class GetModelFilePathUseCaseTest {
     fun `設定されたモデルファイルパスを取得できること`() = runTest {
         val customModelFilePath = ModelFilePath("/storage/emulated/0/model.vrm")
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelFilePath = customModelFilePath),
+            Result.success(UserSettings(modelFilePath = customModelFilePath)),
         )
 
         useCase().test {
@@ -60,7 +59,10 @@ class GetModelFilePathUseCaseTest {
         val updatedSettings = UserSettings(
             modelFilePath = ModelFilePath("/storage/emulated/0/new_model.vrm"),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -78,7 +80,7 @@ class GetModelFilePathUseCaseTest {
     fun `空文字のモデルファイルパスを取得できること`() = runTest {
         val emptyModelFilePath = ModelFilePath("")
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelFilePath = emptyModelFilePath),
+            Result.success(UserSettings(modelFilePath = emptyModelFilePath)),
         )
 
         useCase().test {
@@ -94,7 +96,11 @@ class GetModelFilePathUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameModelFilePath = ModelFilePath("/storage/emulated/0/model.vrm")
         val userSettings = UserSettings(modelFilePath = sameModelFilePath)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
@@ -105,7 +111,7 @@ class GetModelFilePathUseCaseTest {
     @Test
     fun `エラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Database error")
-        every { mockRepository.userSettings } returns flow { throw exception }
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

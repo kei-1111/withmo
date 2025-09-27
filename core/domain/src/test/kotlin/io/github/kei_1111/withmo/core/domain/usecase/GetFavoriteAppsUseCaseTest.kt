@@ -7,7 +7,6 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
@@ -28,7 +27,7 @@ class GetFavoriteAppsUseCaseTest {
 
     @Test
     fun `空のお気に入りアプリリストを取得できること`() = runTest {
-        every { mockRepository.favoriteAppsInfo } returns flowOf(emptyList())
+        every { mockRepository.favoriteAppsInfo } returns flowOf(Result.success(emptyList<FavoriteAppInfo>()))
 
         useCase().test {
             val result = awaitItem()
@@ -59,7 +58,7 @@ class GetFavoriteAppsUseCaseTest {
                 favoriteOrder = 1,
             ),
         )
-        every { mockRepository.favoriteAppsInfo } returns flowOf(favoriteApps)
+        every { mockRepository.favoriteAppsInfo } returns flowOf(Result.success(favoriteApps))
 
         useCase().test {
             val result = awaitItem()
@@ -106,7 +105,10 @@ class GetFavoriteAppsUseCaseTest {
                 favoriteOrder = 1,
             ),
         )
-        every { mockRepository.favoriteAppsInfo } returns flowOf(initialApps, updatedApps)
+        every { mockRepository.favoriteAppsInfo } returns flowOf(
+            Result.success(initialApps),
+            Result.success(updatedApps),
+        )
 
         useCase().test {
             val firstResult = awaitItem()
@@ -140,7 +142,7 @@ class GetFavoriteAppsUseCaseTest {
                 favoriteOrder = 1,
             ),
         )
-        every { mockRepository.favoriteAppsInfo } returns flowOf(favoriteApps)
+        every { mockRepository.favoriteAppsInfo } returns flowOf(Result.success(favoriteApps))
 
         useCase().test {
             val result = awaitItem()
@@ -158,7 +160,7 @@ class GetFavoriteAppsUseCaseTest {
     @Test
     fun `エラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Repository error")
-        every { mockRepository.favoriteAppsInfo } returns flow { throw exception }
+        every { mockRepository.favoriteAppsInfo } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

@@ -13,8 +13,8 @@ import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -36,8 +36,8 @@ class GetPlacedItemsUseCaseTest {
 
     @Test
     fun `空の配置アイテムリストを取得できること`() = runTest {
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(emptyList())
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(emptyList())
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(emptyList<PlacedAppInfo>()))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(emptyList<PlacedWidgetInfo>()))
 
         useCase().test {
             val result = awaitItem()
@@ -61,8 +61,8 @@ class GetPlacedItemsUseCaseTest {
                 ),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(emptyList())
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(placedApps))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(emptyList<PlacedWidgetInfo>()))
 
         useCase().test {
             val result = awaitItem()
@@ -88,8 +88,8 @@ class GetPlacedItemsUseCaseTest {
                 position = Offset(50f, 150f),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(emptyList())
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(emptyList<PlacedAppInfo>()))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(placedWidgets))
 
         useCase().test {
             val result = awaitItem()
@@ -126,8 +126,8 @@ class GetPlacedItemsUseCaseTest {
                 position = Offset(50f, 150f),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(placedApps))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(placedWidgets))
 
         useCase().test {
             val result = awaitItem()
@@ -163,8 +163,8 @@ class GetPlacedItemsUseCaseTest {
         )
         val widgetsFlow = MutableStateFlow(emptyList<PlacedWidgetInfo>())
 
-        every { mockPlacedAppRepository.placedAppsInfo } returns appsFlow
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns widgetsFlow
+        every { mockPlacedAppRepository.placedAppsInfo } returns appsFlow.map { Result.success(it) }
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns widgetsFlow.map { Result.success(it) }
 
         useCase().test {
             val initialResult = awaitItem()
@@ -234,8 +234,8 @@ class GetPlacedItemsUseCaseTest {
     fun `リポジトリでエラーが発生した場合Result_failureが返されること`() = runTest {
         val exception = RuntimeException("Repository error")
         // 両方のFlowでエラーを発生させる（combineの特性を考慮）
-        every { mockPlacedAppRepository.placedAppsInfo } returns flow { throw exception }
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flow { throw exception }
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.failure(exception))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.failure(exception))
 
         useCase().test {
             val result = awaitItem()

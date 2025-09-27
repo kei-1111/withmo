@@ -9,6 +9,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -25,11 +26,13 @@ class GetModelSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのモデル設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(1.0f, result.scale, 0.001f)
+            assert(result.isSuccess)
+            val modelSettings = result.getOrThrow()
+            assertEquals(1.0f, modelSettings.scale, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -38,12 +41,14 @@ class GetModelSettingsUseCaseTest {
     fun `変更されたモデル設定を取得できること`() = runTest {
         val customModelSettings = ModelSettings(scale = 1.5f)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(modelSettings = customModelSettings),
+            Result.success(UserSettings(modelSettings = customModelSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(1.5f, result.scale, 0.001f)
+            assert(result.isSuccess)
+            val modelSettings = result.getOrThrow()
+            assertEquals(1.5f, modelSettings.scale, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -54,11 +59,19 @@ class GetModelSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             modelSettings = ModelSettings(scale = 2.0f),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(1.0f, awaitItem().scale, 0.001f)
-            assertEquals(2.0f, awaitItem().scale, 0.001f)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(1.0f, firstResult.getOrThrow().scale, 0.001f)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(2.0f, secondResult.getOrThrow().scale, 0.001f)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -67,11 +80,28 @@ class GetModelSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = ModelSettings(scale = 1.0f)
         val userSettings = UserSettings(modelSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }
