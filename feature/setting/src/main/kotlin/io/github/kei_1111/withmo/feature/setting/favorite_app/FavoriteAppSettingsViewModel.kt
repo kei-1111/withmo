@@ -34,15 +34,11 @@ class FavoriteAppSettingsViewModel @Inject constructor(
         getFavoriteAppsUseCase(),
         getAppIconSettingsUseCase(),
     ) { favoriteAppList, appIconSettings ->
-        when {
-            favoriteAppList.isFailure -> Result.failure(favoriteAppList.exceptionOrNull()!!)
-            appIconSettings.isFailure -> Result.failure(appIconSettings.exceptionOrNull()!!)
-            else -> Result.success(
-                FavoriteAppSettingsData(
-                    favoriteAppList = favoriteAppList.getOrThrow(),
-                    initialFavoriteAppList = favoriteAppList.getOrThrow(),
-                    appIconSettings = appIconSettings.getOrThrow(),
-                ),
+        runCatching {
+            FavoriteAppSettingsData(
+                favoriteAppList = favoriteAppList.getOrThrow(),
+                initialFavoriteAppList = favoriteAppList.getOrThrow(),
+                appIconSettings = appIconSettings.getOrThrow(),
             )
         }
     }
