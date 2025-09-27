@@ -213,13 +213,11 @@ class MainActivity : ComponentActivity() {
                 result
                     .onSuccess { modelFilePath ->
                         val path = modelFilePath.path
-                        if (path != null) {
-                            if (FileUtils.fileExists(path)) {
-                                AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
-                            } else {
-                                defaultModelFilePath?.let {
-                                    AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
-                                }
+                        if (path != null && FileUtils.fileExists(path)) {
+                            AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
+                        } else {
+                            defaultModelFilePath?.let {
+                                AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
                             }
                         }
                     }
