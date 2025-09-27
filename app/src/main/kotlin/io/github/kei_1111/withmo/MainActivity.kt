@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -234,10 +235,14 @@ class MainActivity : ComponentActivity() {
     private fun observeThemeSettings() {
         lifecycleScope.launch {
             getThemeSettingsUseCase().collect { result ->
-                result.onSuccess {
-                    themeSettings = it
-                    TimeUtils.themeMessage(themeSettings.themeType)
-                }
+                result
+                    .onSuccess {
+                        themeSettings = it
+                        TimeUtils.themeMessage(themeSettings.themeType)
+                    }
+                    .onFailure { error ->
+                        Log.e(TAG, "Failed to get theme settings", error)
+                    }
             }
         }
     }
@@ -248,27 +253,37 @@ class MainActivity : ComponentActivity() {
 
         // UsageStats権限がない かつ 現在のソートが使用回数順の場合、アルファベット順に変更
         val sortSettingsResult = getSortSettingsUseCase().first()
-        sortSettingsResult.onSuccess { sortSettings ->
-            if (!hasUsageStatsPermission && sortSettings.sortType == SortType.USE_COUNT) {
-                saveSortSettingsUseCase(
-                    SortSettings(sortType = SortType.ALPHABETICAL),
-                )
+        sortSettingsResult
+            .onSuccess { sortSettings ->
+                if (!hasUsageStatsPermission && sortSettings.sortType == SortType.USE_COUNT) {
+                    saveSortSettingsUseCase(SortSettings(sortType = SortType.ALPHABETICAL))
+                }
             }
-        }
+            .onFailure { error ->
+                Log.e(TAG, "Failed to get sort settings", error)
+            }
 
         // 通知リスナー権限がない場合、通知関連設定をfalseに変更
         val notificationSettingsResult = getNotificationSettingsUseCase().first()
-        notificationSettingsResult.onSuccess { notificationSettings ->
-            if (!hasNotificationListenerPermission &&
-                (notificationSettings.isNotificationAnimationEnabled || notificationSettings.isNotificationBadgeEnabled)
-            ) {
-                saveNotificationSettingsUseCase(
-                    NotificationSettings(
-                        isNotificationAnimationEnabled = false,
-                        isNotificationBadgeEnabled = false,
-                    ),
-                )
+        notificationSettingsResult
+            .onSuccess { notificationSettings ->
+                if (!hasNotificationListenerPermission &&
+                    (notificationSettings.isNotificationAnimationEnabled || notificationSettings.isNotificationBadgeEnabled)
+                ) {
+                    saveNotificationSettingsUseCase(
+                        NotificationSettings(
+                            isNotificationAnimationEnabled = false,
+                            isNotificationBadgeEnabled = false,
+                        ),
+                    )
+                }
             }
-        }
+            .onFailure { error ->
+                Log.e(TAG, "Failed to get notification settings", error)
+            }
+    }
+
+    private companion object {
+        const val TAG = "MainActivity"
     }
 }
