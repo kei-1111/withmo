@@ -16,17 +16,17 @@ class ThemeSettingsViewModel @Inject constructor(
 ) : StatefulBaseViewModel<ThemeSettingsViewModelState, ThemeSettingsState, ThemeSettingsAction, ThemeSettingsEffect>() {
 
     override fun createInitialViewModelState() = ThemeSettingsViewModelState()
-    override fun createInitialState() = ThemeSettingsState()
+    override fun createInitialState() = ThemeSettingsState.Idle
+
+    private val themeSettingsDataStream = getThemeSettingsUseCase()
 
     init {
-        observeThemeSettings()
-    }
-
-    private fun observeThemeSettings() {
         viewModelScope.launch {
-            getThemeSettingsUseCase().collect { themeSettings ->
+            updateViewModelState { copy(statusType = ThemeSettingsViewModelState.StatusType.LOADING) }
+            themeSettingsDataStream.collect { themeSettings ->
                 updateViewModelState {
                     copy(
+                        statusType = ThemeSettingsViewModelState.StatusType.STABLE,
                         themeSettings = themeSettings,
                         initialThemeSettings = themeSettings,
                     )
@@ -47,8 +47,7 @@ class ThemeSettingsViewModel @Inject constructor(
             is ThemeSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        val themeSettings = state.value.themeSettings
-                        saveThemeSettingsUseCase(themeSettings)
+                        saveThemeSettingsUseCase(_viewModelState.value.themeSettings)
                         sendEffect(ThemeSettingsEffect.ShowToast("保存しました"))
                         sendEffect(ThemeSettingsEffect.NavigateBack)
                     } catch (e: Exception) {
