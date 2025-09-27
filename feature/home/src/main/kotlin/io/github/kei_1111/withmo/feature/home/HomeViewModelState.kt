@@ -10,6 +10,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class HomeViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
     val isChangeModelScaleContentShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,
     val isModelLoading: Boolean = false,
@@ -23,19 +24,31 @@ data class HomeViewModelState(
     val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val currentPage: PageContent = PageContent.DisplayModel,
     val currentUserSettings: UserSettings = UserSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<HomeState> {
-    override fun toState() = HomeState(
-        isChangeModelScaleContentShown = isChangeModelScaleContentShown,
-        isModelChangeWarningDialogShown = isModelChangeWarningDialogShown,
-        isModelLoading = isModelLoading,
-        isAppListSheetOpened = isAppListSheetOpened,
-        isPlaceableItemListSheetOpened = isPlaceableItemListSheetOpened,
-        placedItemList = placedItemList,
-        isEditMode = isEditMode,
-        resizingWidget = resizingWidget,
-        isWidgetResizing = isWidgetResizing,
-        favoriteAppInfoList = favoriteAppInfoList,
-        currentPage = currentPage,
-        currentUserSettings = currentUserSettings,
-    )
+
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> HomeState.Idle
+
+        StatusType.LOADING -> HomeState.Loading
+
+        StatusType.STABLE -> HomeState.Stable(
+            isChangeModelScaleContentShown = isChangeModelScaleContentShown,
+            isModelChangeWarningDialogShown = isModelChangeWarningDialogShown,
+            isModelLoading = isModelLoading,
+            isAppListSheetOpened = isAppListSheetOpened,
+            isPlaceableItemListSheetOpened = isPlaceableItemListSheetOpened,
+            placedItemList = placedItemList,
+            isEditMode = isEditMode,
+            resizingWidget = resizingWidget,
+            isWidgetResizing = isWidgetResizing,
+            favoriteAppInfoList = favoriteAppInfoList,
+            currentPage = currentPage,
+            currentUserSettings = currentUserSettings,
+        )
+
+        StatusType.ERROR -> HomeState.Error(Throwable("An error occurred in HomeViewModelState"))
+    }
 }

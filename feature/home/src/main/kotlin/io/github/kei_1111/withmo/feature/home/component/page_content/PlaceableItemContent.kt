@@ -42,7 +42,7 @@ import io.github.kei_1111.withmo.feature.home.HomeState
 
 @Composable
 internal fun PlaceableItemContent(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -163,7 +163,7 @@ private fun CompleteEditButton(
 private fun PlaceableItemContentightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         PlaceableItemContent(
-            state = HomeState(
+            state = HomeState.Stable(
                 isEditMode = true,
             ),
             onAction = {},
@@ -177,7 +177,7 @@ private fun PlaceableItemContentightPreview() {
 private fun PlaceableItemContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         PlaceableItemContent(
-            state = HomeState(
+            state = HomeState.Stable(
                 isEditMode = true,
             ),
             onAction = {},
