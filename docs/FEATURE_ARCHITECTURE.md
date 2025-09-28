@@ -1,36 +1,62 @@
 # アーキテクチャ概要
 本プロジェクトでは MVI をベースにしたアーキテクチャを採用しています。
-データの流れは以下のようになっています。  
+データの流れは以下のようになっています。
 <img src="https://github.com/user-attachments/assets/3000e51d-887e-4fa1-b610-6a928d6aaf62" width="50%" />
 
 - **Action** … ユーザ操作を ViewModel へ渡す入力
-- **State** … 画面描画に必要なデータ
+- **State** … UIに公開される画面描画用の状態
+- **ViewModelState** … ViewModelの内部状態（StatefulBaseViewModelのみ）
 - **Effect** … ナビゲーション・Toast など一度だけ UI が実行する副作用
 
-また、この処理をしやすくするためにベースとなるViewModelを作成し、そこでEffectを流す処理や、状態を変更するためのメソッドを定義しています。各画面では、このViewModelを継承し使用しています。
+## BaseViewModelの種類
+
+画面の特性に応じて2種類のBaseViewModelを使い分けています。
+
+### 1. StatefulBaseViewModel（状態管理を行う画面用）
+
+状態管理が必要な画面で使用します。ViewModelの内部状態（ViewModelState）とUIに公開される状態（State）を分離することで、ViewModelの実装詳細をUIから隠蔽します。
+
 ```kt
 interface Action
-
 interface Effect
-
 interface State
+interface ViewModelState<S : State> {
+    fun toState(): S
+}
 
-abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
-    protected val _state = MutableStateFlow<S>(createInitialState())
-    val state: StateFlow<S> = _state.asStateFlow()
+abstract class StatefulBaseViewModel<VS : ViewModelState<S>, S : State, A : Action, E : Effect> : ViewModel() {
+    protected val _viewModelState = MutableStateFlow<VS>(createInitialViewModelState())
+    val state: StateFlow<S> = _viewModelState.map { it.toState() }.stateIn(...)
 
     protected val _effect = Channel<E>(Channel.BUFFERED)
     val effect: Flow<E> = _effect.receiveAsFlow()
 
+    abstract fun createInitialViewModelState(): VS
     abstract fun createInitialState(): S
+    abstract fun onAction(action: A)
+
+    protected fun updateViewModelState(update: VS.() -> VS) {
+        _viewModelState.update { update(it) }
+    }
+
+    protected fun sendEffect(effect: E) {
+        _effect.trySend(effect)
+    }
+}
+```
+
+### 2. StatelessBaseViewModel（状態管理が不要な画面用）
+
+状態管理が不要で、単純な画面遷移のみを行う画面（ウェルカム画面など）で使用します。
+
+```kt
+abstract class StatelessBaseViewModel<A : Action, E : Effect> : ViewModel() {
+    protected val _effect = Channel<E>(Channel.BUFFERED)
+    val effect: Flow<E> = _effect.receiveAsFlow()
 
     abstract fun onAction(action: A)
 
-    fun updateState(update: S.() -> S) {
-        _state.update { update(it) }
-    }
-
-    fun sendEffect(effect: E) {
+    protected fun sendEffect(effect: E) {
         _effect.trySend(effect)
     }
 }
@@ -45,14 +71,47 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 | <img src="https://github.com/user-attachments/assets/d68dc1e6-8ee4-48a6-889f-30358a826f31" width="300" /> |
 
 
-## State
-時計設定画面では、設定する`clockSettings`と、画面を開いたときの初期時計設定を保持しておくための`initialClockSettings`、保存ボタンが押せるかを判断する（初期時計設定と設定値が違うかどうかを判断する）`isSaveButtonEnabled`があります。
+## ViewModelStateとState
+
+時計設定画面では、ViewModelの内部状態（ViewModelState）とUIに公開される状態（State）を分離しています。
+
+### ViewModelState（内部状態）
+ViewModelの実装詳細を含む内部状態です。`statusType`で画面の状態（IDLE/LOADING/STABLE/ERROR）を管理し、`toState()`メソッドでStateに変換します。
+
 ```kt
-data class ClockSettingsState(
+data class ClockSettingsViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
     val clockSettings: ClockSettings = ClockSettings(),
     val initialClockSettings: ClockSettings = ClockSettings(),
-    val isSaveButtonEnabled: Boolean = false,
-) : State
+    val error: Throwable? = null,
+) : ViewModelState<ClockSettingsState> {
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> ClockSettingsState.Idle
+        StatusType.LOADING -> ClockSettingsState.Loading
+        StatusType.STABLE -> ClockSettingsState.Stable(
+            clockSettings = clockSettings,
+            isSaveButtonEnabled = clockSettings != initialClockSettings,
+        )
+        StatusType.ERROR -> ClockSettingsState.Error(error ?: Throwable("Unknown error"))
+    }
+}
+```
+
+### State（UI状態）
+UIに公開される状態です。sealed interfaceで定義し、画面の状態に応じた分岐を行います。
+
+```kt
+sealed interface ClockSettingsState : State {
+    data object Idle : ClockSettingsState
+    data object Loading : ClockSettingsState
+    data class Stable(
+        val clockSettings: ClockSettings,
+        val isSaveButtonEnabled: Boolean,
+    ) : ClockSettingsState
+    data class Error(val error: Throwable) : ClockSettingsState
+}
 ```
 
 ## Action
@@ -76,40 +135,51 @@ sealed interface ClockSettingsEffect : Effect {
 ```
 
 ## ViewModel
-ここまで、定義した State, Action, Effect をBaseViewModelに渡して、それを継承した`ClockSettingsViewModel`を作成します。Actionの説明のときに述べた`onAction`でActionを受け取りこれに応じて処理を行います。この`onAction`によって、ViewModel内の他のメソッドをUIに表示せずにすみ、ユーザ操作と状態の管理を分裂を指せることができます。
+ここまで、定義した ViewModelState, State, Action, Effect を StatefulBaseViewModel に渡して、それを継承した`ClockSettingsViewModel`を作成します。Actionの説明のときに述べた`onAction`でActionを受け取りこれに応じて処理を行います。この`onAction`によって、ViewModel内の他のメソッドをUIに表示せずにすみ、ユーザ操作と状態の管理を分離させることができます。
+
 ```kt
 @HiltViewModel
 class ClockSettingsViewModel @Inject constructor(
-    private val getClockSettingsUseCase: GetClockSettingsUseCase,
+    getClockSettingsUseCase: GetClockSettingsUseCase,
     private val saveClockSettingsUseCase: SaveClockSettingsUseCase,
-) : BaseViewModel<ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
+) : StatefulBaseViewModel<ClockSettingsViewModelState, ClockSettingsState, ClockSettingsAction, ClockSettingsEffect>() {
 
-    override fun createInitialState(): ClockSettingsState = ClockSettingsState()
+    override fun createInitialViewModelState() = ClockSettingsViewModelState()
+    override fun createInitialState() = ClockSettingsState.Idle
+
+    private val clockSettingsDataStream = getClockSettingsUseCase()
 
     init {
-        observeClockSettings()
-    }
-
-    // 保存された設定値を購読するための関数
-    private fun observeClockSettings() {
         viewModelScope.launch {
-            getClockSettingsUseCase().collect { clockSettings ->
-                updateState {
-                    copy(
-                        clockSettings = clockSettings,
-                        initialClockSettings = clockSettings,
-                    )
-                }
+            updateViewModelState { copy(statusType = ClockSettingsViewModelState.StatusType.LOADING) }
+            clockSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { clockSettings ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ClockSettingsViewModelState.StatusType.STABLE,
+                                clockSettings = clockSettings,
+                                initialClockSettings = clockSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = ClockSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
 
     // 設定値を保存するメソッド
     private fun saveClockSettings() {
-        updateState { copy(isSaveButtonEnabled = false) }
         viewModelScope.launch {
             try {
-                saveClockSettingsUseCase(state.value.clockSettings)
+                saveClockSettingsUseCase(_viewModelState.value.clockSettings)
                 sendEffect(ClockSettingsEffect.NavigateBack)
                 sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
             } catch (e: Exception) {
@@ -118,27 +188,21 @@ class ClockSettingsViewModel @Inject constructor(
             }
         }
     }
-    
+
     /*** 処理を実行するonAction ***/
     override fun onAction(action: ClockSettingsAction) {
         when (action) {
             is ClockSettingsAction.OnIsClockShownSwitchChange -> {
-                updateState {
+                updateViewModelState {
                     val updatedClockSettings = clockSettings.copy(isClockShown = action.isClockShown)
-                    copy(
-                        clockSettings = updatedClockSettings,
-                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
-                    )
+                    copy(clockSettings = updatedClockSettings)
                 }
             }
 
             is ClockSettingsAction.OnClockTypeRadioButtonClick -> {
-                updateState {
+                updateViewModelState {
                     val updatedClockSettings = clockSettings.copy(clockType = action.clockType)
-                    copy(
-                        clockSettings = updatedClockSettings,
-                        isSaveButtonEnabled = updatedClockSettings != initialClockSettings,
-                    )
+                    copy(clockSettings = updatedClockSettings)
                 }
             }
 
@@ -155,8 +219,12 @@ class ClockSettingsViewModel @Inject constructor(
 ```
 
 ## Screen
-ScreenはViewModelを引数とする大元となるScreenと、`state`と`onAction`を受け取りUI表示のみを行うScreenの2種類があります。アーキテクチャの説明において重要となるのは大元となるScreenだと判断し、ここで紹介します。UI表示のみも興味があれば[ご覧ください](https://github.com/kei-1111/withmo/blob/main/app/src/main/java/io/github/kei_1111/withmo/ui/screens/clock_settings/ClockSettingsScreen.kt)。  
-ここでは、ViewModelの`effect`を購読し、送られてきたEffectに応じて処理を行います。これにより、ViewModel側にUIのメソッドを渡さなくてすむという利点があります。
+
+画面は3層構造で構成されています。
+
+### 1. public Screen（外部公開用）
+ViewModelを受け取り、stateとeffectを収集します。ここでは、ViewModelの`effect`を購読し、送られてきたEffectに応じて処理を行います。これにより、ViewModel側にUIのメソッドを渡さなくてすむという利点があります。
+
 ```kt
 @Suppress("ModifierMissing")
 @Composable
@@ -176,7 +244,6 @@ fun ClockSettingsScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is ClockSettingsEffect.NavigateBack -> currentOnBackButtonClick()
-
                 is ClockSettingsEffect.ShowToast -> showToast(context, effect.message)
             }
         }
@@ -189,6 +256,51 @@ fun ClockSettingsScreen(
     )
 }
 ```
+
+### 2. private Screen（画面描画用）
+stateに応じた画面全体の構造を定義します。sealed interfaceのStateで分岐し、各状態に応じたUIを表示します。
+
+```kt
+@Composable
+private fun ClockSettingsScreen(
+    state: ClockSettingsState,
+    onAction: (ClockSettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (state) {
+        ClockSettingsState.Idle, ClockSettingsState.Loading -> { /* Loading UI */ }
+        is ClockSettingsState.Error -> { /* Error UI */ }
+        is ClockSettingsState.Stable -> {
+            Surface(modifier = modifier) {
+                Column {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "時計") },
+                        navigateBack = { onAction(ClockSettingsAction.OnBackButtonClick) },
+                    )
+                    ClockSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(ClockSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
+        }
+    }
+}
+```
+
+### 3. Content（コンテンツ描画用）
+純粋なUI描画のみを担当します。ViewModelに直接依存せず、再利用可能なコンポーネントとして設計されています。詳細は[こちら](https://github.com/kei-1111/withmo/blob/main/feature/setting/src/main/kotlin/io/github/kei_1111/withmo/feature/setting/clock/component/ClockSettingsScreenContent.kt)をご覧ください。
 
 ## データフロー
 1. ユーザが戻るボタンを押す
