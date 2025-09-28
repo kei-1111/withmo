@@ -95,5 +95,4 @@ git push origin feature/#<issue-number>
 ## 注意事項
 - **タスク完了時は必ず`./gradlew detekt`を実行**
 - テストは主要なロジック（Repository、UseCase）を中心にカバー
-- Unity統合部分は実行できないため、ビルドエラーが発生する可能性あり（unityLibraryが含まれていないため）
 - detektエラーは修正してからコミット
