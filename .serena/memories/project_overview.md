@@ -5,8 +5,8 @@
 
 ## SDK要件
 - **minSdk**: 29 (Android 10.0)
-- **compileSdk**: 36 (Android 15)
-- **targetSdk**: 36 (Android 15)
+- **compileSdk**: 36 (Android 16)
+- **targetSdk**: 36 (Android 16)
 - **Kotlin**: 2.2.0
 - **AGP**: 8.11.0
 - **JDK**: 17
