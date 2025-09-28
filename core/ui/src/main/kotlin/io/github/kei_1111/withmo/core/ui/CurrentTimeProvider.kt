@@ -21,9 +21,9 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import kotlin.coroutines.cancellation.CancellationException
 
-private const val OneSecondMillis = 1000L
-private const val NanoToMilliDivisor = 1_000_000L
-private const val DelayThreshold = 200L
+private const val ONE_SECOND_MILLIS = 1000L
+private const val NANO_TO_MILLI_DIVISOR = 1_000_000L
+private const val DELAY_THRESHOLD = 200L
 
 @Composable
 fun CurrentTimeProvider(content: @Composable () -> Unit) {
@@ -37,11 +37,11 @@ fun CurrentTimeProvider(content: @Composable () -> Unit) {
             override fun run() {
                 val dateTime = Instant.now().atZone(ZoneId.systemDefault())
 
-                currentTime = dateTime.toEpochSecond() * OneSecondMillis
+                currentTime = dateTime.toEpochSecond() * ONE_SECOND_MILLIS
 
-                val millis = dateTime.nano / NanoToMilliDivisor
-                var next = OneSecondMillis - millis
-                if (next <= DelayThreshold) next += OneSecondMillis
+                val millis = dateTime.nano / NANO_TO_MILLI_DIVISOR
+                var next = ONE_SECOND_MILLIS - millis
+                if (next <= DELAY_THRESHOLD) next += ONE_SECOND_MILLIS
 
                 handler.postDelayed(this, next)
             }

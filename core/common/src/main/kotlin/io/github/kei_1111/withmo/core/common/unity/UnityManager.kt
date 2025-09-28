@@ -19,7 +19,7 @@ object UnityManager {
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private const val MainDisplayIndex = 0
+    private const val MAIN_DISPLAY_INDEX = 0
 
     @Volatile
     private var currentUnitySurface: UnitySurface? = null
@@ -58,10 +58,10 @@ object UnityManager {
     fun attachSurfaceForWallpaper(surface: Surface) {
         if (currentUnitySurface == UnitySurface.Activity || currentUnitySurface == null) {
             // → Activity Surface だったものを detach
-            player.displayChanged(MainDisplayIndex, null)
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = UnitySurface.Wallpaper
             // Wallpaper Surface にアタッチ
-            player.displayChanged(MainDisplayIndex, surface)
+            player.displayChanged(MAIN_DISPLAY_INDEX, surface)
         }
     }
 
@@ -72,10 +72,10 @@ object UnityManager {
     fun attachSurfaceForActivity(surface: Surface) {
         if (currentUnitySurface == UnitySurface.Wallpaper || currentUnitySurface == null) {
             // → Wallpaper Surface だったものを detach
-            player.displayChanged(MainDisplayIndex, null)
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = UnitySurface.Activity
             // Activity Surface にアタッチ
-            player.displayChanged(MainDisplayIndex, surface)
+            player.displayChanged(MAIN_DISPLAY_INDEX, surface)
         }
     }
 
@@ -84,7 +84,7 @@ object UnityManager {
      */
     fun detachSurfaceForWallpaper() {
         if (currentUnitySurface == UnitySurface.Wallpaper) {
-            player.displayChanged(MainDisplayIndex, null)
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = null // 壁紙モードをやめる
         }
     }
@@ -94,7 +94,7 @@ object UnityManager {
      */
     fun detachSurfaceForActivity() {
         if (currentUnitySurface == UnitySurface.Activity) {
-            player.displayChanged(MainDisplayIndex, null)
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = null // Activityモードをやめる
         }
     }

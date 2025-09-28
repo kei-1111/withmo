@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.core.common.AppConstants
 
 data class AppIconSettings(
     val appIconShape: AppIconShape = AppIconShape.Circle,
-    val roundedCornerPercent: Float = AppConstants.DefaultRoundedCornerPercent,
+    val roundedCornerPercent: Float = AppConstants.DEFAULT_ROUNDED_CORNER_PERCENT,
 )
 
 sealed class AppIconShape {

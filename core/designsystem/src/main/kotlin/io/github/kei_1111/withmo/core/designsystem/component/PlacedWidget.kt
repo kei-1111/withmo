@@ -68,19 +68,19 @@ fun PlacedWidget(
     }
 }
 
-private const val SizeDivisor = 3
+private const val SIZE_DIVISOR = 3
 
 fun calculateWidgetWidth(
     widgetWidth: Dp,
     minDraggedSpaceDimension: Dp,
 ): Int {
     return when {
-        widgetWidth <= minDraggedSpaceDimension / SizeDivisor -> {
-            (minDraggedSpaceDimension / SizeDivisor).toInt()
+        widgetWidth <= minDraggedSpaceDimension / SIZE_DIVISOR -> {
+            (minDraggedSpaceDimension / SIZE_DIVISOR).toInt()
         }
 
-        widgetWidth <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
-            (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
+        widgetWidth <= minDraggedSpaceDimension / SIZE_DIVISOR * 2 -> {
+            (minDraggedSpaceDimension / SIZE_DIVISOR * 2).toInt()
         }
 
         else -> {
@@ -94,12 +94,12 @@ fun calculateWidgetHeight(
     minDraggedSpaceDimension: Dp,
 ): Int {
     return when {
-        widgetHeight <= minDraggedSpaceDimension / SizeDivisor -> {
-            (minDraggedSpaceDimension / SizeDivisor).toInt()
+        widgetHeight <= minDraggedSpaceDimension / SIZE_DIVISOR -> {
+            (minDraggedSpaceDimension / SIZE_DIVISOR).toInt()
         }
 
-        widgetHeight <= minDraggedSpaceDimension / SizeDivisor * 2 -> {
-            (minDraggedSpaceDimension / SizeDivisor * 2).toInt()
+        widgetHeight <= minDraggedSpaceDimension / SIZE_DIVISOR * 2 -> {
+            (minDraggedSpaceDimension / SIZE_DIVISOR * 2).toInt()
         }
 
         else -> {

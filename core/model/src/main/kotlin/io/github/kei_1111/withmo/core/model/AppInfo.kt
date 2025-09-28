@@ -7,7 +7,7 @@ import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.Stable
 
-private const val AppInfoDefaultUseCount = 0
+private const val APP_INFO_DEFAULT_USE_COUNT = 0
 
 /**
  * 基本的なアプリ情報を表すための最低限のクラス
@@ -18,7 +18,7 @@ data class AppInfo(
     val label: String,
     val packageName: String,
     val notification: Boolean = false,
-    val useCount: Int = AppInfoDefaultUseCount,
+    val useCount: Int = APP_INFO_DEFAULT_USE_COUNT,
 ) {
     fun launch(context: Context) {
         try {

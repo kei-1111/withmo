@@ -35,8 +35,6 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
-private const val AppItemLabelMaxLines = 1
-
 @Composable
 fun App(
     appInfo: AppInfo,
@@ -75,13 +73,13 @@ fun App(
             LabelSmallText(
                 text = appInfo.label,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = AppItemLabelMaxLines,
+                maxLines = 1,
             )
         }
     }
 }
 
-private const val AdaptiveIconScale = 1.5f
+private const val ADAPTIVE_ICON_SCALE = 1.5f
 
 @Suppress("LongMethod")
 @Composable
@@ -114,13 +112,13 @@ private fun AppIcon(
                     painter = rememberDrawablePainter(drawable = appIcon.backgroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.scale(AdaptiveIconScale),
+                    modifier = Modifier.scale(ADAPTIVE_ICON_SCALE),
                 )
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.scale(AdaptiveIconScale),
+                    modifier = Modifier.scale(ADAPTIVE_ICON_SCALE),
                 )
             }
         }

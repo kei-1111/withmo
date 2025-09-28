@@ -17,7 +17,7 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.common.AppConstants.DefaultRoundedCornerPercent
+import io.github.kei_1111.withmo.core.common.AppConstants.DEFAULT_ROUNDED_CORNER_PERCENT
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
@@ -118,7 +118,7 @@ private fun AppIconShapePickerItem(
                 .size(IconSizes.Medium)
                 .background(
                     MaterialTheme.colorScheme.onSurface,
-                    appIconShape.toShape(DefaultRoundedCornerPercent),
+                    appIconShape.toShape(DEFAULT_ROUNDED_CORNER_PERCENT),
                 ),
         )
         Spacer(

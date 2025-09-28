@@ -27,7 +27,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
 import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
 
-private const val PreviewAppItemSize = 4
+private const val PREVIEW_APP_ITEM_SIZE = 4
 
 @Composable
 internal fun AppItemPreviewArea(
@@ -46,7 +46,7 @@ internal fun AppItemPreviewArea(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            repeat(PreviewAppItemSize) {
+            repeat(PREVIEW_APP_ITEM_SIZE) {
                 AppItemPreview(
                     appIconSettings = appIconSettings,
                     modifier = Modifier.weight(Weights.Medium),

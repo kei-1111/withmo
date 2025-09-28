@@ -47,7 +47,7 @@ fun FavoriteAppListRow(
             )
         }
 
-        repeat(AppConstants.FavoriteAppListMaxSize - favoriteAppInfoList.size) {
+        repeat(AppConstants.FAVORITE_APP_LIST_MAX_SIZE - favoriteAppInfoList.size) {
             EmptyAppItem(
                 modifier = Modifier.weight(Weights.Medium),
             )

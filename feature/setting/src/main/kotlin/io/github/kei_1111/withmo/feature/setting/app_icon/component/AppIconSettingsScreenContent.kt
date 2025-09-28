@@ -37,7 +37,7 @@ internal fun AppIconSettingsScreenContent(
             title = "角丸の大きさ",
             value = state.appIconSettings.roundedCornerPercent,
             onValueChange = { onAction(AppIconSettingsAction.OnRoundedCornerPercentSliderChange(it)) },
-            valueRange = AppConstants.MinRoundedCornerPercent..AppConstants.MaxRoundedCornerPercent,
+            valueRange = AppConstants.MIN_ROUNDED_CORNER_PERCENT..AppConstants.MAX_ROUNDED_CORNER_PERCENT,
             enabled = state.appIconSettings.appIconShape == AppIconShape.RoundedCorner,
             modifier = Modifier.fillMaxWidth(),
         )

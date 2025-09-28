@@ -71,7 +71,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                                 else -> AppIconShape.Circle
                             }
                         } ?: AppIconShape.Circle,
-                        roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: AppConstants.DefaultRoundedCornerPercent,
+                        roundedCornerPercent = preferences[ROUNDED_CORNER_PERCENT] ?: AppConstants.DEFAULT_ROUNDED_CORNER_PERCENT,
                     ),
                     sortSettings = SortSettings(
                         sortType = preferences[SORT_TYPE]?.let { SortType.valueOf(it) }
@@ -91,7 +91,7 @@ class UserSettingsRepositoryImpl @Inject constructor(
                         path = preferences[MODEL_FILE_PATH],
                     ),
                     modelSettings = ModelSettings(
-                        scale = preferences[SCALE] ?: AppConstants.DefaultModelScale,
+                        scale = preferences[SCALE] ?: AppConstants.DEFAULT_MODEL_SCALE,
                     ),
                 )
             }

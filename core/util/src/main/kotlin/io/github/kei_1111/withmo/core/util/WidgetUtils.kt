@@ -27,7 +27,7 @@ object WidgetUtils {
             // ウィジェット提供元のパッケージコンテキストを取得
             val packageContext = context.createPackageContext(
                 info.provider.packageName,
-                PackageContextFlags,
+                PACKAGE_CONTEXT_FLAGS,
             )
 
             // プレビュー用のレイアウトリソースIDを取得
@@ -43,8 +43,8 @@ object WidgetUtils {
             val view = inflater.inflate(layoutId, null)
 
             // ビューのサイズを測定してレイアウト
-            val widthSpec = View.MeasureSpec.makeMeasureSpec(PreviewImageSize, View.MeasureSpec.EXACTLY)
-            val heightSpec = View.MeasureSpec.makeMeasureSpec(PreviewImageSize, View.MeasureSpec.AT_MOST)
+            val widthSpec = View.MeasureSpec.makeMeasureSpec(PREVIEW_IMAGE_SIZE, View.MeasureSpec.EXACTLY)
+            val heightSpec = View.MeasureSpec.makeMeasureSpec(PREVIEW_IMAGE_SIZE, View.MeasureSpec.AT_MOST)
             view.measure(widthSpec, heightSpec)
             view.layout(0, 0, view.measuredWidth, view.measuredHeight)
 
@@ -84,8 +84,8 @@ object WidgetUtils {
         }
     }
 
-    private const val PreviewImageSize = 500
-    private const val PackageContextFlags = Context.CONTEXT_IGNORE_SECURITY or Context.CONTEXT_INCLUDE_CODE
+    private const val PREVIEW_IMAGE_SIZE = 500
+    private const val PACKAGE_CONTEXT_FLAGS = Context.CONTEXT_IGNORE_SECURITY or Context.CONTEXT_INCLUDE_CODE
 
     private const val TAG = "WidgetUtils"
 }

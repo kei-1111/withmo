@@ -55,7 +55,7 @@ internal fun AppList(
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
 
     LazyVerticalGrid(
-        columns = GridCells.Fixed(DesignConstants.AppListGridColums),
+        columns = GridCells.Fixed(DesignConstants.APP_LIST_GRID_COLUMNS),
         modifier = modifier.nestedScroll(nestedScrollConnection),
         contentPadding = PaddingValues(
             start = Paddings.Medium,

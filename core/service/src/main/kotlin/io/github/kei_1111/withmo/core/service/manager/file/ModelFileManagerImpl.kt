@@ -30,7 +30,7 @@ class ModelFileManagerImpl @Inject constructor(
         withContext(ioDispatcher) {
             val cacheDir = context.cacheDir
             cacheDir.listFiles()?.forEach { file ->
-                if (file.name != DefaultModelFileName) file.delete()
+                if (file.name != DEFAULT_MODEL_FILE_NAME) file.delete()
             }
         }
     }
@@ -60,16 +60,16 @@ class ModelFileManagerImpl @Inject constructor(
 
     override suspend fun copyVrmFileFromAssets(): File? =
         withContext(ioDispatcher) {
-            val outputFile = File(context.filesDir, DefaultModelFileName)
+            val outputFile = File(context.filesDir, DEFAULT_MODEL_FILE_NAME)
             if (outputFile.exists()) return@withContext outputFile
 
             try {
-                context.assets.open(DefaultModelFileName).use { inputStream ->
+                context.assets.open(DEFAULT_MODEL_FILE_NAME).use { inputStream ->
                     FileOutputStream(outputFile).use { output -> inputStream.copyTo(output) }
                 }
                 outputFile
             } catch (e: IOException) {
-                Log.e(TAG, "Failed to copy $DefaultModelFileName from assets", e)
+                Log.e(TAG, "Failed to copy $DEFAULT_MODEL_FILE_NAME from assets", e)
                 null
             }
         }
@@ -160,7 +160,7 @@ class ModelFileManagerImpl @Inject constructor(
         }
 
     private companion object {
-        const val DefaultModelFileName = "alicia_solid.vrm"
+        const val DEFAULT_MODEL_FILE_NAME = "alicia_solid.vrm"
 
         const val TAG = "ModelFileManager"
     }

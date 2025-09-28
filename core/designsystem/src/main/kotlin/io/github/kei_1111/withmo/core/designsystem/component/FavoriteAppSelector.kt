@@ -38,7 +38,7 @@ fun FavoriteAppSelector(
 ) {
     LazyVerticalGrid(
         modifier = modifier,
-        columns = GridCells.Fixed(DesignConstants.AppListGridColums),
+        columns = GridCells.Fixed(DesignConstants.APP_LIST_GRID_COLUMNS),
         verticalArrangement = Arrangement.spacedBy(Paddings.Large),
         horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
         contentPadding = PaddingValues(

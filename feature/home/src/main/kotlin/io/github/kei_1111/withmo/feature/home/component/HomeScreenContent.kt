@@ -35,7 +35,7 @@ import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
 import kotlinx.collections.immutable.toPersistentList
 
-private const val BottomSheetShowDragHeight = -50f
+private const val BOTTOM_SHEET_SHOW_DRAG_HEIGHT = -50f
 
 @Suppress("LongMethod")
 @Composable
@@ -53,7 +53,7 @@ internal fun HomeScreenContent(
             .pointerInput(Unit) {
                 detectVerticalDragGestures(
                     onVerticalDrag = { change, dragAmount ->
-                        if (dragAmount < BottomSheetShowDragHeight) {
+                        if (dragAmount < BOTTOM_SHEET_SHOW_DRAG_HEIGHT) {
                             onAction(HomeAction.OnAppListSheetSwipeUp)
                         }
                     },

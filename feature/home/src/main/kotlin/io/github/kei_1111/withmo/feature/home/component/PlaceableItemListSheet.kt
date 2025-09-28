@@ -350,8 +350,6 @@ private fun WidgetPreviewContainer(
     }
 }
 
-private const val WidgetDescriptionMaxLines = 3
-
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 private fun WidgetPreviewItem(
@@ -405,7 +403,7 @@ private fun WidgetPreviewItem(
             LabelMediumText(
                 text = it.toString(),
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
-                maxLines = WidgetDescriptionMaxLines,
+                maxLines = 3,
             )
         }
     }

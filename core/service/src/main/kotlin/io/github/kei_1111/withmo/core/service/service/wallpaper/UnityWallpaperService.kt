@@ -25,7 +25,7 @@ class UnityWallpaperService : WallpaperService() {
             holder.surface.let {
                 mainHandler.postDelayed(
                     { startUnity(it) },
-                    UnitySurfaceReadyDelayMs,
+                    UNITY_SURFACE_READY_DELAY_MILLIS,
                 )
             }
         }
@@ -63,6 +63,6 @@ class UnityWallpaperService : WallpaperService() {
     }
 
     private companion object {
-        private const val UnitySurfaceReadyDelayMs = 100L
+        private const val UNITY_SURFACE_READY_DELAY_MILLIS = 100L
     }
 }

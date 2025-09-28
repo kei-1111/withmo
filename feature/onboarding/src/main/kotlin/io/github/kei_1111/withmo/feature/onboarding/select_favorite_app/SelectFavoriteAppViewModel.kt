@@ -68,7 +68,7 @@ class SelectFavoriteAppViewModel @Inject constructor(
                     favoriteOrder = _viewModelState.value.selectedAppList.size,
                 )
                 updateViewModelState {
-                    if (selectedAppList.size < AppConstants.FavoriteAppListMaxSize &&
+                    if (selectedAppList.size < AppConstants.FAVORITE_APP_LIST_MAX_SIZE &&
                         selectedAppList.none { it.info.packageName == favoriteAppInfo.info.packageName }
                     ) {
                         copy(selectedAppList = (selectedAppList + favoriteAppInfo).toPersistentList())

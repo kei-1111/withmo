@@ -18,7 +18,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Pa
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
-private const val SwitchScale = 0.75f
+private const val SWITCH_SCALE = 0.75f
 
 @Composable
 fun WithmoSettingItemWithSwitch(
@@ -46,7 +46,7 @@ fun WithmoSettingItemWithSwitch(
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
-                modifier = Modifier.scale(SwitchScale),
+                modifier = Modifier.scale(SWITCH_SCALE),
             )
         }
     }

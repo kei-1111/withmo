@@ -21,7 +21,7 @@ object WidgetModule {
     @Provides
     fun provideAppWidgetHost(
         @ApplicationContext context: Context,
-    ): AppWidgetHost = AppWidgetHost(context, AppWidgetHostId)
+    ): AppWidgetHost = AppWidgetHost(context, APP_WIDGET_HOST_ID)
 
-    private const val AppWidgetHostId = 1024
+    private const val APP_WIDGET_HOST_ID = 1024
 }

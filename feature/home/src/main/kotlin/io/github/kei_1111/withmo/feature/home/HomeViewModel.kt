@@ -148,7 +148,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnScaleSliderChange -> {
                 val now = SystemClock.elapsedRealtime()
-                if (now - lastScaleSentTime >= ScaleCooldownMillis) {
+                if (now - lastScaleSentTime >= SCALE_COOLDOWN_MILLIS) {
                     AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.AdjustScale, action.scale.toString())
                     updateViewModelState {
                         copy(
@@ -377,7 +377,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private companion object {
-        const val ScaleCooldownMillis = 16L
+        const val SCALE_COOLDOWN_MILLIS = 16L
 
         const val TAG = "HomeViewModel"
     }
