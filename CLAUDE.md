@@ -9,8 +9,8 @@
 ## SDK要件
 
 - **minSdk**: 29 (Android 10.0)
-- **compileSdk**: 35 (Android 15)
-- **targetSdk**: 35 (Android 15)
+- **compileSdk**: 36 (Android 16)
+- **targetSdk**: 36 (Android 16)
 
 ## アーキテクチャ
 
@@ -40,38 +40,256 @@
 
 **主要コンポーネント:**
 - **Action**: ユーザー操作をViewModelに伝達するためのアクション
-- **State**: 画面描画に必要なデータの状態
+- **State**: UIに公開される画面描画用の状態
+- **ViewModelState**: ViewModelの内部状態（StatefulBaseViewModelのみ）
 - **Effect**: ナビゲーションやトーストなど、一度だけ実行される副作用
 
-**BaseViewModel Architecture:**
+**BaseViewModel Architecture（2種類）:**
+
+1. **StatefulBaseViewModel** - 状態管理を行う画面用
 ```kotlin
-abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
-    protected val _state = MutableStateFlow<S>(createInitialState())
-    val state: StateFlow<S> = _state.asStateFlow()
-    
+abstract class StatefulBaseViewModel<VS : ViewModelState<S>, S : State, A : Action, E : Effect> : ViewModel() {
+    protected val _viewModelState = MutableStateFlow<VS>(createInitialViewModelState())
+    val state: StateFlow<S> = _viewModelState.map { it.toState() }.stateIn(...)
+
     protected val _effect = Channel<E>(Channel.BUFFERED)
     val effect: Flow<E> = _effect.receiveAsFlow()
-    
+
+    abstract fun createInitialViewModelState(): VS
+    abstract fun createInitialState(): S
     abstract fun onAction(action: A)
-    fun updateState(update: S.() -> S)
-    fun sendEffect(effect: E)
+
+    protected fun updateViewModelState(update: VS.() -> VS)
+    protected fun sendEffect(effect: E)
 }
 ```
 
-**画面構成:**
-- **メイン画面**: ViewModelを受け取り、エフェクトを監視してナビゲーションを処理
-- **コンテンツ画面**: stateとonActionを受け取って純粋なUIを描画
+2. **StatelessBaseViewModel** - 状態管理が不要な画面用
+```kotlin
+abstract class StatelessBaseViewModel<A : Action, E : Effect> : ViewModel() {
+    protected val _effect = Channel<E>(Channel.BUFFERED)
+    val effect: Flow<E> = _effect.receiveAsFlow()
+
+    abstract fun onAction(action: A)
+    protected fun sendEffect(effect: E)
+}
+```
+
+**ViewModelStateとStateの分離:**
+- **ViewModelState**: ViewModelの内部状態（実装詳細を含む、例：初期値との比較用データ）
+- **State**: UIに公開される状態（UI描画に必要な情報のみ）
+- ViewModelStateは`toState()`メソッドでStateに変換される
+- StatelessBaseViewModelではStateを使用せず、ActionとEffectのみ
+
+**状態管理パターン例（StatefulBaseViewModel）:**
+```kotlin
+// ViewModelState（内部状態）
+data class ClockSettingsViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
+    val clockSettings: ClockSettings = ClockSettings(),
+    val initialClockSettings: ClockSettings = ClockSettings(),
+    val error: Throwable? = null,
+) : ViewModelState<ClockSettingsState> {
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> ClockSettingsState.Idle
+        StatusType.LOADING -> ClockSettingsState.Loading
+        StatusType.STABLE -> ClockSettingsState.Stable(
+            clockSettings = clockSettings,
+            isSaveButtonEnabled = clockSettings != initialClockSettings,
+        )
+        StatusType.ERROR -> ClockSettingsState.Error(error ?: Throwable("Unknown error"))
+    }
+}
+
+// State（UI状態）
+sealed interface ClockSettingsState : State {
+    data object Idle : ClockSettingsState
+    data object Loading : ClockSettingsState
+    data class Stable(
+        val clockSettings: ClockSettings,
+        val isSaveButtonEnabled: Boolean,
+    ) : ClockSettingsState
+    data class Error(val error: Throwable) : ClockSettingsState
+}
+```
+
+**状態なしパターン例（StatelessBaseViewModel）:**
+```kotlin
+// ViewModel（状態なし）
+@HiltViewModel
+class WelcomeViewModel @Inject constructor() :
+    StatelessBaseViewModel<WelcomeAction, WelcomeEffect>() {
+
+    override fun onAction(action: WelcomeAction) {
+        when (action) {
+            is WelcomeAction.OnNextButtonClick -> {
+                sendEffect(WelcomeEffect.NavigateSelectFavoriteApp)
+            }
+        }
+    }
+}
+```
+
+**画面構成（3層構造）:**
+
+1. **public Screen（外部公開用）** - ViewModelを受け取る層
+   - `@Composable fun XxxScreen(viewModel: XxxViewModel = hiltViewModel(), ...)`
+   - ViewModelを受け取り、stateとeffectを収集
+   - LaunchedEffectでエフェクトを監視してナビゲーション処理
+   - 内部のprivate Screenを呼び出す
+   - **StatefulBaseViewModel使用時**: stateとonActionを渡す
+   - **StatelessBaseViewModel使用時**: onActionのみを渡す
+
+2. **private Screen（画面描画用）** - UI構造を定義する層
+   - `@Composable private fun XxxScreen(state: XxxState, onAction: (XxxAction) -> Unit, ...)`
+   - または `@Composable private fun XxxScreen(onAction: (XxxAction) -> Unit, ...)` (Stateless時)
+   - stateに応じた画面全体の構造を定義（TopAppBar、Content、Buttonなど）
+   - **StatefulBaseViewModel使用時**: sealed interfaceのStateで分岐（when文でIdle/Loading/Stable/Error）
+   - **StatelessBaseViewModel使用時**: 状態分岐なし、直接UI構造を定義
+   - Contentコンポーネントを呼び出す
+
+3. **Content（コンテンツ描画用）** - 純粋なUI描画層
+   - `@Composable fun XxxScreenContent(state: XxxState.Stable, onAction: (XxxAction) -> Unit, ...)`
+   - または `@Composable fun XxxScreenContent(...)` (Stateless時)
+   - 純粋なUI描画のみを担当
+   - ViewModelに直接依存しない
+
+**StatefulBaseViewModelの画面構成例:**
+```kotlin
+// 1. public Screen（ViewModelを受け取る）
+@Composable
+fun ClockSettingsScreen(
+    onBackButtonClick: () -> Unit,
+    viewModel: ClockSettingsViewModel = hiltViewModel(),
+) {
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is ClockSettingsEffect.NavigateBack -> onBackButtonClick()
+                is ClockSettingsEffect.ShowToast -> showToast(context, effect.message)
+            }
+        }
+    }
+
+    ClockSettingsScreen(
+        state = state,
+        onAction = viewModel::onAction,
+        modifier = Modifier.fillMaxSize(),
+    )
+}
+
+// 2. private Screen（画面描画用、状態で分岐）
+@Composable
+private fun ClockSettingsScreen(
+    state: ClockSettingsState,
+    onAction: (ClockSettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    when (state) {
+        ClockSettingsState.Idle, ClockSettingsState.Loading -> { /* Loading UI */ }
+        is ClockSettingsState.Error -> { /* Error UI */ }
+        is ClockSettingsState.Stable -> {
+            Surface(modifier = modifier) {
+                Column {
+                    WithmoTopAppBar(...)
+                    ClockSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        ...
+                    )
+                    WithmoSaveButton(...)
+                }
+            }
+        }
+    }
+}
+
+// 3. Content（純粋なUI描画）
+@Composable
+fun ClockSettingsScreenContent(
+    state: ClockSettingsState.Stable,
+    onAction: (ClockSettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    // 純粋なUI描画
+}
+```
+
+**StatelessBaseViewModelの画面構成例:**
+```kotlin
+// 1. public Screen（ViewModelを受け取る）
+@Composable
+fun WelcomeScreen(
+    navigateSelectFavoriteApp: () -> Unit,
+    viewModel: WelcomeViewModel = hiltViewModel(),
+) {
+    LaunchedEffect(viewModel) {
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is WelcomeEffect.NavigateSelectFavoriteApp -> navigateSelectFavoriteApp()
+            }
+        }
+    }
+
+    WelcomeScreen(
+        onAction = viewModel::onAction,
+        modifier = Modifier.fillMaxSize(),
+    )
+}
+
+// 2. private Screen（画面描画用、状態分岐なし）
+@Composable
+private fun WelcomeScreen(
+    onAction: (WelcomeAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(modifier = modifier) {
+        Column {
+            WelcomeScreenContent(...)
+            WithmoButton(onClick = { onAction(WelcomeAction.OnNextButtonClick) }) {
+                BodyMediumText(text = "次へ")
+            }
+        }
+    }
+}
+
+// 3. Content（純粋なUI描画）
+@Composable
+fun WelcomeScreenContent(
+    modifier: Modifier = Modifier,
+) {
+    // 純粋なUI描画
+}
+```
 
 **命名規則:**
-- **Action**: `On` + 対象 + 過去形（例：`OnSaveButtonClick`、`OnNavigateSettingsButtonClick`）
+- **Action**: `On` + 対象 + 過去形（例：`OnSaveButtonClick`、`OnBackButtonClick`）
 - **Effect**: 命令形動詞 + 対象（例：`NavigateBack`、`ShowToast`、`OpenDocument`）
-- **State**: 名詞形プロパティ（例：`clockSettings`、`isSaveButtonEnabled`）
+- **State**: sealed interfaceで状態を表現（例：`Idle`、`Loading`、`Stable`、`Error`）
+- **ViewModelState**: data classでViewModel内部状態を保持
 
 **データフロー例:**
 1. ユーザーが戻るボタンを押す
 2. `onAction(OnBackButtonClick)` が実行される
 3. ViewModelが `sendEffect(NavigateBack)` を呼び出す
 4. 画面のLaunchedEffectが収集してナビゲーションを実行
+
+**状態更新の例（StatefulBaseViewModel）:**
+```kotlin
+// ViewModelState更新
+updateViewModelState {
+    copy(clockSettings = clockSettings.copy(isClockShown = true))
+}
+
+// ViewModelStateのstatusType変更でStateを切り替え
+updateViewModelState {
+    copy(statusType = ClockSettingsViewModelState.StatusType.LOADING)
+}
+```
 
 ### Unity as a Library統合
 
@@ -97,8 +315,10 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 
 `build-logic/convention/` 内のカスタムGradle convention plugins:
 - `withmo.android.application` - メインアプリケーション設定
-- `withmo.android.feature` - MVI依存関係を含むフィーチャーモジュール設定
+- `withmo.android.library` - Androidライブラリ設定
 - `withmo.android.library.compose` - Composeライブラリ設定
+- `withmo.android.feature` - MVI依存関係を含むフィーチャーモジュール設定
+- `withmo.unity.library` - Unity as a Library統合設定
 - `withmo.detekt` - カスタムルールによるコード品質管理
 - `withmo.hilt` - 依存性注入設定
 
@@ -126,11 +346,51 @@ abstract class BaseViewModel<S : State, A : Action, E : Effect> : ViewModel() {
 - KDocドキュメンテーション付きのカスタムComposeコンポーネント
 - 統一されたスペーシング管理用のPaddingsオブジェクト（Tiny=2dp〜ExtraLarge=25dp）
 
+### コードスタイル・規約
+
+**基本スタイル:**
+- **Kotlinコードスタイル**: `kotlin.code.style=official` を使用
+- **コメント**: コメントは基本的に追加しない（明示的な指示がない限り）
+- **KDoc**: パブリックAPIには適切なKDocを記述、`@sample`タグでプレビュー関数を示す
+
+**命名規則:**
+- **const val / enum**: UPPER_SNAKE_CASE（例：`STOP_TIMEOUT_MILLIS`、`MAX_SCALE`）
+- **クラス・インターフェース**: PascalCase（例：`HomeViewModel`、`GetUserSettingsUseCase`）
+- **関数・変数**: camelCase（例：`onAction()`、`updateState()`、`isEnabled`）
+- **Composable関数**: PascalCase（Composeの慣習、例：`HomeScreen()`、`ClockSettingsContent()`）
+
+**Suppress警告:**
+必要に応じて以下のSuppress警告を使用:
+- `@Suppress("TooManyFunctions")` - ViewModelなどで関数が多い場合
+- `@Suppress("ModifierMissing")` - public Screen関数でModifierが不要な場合
+- `@Suppress("VariableNaming")` - MVIパターンでの`_state`、`_effect`などの命名時
+
+**Compose規約:**
+- 全てのComposable関数には`@Preview`を追加
+- Material3 デザインシステムに準拠
+
+**データ層規約:**
+- Repository: インターフェースを`core:domain`に、実装を`core:data`に配置
+- UseCase: 単一責任の原則、`operator fun invoke()`を使用
+- 戻り値: `Result<T>`型または`Flow<Result<T>>`型でラップ
+- Flow使用: データ層全体でFlowベースのリアクティブプログラミング
+
 ### 開発パターン
-- プレビュー関数にはKDocで `@sample` アノテーションを使用する
-- 新機能追加時は既存のMVIパターンに従って実装する
-- Unity操作では適切なライフサイクル管理を行う
-- データ層全体でFlowベースのリアクティブプログラミングを使用する
+
+**新機能実装時の手順:**
+1. 既存のMVIパターンを確認（StatefulまたはStateless）
+2. 必要なモジュール構成を理解（core/feature分離）
+3. ViewModelState、State、Action、Effectを定義
+4. ViewModel実装（StatefulBaseViewModelまたはStatelessBaseViewModel継承）
+5. 3層Screen構造で画面実装（public Screen → private Screen → Content）
+6. 既存コンポーネントやユーティリティを活用
+
+**重要な原則:**
+- **コメント禁止**: コードにコメントを追加しない（明示的な指示がない限り）
+- **既存パターンの踏襲**: 新機能追加時は既存のMVIパターンに従って実装する
+- **ライブラリの確認**: 使用前に既存コードベースで使用されているか確認する
+- **Unity操作**: 適切なライフサイクル管理を行う
+- **セキュリティ**: シークレット・キーの露出禁止、コミット禁止
 
 ## テスト・品質管理
 
