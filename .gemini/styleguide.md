@@ -12,7 +12,7 @@
 ## プロジェクト構造
 
 ### アーキテクチャ
-- **アーキテクチャパターン**: Clean Architecture + MVVM
+- **アーキテクチャパターン**: Clean Architecture + MVI (Model-View-Intent)
 - **UI フレームワーク**: Jetpack Compose
 - **依存性注入**: Hilt
 - **モジュール構造**: マルチモジュール構成
@@ -44,7 +44,8 @@
 #### ファイル・クラス命名
 - **Screen**: `[機能名]Screen.kt` (例: `HomeScreen.kt`, `AppIconSettingsScreen.kt`)
 - **ViewModel**: `[機能名]ViewModel.kt` (例: `HomeViewModel.kt`)
-- **State**: `[機能名]State.kt` (例: `HomeState.kt`)
+- **ViewModelState**: `[機能名]ViewModelState.kt` (例: `HomeViewModelState.kt`) ※StatefulBaseViewModelのみ
+- **State**: `[機能名]State.kt` (例: `HomeState.kt`) ※StatefulBaseViewModelのみ
 - **Action**: `[機能名]Action.kt` (例: `HomeAction.kt`)
 - **Effect**: `[機能名]Effect.kt` (例: `HomeEffect.kt`)
 - **Component**: `[ComponentName].kt` (例: `AppItem.kt`)
@@ -56,7 +57,8 @@
 feature/[featurename]/
 ├── [機能名]Screen.kt
 ├── [機能名]ViewModel.kt
-├── [機能名]State.kt
+├── [機能名]ViewModelState.kt (StatefulBaseViewModelのみ)
+├── [機能名]State.kt (StatefulBaseViewModelのみ)
 ├── [機能名]Action.kt
 ├── [機能名]Effect.kt
 ├── [機能名]ScreenDimensions.kt (必要に応じて)
@@ -145,31 +147,82 @@ private fun ComponentNameDarkPreview() {
 - `:feature:setting` → `SettingLightPreviewEnvironment` / `SettingDarkPreviewEnvironment`
 - `:core:designsystem` → `DesignSystemLightPreviewEnvironment` / `DesignSystemDarkPreviewEnvironment`
 
-### 3. MVVM パターン
+### 3. MVI パターン
 
-#### ViewModel
+#### BaseViewModel（2種類）
+
+**1. StatefulBaseViewModel - 状態管理を行う画面用**
 ```kotlin
 @HiltViewModel
 class FeatureNameViewModel @Inject constructor(
     private val useCase: SomeUseCase,
-) : BaseViewModel<FeatureNameState, FeatureNameAction, FeatureNameEffect>(
-    initialState = FeatureNameState()
-) {
+) : StatefulBaseViewModel<FeatureNameViewModelState, FeatureNameState, FeatureNameAction, FeatureNameEffect>() {
+
+    override fun createInitialViewModelState() = FeatureNameViewModelState()
+
+    override fun createInitialState() = FeatureNameState.Idle
+
     override fun onAction(action: FeatureNameAction) {
         when (action) {
             // アクション処理
+            // updateViewModelState { copy(...) } で状態更新
+            // sendEffect(...) でエフェクト送信
         }
+    }
+}
+```
+
+**2. StatelessBaseViewModel - 状態管理が不要な画面用**
+```kotlin
+@HiltViewModel
+class FeatureNameViewModel @Inject constructor() :
+    StatelessBaseViewModel<FeatureNameAction, FeatureNameEffect>() {
+
+    override fun onAction(action: FeatureNameAction) {
+        when (action) {
+            // アクション処理
+            // sendEffect(...) でエフェクト送信のみ
+        }
+    }
+}
+```
+
+#### ViewModelState（StatefulBaseViewModelのみ）
+```kotlin
+data class FeatureNameViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
+    val data: SomeData = SomeData(),
+    val initialData: SomeData = SomeData(),
+    val error: Throwable? = null,
+) : ViewModelState<FeatureNameState> {
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> FeatureNameState.Idle
+        StatusType.LOADING -> FeatureNameState.Loading
+        StatusType.STABLE -> FeatureNameState.Stable(
+            data = data,
+            isEnabled = data != initialData,
+        )
+        StatusType.ERROR -> FeatureNameState.Error(error ?: Throwable("Unknown error"))
     }
 }
 ```
 
 #### State
 ```kotlin
-data class FeatureNameState(
-    val isLoading: Boolean = false,
-    val data: SomeData? = null,
-    val errorMessage: String? = null,
-) : State
+// StatefulBaseViewModelの場合: sealed interface
+sealed interface FeatureNameState : State {
+    data object Idle : FeatureNameState
+    data object Loading : FeatureNameState
+    data class Stable(
+        val data: SomeData,
+        val isEnabled: Boolean,
+    ) : FeatureNameState
+    data class Error(val error: Throwable) : FeatureNameState
+}
+
+// StatelessBaseViewModelの場合: Stateは不要
 ```
 
 #### Action
@@ -229,7 +282,8 @@ WithmoApp (最上位)
 
 #### 1. アーキテクチャ準拠
 - [ ] Clean Architectureの層分離が適切か
-- [ ] MVVMパターンが正しく実装されているか
+- [ ] MVIパターンが正しく実装されているか（StatefulまたはStateless BaseViewModelの使い分け）
+- [ ] ViewModelStateとStateの分離が適切か（StatefulBaseViewModelの場合）
 - [ ] 依存関係の方向が正しいか（上位層が下位層に依存）
 
 #### 2. Compose実装
@@ -279,7 +333,9 @@ class GetUserSettingsUseCase
 ```
 ✅ Previewの実装が適切です。Light/Dark両方のパターンが実装されており、プロジェクトの規約に従っています。
 
-✅ MVVMパターンが正しく実装されています。StateとActionが適切に分離されており、ViewModelでビジネスロジックが管理されています。
+✅ MVIパターンが正しく実装されています。ViewModelState、State、Action、Effectが適切に分離されており、StatefulBaseViewModelを継承してビジネスロジックが管理されています。
+
+✅ StatelessBaseViewModelの使用が適切です。この画面は状態管理が不要なため、ActionとEffectのみで実装されています。
 ```
 
 ### 改善提案
@@ -298,6 +354,10 @@ class GetUserSettingsUseCase
 ❌ ``アノテーションが不足しています。Preview関数に追加してください。
 
 ❌ Clean Architectureの層違反が発生しています。ドメイン層からデータ層の具象クラスを直接参照しないでください。
+
+❌ ViewModelStateとStateの分離が不適切です。UI描画に不要な情報（initialDataなど）がStateに含まれています。ViewModelState内に保持してtoState()で変換してください。
+
+❌ 状態管理が必要な画面でStatelessBaseViewModelを使用しています。StatefulBaseViewModelに変更し、適切な状態管理を実装してください。
 ```
 
 ## 除外事項
