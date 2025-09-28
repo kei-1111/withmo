@@ -32,7 +32,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -160,7 +159,7 @@ private fun PageIndicator(
             val color = if (currentPage == iteration) {
                 MaterialTheme.colorScheme.onSurface
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             }
             Box(
                 modifier = Modifier

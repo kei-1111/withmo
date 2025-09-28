@@ -18,7 +18,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -109,7 +108,7 @@ private fun ThemeTypePickerItem(
                 BodyMediumText(text = "時間帯による自動切り替え")
                 LabelMediumText(
                     text = "6時-19時: ライトモード, 19時-6時: ダークモード",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 )
             }
             ThemeType.LIGHT -> {

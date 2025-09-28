@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -65,7 +64,7 @@ fun FavoriteAppSelector(
                     }
                 },
                 backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
-                    alpha = Alphas.Disabled,
+                    alpha = 0.38f,
                 ),
                 modifier = Modifier.fillMaxWidth(),
                 appIconShape = appIconShape,

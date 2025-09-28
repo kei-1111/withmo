@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
@@ -78,7 +77,7 @@ fun WithmoSaveButton(
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             },
         )
     }
@@ -100,7 +99,7 @@ fun WithmoNextButton(
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
+                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             },
         )
     }

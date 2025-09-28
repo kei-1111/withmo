@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -33,7 +32,7 @@ fun EmptyAppItem(
             modifier = Modifier
                 .border(
                     BorderWidth,
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                     shape = MaterialTheme.shapes.medium,
                 )
                 .padding(Paddings.ExtraSmall),
@@ -47,7 +46,7 @@ fun EmptyAppItem(
                 Icon(
                     imageVector = Icons.Rounded.Add,
                     contentDescription = "Add",
-                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                    tint = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 )
             }
         }

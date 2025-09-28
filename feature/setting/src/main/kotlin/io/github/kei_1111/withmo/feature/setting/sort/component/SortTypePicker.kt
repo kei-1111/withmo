@@ -18,7 +18,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
@@ -102,7 +101,7 @@ private fun SortTypePickerItem(
                 BodyMediumText(text = "使用回数順")
                 LabelMediumText(
                     text = "端末に保存されているアプリの使用回数で並び替え",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 )
             }
         }

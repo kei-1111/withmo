@@ -31,7 +31,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -58,7 +57,7 @@ fun WithmoTextField(
     interactionSource: MutableInteractionSource? = null,
     cursorBrush: Brush = SolidColor(MaterialTheme.colorScheme.onSurface),
     textColor: Color = MaterialTheme.colorScheme.onSurface,
-    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
 ) {
     BasicTextField(
         value = value,

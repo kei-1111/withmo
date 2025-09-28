@@ -58,7 +58,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
@@ -402,7 +401,7 @@ private fun WidgetPreviewItem(
         widgetDescription?.let {
             LabelMediumText(
                 text = it.toString(),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 maxLines = 3,
             )
         }
