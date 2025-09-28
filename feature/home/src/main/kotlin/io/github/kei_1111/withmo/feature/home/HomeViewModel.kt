@@ -21,12 +21,17 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelSettingsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SavePlacedItemsUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
+import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
+import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.WidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
+import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import io.github.kei_1111.withmo.core.util.FileUtils
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.lang.ref.WeakReference
 import java.util.UUID
@@ -35,9 +40,9 @@ import javax.inject.Inject
 @Suppress("TooManyFunctions")
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val getUserSettingsUseCase: GetUserSettingsUseCase,
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
-    private val getPlacedItemsUseCase: GetPlacedItemsUseCase,
+    getUserSettingsUseCase: GetUserSettingsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getPlacedItemsUseCase: GetPlacedItemsUseCase,
     private val savePlacedItemsUseCase: SavePlacedItemsUseCase,
     private val getModelChangeWarningStatusUseCase: GetModelChangeWarningStatusUseCase,
     private val markModelChangeWarningShownUseCase: MarkModelChangeWarningShownUseCase,
@@ -50,7 +55,26 @@ class HomeViewModel @Inject constructor(
     private var lastScaleSentTime = 0L
 
     override fun createInitialViewModelState() = HomeViewModelState()
-    override fun createInitialState() = HomeState()
+    override fun createInitialState() = HomeState.Idle
+
+    private data class HomeData(
+        val userSettings: UserSettings,
+        val favoriteAppList: List<FavoriteAppInfo>,
+        val placedItemList: List<PlaceableItem>,
+    )
+    private val homeDataStream: Flow<Result<HomeData>> = combine(
+        getUserSettingsUseCase(),
+        getFavoriteAppsUseCase(),
+        getPlacedItemsUseCase(),
+    ) { userSettings, favoriteAppList, placedItemList ->
+        runCatching {
+            HomeData(
+                userSettings = userSettings.getOrThrow(),
+                favoriteAppList = favoriteAppList.getOrThrow(),
+                placedItemList = placedItemList.getOrThrow(),
+            )
+        }
+    }
 
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
@@ -59,7 +83,7 @@ class HomeViewModel @Inject constructor(
                 AndroidToUnityMessenger.sendMessage(
                     UnityObject.VRMloader,
                     UnityMethod.AdjustScale,
-                    state.value.currentUserSettings.modelSettings.scale.toString(),
+                    _viewModelState.value.currentUserSettings.modelSettings.scale.toString(),
                 )
             }
             ModelLoadState.LoadingFailure.name -> {
@@ -74,31 +98,28 @@ class HomeViewModel @Inject constructor(
     init {
         UnityToAndroidMessenger.receiver = WeakReference(this)
 
-        observeUserSettings()
-        observeFavoriteAppList()
-        observePlaceableItemList()
-    }
-
-    private fun observeUserSettings() {
         viewModelScope.launch {
-            getUserSettingsUseCase().collect { userSettings ->
-                updateViewModelState { copy(currentUserSettings = userSettings) }
-            }
-        }
-    }
-
-    private fun observeFavoriteAppList() {
-        viewModelScope.launch {
-            getFavoriteAppsUseCase().collect { favoriteAppList ->
-                updateViewModelState { copy(favoriteAppInfoList = favoriteAppList.toPersistentList()) }
-            }
-        }
-    }
-
-    private fun observePlaceableItemList() {
-        viewModelScope.launch {
-            getPlacedItemsUseCase().collect { placedItemList ->
-                updateViewModelState { copy(placedItemList = placedItemList.toPersistentList()) }
+            updateViewModelState { copy(statusType = HomeViewModelState.StatusType.LOADING) }
+            homeDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = HomeViewModelState.StatusType.STABLE,
+                                currentUserSettings = data.userSettings,
+                                favoriteAppInfoList = data.favoriteAppList.toPersistentList(),
+                                placedItemList = data.placedItemList.toPersistentList(),
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = HomeViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -121,7 +142,7 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnCloseScaleSliderButtonClick -> {
                 updateViewModelState { copy(isChangeModelScaleContentShown = false) }
                 viewModelScope.launch {
-                    saveModelSettingsUseCase(state.value.currentUserSettings.modelSettings)
+                    saveModelSettingsUseCase(_viewModelState.value.currentUserSettings.modelSettings)
                 }
             }
 
@@ -143,7 +164,7 @@ class HomeViewModel @Inject constructor(
                 viewModelScope.launch {
                     val defaultModelFilePath = modelFileManager.copyVrmFileFromAssets()?.absolutePath
                     val isDefaultModelFile =
-                        state.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
+                        _viewModelState.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
 
                     if (!isDefaultModelFile) {
                         updateViewModelState { copy(isModelLoading = true) }
@@ -268,7 +289,7 @@ class HomeViewModel @Inject constructor(
 
             is HomeAction.OnCompleteEditButtonClick -> {
                 viewModelScope.launch {
-                    savePlacedItemsUseCase(state.value.placedItemList)
+                    savePlacedItemsUseCase(_viewModelState.value.placedItemList)
                 }
                 updateViewModelState { copy(isEditMode = false) }
             }
@@ -317,7 +338,7 @@ class HomeViewModel @Inject constructor(
                             sendEffect(HomeEffect.ShowToast("ファイルの読み込みに失敗しました"))
                             updateViewModelState { copy(isModelLoading = false) }
                         } else {
-                            if (filePath == state.value.currentUserSettings.modelFilePath.path) {
+                            if (filePath == _viewModelState.value.currentUserSettings.modelFilePath.path) {
                                 sendEffect(HomeEffect.ShowToast("同じファイルが選択されています"))
                                 updateViewModelState { copy(isModelLoading = false) }
                             } else {

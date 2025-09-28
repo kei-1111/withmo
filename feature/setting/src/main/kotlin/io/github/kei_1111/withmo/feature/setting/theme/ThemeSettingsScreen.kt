@@ -27,7 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.theme.component.ThemeSettingsScreenContent
@@ -73,33 +72,41 @@ private fun ThemeSettingsSceen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "テーマ") },
-                navigateBack = { onAction(ThemeSettingsAction.OnBackButtonClick) },
-            )
-            ThemeSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(ThemeSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        ThemeSettingsState.Idle, ThemeSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is ThemeSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is ThemeSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "テーマ") },
+                        navigateBack = { onAction(ThemeSettingsAction.OnBackButtonClick) },
+                    )
+                    ThemeSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(ThemeSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -109,12 +116,7 @@ private fun ThemeSettingsSceen(
 private fun ThemeSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         ThemeSettingsSceen(
-            state = ThemeSettingsState(
-                themeSettings = ThemeSettings(
-                    themeType = ThemeType.LIGHT,
-                ),
-                isSaveButtonEnabled = true,
-            ),
+            state = ThemeSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -126,12 +128,7 @@ private fun ThemeSettingsScreenLightPreview() {
 private fun ThemeSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         ThemeSettingsSceen(
-            state = ThemeSettingsState(
-                themeSettings = ThemeSettings(
-                    themeType = ThemeType.DARK,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = ThemeSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

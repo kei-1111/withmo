@@ -10,6 +10,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -26,11 +27,13 @@ class GetThemeSettingsUseCaseTest {
 
     @Test
     fun `デフォルトのテーマ設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(ThemeType.TIME_BASED, result.themeType)
+            assert(result.isSuccess)
+            val themeSettings = result.getOrThrow()
+            assertEquals(ThemeType.TIME_BASED, themeSettings.themeType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -39,12 +42,14 @@ class GetThemeSettingsUseCaseTest {
     fun `変更されたテーマ設定を取得できること`() = runTest {
         val customThemeSettings = ThemeSettings(themeType = ThemeType.DARK)
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(themeSettings = customThemeSettings),
+            Result.success(UserSettings(themeSettings = customThemeSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(ThemeType.DARK, result.themeType)
+            assert(result.isSuccess)
+            val themeSettings = result.getOrThrow()
+            assertEquals(ThemeType.DARK, themeSettings.themeType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -55,11 +60,19 @@ class GetThemeSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             themeSettings = ThemeSettings(themeType = ThemeType.LIGHT),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(ThemeType.TIME_BASED, awaitItem().themeType)
-            assertEquals(ThemeType.LIGHT, awaitItem().themeType)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(ThemeType.TIME_BASED, firstResult.getOrThrow().themeType)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(ThemeType.LIGHT, secondResult.getOrThrow().themeType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -68,11 +81,28 @@ class GetThemeSettingsUseCaseTest {
     fun `distinctUntilChangedが機能すること_同じ値では流れない`() = runTest {
         val sameSettings = ThemeSettings(themeType = ThemeType.TIME_BASED)
         val userSettings = UserSettings(themeSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

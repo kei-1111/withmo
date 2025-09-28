@@ -31,7 +31,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.notification.component.NotificationSettingsScreenContent
@@ -88,33 +87,41 @@ private fun NotificationSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "通知") },
-                navigateBack = { onAction(NotificationSettingsAction.OnBackButtonClick) },
-            )
-            NotificationSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(NotificationSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        NotificationSettingsState.Idle, NotificationSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is NotificationSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is NotificationSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "通知") },
+                        navigateBack = { onAction(NotificationSettingsAction.OnBackButtonClick) },
+                    )
+                    NotificationSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(NotificationSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -124,12 +131,7 @@ private fun NotificationSettingsScreen(
 private fun NotificationSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         NotificationSettingsScreen(
-            state = NotificationSettingsState(
-                notificationSettings = NotificationSettings(
-                    isNotificationAnimationEnabled = true,
-                ),
-                isSaveButtonEnabled = true,
-            ),
+            state = NotificationSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -141,12 +143,7 @@ private fun NotificationSettingsScreenLightPreview() {
 private fun NotificationSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         NotificationSettingsScreen(
-            state = NotificationSettingsState(
-                notificationSettings = NotificationSettings(
-                    isNotificationAnimationEnabled = false,
-                ),
-                isSaveButtonEnabled = false,
-            ),
+            state = NotificationSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

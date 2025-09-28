@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetModelSettingsUseCase {
-    operator fun invoke(): Flow<ModelSettings>
+    operator fun invoke(): Flow<Result<ModelSettings>>
 }
 
 class GetModelSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetModelSettingsUseCase {
-    override operator fun invoke(): Flow<ModelSettings> =
+    override operator fun invoke(): Flow<Result<ModelSettings>> =
         userSettingsRepository.userSettings
-            .map { it.modelSettings }
+            .map { result ->
+                result.map { it.modelSettings }
+            }
             .distinctUntilChanged()
 }

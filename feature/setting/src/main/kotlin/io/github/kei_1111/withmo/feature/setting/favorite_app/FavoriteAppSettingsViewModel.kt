@@ -9,44 +9,63 @@ import io.github.kei_1111.withmo.core.domain.usecase.GetFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.featurebase.stateful.StatefulBaseViewModel
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
+import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class FavoriteAppSettingsViewModel @Inject constructor(
-    private val getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
+    getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
-    private val getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
 ) : StatefulBaseViewModel<FavoriteAppSettingsViewModelState, FavoriteAppSettingsState, FavoriteAppSettingsAction, FavoriteAppSettingsEffect>() {
 
     override fun createInitialViewModelState() = FavoriteAppSettingsViewModelState()
-    override fun createInitialState() = FavoriteAppSettingsState()
+    override fun createInitialState() = FavoriteAppSettingsState.Idle
 
-    init {
-        observeFavoriteAppList()
-        observeAppIconSettings()
-    }
-
-    private fun observeFavoriteAppList() {
-        viewModelScope.launch {
-            getFavoriteAppsUseCase().collect { favoriteAppList ->
-                val immutableFavoriteAppList = favoriteAppList.toPersistentList()
-
-                updateViewModelState {
-                    copy(
-                        favoriteAppList = immutableFavoriteAppList,
-                        initialFavoriteAppList = immutableFavoriteAppList,
-                    )
-                }
-            }
+    private data class FavoriteAppSettingsData(
+        val favoriteAppList: List<FavoriteAppInfo>,
+        val initialFavoriteAppList: List<FavoriteAppInfo>,
+        val appIconSettings: AppIconSettings,
+    )
+    private val favoriteAppSettingsDataStream = combine(
+        getFavoriteAppsUseCase(),
+        getAppIconSettingsUseCase(),
+    ) { favoriteAppList, appIconSettings ->
+        runCatching {
+            FavoriteAppSettingsData(
+                favoriteAppList = favoriteAppList.getOrThrow(),
+                initialFavoriteAppList = favoriteAppList.getOrThrow(),
+                appIconSettings = appIconSettings.getOrThrow(),
+            )
         }
     }
 
-    private fun observeAppIconSettings() {
+    init {
         viewModelScope.launch {
-            getAppIconSettingsUseCase().collect { appIconSettings ->
-                updateViewModelState { copy(appIconSettings = appIconSettings) }
+            updateViewModelState { copy(statusType = FavoriteAppSettingsViewModelState.StatusType.LOADING) }
+            favoriteAppSettingsDataStream.collect { result ->
+                result
+                    .onSuccess { data ->
+                        updateViewModelState {
+                            copy(
+                                statusType = FavoriteAppSettingsViewModelState.StatusType.STABLE,
+                                favoriteAppList = data.favoriteAppList.toPersistentList(),
+                                initialFavoriteAppList = data.initialFavoriteAppList.toPersistentList(),
+                                appIconSettings = data.appIconSettings,
+                            )
+                        }
+                    }
+                    .onFailure { error ->
+                        updateViewModelState {
+                            copy(
+                                statusType = FavoriteAppSettingsViewModelState.StatusType.ERROR,
+                                error = error,
+                            )
+                        }
+                    }
             }
         }
     }
@@ -56,15 +75,13 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             is FavoriteAppSettingsAction.OnAllAppListAppClick -> {
                 val favoriteAppInfo = FavoriteAppInfo(
                     info = action.appInfo,
-                    favoriteOrder = state.value.favoriteAppList.size,
+                    favoriteOrder = _viewModelState.value.favoriteAppList.size,
                 )
-                val addedFavoriteAppList = (state.value.favoriteAppList + favoriteAppInfo).toPersistentList()
-
                 updateViewModelState {
                     if (favoriteAppList.size < AppConstants.FavoriteAppListMaxSize &&
                         favoriteAppList.none { it.info.packageName == action.appInfo.packageName }
                     ) {
-                        copy(favoriteAppList = addedFavoriteAppList)
+                        copy(favoriteAppList = (favoriteAppList + favoriteAppInfo).toPersistentList())
                     } else {
                         this
                     }
@@ -72,12 +89,14 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             }
 
             is FavoriteAppSettingsAction.OnFavoriteAppListAppClick -> {
-                val removedFavoriteAppList = state.value.favoriteAppList
-                    .filterNot { it.info.packageName == action.appInfo.packageName }
-                    .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
-                    .toPersistentList()
-
-                updateViewModelState { copy(favoriteAppList = removedFavoriteAppList) }
+                updateViewModelState {
+                    copy(
+                        favoriteAppList = favoriteAppList
+                            .filterNot { it.info.packageName == action.appInfo.packageName }
+                            .mapIndexed { index, favoriteApp -> favoriteApp.copy(favoriteOrder = index) }
+                            .toPersistentList(),
+                    )
+                }
             }
 
             is FavoriteAppSettingsAction.OnAppSearchQueryChange -> {
@@ -87,7 +106,7 @@ class FavoriteAppSettingsViewModel @Inject constructor(
             is FavoriteAppSettingsAction.OnSaveButtonClick -> {
                 viewModelScope.launch {
                     try {
-                        saveFavoriteAppsUseCase(state.value.favoriteAppList)
+                        saveFavoriteAppsUseCase(_viewModelState.value.favoriteAppList)
                         sendEffect(FavoriteAppSettingsEffect.ShowToast("保存しました"))
                         sendEffect(FavoriteAppSettingsEffect.NavigateBack)
                     } catch (e: Exception) {

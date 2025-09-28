@@ -20,13 +20,15 @@ class FavoriteAppRepositoryImpl @Inject constructor(
     @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
 ) : FavoriteAppRepository {
 
-    override val favoriteAppsInfo: Flow<List<FavoriteAppInfo>> = combine(
+    override val favoriteAppsInfo: Flow<Result<List<FavoriteAppInfo>>> = combine(
         favoriteAppDao.getAll(),
         appManager.appInfoList,
     ) { favoriteAppEntities, appInfoList ->
-        favoriteAppEntities.mapNotNull { entity ->
-            val appInfo = appInfoList.find { it.packageName == entity.packageName }
-            appInfo?.let { entity.toFavoriteAppInfo(it) }
+        runCatching {
+            favoriteAppEntities.mapNotNull { entity ->
+                val appInfo = appInfoList.find { it.packageName == entity.packageName }
+                appInfo?.let { entity.toFavoriteAppInfo(it) }
+            }
         }
     }.flowOn(ioDispatcher)
 

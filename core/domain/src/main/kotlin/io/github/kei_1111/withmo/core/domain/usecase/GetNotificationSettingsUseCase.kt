@@ -8,14 +8,16 @@ import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 interface GetNotificationSettingsUseCase {
-    operator fun invoke(): Flow<NotificationSettings>
+    operator fun invoke(): Flow<Result<NotificationSettings>>
 }
 
 class GetNotificationSettingsUseCaseImpl @Inject constructor(
     private val userSettingsRepository: UserSettingsRepository,
 ) : GetNotificationSettingsUseCase {
-    override operator fun invoke(): Flow<NotificationSettings> =
+    override operator fun invoke(): Flow<Result<NotificationSettings>> =
         userSettingsRepository.userSettings
-            .map { it.notificationSettings }
+            .map { result ->
+                result.map { it.notificationSettings }
+            }
             .distinctUntilChanged()
 }

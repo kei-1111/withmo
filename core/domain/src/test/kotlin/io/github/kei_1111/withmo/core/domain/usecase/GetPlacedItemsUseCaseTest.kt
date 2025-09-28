@@ -14,8 +14,10 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -34,12 +36,14 @@ class GetPlacedItemsUseCaseTest {
 
     @Test
     fun `空の配置アイテムリストを取得できること`() = runTest {
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(emptyList())
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(emptyList())
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(emptyList<PlacedAppInfo>()))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(emptyList<PlacedWidgetInfo>()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(0, result.size)
+            assert(result.isSuccess)
+            val placedItems = result.getOrThrow()
+            assertEquals(0, placedItems.size)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -57,14 +61,16 @@ class GetPlacedItemsUseCaseTest {
                 ),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(emptyList())
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(placedApps))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(emptyList<PlacedWidgetInfo>()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(1, result.size)
-            assertEquals("app1", result[0].id)
-            assertEquals(Offset(100f, 200f), result[0].position)
+            assert(result.isSuccess)
+            val placedItems = result.getOrThrow()
+            assertEquals(1, placedItems.size)
+            assertEquals("app1", placedItems[0].id)
+            assertEquals(Offset(100f, 200f), placedItems[0].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -82,14 +88,16 @@ class GetPlacedItemsUseCaseTest {
                 position = Offset(50f, 150f),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(emptyList())
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(emptyList<PlacedAppInfo>()))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(placedWidgets))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(1, result.size)
-            assertEquals("123", result[0].id)
-            assertEquals(Offset(50f, 150f), result[0].position)
+            assert(result.isSuccess)
+            val placedItems = result.getOrThrow()
+            assertEquals(1, placedItems.size)
+            assertEquals("123", placedItems[0].id)
+            assertEquals(Offset(50f, 150f), placedItems[0].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -118,19 +126,21 @@ class GetPlacedItemsUseCaseTest {
                 position = Offset(50f, 150f),
             ),
         )
-        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(placedApps)
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(placedWidgets)
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.success(placedApps))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.success(placedWidgets))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(2, result.size)
+            assert(result.isSuccess)
+            val placedItems = result.getOrThrow()
+            assertEquals(2, placedItems.size)
 
             // ウィジェットが先に来る（combine の順序）
-            assertEquals("123", result[0].id)
-            assertEquals(Offset(50f, 150f), result[0].position)
+            assertEquals("123", placedItems[0].id)
+            assertEquals(Offset(50f, 150f), placedItems[0].position)
 
-            assertEquals("app1", result[1].id)
-            assertEquals(Offset(100f, 200f), result[1].position)
+            assertEquals("app1", placedItems[1].id)
+            assertEquals(Offset(100f, 200f), placedItems[1].position)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -153,11 +163,13 @@ class GetPlacedItemsUseCaseTest {
         )
         val widgetsFlow = MutableStateFlow(emptyList<PlacedWidgetInfo>())
 
-        every { mockPlacedAppRepository.placedAppsInfo } returns appsFlow
-        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns widgetsFlow
+        every { mockPlacedAppRepository.placedAppsInfo } returns appsFlow.map { Result.success(it) }
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns widgetsFlow.map { Result.success(it) }
 
         useCase().test {
-            val initial = awaitItem()
+            val initialResult = awaitItem()
+            assert(initialResult.isSuccess)
+            val initial = initialResult.getOrThrow()
             assertEquals(1, initial.size)
             assertEquals("app1", initial[0].id)
             assertEquals(Offset(100f, 200f), initial[0].position)
@@ -174,7 +186,9 @@ class GetPlacedItemsUseCaseTest {
                 ),
             )
 
-            val intermediate = awaitItem()
+            val intermediateResult = awaitItem()
+            assert(intermediateResult.isSuccess)
+            val intermediate = intermediateResult.getOrThrow()
             assertEquals(2, intermediate.size)
             assertEquals("456", intermediate[0].id)
             assertEquals("app1", intermediate[1].id)
@@ -200,7 +214,9 @@ class GetPlacedItemsUseCaseTest {
                 ),
             )
 
-            val updated = awaitItem()
+            val updatedResult = awaitItem()
+            assert(updatedResult.isSuccess)
+            val updated = updatedResult.getOrThrow()
             assertEquals(3, updated.size)
 
             assertEquals("456", updated[0].id)
@@ -210,6 +226,22 @@ class GetPlacedItemsUseCaseTest {
             assertEquals(Offset(150f, 250f), updated[1].position)
             assertEquals("app2", updated[2].id)
             assertEquals(Offset(300f, 400f), updated[2].position)
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `リポジトリでエラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Repository error")
+        // 両方のFlowでエラーを発生させる（combineの特性を考慮）
+        every { mockPlacedAppRepository.placedAppsInfo } returns flowOf(Result.failure(exception))
+        every { mockPlacedWidgetRepository.placedWidgetsInfo } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            // 例外の詳細まではチェックしない（combineで複数の例外が合成される可能性があるため）
+            assert(result.exceptionOrNull() != null)
             cancelAndIgnoreRemainingEvents()
         }
     }

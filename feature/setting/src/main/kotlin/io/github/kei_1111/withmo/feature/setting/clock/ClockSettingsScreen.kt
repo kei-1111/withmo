@@ -27,7 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
-import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.setting.clock.component.ClockSettingsScreenContent
@@ -72,33 +71,41 @@ private fun ClockSettingsScreen(
     val targetBottomPadding = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
     val bottomPaddingValue by animateDpAsState(targetValue = targetBottomPadding)
 
-    Surface(
-        modifier = modifier,
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(bottom = bottomPaddingValue),
-        ) {
-            WithmoTopAppBar(
-                content = { TitleLargeText(text = "時計") },
-                navigateBack = { onAction(ClockSettingsAction.OnBackButtonClick) },
-            )
-            ClockSettingsScreenContent(
-                state = state,
-                onAction = onAction,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(Weights.Medium)
-                    .verticalScroll(rememberScrollState()),
-            )
-            WithmoSaveButton(
-                onClick = { onAction(ClockSettingsAction.OnSaveButtonClick) },
-                enabled = state.isSaveButtonEnabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(Paddings.Medium),
-            )
+    when (state) {
+        ClockSettingsState.Idle, ClockSettingsState.Loading -> { /* TODO: デザインが決まっていないため */ }
+
+        is ClockSettingsState.Error -> { /* TODO: デザインが決まっていないため */ }
+
+        is ClockSettingsState.Stable -> {
+            Surface(
+                modifier = modifier,
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(bottom = bottomPaddingValue),
+                ) {
+                    WithmoTopAppBar(
+                        content = { TitleLargeText(text = "時計") },
+                        navigateBack = { onAction(ClockSettingsAction.OnBackButtonClick) },
+                    )
+                    ClockSettingsScreenContent(
+                        state = state,
+                        onAction = onAction,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(Weights.Medium)
+                            .verticalScroll(rememberScrollState()),
+                    )
+                    WithmoSaveButton(
+                        onClick = { onAction(ClockSettingsAction.OnSaveButtonClick) },
+                        enabled = state.isSaveButtonEnabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Paddings.Medium),
+                    )
+                }
+            }
         }
     }
 }
@@ -108,10 +115,7 @@ private fun ClockSettingsScreen(
 private fun ClockSettingsScreenLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         ClockSettingsScreen(
-            state = ClockSettingsState(
-                clockSettings = ClockSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = ClockSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -123,10 +127,7 @@ private fun ClockSettingsScreenLightPreview() {
 private fun ClockSettingsScreenDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         ClockSettingsScreen(
-            state = ClockSettingsState(
-                clockSettings = ClockSettings(),
-                isSaveButtonEnabled = true,
-            ),
+            state = ClockSettingsState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )

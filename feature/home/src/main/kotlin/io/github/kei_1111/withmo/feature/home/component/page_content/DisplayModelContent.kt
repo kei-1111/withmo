@@ -48,7 +48,7 @@ import io.github.kei_1111.withmo.feature.home.R
 
 @Composable
 internal fun DisplayModelContent(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -136,7 +136,7 @@ internal fun DisplayModelContent(
 
 @Composable
 private fun ScaleSlider(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -295,7 +295,7 @@ private fun SideButtonContainer(
 private fun DisplayModelContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         DisplayModelContent(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -307,7 +307,7 @@ private fun DisplayModelContentLightPreview() {
 private fun DisplayModelContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         DisplayModelContent(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
             modifier = Modifier.fillMaxSize(),
         )
@@ -319,7 +319,7 @@ private fun DisplayModelContentDarkPreview() {
 private fun ScaleSliderLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         ScaleSlider(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }
@@ -330,7 +330,7 @@ private fun ScaleSliderLightPreview() {
 private fun ScaleSliderDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         ScaleSlider(
-            state = HomeState(),
+            state = HomeState.Stable(),
             onAction = {},
         )
     }

@@ -7,15 +7,29 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 data class FavoriteAppSettingsViewModelState(
+    val statusType: StatusType = StatusType.IDLE,
     val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val initialFavoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
+    val isSaveButtonEnabled: Boolean = false,
     val appSearchQuery: String = "",
     val appIconSettings: AppIconSettings = AppIconSettings(),
+    val error: Throwable? = null,
 ) : ViewModelState<FavoriteAppSettingsState> {
-    override fun toState() = FavoriteAppSettingsState(
-        favoriteAppList = favoriteAppList,
-        appSearchQuery = appSearchQuery,
-        isSaveButtonEnabled = favoriteAppList != initialFavoriteAppList,
-        appIconSettings = appIconSettings,
-    )
+
+    enum class StatusType { IDLE, LOADING, STABLE, ERROR }
+
+    override fun toState() = when (statusType) {
+        StatusType.IDLE -> FavoriteAppSettingsState.Idle
+
+        StatusType.LOADING -> FavoriteAppSettingsState.Loading
+
+        StatusType.STABLE -> FavoriteAppSettingsState.Stable(
+            favoriteAppList = favoriteAppList,
+            appSearchQuery = appSearchQuery,
+            isSaveButtonEnabled = favoriteAppList != initialFavoriteAppList,
+            appIconSettings = appIconSettings,
+        )
+
+        StatusType.ERROR -> FavoriteAppSettingsState.Error(error ?: Throwable("Unknown error"))
+    }
 }

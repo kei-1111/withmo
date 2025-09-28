@@ -10,6 +10,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
@@ -26,12 +27,14 @@ class GetClockSettingsUseCaseTest {
 
     @Test
     fun `デフォルトの時計設定を取得できること`() = runTest {
-        every { mockRepository.userSettings } returns flowOf(UserSettings())
+        every { mockRepository.userSettings } returns flowOf(Result.success(UserSettings()))
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(true, result.isClockShown)
-            assertEquals(ClockType.TOP_DATE, result.clockType)
+            assert(result.isSuccess)
+            val clockSettings = result.getOrThrow()
+            assertEquals(true, clockSettings.isClockShown)
+            assertEquals(ClockType.TOP_DATE, clockSettings.clockType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -43,13 +46,15 @@ class GetClockSettingsUseCaseTest {
             clockType = ClockType.HORIZONTAL_DATE,
         )
         every { mockRepository.userSettings } returns flowOf(
-            UserSettings(clockSettings = customClockSettings),
+            Result.success(UserSettings(clockSettings = customClockSettings)),
         )
 
         useCase().test {
             val result = awaitItem()
-            assertEquals(false, result.isClockShown)
-            assertEquals(ClockType.HORIZONTAL_DATE, result.clockType)
+            assert(result.isSuccess)
+            val clockSettings = result.getOrThrow()
+            assertEquals(false, clockSettings.isClockShown)
+            assertEquals(ClockType.HORIZONTAL_DATE, clockSettings.clockType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -60,11 +65,19 @@ class GetClockSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(isClockShown = false),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(true, awaitItem().isClockShown)
-            assertEquals(false, awaitItem().isClockShown)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(true, firstResult.getOrThrow().isClockShown)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(false, secondResult.getOrThrow().isClockShown)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -75,11 +88,19 @@ class GetClockSettingsUseCaseTest {
         val updatedSettings = UserSettings(
             clockSettings = ClockSettings(clockType = ClockType.HORIZONTAL_DATE),
         )
-        every { mockRepository.userSettings } returns flowOf(initialSettings, updatedSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(initialSettings),
+            Result.success(updatedSettings),
+        )
 
         useCase().test {
-            assertEquals(ClockType.TOP_DATE, awaitItem().clockType)
-            assertEquals(ClockType.HORIZONTAL_DATE, awaitItem().clockType)
+            val firstResult = awaitItem()
+            assert(firstResult.isSuccess)
+            assertEquals(ClockType.TOP_DATE, firstResult.getOrThrow().clockType)
+
+            val secondResult = awaitItem()
+            assert(secondResult.isSuccess)
+            assertEquals(ClockType.HORIZONTAL_DATE, secondResult.getOrThrow().clockType)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -91,11 +112,28 @@ class GetClockSettingsUseCaseTest {
             clockType = ClockType.TOP_DATE,
         )
         val userSettings = UserSettings(clockSettings = sameSettings)
-        every { mockRepository.userSettings } returns flowOf(userSettings, userSettings, userSettings)
+        every { mockRepository.userSettings } returns flowOf(
+            Result.success(userSettings),
+            Result.success(userSettings),
+            Result.success(userSettings),
+        )
 
         useCase().test {
             awaitItem()
             awaitComplete()
+        }
+    }
+
+    @Test
+    fun `エラーが発生した場合Result_failureが返されること`() = runTest {
+        val exception = RuntimeException("Database error")
+        every { mockRepository.userSettings } returns flowOf(Result.failure(exception))
+
+        useCase().test {
+            val result = awaitItem()
+            assertTrue(result.isFailure)
+            assertEquals(exception, result.exceptionOrNull())
+            cancelAndIgnoreRemainingEvents()
         }
     }
 }

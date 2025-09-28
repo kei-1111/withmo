@@ -40,7 +40,7 @@ private const val BottomSheetShowDragHeight = -50f
 @Suppress("LongMethod")
 @Composable
 internal fun HomeScreenContent(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -82,7 +82,7 @@ internal fun HomeScreenContent(
 
 @Composable
 private fun RowAppList(
-    state: HomeState,
+    state: HomeState.Stable,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -125,7 +125,7 @@ private fun HomeScreenContentLightPreview() {
         }
 
         HomeScreenContent(
-            state = HomeState(
+            state = HomeState.Stable(
                 favoriteAppInfoList = List(2) {
                     FavoriteAppInfo(
                         info = AppInfo(
@@ -157,7 +157,7 @@ private fun HomeScreenContentDarkPreview() {
         }
 
         HomeScreenContent(
-            state = HomeState(
+            state = HomeState.Stable(
                 favoriteAppInfoList = List(3) {
                     FavoriteAppInfo(
                         info = AppInfo(
@@ -189,7 +189,7 @@ private fun RowAppListLightPreview() {
         }
 
         RowAppList(
-            state = HomeState(
+            state = HomeState.Stable(
                 favoriteAppInfoList = List(4) {
                     FavoriteAppInfo(
                         info = AppInfo(
@@ -222,7 +222,7 @@ private fun RowAppListDarkPreview() {
         }
 
         RowAppList(
-            state = HomeState(
+            state = HomeState.Stable(
                 favoriteAppInfoList = List(1) {
                     FavoriteAppInfo(
                         info = AppInfo(

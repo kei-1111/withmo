@@ -48,7 +48,9 @@ class FavoriteAppRepositoryImplTest {
 
         repository.favoriteAppsInfo.test {
             val result = awaitItem()
-            assertEquals(0, result.size)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(0, data.size)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -91,13 +93,15 @@ class FavoriteAppRepositoryImplTest {
 
         repository.favoriteAppsInfo.test {
             val result = awaitItem()
-            assertEquals(2, result.size)
-            assertEquals("com.example.app1", result[0].info.packageName)
-            assertEquals("App 1", result[0].info.label)
-            assertEquals(0, result[0].favoriteOrder)
-            assertEquals("com.example.app2", result[1].info.packageName)
-            assertEquals("App 2", result[1].info.label)
-            assertEquals(1, result[1].favoriteOrder)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(2, data.size)
+            assertEquals("com.example.app1", data[0].info.packageName)
+            assertEquals("App 1", data[0].info.label)
+            assertEquals(0, data[0].favoriteOrder)
+            assertEquals("com.example.app2", data[1].info.packageName)
+            assertEquals("App 2", data[1].info.label)
+            assertEquals(1, data[1].favoriteOrder)
             cancelAndIgnoreRemainingEvents()
         }
     }
@@ -128,8 +132,10 @@ class FavoriteAppRepositoryImplTest {
 
         repository.favoriteAppsInfo.test {
             val result = awaitItem()
-            assertEquals(1, result.size)
-            assertEquals("com.example.app1", result[0].info.packageName)
+            assert(result.isSuccess)
+            val data = result.getOrThrow()
+            assertEquals(1, data.size)
+            assertEquals("com.example.app1", data[0].info.packageName)
             cancelAndIgnoreRemainingEvents()
         }
     }
