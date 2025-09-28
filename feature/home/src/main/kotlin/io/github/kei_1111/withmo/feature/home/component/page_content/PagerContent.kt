@@ -69,11 +69,11 @@ internal fun PagerContent(
                 isFirstCollect = false
             } else {
                 when (page) {
-                    PageContent.DisplayModel.ordinal -> {
+                    PageContent.DISPLAY_MODEL.ordinal -> {
                         onAction(HomeAction.OnPlaceableItemContentSwipeRight)
                     }
 
-                    PageContent.PlaceableItem.ordinal -> {
+                    PageContent.PLACEABLE_ITEM.ordinal -> {
                         onAction(HomeAction.OnDisplayModelContentSwipeLeft)
                     }
                 }
@@ -92,7 +92,7 @@ internal fun PagerContent(
             userScrollEnabled = !state.isEditMode,
         ) { page ->
             when (page) {
-                PageContent.DisplayModel.ordinal -> {
+                PageContent.DISPLAY_MODEL.ordinal -> {
                     DisplayModelContent(
                         state = state,
                         onAction = onAction,
@@ -112,7 +112,7 @@ internal fun PagerContent(
                     )
                 }
 
-                PageContent.PlaceableItem.ordinal -> {
+                PageContent.PLACEABLE_ITEM.ordinal -> {
                     PlaceableItemContent(
                         state = state,
                         onAction = onAction,
@@ -193,7 +193,7 @@ private fun PagerContentDarkPreview() {
         PagerContent(
             state = HomeState.Stable(
                 isEditMode = true,
-                currentPage = PageContent.PlaceableItem,
+                currentPage = PageContent.PLACEABLE_ITEM,
             ),
             onAction = {},
             modifier = Modifier

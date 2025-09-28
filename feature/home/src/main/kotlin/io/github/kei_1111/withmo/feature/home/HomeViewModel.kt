@@ -81,8 +81,8 @@ class HomeViewModel @Inject constructor(
             ModelLoadState.LoadingSuccess.name -> {
                 updateViewModelState { copy(isModelLoading = false) }
                 AndroidToUnityMessenger.sendMessage(
-                    UnityObject.VRMloader,
-                    UnityMethod.AdjustScale,
+                    UnityObject.VRM_LOADER,
+                    UnityMethod.ADJUST_SCALE,
                     _viewModelState.value.currentUserSettings.modelSettings.scale.toString(),
                 )
             }
@@ -149,7 +149,7 @@ class HomeViewModel @Inject constructor(
             is HomeAction.OnScaleSliderChange -> {
                 val now = SystemClock.elapsedRealtime()
                 if (now - lastScaleSentTime >= SCALE_COOLDOWN_MILLIS) {
-                    AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.AdjustScale, action.scale.toString())
+                    AndroidToUnityMessenger.sendMessage(UnityObject.VRM_LOADER, UnityMethod.ADJUST_SCALE, action.scale.toString())
                     updateViewModelState {
                         copy(
                             currentUserSettings = currentUserSettings.copy(
@@ -221,21 +221,21 @@ class HomeViewModel @Inject constructor(
             }
 
             is HomeAction.OnDisplayModelContentSwipeLeft -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerExitScreenAnimation, "")
-                updateViewModelState { copy(currentPage = PageContent.PlaceableItem) }
+                AndroidToUnityMessenger.sendMessage(UnityObject.IK_ANIMATION_CONTROLLER, UnityMethod.TRIGGER_EXIT_SCREEN_ANIMATION, "")
+                updateViewModelState { copy(currentPage = PageContent.PLACEABLE_ITEM) }
             }
 
             is HomeAction.OnPlaceableItemContentSwipeRight -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.TriggerEnterScreenAnimation, "")
-                updateViewModelState { copy(currentPage = PageContent.DisplayModel) }
+                AndroidToUnityMessenger.sendMessage(UnityObject.IK_ANIMATION_CONTROLLER, UnityMethod.TRIGGER_ENTER_SCREEN_ANIMATION, "")
+                updateViewModelState { copy(currentPage = PageContent.DISPLAY_MODEL) }
             }
 
             is HomeAction.OnDisplayModelContentClick -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.IKAnimationController, UnityMethod.MoveLookat, "${action.x},${action.y}")
+                AndroidToUnityMessenger.sendMessage(UnityObject.IK_ANIMATION_CONTROLLER, UnityMethod.MOVE_LOOKAT, "${action.x},${action.y}")
             }
 
             is HomeAction.OnDisplayModelContentLongClick -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.VRMAnimationController, UnityMethod.TriggerTouchAnimation, "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.VRM_ANIMATION_CONTROLLER, UnityMethod.TRIGGER_TOUCH_ANIMATION, "")
             }
 
             is HomeAction.OnPlaceableItemListSheetWidgetClick -> {
@@ -383,6 +383,7 @@ class HomeViewModel @Inject constructor(
     }
 }
 
+// TODO: 今後Unityから受け取るメッセージをまとめるクラスを作る際にアッパースネークケースのenumに変更する
 enum class ModelLoadState {
     LoadingSuccess,
     LoadingFailure,

@@ -24,7 +24,7 @@ sealed interface HomeState : State {
         val resizingWidget: PlacedWidgetInfo? = null,
         val isWidgetResizing: Boolean = false,
         val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-        val currentPage: PageContent = PageContent.DisplayModel,
+        val currentPage: PageContent = PageContent.DISPLAY_MODEL,
         val currentUserSettings: UserSettings = UserSettings(),
     ) : HomeState
 
@@ -32,6 +32,6 @@ sealed interface HomeState : State {
 }
 
 enum class PageContent {
-    DisplayModel,
-    PlaceableItem,
+    DISPLAY_MODEL,
+    PLACEABLE_ITEM,
 }

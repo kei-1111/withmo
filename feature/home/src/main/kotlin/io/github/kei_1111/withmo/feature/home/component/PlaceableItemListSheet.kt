@@ -137,8 +137,8 @@ internal fun PlaceableItemListSheet(
                         text = {
                             BodyMediumText(
                                 text = when (tab) {
-                                    PlaceableItemTab.Widget -> "ウィジェット"
-                                    PlaceableItemTab.App -> "アプリ"
+                                    PlaceableItemTab.WIDGET -> "ウィジェット"
+                                    PlaceableItemTab.APP -> "アプリ"
                                 },
                             )
                         },
@@ -151,14 +151,14 @@ internal fun PlaceableItemListSheet(
                 modifier = Modifier.fillMaxSize(),
             ) { page ->
                 when (PlaceableItemTab.entries[page]) {
-                    PlaceableItemTab.Widget -> {
+                    PlaceableItemTab.WIDGET -> {
                         WidgetTabContent(
                             onAction = onAction,
                             modifier = Modifier.fillMaxSize(),
                         )
                     }
 
-                    PlaceableItemTab.App -> {
+                    PlaceableItemTab.APP -> {
                         AppTabContent(
                             appSearchQuery = appSearchQuery,
                             onAppSearchQueryChange = { appSearchQuery = it },
@@ -175,8 +175,8 @@ internal fun PlaceableItemListSheet(
 }
 
 enum class PlaceableItemTab {
-    Widget,
-    App,
+    WIDGET,
+    APP,
 }
 
 @RequiresApi(Build.VERSION_CODES.S)
@@ -429,7 +429,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
             modifier = Modifier.fillMaxSize(),
         ) {
             TabRow(
-                selectedTabIndex = PlaceableItemTab.App.ordinal,
+                selectedTabIndex = PlaceableItemTab.APP.ordinal,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Tab(
@@ -485,7 +485,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
             modifier = Modifier.fillMaxSize(),
         ) {
             TabRow(
-                selectedTabIndex = PlaceableItemTab.App.ordinal,
+                selectedTabIndex = PlaceableItemTab.APP.ordinal,
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 Tab(

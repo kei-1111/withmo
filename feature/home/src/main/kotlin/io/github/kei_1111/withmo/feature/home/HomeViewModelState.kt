@@ -22,7 +22,7 @@ data class HomeViewModelState(
     val resizingWidget: PlacedWidgetInfo? = null,
     val isWidgetResizing: Boolean = false,
     val favoriteAppInfoList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
-    val currentPage: PageContent = PageContent.DisplayModel,
+    val currentPage: PageContent = PageContent.DISPLAY_MODEL,
     val currentUserSettings: UserSettings = UserSettings(),
     val error: Throwable? = null,
 ) : ViewModelState<HomeState> {
