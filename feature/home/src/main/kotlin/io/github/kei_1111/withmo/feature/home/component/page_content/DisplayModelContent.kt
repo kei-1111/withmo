@@ -35,7 +35,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlide
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
@@ -102,7 +101,7 @@ internal fun DisplayModelContent(
                     )
                 }
                 Spacer(
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
                 Column(
                     verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
@@ -278,7 +277,7 @@ private fun SideButtonContainer(
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()
-        Spacer(modifier = Modifier.weight(Weights.Medium))
+        Spacer(modifier = Modifier.weight(1f))
         LabelSmallText(
             text = label,
             color = MaterialTheme.colorScheme.onSurface,

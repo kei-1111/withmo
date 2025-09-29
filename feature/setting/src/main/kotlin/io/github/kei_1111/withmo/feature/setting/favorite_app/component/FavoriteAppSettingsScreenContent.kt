@@ -21,7 +21,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -61,7 +60,7 @@ internal fun FavoriteAppSettingsScreenContent(
     ) {
         Column(
             modifier = Modifier
-                .weight(Weights.Medium)
+                .weight(1f)
                 .padding(
                     top = Paddings.Medium,
                     start = Paddings.Medium,
@@ -86,13 +85,13 @@ internal fun FavoriteAppSettingsScreenContent(
                     removeSelectedAppList = { onAction(FavoriteAppSettingsAction.OnFavoriteAppListAppClick(it)) },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .weight(Weights.Medium),
+                        .weight(1f),
                     appIconShape = appIconShape,
                 )
             } else {
                 CenteredMessage(
                     message = "アプリが見つかりません",
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
             }
         }

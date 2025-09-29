@@ -31,7 +31,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -106,14 +105,14 @@ internal fun PlaceableItemContent(
                 horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
             ) {
                 Spacer(
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
                 AddPlaceableItemButton(
                     onClick = { onAction(HomeAction.OnAddPlaceableItemButtonClick) },
                 )
                 CompleteEditButton(
                     onClick = { onAction(HomeAction.OnCompleteEditButtonClick) },
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
             }
         }

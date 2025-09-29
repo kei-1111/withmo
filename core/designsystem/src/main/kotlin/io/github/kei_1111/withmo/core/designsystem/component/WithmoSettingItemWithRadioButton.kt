@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -35,7 +34,7 @@ fun WithmoSettingItemWithRadioButton(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item()
-        Spacer(modifier = Modifier.weight(Weights.Medium))
+        Spacer(modifier = Modifier.weight(1f))
         RadioButton(
             selected = selected,
             onClick = { if (clickBlocker.tryClick()) onClick() },

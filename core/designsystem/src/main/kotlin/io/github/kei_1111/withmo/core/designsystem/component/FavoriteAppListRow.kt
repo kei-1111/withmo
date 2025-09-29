@@ -12,7 +12,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import io.github.kei_1111.withmo.core.common.AppConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -42,14 +41,14 @@ fun FavoriteAppListRow(
                 removeSelectedAppList = { removeSelectedAppList(it.info) },
                 onClick = { removeSelectedAppList(it.info) },
                 backgroundColor = MaterialTheme.colorScheme.surface,
-                modifier = Modifier.weight(Weights.Medium),
+                modifier = Modifier.weight(1f),
                 appIconShape = appIconShape,
             )
         }
 
         repeat(AppConstants.FAVORITE_APP_LIST_MAX_SIZE - favoriteAppInfoList.size) {
             EmptyAppItem(
-                modifier = Modifier.weight(Weights.Medium),
+                modifier = Modifier.weight(1f),
             )
         }
     }

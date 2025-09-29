@@ -19,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -49,7 +48,7 @@ internal fun AppItemPreviewArea(
             repeat(PREVIEW_APP_ITEM_SIZE) {
                 AppItemPreview(
                     appIconSettings = appIconSettings,
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
             }
         }

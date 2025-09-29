@@ -60,7 +60,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextFie
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -317,7 +316,7 @@ private fun WidgetPreviewContainer(
                     )
                 }
                 Spacer(
-                    modifier = Modifier.weight(Weights.Medium),
+                    modifier = Modifier.weight(1f),
                 )
                 Icon(
                     imageVector = Icons.Rounded.ExpandMore,

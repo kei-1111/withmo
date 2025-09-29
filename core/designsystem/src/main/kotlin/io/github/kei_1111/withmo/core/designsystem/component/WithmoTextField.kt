@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 private val TextFieldHeight = 36.dp
@@ -120,7 +119,7 @@ fun WithmoSearchTextField(
             WithmoTextField(
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.weight(Weights.Medium),
+                modifier = Modifier.weight(1f),
                 placeholder = "検索",
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(

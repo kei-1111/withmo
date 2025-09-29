@@ -28,7 +28,6 @@ import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -68,7 +67,7 @@ fun App(
             }
         }
         if (isAppNameShown) {
-            Spacer(modifier = Modifier.weight(Weights.Medium))
+            Spacer(modifier = Modifier.weight(1f))
             LabelSmallText(
                 text = appInfo.label,
                 overflow = TextOverflow.Ellipsis,
