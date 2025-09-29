@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,9 +38,11 @@ fun WithmoSettingItemWithSwitch(
                 .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            BodyMediumText(
+            Text(
                 text = title,
                 modifier = Modifier.weight(1f),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
             )
             Switch(
                 checked = checked,

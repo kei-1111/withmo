@@ -37,7 +37,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -302,10 +301,11 @@ private fun SettingItem(
             modifier = Modifier.size(24.dp),
         )
         Spacer(modifier = Modifier.padding(4.dp))
-        BodyMediumText(
+        Text(
             text = itemName,
             modifier = Modifier.weight(1f),
             color = itemColor,
+            style = MaterialTheme.typography.bodyMedium,
         )
         Icon(
             imageVector = Icons.Rounded.KeyboardArrowRight,

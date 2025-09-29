@@ -14,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.R
@@ -38,7 +37,11 @@ internal fun FinishScreenContent(
             color = MaterialTheme.colorScheme.onSurface,
             style = MaterialTheme.typography.displayMedium,
         )
-        BodyMediumText("設定が完了しました！")
+        Text(
+            text = "設定が完了しました！",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
+        )
     }
 }
 

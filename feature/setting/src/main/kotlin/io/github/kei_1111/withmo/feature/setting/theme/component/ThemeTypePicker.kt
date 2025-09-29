@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -40,7 +39,11 @@ internal fun ThemeTypePicker(
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
-                BodyMediumText(text = "テーマ")
+                Text(
+                    text = "テーマ",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
             WithmoSettingItemWithRadioButton(
                 item = {
@@ -97,7 +100,11 @@ private fun ThemeTypePickerItem(
     ) {
         when (themeType) {
             ThemeType.TIME_BASED -> {
-                BodyMediumText(text = "時間帯による自動切り替え")
+                Text(
+                    text = "時間帯による自動切り替え",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
                 Text(
                     text = "6時-19時: ライトモード, 19時-6時: ダークモード",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
@@ -105,10 +112,18 @@ private fun ThemeTypePickerItem(
                 )
             }
             ThemeType.LIGHT -> {
-                BodyMediumText(text = "ライトモード")
+                Text(
+                    text = "ライトモード",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
             ThemeType.DARK -> {
-                BodyMediumText(text = "ダークモード")
+                Text(
+                    text = "ダークモード",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }

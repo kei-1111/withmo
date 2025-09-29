@@ -116,27 +116,35 @@ private fun WithmoDialogContent(
             style = MaterialTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(8.dp))
-        BodyMediumText(description)
+        Text(
+            text = description,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
+        )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier.align(Alignment.End),
             horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
-            BodyMediumText(
+            Text(
                 text = dismissButtonText,
                 modifier = Modifier
                     .safeClickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                     ) { onDismissClick() },
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
             )
-            BodyMediumText(
+            Text(
                 text = confirmButtonText,
                 modifier = Modifier
                     .safeClickable(
                         indication = null,
                         interactionSource = remember { MutableInteractionSource() },
                     ) { onConfirmClick() },
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
             )
         }
     }

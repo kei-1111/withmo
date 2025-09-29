@@ -30,7 +30,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
@@ -135,8 +134,9 @@ private fun SelectDisplayModelScreen(
                                 .weight(1f)
                                 .height(56.dp),
                         ) {
-                            BodyMediumText(
+                            Text(
                                 text = if (state.isDefaultModel) "スキップ" else "次へ",
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                         }
                     }

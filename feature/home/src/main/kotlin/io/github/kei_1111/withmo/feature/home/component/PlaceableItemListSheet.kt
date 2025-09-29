@@ -54,7 +54,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
@@ -131,11 +130,13 @@ internal fun PlaceableItemListSheet(
                         },
                         modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
                         text = {
-                            BodyMediumText(
+                            Text(
                                 text = when (tab) {
                                     PlaceableItemTab.WIDGET -> "ウィジェット"
                                     PlaceableItemTab.APP -> "アプリ"
                                 },
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = MaterialTheme.typography.bodyMedium,
                             )
                         },
                     )
@@ -307,8 +308,10 @@ private fun WidgetPreviewContainer(
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 appLabel?.let {
-                    BodyMediumText(
+                    Text(
                         text = appLabel,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                 }
                 Spacer(
@@ -388,7 +391,11 @@ private fun WidgetPreviewItem(
         }
         Spacer(modifier = Modifier.height(2.dp))
         widgetLabel?.let {
-            BodyMediumText(text = it)
+            Text(
+                text = it,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodyMedium,
+            )
         }
         widgetDescription?.let {
             Text(
@@ -428,13 +435,25 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                     selected = false,
                     onClick = {},
                     modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "ウィジェット") },
+                    text = {
+                        Text(
+                            text = "ウィジェット",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                 )
                 Tab(
                     selected = true,
                     onClick = {},
                     modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "アプリ") },
+                    text = {
+                        Text(
+                            text = "アプリ",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                 )
             }
 
@@ -484,13 +503,25 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                     selected = false,
                     onClick = {},
                     modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "ウィジェット") },
+                    text = {
+                        Text(
+                            text = "ウィジェット",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                 )
                 Tab(
                     selected = true,
                     onClick = {},
                     modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
-                    text = { BodyMediumText(text = "アプリ") },
+                    text = {
+                        Text(
+                            text = "アプリ",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.bodyMedium,
+                        )
+                    },
                 )
             }
 

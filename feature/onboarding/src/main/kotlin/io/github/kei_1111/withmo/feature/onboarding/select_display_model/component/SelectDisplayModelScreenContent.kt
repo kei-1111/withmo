@@ -25,7 +25,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.dashedBorder
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -49,9 +48,10 @@ internal fun SelectDisplayModelScreenContent(
             state = state,
             onClick = { onAction(SelectDisplayModelAction.OnSelectDisplayModelAreaClick) },
         )
-        BodyMediumText(
+        Text(
             text = if (state.isDefaultModel) "デフォルトモデル" else state.modelFileName,
             color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
@@ -119,9 +119,10 @@ private fun SelectDisplayModelArea(
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
-                    BodyMediumText(
+                    Text(
                         text = "表示モデルの選択",
                         color = MaterialTheme.colorScheme.primary,
+                        style = MaterialTheme.typography.bodyMedium,
                     )
                     Text(
                         text = "VRMファイルを選択してください",

@@ -1,7 +1,10 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,8 +21,10 @@ fun CenteredMessage(
         modifier = modifier,
         contentAlignment = Alignment.Center,
     ) {
-        BodyMediumText(
+        Text(
             text = message,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

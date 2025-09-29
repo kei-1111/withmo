@@ -18,13 +18,13 @@ import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
@@ -149,9 +149,10 @@ private fun CompleteEditButton(
                 shape = CircleShape,
             ),
     ) {
-        BodyMediumText(
+        Text(
             text = "編集完了",
             color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }

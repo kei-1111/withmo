@@ -17,7 +17,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
@@ -42,7 +41,11 @@ internal fun SortTypePicker(
                     .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
-                BodyMediumText(text = "並び順")
+                Text(
+                    text = "並び順",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
             WithmoSettingItemWithRadioButton(
                 item = {
@@ -88,10 +91,18 @@ private fun SortTypePickerItem(
     ) {
         when (sortType) {
             SortType.ALPHABETICAL -> {
-                BodyMediumText(text = "アルファベット順")
+                Text(
+                    text = "アルファベット順",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
             SortType.USE_COUNT -> {
-                BodyMediumText(text = "使用回数順")
+                Text(
+                    text = "使用回数順",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.bodyMedium,
+                )
                 Text(
                     text = "端末に保存されているアプリの使用回数で並び替え",
                     color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),

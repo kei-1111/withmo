@@ -9,6 +9,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -71,13 +72,14 @@ fun WithmoSaveButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
     ) {
-        BodyMediumText(
+        Text(
             text = "保存",
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             },
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
@@ -93,13 +95,14 @@ fun WithmoNextButton(
         modifier = modifier.height(56.dp),
         enabled = enabled,
     ) {
-        BodyMediumText(
+        Text(
             text = "次へ",
             color = if (enabled) {
                 MaterialTheme.colorScheme.primary
             } else {
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             },
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
