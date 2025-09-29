@@ -22,7 +22,6 @@ import io.github.kei_1111.withmo.core.common.AppConstants.DEFAULT_ROUNDED_CORNER
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -95,7 +94,7 @@ private fun AppIconShapePickerDivider(
 ) {
     HorizontalDivider(
         modifier = modifier.padding(
-            start = Paddings.Medium + IconSizes.Medium + Paddings.Small,
+            start = Paddings.Medium + 24.dp + Paddings.Small,
         ),
     )
 }
@@ -112,7 +111,7 @@ private fun AppIconShapePickerItem(
     ) {
         Box(
             modifier = Modifier
-                .size(IconSizes.Medium)
+                .size(24.dp)
                 .background(
                     MaterialTheme.colorScheme.onSurface,
                     appIconShape.toShape(DEFAULT_ROUNDED_CORNER_PERCENT),

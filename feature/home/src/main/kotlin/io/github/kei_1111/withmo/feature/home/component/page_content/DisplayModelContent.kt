@@ -34,7 +34,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
@@ -73,7 +72,7 @@ internal fun DisplayModelContent(
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = null,
-                    modifier = Modifier.size(IconSizes.Large),
+                    modifier = Modifier.size(32.dp),
                     tint = MaterialTheme.colorScheme.onSurface,
                 )
             }
@@ -155,8 +154,7 @@ private fun ScaleSlider(
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(IconSizes.Large),
+                modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
             WithmoVerticalSlider(
@@ -169,8 +167,7 @@ private fun ScaleSlider(
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
-                modifier = Modifier
-                    .size(IconSizes.Small),
+                modifier = Modifier.size(16.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -239,7 +236,7 @@ private fun OpenDocumentButton(
             Icon(
                 imageVector = Icons.Rounded.ChangeCircle,
                 contentDescription = null,
-                modifier = Modifier.size(IconSizes.Large),
+                modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }
@@ -262,7 +259,7 @@ private fun ShowScaleSliderButton(
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
-                modifier = Modifier.size(IconSizes.Large),
+                modifier = Modifier.size(32.dp),
                 tint = MaterialTheme.colorScheme.onSurface,
             )
         }

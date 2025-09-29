@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -271,7 +270,7 @@ private fun SettingItemDivider(
 ) {
     HorizontalDivider(
         modifier = modifier.padding(
-            start = Paddings.Medium + IconSizes.Medium + Paddings.Small,
+            start = Paddings.Medium + 24.dp + Paddings.Small,
         ),
     )
 }
@@ -295,7 +294,7 @@ private fun SettingItem(
             imageVector = icon,
             contentDescription = itemName,
             tint = itemColor,
-            modifier = Modifier.size(IconSizes.Medium),
+            modifier = Modifier.size(24.dp),
         )
         Spacer(
             modifier = Modifier.padding(Paddings.ExtraSmall),
