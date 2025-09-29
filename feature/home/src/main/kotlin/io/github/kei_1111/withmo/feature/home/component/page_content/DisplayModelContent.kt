@@ -2,6 +2,7 @@
 
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
+import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -21,6 +22,7 @@ import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,7 +30,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.LabelSmallText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
@@ -273,9 +274,10 @@ private fun SideButtonContainer(
     ) {
         content()
         Spacer(modifier = Modifier.weight(1f))
-        LabelSmallText(
+        Text(
             text = label,
             color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelSmall,
         )
     }
 }

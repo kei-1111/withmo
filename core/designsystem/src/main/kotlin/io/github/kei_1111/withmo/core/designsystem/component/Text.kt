@@ -2,7 +2,6 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.R.attr.text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -180,46 +179,6 @@ fun LabelMediumText(
     )
 }
 
-@Composable
-fun LabelSmallText(
-    text: String,
-    modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.onSurface,
-    fontSize: TextUnit = TextUnit.Unspecified,
-    fontStyle: FontStyle? = null,
-    fontWeight: FontWeight? = null,
-    fontFamily: FontFamily? = null,
-    letterSpacing: TextUnit = TextUnit.Unspecified,
-    textDecoration: TextDecoration? = null,
-    textAlign: TextAlign? = null,
-    lineHeight: TextUnit = TextUnit.Unspecified,
-    overflow: TextOverflow = TextOverflow.Clip,
-    softWrap: Boolean = true,
-    maxLines: Int = Int.MAX_VALUE,
-    minLines: Int = 1,
-    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
-) {
-    Text(
-        text = text,
-        modifier = modifier,
-        color = color,
-        style = MaterialTheme.typography.labelSmall,
-        fontSize = fontSize,
-        fontStyle = fontStyle,
-        fontWeight = fontWeight,
-        fontFamily = fontFamily,
-        letterSpacing = letterSpacing,
-        textDecoration = textDecoration,
-        textAlign = textAlign,
-        lineHeight = lineHeight,
-        overflow = overflow,
-        softWrap = softWrap,
-        maxLines = maxLines,
-        minLines = minLines,
-        onTextLayout = onTextLayout,
-    )
-}
-
 @Preview
 @Composable
 private fun DisplayMediumTextLightPreview() {
@@ -296,26 +255,6 @@ private fun LabelMediumTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         LabelMediumText(
             text = "Label Medium Text",
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun LabelSmallTextLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        LabelSmallText(
-            text = "Label Small Text",
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun LabelSmallTextDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        LabelSmallText(
-            text = "Label Small Text",
         )
     }
 }
