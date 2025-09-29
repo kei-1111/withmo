@@ -19,6 +19,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
@@ -27,7 +28,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.component.SelectFavoriteAppScreenContent
@@ -111,7 +111,7 @@ private fun SelectFavoriteAppScreen(
                             onClick = { onAction(SelectFavoriteAppAction.OnNextButtonClick) },
                             modifier = Modifier
                                 .weight(1f)
-                                .height(CommonDimensions.SettingItemHeight),
+                                .height(56.dp),
                         ) {
                             BodyMediumText(
                                 text = if (state.selectedAppList.isEmpty()) "スキップ" else "次へ",

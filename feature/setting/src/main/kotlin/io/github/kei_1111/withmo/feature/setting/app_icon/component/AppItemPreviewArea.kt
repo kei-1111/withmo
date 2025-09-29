@@ -16,8 +16,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
@@ -63,11 +63,9 @@ private fun AppItemPreview(
 ) {
     val previewAppIcon = R.drawable.withmo_icon_wide
 
-    val appIconSize = CommonDimensions.AppIconSize
-
     Column(
         modifier = modifier
-            .size(appIconSize + Paddings.Large),
+            .size(56.dp + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -76,7 +74,7 @@ private fun AppItemPreview(
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(appIconSize)
+                .size(56.dp)
                 .clip(appIconSettings.appIconShape.toShape(appIconSettings.roundedCornerPercent)),
         )
     }

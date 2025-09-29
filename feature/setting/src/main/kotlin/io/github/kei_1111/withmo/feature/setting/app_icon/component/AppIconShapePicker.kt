@@ -17,11 +17,11 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.common.AppConstants.DEFAULT_ROUNDED_CORNER_PERCENT
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
@@ -43,9 +43,7 @@ internal fun AppIconShapePicker(
         Column {
             Box(
                 modifier = Modifier
-                    .height(
-                        CommonDimensions.SettingItemHeight,
-                    )
+                    .height(56.dp)
                     .padding(horizontal = Paddings.Medium),
                 contentAlignment = Alignment.CenterStart,
             ) {
@@ -109,8 +107,7 @@ private fun AppIconShapePickerItem(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
+        modifier = modifier.height(56.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Box(

@@ -32,7 +32,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.showToast
@@ -128,7 +127,7 @@ private fun SelectDisplayModelScreen(
                             onClick = { onAction(SelectDisplayModelAction.OnNextButtonClick) },
                             modifier = Modifier
                                 .weight(1f)
-                                .height(CommonDimensions.SettingItemHeight),
+                                .height(56.dp),
                         ) {
                             BodyMediumText(
                                 text = if (state.isDefaultModel) "スキップ" else "次へ",

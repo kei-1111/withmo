@@ -23,13 +23,13 @@ import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
@@ -47,7 +47,7 @@ internal fun PlaceableItemContent(
     modifier: Modifier = Modifier,
 ) {
     // App Composableの高さ
-    val appHeight = CommonDimensions.AppIconSize + Paddings.Large
+    val appHeight = 56.dp + Paddings.Large
     // RowAppList Composableの高さ
     val rowAppListHeight = appHeight + Paddings.ExtraSmall * 2
 
@@ -127,7 +127,7 @@ private fun AddPlaceableItemButton(
 ) {
     WithmoIconButton(
         onClick = onClick,
-        modifier = modifier.size(CommonDimensions.SettingItemHeight),
+        modifier = modifier.size(56.dp),
         backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
     ) {
         Icon(
@@ -146,7 +146,7 @@ private fun CompleteEditButton(
     FilledTonalButton(
         onClick = onClick,
         modifier = modifier
-            .height(CommonDimensions.SettingItemHeight)
+            .height(56.dp)
             .withmoShadow(
                 shape = CircleShape,
             ),

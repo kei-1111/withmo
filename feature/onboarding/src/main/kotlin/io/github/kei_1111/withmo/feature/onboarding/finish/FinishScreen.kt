@@ -25,7 +25,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.finish.component.FinishScreenContent
@@ -94,7 +93,7 @@ private fun FinishScreen(
                     onClick = { onAction(FinishAction.OnFinishButtonClick) },
                     modifier = Modifier
                         .weight(1f)
-                        .height(CommonDimensions.SettingItemHeight),
+                        .height(56.dp),
                 ) {
                     BodyMediumText(
                         text = "はじめる",

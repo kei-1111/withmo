@@ -13,9 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
 
@@ -66,7 +66,7 @@ fun WithmoBackButton(
 ) {
     WithmoOutlinedButton(
         onClick = onClick,
-        modifier = modifier.height(CommonDimensions.SettingItemHeight),
+        modifier = modifier.height(56.dp),
     ) {
         BodyMediumText("戻る")
     }

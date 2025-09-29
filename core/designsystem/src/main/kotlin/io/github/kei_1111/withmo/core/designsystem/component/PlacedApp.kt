@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -40,7 +39,7 @@ fun PlacedApp(
     val context = LocalContext.current
 
     // App ComposableのSize
-    val appSize = CommonDimensions.AppIconSize + Paddings.Large
+    val appSize = 56.dp + Paddings.Large
 
     PlaceableItemContainer(
         placeableItem = placedAppInfo,

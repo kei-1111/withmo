@@ -14,11 +14,11 @@ import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -38,9 +38,7 @@ internal fun SortTypePicker(
         Column {
             Box(
                 modifier = Modifier
-                    .height(
-                        CommonDimensions.SettingItemHeight,
-                    )
+                    .height(56.dp)
                     .padding(horizontal = Paddings.Medium),
                 contentAlignment = Alignment.CenterStart,
             ) {
@@ -89,8 +87,7 @@ private fun SortTypePickerItem(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
+        modifier = modifier.height(56.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         when (sortType) {

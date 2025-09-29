@@ -27,7 +27,6 @@ import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
@@ -45,7 +44,7 @@ fun App(
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
 ) {
-    val appIconSize = CommonDimensions.AppIconSize
+    val appIconSize = 56.dp
 
     Column(
         modifier = modifier
@@ -95,7 +94,7 @@ private fun AppIcon(
         is Drawable -> {
             Box(
                 modifier = modifier
-                    .size(CommonDimensions.AppIconSize)
+                    .size(56.dp)
                     .withmoShadow(
                         shape = appIconShape,
                     )
@@ -126,7 +125,7 @@ private fun AppIcon(
         else -> {
             Box(
                 modifier = modifier
-                    .size(CommonDimensions.AppIconSize)
+                    .size(56.dp)
                     .withmoShadow(
                         shape = CircleShape,
                     )
@@ -143,7 +142,7 @@ private fun AppIcon(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(CommonDimensions.AppIconSize),
+                    modifier = Modifier.size(56.dp),
                 )
             }
         }

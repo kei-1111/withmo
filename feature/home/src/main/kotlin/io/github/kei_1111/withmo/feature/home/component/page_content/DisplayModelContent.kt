@@ -34,7 +34,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -69,7 +68,7 @@ internal fun DisplayModelContent(
                 onClick = { onAction(HomeAction.OnCloseScaleSliderButtonClick) },
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .size(CommonDimensions.AppIconSize),
+                    .size(56.dp),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
@@ -189,7 +188,7 @@ private fun NavigateSettingsButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(CommonDimensions.AppIconSize),
+            modifier = Modifier.size(56.dp),
         ) {
             Image(
                 painter = painterResource(R.drawable.withmo_icon_wide),
@@ -212,7 +211,7 @@ private fun SetDefaultModelButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(CommonDimensions.AppIconSize),
+            modifier = Modifier.size(56.dp),
         ) {
             Image(
                 painter = painterResource(R.drawable.alicia_icon),
@@ -235,7 +234,7 @@ private fun OpenDocumentButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(CommonDimensions.AppIconSize),
+            modifier = Modifier.size(56.dp),
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChangeCircle,
@@ -258,7 +257,7 @@ private fun ShowScaleSliderButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(CommonDimensions.AppIconSize),
+            modifier = Modifier.size(56.dp),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Man,
@@ -278,7 +277,7 @@ private fun SideButtonContainer(
 ) {
     Column(
         modifier = modifier
-            .size(CommonDimensions.AppIconSize + Paddings.Large),
+            .size(56.dp + Paddings.Large),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()
