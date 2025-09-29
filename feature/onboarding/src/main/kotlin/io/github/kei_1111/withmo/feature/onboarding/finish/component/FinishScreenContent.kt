@@ -1,10 +1,13 @@
 package io.github.kei_1111.withmo.feature.onboarding.finish.component
 
+import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
-import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.R
@@ -31,7 +33,11 @@ internal fun FinishScreenContent(
             contentDescription = "Finish",
             modifier = Modifier.size(250.dp),
         )
-        DisplayMediumText("Completed!")
+        Text(
+            text = "Completed!",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.displayMedium,
+        )
         BodyMediumText("設定が完了しました！")
     }
 }

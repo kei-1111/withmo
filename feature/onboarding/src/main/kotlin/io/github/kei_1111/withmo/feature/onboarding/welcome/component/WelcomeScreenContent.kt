@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -13,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
-import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.R
@@ -32,7 +33,11 @@ internal fun WelcomeScreenContent(
             contentDescription = "Welcome",
             modifier = Modifier.size(250.dp),
         )
-        DisplayMediumText("Let's get started!")
+        Text(
+            text = "Let's get started!",
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.displayMedium,
+        )
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
