@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -41,7 +40,7 @@ internal fun AppItemPreviewArea(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(Paddings.Medium),
+                .padding(16.dp),
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -63,8 +62,7 @@ private fun AppItemPreview(
     val previewAppIcon = R.drawable.withmo_icon_wide
 
     Column(
-        modifier = modifier
-            .size(56.dp + Paddings.Large),
+        modifier = modifier.size(76.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {

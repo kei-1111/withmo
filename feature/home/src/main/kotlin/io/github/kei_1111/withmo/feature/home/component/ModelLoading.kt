@@ -18,7 +18,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 
@@ -35,7 +34,7 @@ internal fun ModelLoading(
                     }
                 }
             }
-            .padding(Paddings.Medium),
+            .padding(16.dp),
         contentAlignment = Alignment.Center,
     ) {
         Surface(
@@ -47,8 +46,7 @@ internal fun ModelLoading(
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement
-                    .spacedBy(Paddings.Large, Alignment.CenterHorizontally),
+                horizontalArrangement = Arrangement.spacedBy(20.dp, Alignment.CenterHorizontally),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 BodyMediumText("モデルの読込中")

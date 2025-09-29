@@ -19,7 +19,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtr
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextSmallSize
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -62,7 +61,7 @@ private fun ClockTopDate(
     ) {
         Row(
             modifier = Modifier.offset(y = dateOffset),
-            horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 text = dateTimeInfo.year,
@@ -108,7 +107,7 @@ private fun ClockHorizontalDate(
     modifier: Modifier = Modifier,
     textColor: Color = MaterialTheme.colorScheme.onSurface,
 ) {
-    val yearOffsetY = 5.dp
+    val yearOffsetY = 4.dp
     val monthOffsetY = 4.dp
     val dayOffsetY = -4.dp
     val dayOfWeekOffsetY = 5.dp
@@ -138,7 +137,7 @@ private fun ClockHorizontalDate(
                     modifier = Modifier.offset(y = dayOffsetY),
                 )
             }
-            Spacer(modifier = Modifier.width(Paddings.ExtraSmall))
+            Spacer(modifier = Modifier.width(4.dp))
             Column {
                 Text(
                     text = dateTimeInfo.dayOfWeek,
@@ -175,7 +174,7 @@ private fun WithmoClockTopDateLightPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -193,7 +192,7 @@ private fun WithmoClockTopDateDarkPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -211,7 +210,7 @@ private fun WithmoClockHorizontalDateLightPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -229,7 +228,7 @@ private fun WithmoClockHorizontalDateDarkPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),

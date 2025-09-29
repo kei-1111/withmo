@@ -8,8 +8,8 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
@@ -28,11 +28,11 @@ fun WithmoSettingItemWithSlider(
         shape = MaterialTheme.shapes.medium,
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = Paddings.Medium),
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             BodyMediumText(
                 text = title,
-                modifier = Modifier.padding(vertical = Paddings.Medium),
+                modifier = Modifier.padding(vertical = 16.dp),
             )
             WithmoSlider(
                 value = value,
@@ -54,7 +54,6 @@ private fun WithmoSettingItemWithSliderLightPreview() {
             value = 0.5f,
             onValueChange = {},
             valueRange = 0f..1f,
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -68,7 +67,6 @@ private fun WithmoSettingItemWithSliderDarkPreview() {
             value = 0.5f,
             onValueChange = {},
             valueRange = 0f..1f,
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }

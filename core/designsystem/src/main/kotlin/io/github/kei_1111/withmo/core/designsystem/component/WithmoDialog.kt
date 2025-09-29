@@ -14,9 +14,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
@@ -106,15 +106,15 @@ private fun WithmoDialogContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(Paddings.Large),
+        modifier = modifier.padding(20.dp),
     ) {
         TitleLargeText(title)
-        Spacer(modifier = Modifier.height(Paddings.Small))
+        Spacer(modifier = Modifier.height(8.dp))
         BodyMediumText(description)
-        Spacer(modifier = Modifier.height(Paddings.ExtraLarge))
+        Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier.align(Alignment.End),
-            horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
+            horizontalArrangement = Arrangement.spacedBy(20.dp),
         ) {
             BodyMediumText(
                 text = dismissButtonText,

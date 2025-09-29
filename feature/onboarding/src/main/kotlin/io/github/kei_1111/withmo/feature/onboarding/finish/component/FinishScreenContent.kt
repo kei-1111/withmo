@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.onboarding.finish.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -14,7 +14,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.DisplayMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.R
 
@@ -23,9 +22,8 @@ internal fun FinishScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier
-            .padding(Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Image(
@@ -42,7 +40,9 @@ internal fun FinishScreenContent(
 @Preview
 private fun FinishScreenContentLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        FinishScreenContent()
+        FinishScreenContent(
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }
 
@@ -50,6 +50,8 @@ private fun FinishScreenContentLightPreview() {
 @Preview
 private fun FinishScreenContentDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        FinishScreenContent()
+        FinishScreenContent(
+            modifier = Modifier.fillMaxSize(),
+        )
     }
 }

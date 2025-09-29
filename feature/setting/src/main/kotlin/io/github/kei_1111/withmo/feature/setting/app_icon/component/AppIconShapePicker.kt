@@ -22,7 +22,6 @@ import io.github.kei_1111.withmo.core.common.AppConstants.DEFAULT_ROUNDED_CORNER
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
@@ -43,7 +42,7 @@ internal fun AppIconShapePicker(
             Box(
                 modifier = Modifier
                     .height(56.dp)
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "アプリアイコンの形")
@@ -92,11 +91,7 @@ internal fun AppIconShapePicker(
 private fun AppIconShapePickerDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(
-        modifier = modifier.padding(
-            start = Paddings.Medium + 24.dp + Paddings.Small,
-        ),
-    )
+    HorizontalDivider(modifier = modifier.padding(start = 48.dp))
 }
 
 @Composable
@@ -117,9 +112,7 @@ private fun AppIconShapePickerItem(
                     appIconShape.toShape(DEFAULT_ROUNDED_CORNER_PERCENT),
                 ),
         )
-        Spacer(
-            modifier = Modifier.padding(Paddings.ExtraSmall),
-        )
+        Spacer(modifier = Modifier.padding(4.dp))
         BodyMediumText(text = title)
     }
 }

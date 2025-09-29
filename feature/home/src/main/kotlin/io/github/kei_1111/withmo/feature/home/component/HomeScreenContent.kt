@@ -19,11 +19,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -90,8 +90,8 @@ private fun RowAppList(
 
     Row(
         modifier = modifier
-            .padding(horizontal = Paddings.Medium)
-            .padding(vertical = Paddings.ExtraSmall),
+            .padding(horizontal = 16.dp)
+            .padding(vertical = 4.dp),
         horizontalArrangement = if (appList.size == 1) { Arrangement.Center } else { Arrangement.SpaceBetween },
         verticalAlignment = Alignment.CenterVertically,
     ) {

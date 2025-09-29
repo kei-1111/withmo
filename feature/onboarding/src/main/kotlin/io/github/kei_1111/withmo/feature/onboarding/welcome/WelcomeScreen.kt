@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.welcome.component.WelcomeScreenContent
 
@@ -73,7 +72,7 @@ private fun WelcomeScreen(
                 onClick = { onAction(WelcomeAction.OnNextButtonClick) },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(Paddings.Medium)
+                    .padding(16.dp)
                     .height(56.dp),
             ) {
                 BodyMediumText(

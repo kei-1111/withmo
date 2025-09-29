@@ -17,12 +17,12 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.rememberNestedScrollInteropConnection
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.component.App
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -58,12 +58,12 @@ internal fun AppList(
         columns = GridCells.Fixed(DesignConstants.APP_LIST_GRID_COLUMNS),
         modifier = modifier.nestedScroll(nestedScrollConnection),
         contentPadding = PaddingValues(
-            start = Paddings.Medium,
-            end = Paddings.Medium,
-            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+            start = 16.dp,
+            end = 16.dp,
+            bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
         ),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Large),
-        horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
     ) {
         if (launchableAppList.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {

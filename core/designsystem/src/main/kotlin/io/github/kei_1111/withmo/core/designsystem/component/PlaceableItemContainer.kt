@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.ktx.toPx
@@ -146,8 +145,7 @@ fun PlaceableItemContainer(
                 color = Color.Transparent,
             ) {
                 Box(
-                    modifier = Modifier
-                        .padding(Paddings.ExtraSmall),
+                    modifier = Modifier.padding(4.dp),
                 ) {
                     DeleteBadge(
                         onClick = onDeleteBadgeClick,
@@ -209,8 +207,7 @@ private fun PlaceableItemBadge(
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier
-                .padding(Paddings.ExtraSmall),
+            modifier = Modifier.padding(4.dp),
         )
     }
 }

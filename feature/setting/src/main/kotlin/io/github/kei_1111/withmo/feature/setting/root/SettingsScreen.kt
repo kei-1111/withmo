@@ -28,6 +28,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
@@ -36,7 +37,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.AppUtils
 import io.github.kei_1111.withmo.core.util.showToast
@@ -192,11 +192,10 @@ private fun LogoWithText(
             contentDescription = "withmo Logo",
             contentScale = ContentScale.FillHeight,
             modifier = Modifier
+                .padding(horizontal = 4.dp)
                 .padding(
-                    start = Paddings.ExtraSmall,
-                    end = Paddings.ExtraSmall,
-                    top = Paddings.Small,
-                    bottom = Paddings.ExtraSmall,
+                    top = 8.dp,
+                    bottom = 4.dp,
                 ),
         )
         TitleLargeText(text = text)
@@ -239,7 +238,6 @@ private fun LogoWithTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         LogoWithText(
             text = "の設定",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -250,7 +248,6 @@ private fun LogoWithTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         LogoWithText(
             text = "の設定",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }

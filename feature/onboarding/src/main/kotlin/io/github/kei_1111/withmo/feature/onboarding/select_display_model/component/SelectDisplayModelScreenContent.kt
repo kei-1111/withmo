@@ -7,7 +7,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -28,7 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.dashedBorder
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelAction
@@ -42,8 +40,8 @@ internal fun SelectDisplayModelScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         SelectDisplayModelArea(
@@ -95,7 +93,7 @@ private fun SelectDisplayModelArea(
         } else {
             Column(
                 modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 IconButton(
@@ -118,7 +116,6 @@ private fun SelectDisplayModelArea(
                     )
                 }
                 Column(
-                    modifier = Modifier,
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     BodyMediumText(

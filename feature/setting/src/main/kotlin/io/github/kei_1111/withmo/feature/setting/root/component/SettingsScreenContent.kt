@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.feature.setting.root.SettingsAction
@@ -51,9 +50,9 @@ internal fun SettingsScreenContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(Paddings.Medium),
+        modifier = modifier.padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         HomeAppSettings(
             isDefaultHomeApp = state.isDefaultHomeApp,
@@ -74,7 +73,7 @@ private fun HomeAppSettings(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         LabelMediumText(
             text = "ホームアプリの設定",
@@ -117,7 +116,7 @@ private fun HomeScreenSettings(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         LabelMediumText(
             text = "ホーム画面の設定",
@@ -179,7 +178,7 @@ private fun NotificationSettings(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         LabelMediumText(
             text = "通知の設定",
@@ -209,7 +208,7 @@ private fun WallpaperSettings(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         LabelMediumText(
             text = "壁紙の設定",
@@ -239,7 +238,7 @@ private fun ThemeSettings(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         LabelMediumText(
             text = "テーマの設定",
@@ -267,11 +266,7 @@ private fun ThemeSettings(
 private fun SettingItemDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(
-        modifier = modifier.padding(
-            start = Paddings.Medium + 24.dp + Paddings.Small,
-        ),
-    )
+    HorizontalDivider(modifier = modifier.padding(start = 48.dp))
 }
 
 @Composable
@@ -286,7 +281,7 @@ private fun SettingItem(
         modifier = modifier
             .height(56.dp)
             .safeClickable { onClick() }
-            .padding(horizontal = Paddings.Medium),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -295,9 +290,7 @@ private fun SettingItem(
             tint = itemColor,
             modifier = Modifier.size(24.dp),
         )
-        Spacer(
-            modifier = Modifier.padding(Paddings.ExtraSmall),
-        )
+        Spacer(modifier = Modifier.padding(4.dp))
         BodyMediumText(
             text = itemName,
             modifier = Modifier.weight(1f),

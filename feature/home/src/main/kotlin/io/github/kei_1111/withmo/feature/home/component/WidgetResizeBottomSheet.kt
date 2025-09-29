@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.min
 import io.github.kei_1111.withmo.core.designsystem.component.Widget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithSlider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import kotlin.math.roundToInt
@@ -44,8 +43,8 @@ internal fun WidgetResizeBottomSheet(
     val screenWidth = configuration.screenWidthDp
     val screenHeight = configuration.screenHeightDp
 
-    val draggedSpaceWidth = screenWidth.dp - Paddings.Medium - Paddings.Medium
-    val draggedSpaceHeight = screenHeight.dp - Paddings.Medium - Paddings.Medium
+    val draggedSpaceWidth = screenWidth.dp - 16.dp - 16.dp
+    val draggedSpaceHeight = screenHeight.dp - 16.dp - 16.dp
     val minDraggedSpaceDimension = min(draggedSpaceWidth, draggedSpaceHeight)
 
     var widgetWidth by remember { mutableFloatStateOf(placedWidgetInfo.width.toFloat()) }
@@ -84,8 +83,9 @@ internal fun WidgetResizeBottomSheet(
                 ) { }
             }
             Column(
-                modifier = Modifier.padding(Paddings.Medium),
-                verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                modifier = Modifier.padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 WithmoSettingItemWithSlider(
                     title = "Widget 幅",
@@ -114,11 +114,9 @@ internal fun WidgetResizeBottomSheet(
 private fun WidgetResizeBottomSheetLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Paddings.Medium),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             WithmoSettingItemWithSlider(
                 title = "Widget 幅",
@@ -146,11 +144,9 @@ private fun WidgetResizeBottomSheetLightPreview() {
 private fun WidgetResizeBottomSheetDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(Paddings.Medium),
+            modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             WithmoSettingItemWithSlider(
                 title = "Widget 幅",

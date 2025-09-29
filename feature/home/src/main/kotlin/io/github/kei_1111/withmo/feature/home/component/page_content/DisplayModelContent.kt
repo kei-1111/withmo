@@ -34,7 +34,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
@@ -59,7 +58,7 @@ internal fun DisplayModelContent(
     Box(
         modifier = modifier
             .padding(top = topPaddingValue)
-            .padding(horizontal = Paddings.Medium),
+            .padding(horizontal = 16.dp),
     ) {
         if (state.isChangeModelScaleContentShown) {
             WithmoIconButton(
@@ -100,11 +99,9 @@ internal fun DisplayModelContent(
                         onClick = { onAction(HomeAction.OnNavigateSettingsButtonClick) },
                     )
                 }
-                Spacer(
-                    modifier = Modifier.weight(1f),
-                )
+                Spacer(modifier = Modifier.weight(1f))
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(Paddings.Large, Alignment.Bottom),
+                    verticalArrangement = Arrangement.spacedBy(20.dp, Alignment.Bottom),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     if (
@@ -145,10 +142,9 @@ private fun ScaleSlider(
         shape = MaterialTheme.shapes.medium,
     ) {
         Column(
-            modifier = Modifier
-                .padding(vertical = Paddings.Small),
+            modifier = Modifier.padding(vertical = 8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Man,
@@ -272,8 +268,7 @@ private fun SideButtonContainer(
     content: @Composable () -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .size(56.dp + Paddings.Large),
+        modifier = modifier.size(76.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         content()

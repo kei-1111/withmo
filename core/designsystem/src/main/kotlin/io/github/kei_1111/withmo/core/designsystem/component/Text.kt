@@ -2,7 +2,7 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import androidx.compose.foundation.layout.padding
+import android.R.attr.text
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +18,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
@@ -227,7 +226,6 @@ private fun DisplayMediumTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         DisplayMediumText(
             text = "Display Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -238,7 +236,6 @@ private fun DisplayMediumTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         DisplayMediumText(
             text = "Display Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -249,7 +246,6 @@ private fun TitleLargeTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         TitleLargeText(
             text = "Title Large Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -260,7 +256,6 @@ private fun TitleLargeTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         TitleLargeText(
             text = "Title Large Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -271,7 +266,6 @@ private fun BodyMediumTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         BodyMediumText(
             text = "Body Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -282,7 +276,6 @@ private fun BodyMediumTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         BodyMediumText(
             text = "Body Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -293,7 +286,6 @@ private fun LabelMediumTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelMediumText(
             text = "Label Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -304,7 +296,6 @@ private fun LabelMediumTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         LabelMediumText(
             text = "Label Medium Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -315,7 +306,6 @@ private fun LabelSmallTextLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         LabelSmallText(
             text = "Label Small Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -326,7 +316,6 @@ private fun LabelSmallTextDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         LabelSmallText(
             text = "Label Small Text",
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }

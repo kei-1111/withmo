@@ -30,7 +30,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -46,9 +45,9 @@ internal fun PlaceableItemContent(
     modifier: Modifier = Modifier,
 ) {
     // App Composableの高さ
-    val appHeight = 56.dp + Paddings.Large
+    val appHeight = 76.dp
     // RowAppList Composableの高さ
-    val rowAppListHeight = appHeight + Paddings.ExtraSmall * 2
+    val rowAppListHeight = appHeight + 4.dp * 2
 
     val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -62,8 +61,8 @@ internal fun PlaceableItemContent(
                     is PlacedWidgetInfo -> {
                         PlacedWidget(
                             placedWidgetInfo = placeableItem,
-                            startPadding = Paddings.Medium,
-                            endPadding = Paddings.Medium,
+                            startPadding = 16.dp,
+                            endPadding = 16.dp,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
                             isEditMode = state.isEditMode,
@@ -82,8 +81,8 @@ internal fun PlaceableItemContent(
                             state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
                             topPadding = topPaddingValue,
                             bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
-                            startPadding = Paddings.Medium,
-                            endPadding = Paddings.Medium,
+                            startPadding = 16.dp,
+                            endPadding = 16.dp,
                             isEditMode = state.isEditMode,
                             onAppClick = { onAction(HomeAction.OnAppClick(placeableItem.info)) },
                             onAppLongClick = { onAction(HomeAction.OnAppLongClick(placeableItem.info)) },
@@ -99,10 +98,10 @@ internal fun PlaceableItemContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = bottomPaddingValue + Paddings.ExtraSmall)
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(bottom = bottomPaddingValue + 4.dp)
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 Spacer(
                     modifier = Modifier.weight(1f),

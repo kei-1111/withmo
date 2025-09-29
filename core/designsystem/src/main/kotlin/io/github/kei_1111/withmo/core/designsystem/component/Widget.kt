@@ -12,7 +12,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetHost
 
@@ -51,7 +50,7 @@ fun Widget(
         factory = { hostView },
         modifier = modifier
             .size(placedWidgetInfo.width.dp, placedWidgetInfo.height.dp)
-            .padding(Paddings.Small)
+            .padding(8.dp)
             .clip(MaterialTheme.shapes.medium),
         update = { view ->
             view.setPadding(0, 0, 0, 0)

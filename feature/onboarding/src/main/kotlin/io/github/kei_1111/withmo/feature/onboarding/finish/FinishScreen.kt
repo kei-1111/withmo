@@ -20,12 +20,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.finish.component.FinishScreenContent
 
@@ -82,8 +82,8 @@ private fun FinishScreen(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(Paddings.Medium),
-                horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                    .padding(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 WithmoBackButton(
                     onClick = { onAction(FinishAction.OnBackButtonClick) },

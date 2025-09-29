@@ -10,11 +10,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -35,14 +35,14 @@ internal fun ClockTypePicker(
         Column {
             BodyMediumText(
                 text = "時計の種類",
-                modifier = Modifier.padding(Paddings.Medium),
+                modifier = Modifier.padding(16.dp),
             )
             WithmoSettingItemWithRadioButton(
                 item = {
                     WithmoClock(
                         clockType = ClockType.TOP_DATE,
                         dateTimeInfo = DateTimeInfo(),
-                        modifier = Modifier.padding(vertical = Paddings.Medium),
+                        modifier = Modifier.padding(vertical = 16.dp),
                     )
                 },
                 selected = ClockType.TOP_DATE == selectedClockType,
@@ -56,7 +56,7 @@ internal fun ClockTypePicker(
                     WithmoClock(
                         clockType = ClockType.HORIZONTAL_DATE,
                         dateTimeInfo = DateTimeInfo(),
-                        modifier = Modifier.padding(vertical = Paddings.Medium),
+                        modifier = Modifier.padding(vertical = 16.dp),
                     )
                 },
                 selected = ClockType.HORIZONTAL_DATE == selectedClockType,
@@ -73,11 +73,7 @@ internal fun ClockTypePicker(
 private fun ClockTypePickerDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(
-        modifier = modifier
-            .padding(start = Paddings.Medium)
-            .fillMaxWidth(),
-    )
+    HorizontalDivider(modifier = modifier.padding(start = 16.dp))
 }
 
 @Composable

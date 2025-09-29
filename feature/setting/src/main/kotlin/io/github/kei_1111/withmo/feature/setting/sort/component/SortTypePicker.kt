@@ -19,7 +19,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsAction
@@ -39,7 +38,7 @@ internal fun SortTypePicker(
             Box(
                 modifier = Modifier
                     .height(56.dp)
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "並び順")
@@ -74,11 +73,7 @@ internal fun SortTypePicker(
 private fun SortTypePickerDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(
-        modifier = modifier
-            .padding(start = Paddings.Medium)
-            .fillMaxWidth(),
-    )
+    HorizontalDivider(modifier = modifier.padding(start = 16.dp))
 }
 
 @Composable

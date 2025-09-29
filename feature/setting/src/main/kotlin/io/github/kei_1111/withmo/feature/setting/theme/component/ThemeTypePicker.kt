@@ -19,7 +19,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsAction
 
@@ -38,7 +37,7 @@ internal fun ThemeTypePicker(
             Box(
                 modifier = Modifier
                     .height(56.dp)
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(horizontal = 16.dp),
                 contentAlignment = Alignment.CenterStart,
             ) {
                 BodyMediumText(text = "テーマ")
@@ -84,11 +83,7 @@ internal fun ThemeTypePicker(
 private fun ThemeTypePickerDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(
-        modifier = modifier
-            .padding(start = Paddings.Medium)
-            .fillMaxWidth(),
-    )
+    HorizontalDivider(modifier = modifier.padding(start = 16.dp))
 }
 
 @Composable

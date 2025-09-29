@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
@@ -20,7 +21,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppListRow
 import io.github.kei_1111.withmo.core.designsystem.component.FavoriteAppSelector
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -61,15 +61,9 @@ internal fun FavoriteAppSettingsScreenContent(
         Column(
             modifier = Modifier
                 .weight(1f)
-                .padding(
-                    top = Paddings.Medium,
-                    start = Paddings.Medium,
-                    end = Paddings.Medium,
-                ),
-            verticalArrangement = Arrangement.spacedBy(
-                Paddings.Medium,
-                Alignment.CenterVertically,
-            ),
+                .padding(top = 16.dp)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             WithmoSearchTextField(

@@ -28,7 +28,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.component.SelectFavoriteAppScreenContent
 
@@ -100,8 +99,8 @@ private fun SelectFavoriteAppScreen(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(Paddings.Medium),
-                        horizontalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         WithmoBackButton(
                             onClick = { onAction(SelectFavoriteAppAction.OnBackButtonClick) },

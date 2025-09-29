@@ -27,7 +27,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppList
@@ -76,16 +75,13 @@ internal fun AppListSheet(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()),
-                verticalArrangement = Arrangement.spacedBy(
-                    Paddings.Medium,
-                    Alignment.CenterVertically,
-                ),
+                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 WithmoSearchTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = Paddings.Medium),
+                        .padding(horizontal = 16.dp),
                     value = appSearchQuery,
                     onValueChange = { appSearchQuery = it },
                 )

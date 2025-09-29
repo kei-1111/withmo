@@ -59,7 +59,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -205,14 +204,14 @@ private fun AppTabContent(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(top = Paddings.Medium),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium, Alignment.CenterVertically),
+        modifier = modifier.padding(top = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WithmoSearchTextField(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = Paddings.Medium),
+                .padding(horizontal = 16.dp),
             value = appSearchQuery,
             onValueChange = onAppSearchQueryChange,
         )
@@ -244,13 +243,12 @@ private fun WidgetList(
 
     LazyColumn(
         modifier = modifier.nestedScroll(nestedScrollConnection),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(
-            start = Paddings.Medium,
-            end = Paddings.Medium,
-            top = Paddings.Medium,
-            bottom = Paddings.Medium + WindowInsets.navigationBars.asPaddingValues()
-                .calculateBottomPadding(),
+            start = 16.dp,
+            end = 16.dp,
+            top = 16.dp,
+            bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
         ),
     ) {
         groupedWidgetInfoMaps.forEach { (packageName, widgetInfoList) ->
@@ -297,7 +295,7 @@ private fun WidgetPreviewContainer(
                     .height(56.dp)
                     .fillMaxWidth()
                     .safeClickable { expanded = !expanded }
-                    .padding(horizontal = Paddings.Medium),
+                    .padding(horizontal = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 appIcon?.let {
@@ -307,9 +305,7 @@ private fun WidgetPreviewContainer(
                         modifier = Modifier.size(24.dp),
                     )
                 }
-                Spacer(
-                    modifier = Modifier.width(Paddings.ExtraSmall),
-                )
+                Spacer(modifier = Modifier.width(4.dp))
                 appLabel?.let {
                     BodyMediumText(
                         text = appLabel,
@@ -329,9 +325,9 @@ private fun WidgetPreviewContainer(
             if (expanded) {
                 Column(
                     modifier = Modifier
-                        .padding(vertical = Paddings.Medium)
+                        .padding(vertical = 16.dp)
                         .align(Alignment.CenterHorizontally),
-                    verticalArrangement = Arrangement.spacedBy(Paddings.Medium),
+                    verticalArrangement = Arrangement.spacedBy(16.dp),
                     horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     widgetInfoList.forEach { widgetInfo ->
@@ -364,7 +360,7 @@ private fun WidgetPreviewItem(
     Column(
         modifier = modifier
             .safeClickable { selectWidget(widgetInfo) }
-            .padding(horizontal = Paddings.Medium),
+            .padding(horizontal = 16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         if (previewDrawable != null) {
@@ -390,9 +386,7 @@ private fun WidgetPreviewItem(
                 )
             }
         }
-        Spacer(
-            modifier = Modifier.height(Paddings.Tiny),
-        )
+        Spacer(modifier = Modifier.height(2.dp))
         widgetLabel?.let {
             BodyMediumText(text = it)
         }

@@ -14,7 +14,6 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 private const val SWITCH_SCALE = 0.75f
@@ -35,7 +34,7 @@ fun WithmoSettingItemWithSwitch(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(Paddings.Medium),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BodyMediumText(
@@ -59,7 +58,6 @@ private fun WithmoSettingItemWithSwitchLightPreview() {
             title = "設定項目",
             checked = false,
             onCheckedChange = {},
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -72,7 +70,6 @@ private fun WithmoSettingItemWithSwitchDarkPreview() {
             title = "設定項目",
             checked = true,
             onCheckedChange = {},
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }

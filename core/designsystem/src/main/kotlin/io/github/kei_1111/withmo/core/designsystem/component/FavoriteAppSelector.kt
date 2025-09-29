@@ -14,11 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
@@ -38,11 +38,11 @@ fun FavoriteAppSelector(
     LazyVerticalGrid(
         modifier = modifier,
         columns = GridCells.Fixed(DesignConstants.APP_LIST_GRID_COLUMNS),
-        verticalArrangement = Arrangement.spacedBy(Paddings.Large),
-        horizontalArrangement = Arrangement.spacedBy(Paddings.Large),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        horizontalArrangement = Arrangement.spacedBy(20.dp),
         contentPadding = PaddingValues(
-            top = Paddings.ExtraSmall,
-            bottom = Paddings.Medium,
+            top = 4.dp,
+            bottom = 16.dp,
         ),
     ) {
         items(appList) { appInfo ->
