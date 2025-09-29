@@ -28,7 +28,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.dashedBorder
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -107,7 +106,7 @@ private fun SelectDisplayModelArea(
                             color = MaterialTheme.colorScheme.primary,
                             shape = CircleShape,
                         )
-                        .size(BadgeSizes.Large),
+                        .size(25.dp),
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = MaterialTheme.colorScheme.secondaryContainer,
                         contentColor = MaterialTheme.colorScheme.primary,

@@ -21,12 +21,12 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.R
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
@@ -156,7 +156,7 @@ private fun Badge(
 ) {
     Box(
         modifier = modifier
-            .size(BadgeSizes.Medium)
+            .size(15.dp)
             .background(MaterialTheme.colorScheme.primary, CircleShape),
     )
 }
