@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
+import android.R.attr.text
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -108,7 +110,11 @@ private fun WithmoDialogContent(
     Column(
         modifier = modifier.padding(20.dp),
     ) {
-        TitleLargeText(title)
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.titleLarge,
+        )
         Spacer(modifier = Modifier.height(8.dp))
         BodyMediumText(description)
         Spacer(modifier = Modifier.height(24.dp))

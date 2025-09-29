@@ -15,6 +15,7 @@ import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -96,7 +97,11 @@ private fun WithmoTopAppBarLightPreview() {
         WithmoTopAppBar(
             navigateBack = {},
             content = {
-                TitleLargeText("Withmo Top App Bar")
+                Text(
+                    text = "Withmo Top App Bar",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleLarge,
+                )
             },
         )
     }
@@ -109,7 +114,11 @@ private fun WithmoTopAppBarDarkPreview() {
         WithmoTopAppBar(
             navigateBack = {},
             content = {
-                TitleLargeText("Withmo Top App Bar")
+                Text(
+                    text = "Withmo Top App Bar",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.titleLarge,
+                )
             },
         )
     }

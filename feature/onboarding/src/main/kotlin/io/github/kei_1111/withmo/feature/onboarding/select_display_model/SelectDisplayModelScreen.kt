@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.feature.onboarding.select_display_model
 
+import android.R.attr.text
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -16,7 +17,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,7 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
-import io.github.kei_1111.withmo.core.designsystem.component.TitleLargeText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
@@ -104,7 +106,11 @@ private fun SelectDisplayModelScreen(
                         .padding(bottom = bottomPaddingValue),
                 ) {
                     WithmoTopAppBar {
-                        TitleLargeText("表示したいVRMモデルは？")
+                        Text(
+                            text = "表示したいVRMモデルは？",
+                            color = MaterialTheme.colorScheme.onSurface,
+                            style = MaterialTheme.typography.titleLarge,
+                        )
                     }
                     SelectDisplayModelScreenContent(
                         state = state,
