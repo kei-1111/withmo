@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.finish.component
 
-import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

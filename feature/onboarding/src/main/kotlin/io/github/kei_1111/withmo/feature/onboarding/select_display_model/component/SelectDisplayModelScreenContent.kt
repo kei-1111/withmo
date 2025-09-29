@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.select_display_model.component
 
-import android.R.attr.text
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image

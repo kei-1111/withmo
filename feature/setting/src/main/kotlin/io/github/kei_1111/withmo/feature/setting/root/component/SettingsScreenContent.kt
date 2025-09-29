@@ -2,7 +2,6 @@
 
 package io.github.kei_1111.withmo.feature.setting.root.component
 
-import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

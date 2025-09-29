@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.R.attr.text
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

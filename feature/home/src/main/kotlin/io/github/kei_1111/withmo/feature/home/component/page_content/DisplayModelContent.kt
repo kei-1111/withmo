@@ -2,7 +2,6 @@
 
 package io.github.kei_1111.withmo.feature.home.component.page_content
 
-import android.R.attr.text
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

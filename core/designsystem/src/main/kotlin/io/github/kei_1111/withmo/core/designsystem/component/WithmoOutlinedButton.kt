@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import android.R.attr.text
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.PaddingValues
