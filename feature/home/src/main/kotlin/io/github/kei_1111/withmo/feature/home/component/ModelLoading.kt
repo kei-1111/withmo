@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 
@@ -43,7 +43,7 @@ internal fun ModelLoading(
                 .height(HomeScreenDimensions.ModelLoadingHeight)
                 .width(HomeScreenDimensions.ModelLoadingWidth),
             shape = MaterialTheme.shapes.medium,
-            shadowElevation = ShadowElevations.Medium,
+            shadowElevation = 5.dp,
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
