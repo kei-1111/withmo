@@ -35,6 +35,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -55,7 +56,6 @@ import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.component.BodyMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
-import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
@@ -391,10 +391,11 @@ private fun WidgetPreviewItem(
             BodyMediumText(text = it)
         }
         widgetDescription?.let {
-            LabelMediumText(
+            Text(
                 text = it.toString(),
                 color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 maxLines = 3,
+                style = MaterialTheme.typography.labelMedium,
             )
         }
     }

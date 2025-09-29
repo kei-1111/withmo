@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.feature.home.component
 
+import android.R.attr.text
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -10,6 +11,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -20,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import io.github.kei_1111.withmo.core.designsystem.component.App
-import io.github.kei_1111.withmo.core.designsystem.component.LabelMediumText
 import io.github.kei_1111.withmo.core.designsystem.component.theme.DesignConstants
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.AppIcon
@@ -67,8 +69,10 @@ internal fun AppList(
     ) {
         if (launchableAppList.isNotEmpty()) {
             item(span = { GridItemSpan(maxLineSpan) }) {
-                LabelMediumText(
+                Text(
                     text = "アプリ一覧",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
             items(
@@ -88,8 +92,10 @@ internal fun AppList(
         if (settingApp.isNotEmpty() && !userSettings.sideButtonSettings.isNavigateSettingsButtonShown) {
             item(span = { GridItemSpan(maxLineSpan) }) {}
             item(span = { GridItemSpan(maxLineSpan) }) {
-                LabelMediumText(
+                Text(
                     text = "カスタマイズ",
+                    color = MaterialTheme.colorScheme.onSurface,
+                    style = MaterialTheme.typography.labelMedium,
                 )
             }
             items(
