@@ -27,7 +27,7 @@ import io.github.kei_1111.withmo.core.util.showToast
 import io.github.kei_1111.withmo.feature.home.component.AppListSheet
 import io.github.kei_1111.withmo.feature.home.component.HomeScreenContent
 import io.github.kei_1111.withmo.feature.home.component.ModelChangeWarningDialog
-import io.github.kei_1111.withmo.feature.home.component.ModelLoading
+import io.github.kei_1111.withmo.feature.home.component.ModelLoadingDialog
 import io.github.kei_1111.withmo.feature.home.component.PlaceableItemListSheet
 import io.github.kei_1111.withmo.feature.home.component.WidgetResizeBottomSheet
 import kotlinx.coroutines.launch
@@ -178,7 +178,7 @@ private fun HomeScreen(
             }
 
             if (state.isModelLoading) {
-                ModelLoading(
+                ModelLoadingDialog(
                     modifier = Modifier.fillMaxSize(),
                 )
             }

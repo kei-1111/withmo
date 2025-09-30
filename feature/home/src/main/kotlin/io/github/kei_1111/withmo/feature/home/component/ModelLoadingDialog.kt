@@ -19,7 +19,7 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
 @Composable
-internal fun ModelLoading(
+internal fun ModelLoadingDialog(
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -60,7 +60,7 @@ internal fun ModelLoading(
 @Composable
 private fun ModelLoadingLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
-        ModelLoading()
+        ModelLoadingDialog()
     }
 }
 
@@ -68,6 +68,6 @@ private fun ModelLoadingLightPreview() {
 @Composable
 private fun ModelLoadingDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
-        ModelLoading()
+        ModelLoadingDialog()
     }
 }
