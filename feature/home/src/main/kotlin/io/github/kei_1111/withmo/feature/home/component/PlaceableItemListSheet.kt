@@ -53,6 +53,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
+import io.github.kei_1111.withmo.core.designsystem.component.App
+import io.github.kei_1111.withmo.core.designsystem.component.AppList
 import io.github.kei_1111.withmo.core.designsystem.component.CenteredMessage
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSearchTextField
 import io.github.kei_1111.withmo.core.designsystem.component.theme.BottomSheetShape
@@ -61,6 +63,7 @@ import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
+import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -202,25 +205,42 @@ private fun AppTabContent(
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val notificationSettings = state.currentUserSettings.notificationSettings
+    val appIconSettings = state.currentUserSettings.appIconSettings
+    val sideButtonSettings = state.currentUserSettings.sideButtonSettings
+
     Column(
-        modifier = modifier.padding(top = 16.dp),
+        modifier = modifier
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         WithmoSearchTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+            modifier = Modifier.fillMaxWidth(),
             value = appSearchQuery,
             onValueChange = onAppSearchQueryChange,
         )
         if (searchedAppList.isNotEmpty()) {
             AppList(
                 appList = searchedAppList,
-                userSettings = state.currentUserSettings,
-                onAppClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
-                onAppLongClick = {},
+                appContent = {
+                    App(
+                        appInfo = it,
+                        isNotificationBadgeShown = notificationSettings.isNotificationBadgeEnabled,
+                        onClick = { onAction(HomeAction.OnAppClick(it)) },
+                        onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
+                        appIconShape = appIconSettings.appIconShape.toShape(
+                            appIconSettings.roundedCornerPercent,
+                        ),
+                    )
+                },
                 modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(
+                    top = 4.dp,
+                    bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
+                ),
+                isShowCustomizeApp = !sideButtonSettings.isNavigateSettingsButtonShown,
             )
         } else {
             CenteredMessage(
