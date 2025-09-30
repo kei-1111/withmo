@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -81,6 +80,7 @@ private fun AppIconSettingsScreen(
         is AppIconSettingsState.Stable -> {
             Surface(
                 modifier = modifier,
+                color = WithmoTheme.colorScheme.surface,
             ) {
                 Column(
                     modifier = Modifier
@@ -91,8 +91,8 @@ private fun AppIconSettingsScreen(
                         content = {
                             Text(
                                 text = "アプリアイコン",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.titleLarge,
+                                color = WithmoTheme.colorScheme.onSurface,
+                                style = WithmoTheme.typography.titleLarge,
                             )
                         },
                         navigateBack = { onAction(AppIconSettingsAction.OnBackButtonClick) },

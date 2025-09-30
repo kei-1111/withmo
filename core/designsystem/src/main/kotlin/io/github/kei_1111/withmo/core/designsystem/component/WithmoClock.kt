@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -50,7 +49,7 @@ fun WithmoClock(
 private fun ClockTopDate(
     dateTimeInfo: DateTimeInfo,
     modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
 ) {
     val dateOffset = 4.dp
     val hourMinuteOffsetY = -4.dp
@@ -105,7 +104,7 @@ private fun ClockTopDate(
 private fun ClockHorizontalDate(
     dateTimeInfo: DateTimeInfo,
     modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
 ) {
     val yearOffsetY = 4.dp
     val monthOffsetY = 4.dp

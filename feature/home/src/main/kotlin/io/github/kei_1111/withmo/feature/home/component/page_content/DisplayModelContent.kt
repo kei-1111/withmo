@@ -19,7 +19,6 @@ import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -71,7 +70,7 @@ internal fun DisplayModelContent(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = WithmoTheme.colorScheme.onSurface,
                 )
             }
             ScaleSlider(
@@ -137,9 +136,10 @@ private fun ScaleSlider(
     Surface(
         modifier = modifier
             .withmoShadow(
-                shape = MaterialTheme.shapes.medium,
+                shape = WithmoTheme.shapes.medium,
             ),
-        shape = MaterialTheme.shapes.medium,
+        shape = WithmoTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier.padding(vertical = 8.dp),
@@ -150,7 +150,7 @@ private fun ScaleSlider(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = WithmoTheme.colorScheme.onSurface,
             )
             WithmoVerticalSlider(
                 value = state.currentUserSettings.modelSettings.scale,
@@ -163,7 +163,7 @@ private fun ScaleSlider(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
                 modifier = Modifier.size(16.dp),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = WithmoTheme.colorScheme.onSurface,
             )
         }
     }
@@ -232,7 +232,7 @@ private fun OpenDocumentButton(
                 imageVector = Icons.Rounded.ChangeCircle,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = WithmoTheme.colorScheme.onSurface,
             )
         }
     }
@@ -255,7 +255,7 @@ private fun ShowScaleSliderButton(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = WithmoTheme.colorScheme.onSurface,
             )
         }
     }
@@ -275,8 +275,8 @@ private fun SideButtonContainer(
         Spacer(modifier = Modifier.weight(1f))
         Text(
             text = label,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelSmall,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelSmall,
         )
     }
 }

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -77,6 +76,7 @@ private fun FavoriteAppSettingsScreen(
         is FavoriteAppSettingsState.Stable -> {
             Surface(
                 modifier = modifier,
+                color = WithmoTheme.colorScheme.surface,
             ) {
                 Column(
                     modifier = Modifier
@@ -87,8 +87,8 @@ private fun FavoriteAppSettingsScreen(
                         content = {
                             Text(
                                 text = "お気に入りアプリ",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.titleLarge,
+                                color = WithmoTheme.colorScheme.onSurface,
+                                style = WithmoTheme.typography.titleLarge,
                             )
                         },
                         navigateBack = { onAction(FavoriteAppSettingsAction.OnBackButtonClick) },

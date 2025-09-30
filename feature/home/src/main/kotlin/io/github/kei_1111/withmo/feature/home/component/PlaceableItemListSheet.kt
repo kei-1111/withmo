@@ -29,7 +29,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ExpandMore
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
@@ -135,8 +134,8 @@ internal fun PlaceableItemListSheet(
                                     PlaceableItemTab.WIDGET -> "ウィジェット"
                                     PlaceableItemTab.APP -> "アプリ"
                                 },
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.bodyMedium,
+                                color = WithmoTheme.colorScheme.onSurface,
+                                style = WithmoTheme.typography.bodyMedium,
                             )
                         },
                     )
@@ -287,8 +286,8 @@ private fun WidgetPreviewContainer(
 
     Surface(
         modifier = modifier.animateContentSize(),
-        shape = MaterialTheme.shapes.medium,
-        color = MaterialTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surfaceContainer,
     ) {
         Column {
             Row(
@@ -310,8 +309,8 @@ private fun WidgetPreviewContainer(
                 appLabel?.let {
                     Text(
                         text = appLabel,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.bodyMedium,
+                        color = WithmoTheme.colorScheme.onSurface,
+                        style = WithmoTheme.typography.bodyMedium,
                     )
                 }
                 Spacer(
@@ -320,7 +319,7 @@ private fun WidgetPreviewContainer(
                 Icon(
                     imageVector = Icons.Rounded.ExpandMore,
                     contentDescription = if (expanded) "Close" else "Open",
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = WithmoTheme.colorScheme.onSurface,
                     modifier = Modifier.rotate(rotationAngle),
                 )
             }
@@ -393,16 +392,16 @@ private fun WidgetPreviewItem(
         widgetLabel?.let {
             Text(
                 text = it,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
         }
         widgetDescription?.let {
             Text(
                 text = it.toString(),
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                 maxLines = 3,
-                style = MaterialTheme.typography.labelMedium,
+                style = WithmoTheme.typography.labelMedium,
             )
         }
     }
@@ -438,8 +437,8 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                     text = {
                         Text(
                             text = "ウィジェット",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodyMedium,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.bodyMedium,
                         )
                     },
                 )
@@ -450,8 +449,8 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                     text = {
                         Text(
                             text = "アプリ",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodyMedium,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.bodyMedium,
                         )
                     },
                 )
@@ -506,8 +505,8 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                     text = {
                         Text(
                             text = "ウィジェット",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodyMedium,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.bodyMedium,
                         )
                     },
                 )
@@ -518,8 +517,8 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                     text = {
                         Text(
                             text = "アプリ",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.bodyMedium,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.bodyMedium,
                         )
                     },
                 )

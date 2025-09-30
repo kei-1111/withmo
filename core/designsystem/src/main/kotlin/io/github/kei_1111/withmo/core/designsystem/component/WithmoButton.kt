@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,7 +26,12 @@ fun WithmoButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.filledTonalShape,
-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
+        containerColor = WithmoTheme.colorScheme.secondaryContainer,
+        contentColor = WithmoTheme.colorScheme.onSecondaryContainer,
+        disabledContainerColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledContentColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    ),
     elevation: Dp? = null,
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
@@ -74,12 +78,12 @@ fun WithmoSaveButton(
     ) {
         Text(
             text = "保存",
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-            },
-            style = MaterialTheme.typography.bodyMedium,
+//            color = if (enabled) {
+//                WithmoTheme.colorScheme.primary
+//            } else {
+//                WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+//            },
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }
@@ -98,11 +102,11 @@ fun WithmoNextButton(
         Text(
             text = "次へ",
             color = if (enabled) {
-                MaterialTheme.colorScheme.primary
+                WithmoTheme.colorScheme.primary
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             },
-            style = MaterialTheme.typography.bodyMedium,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }

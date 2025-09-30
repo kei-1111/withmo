@@ -1,17 +1,15 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import android.R.attr.onClick
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -62,8 +60,8 @@ fun WithmoDialog(
     ) {
         Surface(
             modifier = modifier,
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surface,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surface,
         ) {
             WithmoDialogContent(
                 title = title,
@@ -111,14 +109,14 @@ private fun WithmoDialogContent(
     ) {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.titleLarge,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.titleLarge,
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
             text = description,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.bodyMedium,
         )
         Spacer(modifier = Modifier.height(24.dp))
         Row(
@@ -130,20 +128,20 @@ private fun WithmoDialogContent(
                 modifier = Modifier
                     .safeClickable(
                         indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) { onDismissClick() },
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                        onClick = onDismissClick,
+                    ),
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
             Text(
                 text = confirmButtonText,
                 modifier = Modifier
                     .safeClickable(
                         indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                    ) { onConfirmClick() },
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                        onClick = onConfirmClick,
+                    ),
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
         }
     }

@@ -5,6 +5,9 @@ package io.github.kei_1111.withmo.core.designsystem.component.theme
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalRippleConfiguration
+import androidx.compose.material3.RippleConfiguration
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
@@ -311,6 +314,7 @@ internal val LocalColorScheme = staticCompositionLocalOf { lightScheme }
 internal val LocalTypography = staticCompositionLocalOf { Typography }
 internal val LocalShapes = staticCompositionLocalOf { Shapes }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WithmoTheme(
     themeType: ThemeType,
@@ -331,11 +335,13 @@ fun WithmoTheme(
     }
 
     val animatedColorScheme = animatedColorScheme(targetColorScheme)
+    val rippleConfiguration = RippleConfiguration(color = animatedColorScheme.primary)
 
     CompositionLocalProvider(
         LocalColorScheme provides animatedColorScheme,
         LocalTypography provides Typography,
         LocalShapes provides Shapes,
+        LocalRippleConfiguration provides rippleConfiguration,
     ) { content() }
 }
 

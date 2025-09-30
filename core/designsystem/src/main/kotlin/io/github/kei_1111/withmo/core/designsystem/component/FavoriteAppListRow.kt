@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
@@ -38,7 +37,7 @@ fun FavoriteAppListRow(
                 addSelectedAppList = { },
                 removeSelectedAppList = { removeSelectedAppList(it.info) },
                 onClick = { removeSelectedAppList(it.info) },
-                backgroundColor = MaterialTheme.colorScheme.surface,
+                backgroundColor = WithmoTheme.colorScheme.surface,
                 modifier = Modifier.weight(1f),
                 appIconShape = appIconShape,
             )

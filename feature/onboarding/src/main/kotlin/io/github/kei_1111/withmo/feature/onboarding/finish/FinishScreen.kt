@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -68,6 +67,7 @@ private fun FinishScreen(
 
     Surface(
         modifier = modifier,
+        color = WithmoTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
@@ -97,8 +97,8 @@ private fun FinishScreen(
                 ) {
                     Text(
                         text = "はじめる",
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodyMedium,
+                        color = WithmoTheme.colorScheme.primary,
+                        style = WithmoTheme.typography.bodyMedium,
                     )
                 }
             }

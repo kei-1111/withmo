@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -97,6 +96,7 @@ private fun SelectDisplayModelScreen(
         is SelectDisplayModelState.Stable -> {
             Surface(
                 modifier = modifier,
+                color = WithmoTheme.colorScheme.surface,
             ) {
                 Column(
                     modifier = Modifier
@@ -106,8 +106,8 @@ private fun SelectDisplayModelScreen(
                     WithmoTopAppBar {
                         Text(
                             text = "表示したいVRMモデルは？",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleLarge,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.titleLarge,
                         )
                     }
                     SelectDisplayModelScreenContent(
@@ -135,7 +135,7 @@ private fun SelectDisplayModelScreen(
                         ) {
                             Text(
                                 text = if (state.isDefaultModel) "スキップ" else "次へ",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = WithmoTheme.typography.bodyMedium,
                             )
                         }
                     }

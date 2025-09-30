@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -29,8 +28,8 @@ internal fun ThemeTypePicker(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
     ) {
         Column {
             Box(
@@ -41,8 +40,8 @@ internal fun ThemeTypePicker(
             ) {
                 Text(
                     text = "テーマ",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
             WithmoSettingItemWithRadioButton(
@@ -102,27 +101,27 @@ private fun ThemeTypePickerItem(
             ThemeType.TIME_BASED -> {
                 Text(
                     text = "時間帯による自動切り替え",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
                 Text(
                     text = "6時-19時: ライトモード, 19時-6時: ダークモード",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                    style = MaterialTheme.typography.labelMedium,
+                    color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    style = WithmoTheme.typography.labelMedium,
                 )
             }
             ThemeType.LIGHT -> {
                 Text(
                     text = "ライトモード",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
             ThemeType.DARK -> {
                 Text(
                     text = "ダークモード",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
         }

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,7 +40,8 @@ internal fun ModelLoading(
             modifier = Modifier
                 .height(HomeScreenDimensions.ModelLoadingHeight)
                 .width(HomeScreenDimensions.ModelLoadingWidth),
-            shape = MaterialTheme.shapes.medium,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surface,
             shadowElevation = 5.dp,
         ) {
             Row(
@@ -51,8 +51,8 @@ internal fun ModelLoading(
             ) {
                 Text(
                     text = "モデルの読込中",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
                 CircularProgressIndicator()
             }

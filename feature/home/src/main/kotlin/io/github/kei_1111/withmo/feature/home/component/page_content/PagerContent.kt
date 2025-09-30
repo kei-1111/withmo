@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -155,9 +154,9 @@ private fun PageIndicator(
     ) {
         repeat(pageCount) { iteration ->
             val color = if (currentPage == iteration) {
-                MaterialTheme.colorScheme.onSurface
+                WithmoTheme.colorScheme.onSurface
             } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f)
             }
             Box(
                 modifier = Modifier

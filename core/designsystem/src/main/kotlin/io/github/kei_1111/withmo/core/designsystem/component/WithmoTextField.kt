@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,9 +51,9 @@ fun WithmoTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     interactionSource: MutableInteractionSource? = null,
-    cursorBrush: Brush = SolidColor(MaterialTheme.colorScheme.onSurface),
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
-    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    cursorBrush: Brush = SolidColor(WithmoTheme.colorScheme.onSurface),
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
+    placeholderColor: Color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
 ) {
     BasicTextField(
         value = value,
@@ -95,12 +94,12 @@ fun WithmoSearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = WithmoTheme.colorScheme.surfaceContainer,
 ) {
     Surface(
         modifier = modifier.height(TextFieldHeight),
         color = backgroundColor,
-        shape = MaterialTheme.shapes.large,
+        shape = WithmoTheme.shapes.large,
     ) {
         Row(
             modifier = Modifier
@@ -113,7 +112,7 @@ fun WithmoSearchTextField(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = "Search",
                 modifier = Modifier.size(24.dp),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = WithmoTheme.colorScheme.onSurface,
             )
             WithmoTextField(
                 value = value,

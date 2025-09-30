@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,8 +29,8 @@ internal fun SortTypePicker(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
     ) {
         Column {
             Box(
@@ -42,8 +41,8 @@ internal fun SortTypePicker(
             ) {
                 Text(
                     text = "並び順",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
             WithmoSettingItemWithRadioButton(
@@ -92,20 +91,20 @@ private fun SortTypePickerItem(
             SortType.ALPHABETICAL -> {
                 Text(
                     text = "アルファベット順",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
             SortType.USE_COUNT -> {
                 Text(
                     text = "使用回数順",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
                 Text(
                     text = "端末に保存されているアプリの使用回数で並び替え",
-                    color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                    style = MaterialTheme.typography.labelMedium,
+                    color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    style = WithmoTheme.typography.labelMedium,
                 )
             }
         }

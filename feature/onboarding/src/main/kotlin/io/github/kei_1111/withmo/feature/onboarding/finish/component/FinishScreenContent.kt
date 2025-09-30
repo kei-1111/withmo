@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -33,13 +32,13 @@ internal fun FinishScreenContent(
         )
         Text(
             text = "Completed!",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.displayMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.displayMedium,
         )
         Text(
             text = "設定が完了しました！",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }

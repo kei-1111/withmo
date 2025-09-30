@@ -3,7 +3,6 @@ package io.github.kei_1111.withmo.core.designsystem.component
 import androidx.annotation.IntRange
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,16 +24,16 @@ fun WithmoSettingItemWithSlider(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
     ) {
         Column(
             modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             Text(
                 text = title,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
                 modifier = Modifier.padding(vertical = 16.dp),
             )
             WithmoSlider(

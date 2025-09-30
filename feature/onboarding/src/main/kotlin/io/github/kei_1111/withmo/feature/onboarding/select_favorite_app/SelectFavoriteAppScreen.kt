@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,6 +79,7 @@ private fun SelectFavoriteAppScreen(
         is SelectFavoriteAppState.Stable -> {
             Surface(
                 modifier = modifier,
+                color = WithmoTheme.colorScheme.surface,
             ) {
                 Column(
                     modifier = Modifier
@@ -89,8 +89,8 @@ private fun SelectFavoriteAppScreen(
                     WithmoTopAppBar {
                         Text(
                             text = "お気に入りアプリは？",
-                            color = MaterialTheme.colorScheme.onSurface,
-                            style = MaterialTheme.typography.titleLarge,
+                            color = WithmoTheme.colorScheme.onSurface,
+                            style = WithmoTheme.typography.titleLarge,
                         )
                     }
                     SelectFavoriteAppScreenContent(
@@ -118,7 +118,7 @@ private fun SelectFavoriteAppScreen(
                         ) {
                             Text(
                                 text = if (state.selectedAppList.isEmpty()) "スキップ" else "次へ",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = WithmoTheme.typography.bodyMedium,
                             )
                         }
                     }

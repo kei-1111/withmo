@@ -17,6 +17,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.navigation.Screen
 import io.github.kei_1111.withmo.navigation.WithmoNavHost
 
@@ -30,6 +31,7 @@ fun App(
 
     Surface(
         modifier = Modifier.fillMaxSize(),
+        color = WithmoTheme.colorScheme.surface,
     ) {
         UnityView(
             modifier = Modifier.fillMaxSize(),

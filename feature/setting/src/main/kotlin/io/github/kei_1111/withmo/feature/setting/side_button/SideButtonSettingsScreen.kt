@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -80,6 +79,7 @@ private fun SideButtonSettingsScreen(
         is SideButtonSettingsState.Stable -> {
             Surface(
                 modifier = modifier,
+                color = WithmoTheme.colorScheme.surface,
             ) {
                 Column(
                     modifier = Modifier
@@ -90,8 +90,8 @@ private fun SideButtonSettingsScreen(
                         content = {
                             Text(
                                 text = "サイドボタン",
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = MaterialTheme.typography.titleLarge,
+                                color = WithmoTheme.colorScheme.onSurface,
+                                style = WithmoTheme.typography.titleLarge,
                             )
                         },
                         navigateBack = { onAction(SideButtonSettingsAction.OnBackButtonClick) },

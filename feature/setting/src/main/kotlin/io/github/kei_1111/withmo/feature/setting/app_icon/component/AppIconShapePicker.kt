@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,8 +34,8 @@ internal fun AppIconShapePicker(
 ) {
     Surface(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
     ) {
         Column {
             Box(
@@ -47,8 +46,8 @@ internal fun AppIconShapePicker(
             ) {
                 Text(
                     text = "アプリアイコンの形",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             }
             WithmoSettingItemWithRadioButton(
@@ -112,15 +111,15 @@ private fun AppIconShapePickerItem(
             modifier = Modifier
                 .size(24.dp)
                 .background(
-                    MaterialTheme.colorScheme.onSurface,
+                    WithmoTheme.colorScheme.onSurface,
                     appIconShape.toShape(DEFAULT_ROUNDED_CORNER_PERCENT),
                 ),
         )
         Spacer(modifier = Modifier.padding(4.dp))
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }

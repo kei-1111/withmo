@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -65,18 +64,18 @@ fun getFavoriteAppSelectorItemModifier(
 ): Modifier {
     return if (isSelected) {
         Modifier
-            .clip(MaterialTheme.shapes.medium)
+            .clip(WithmoTheme.shapes.medium)
             .safeClickable { removeSelectedAppList() }
             .border(
                 BorderWidth,
-                MaterialTheme.colorScheme.primary,
-                MaterialTheme.shapes.medium,
+                WithmoTheme.colorScheme.primary,
+                WithmoTheme.shapes.medium,
             )
             .background(backgroundColor)
             .padding(4.dp)
     } else {
         Modifier
-            .clip(MaterialTheme.shapes.medium)
+            .clip(WithmoTheme.shapes.medium)
             .safeClickable { addSelectedAppList() }
             .padding(4.dp)
     }
@@ -104,7 +103,7 @@ private fun FavoriteAppSelectorItemLightPreview() {
             addSelectedAppList = { },
             removeSelectedAppList = { },
             onClick = { },
-            backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
+            backgroundColor = WithmoTheme.colorScheme.primaryContainer.copy(
                 alpha = 0.38f,
             ),
         )
@@ -133,7 +132,7 @@ private fun FavoriteAppSelectorItemDarkPreview() {
             addSelectedAppList = { },
             removeSelectedAppList = { },
             onClick = { },
-            backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
+            backgroundColor = WithmoTheme.colorScheme.primaryContainer.copy(
                 alpha = 0.38f,
             ),
         )

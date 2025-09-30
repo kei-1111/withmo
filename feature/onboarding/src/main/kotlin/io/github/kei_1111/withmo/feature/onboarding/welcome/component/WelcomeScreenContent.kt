@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,8 +33,8 @@ internal fun WelcomeScreenContent(
         )
         Text(
             text = "Let's get started!",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.displayMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.displayMedium,
         )
         Column(
             modifier = Modifier.fillMaxWidth(),
@@ -43,13 +42,13 @@ internal fun WelcomeScreenContent(
         ) {
             Text(
                 text = "お気に入りアプリの登録と表示モデル設定をして",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
             Text(
                 text = "今すぐwithmoを始めよう！",
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodyMedium,
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
         }
     }

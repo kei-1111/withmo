@@ -19,7 +19,6 @@ import androidx.compose.material.icons.rounded.ZoomOutMap
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -125,8 +124,8 @@ fun PlaceableItemContainer(
                     }
                     .border(
                         width = BorderWidth,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium,
+                        color = WithmoTheme.colorScheme.primary,
+                        shape = WithmoTheme.shapes.medium,
                     )
             } else {
                 Modifier
@@ -141,7 +140,7 @@ fun PlaceableItemContainer(
         if (isEditMode) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
-                shape = MaterialTheme.shapes.medium,
+                shape = WithmoTheme.shapes.medium,
                 color = Color.Transparent,
             ) {
                 Box(
@@ -200,8 +199,8 @@ private fun PlaceableItemBadge(
         modifier = modifier
             .size(25.dp),
         colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary,
+            containerColor = WithmoTheme.colorScheme.secondaryContainer,
+            contentColor = WithmoTheme.colorScheme.primary,
         ),
     ) {
         Icon(

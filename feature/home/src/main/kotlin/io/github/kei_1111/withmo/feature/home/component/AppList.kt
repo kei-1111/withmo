@@ -10,7 +10,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -70,8 +69,8 @@ internal fun AppList(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "アプリ一覧",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.labelMedium,
                 )
             }
             items(
@@ -93,8 +92,8 @@ internal fun AppList(
             item(span = { GridItemSpan(maxLineSpan) }) {
                 Text(
                     text = "カスタマイズ",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.labelMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.labelMedium,
                 )
             }
             items(

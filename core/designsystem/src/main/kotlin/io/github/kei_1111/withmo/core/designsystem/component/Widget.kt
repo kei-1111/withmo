@@ -4,7 +4,6 @@ import android.appwidget.AppWidgetManager
 import android.os.Bundle
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -12,6 +11,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.ui.LocalAppWidgetHost
 
@@ -51,7 +51,7 @@ fun Widget(
         modifier = modifier
             .size(placedWidgetInfo.width.dp, placedWidgetInfo.height.dp)
             .padding(8.dp)
-            .clip(MaterialTheme.shapes.medium),
+            .clip(WithmoTheme.shapes.medium),
         update = { view ->
             view.setPadding(0, 0, 0, 0)
         },

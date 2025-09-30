@@ -7,7 +7,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -63,7 +62,7 @@ fun FavoriteAppSelector(
                         addSelectedAppList(appInfo)
                     }
                 },
-                backgroundColor = MaterialTheme.colorScheme.primaryContainer.copy(
+                backgroundColor = WithmoTheme.colorScheme.primaryContainer.copy(
                     alpha = 0.38f,
                 ),
                 modifier = Modifier.fillMaxWidth(),

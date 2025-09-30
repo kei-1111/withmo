@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.contentDescription
@@ -42,18 +43,33 @@ fun WithmoSlider(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
+    val withmoSliderColor = SliderDefaults.colors(
+        thumbColor = WithmoTheme.colorScheme.primary,
+        activeTrackColor = WithmoTheme.colorScheme.primary,
+        activeTickColor = WithmoTheme.colorScheme.secondaryContainer,
+        inactiveTrackColor = WithmoTheme.colorScheme.secondaryContainer,
+        inactiveTickColor = WithmoTheme.colorScheme.primary,
+        disabledThumbColor = WithmoTheme.colorScheme.onSurface
+            .copy(alpha = 0.38f)
+            .compositeOver(WithmoTheme.colorScheme.surface),
+        disabledActiveTrackColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+        disabledActiveTickColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledInactiveTrackColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledInactiveTickColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    )
+
     Slider(
         value = value,
         onValueChange = onValueChange,
-        enabled = enabled,
-        valueRange = valueRange,
-        interactionSource = interactionSource,
         modifier = modifier
             .semantics { contentDescription = "Localized Description" }
             .requiredSizeIn(
                 minWidth = SliderThumbSize,
                 minHeight = SliderTrackHeight,
             ),
+        enabled = enabled,
+        valueRange = valueRange,
+        interactionSource = interactionSource,
         steps = steps,
         thumb = {
             val thumbModifier = Modifier
@@ -69,6 +85,7 @@ fun WithmoSlider(
             SliderDefaults.Thumb(
                 interactionSource = interactionSource,
                 modifier = thumbModifier,
+                colors = withmoSliderColor,
                 enabled = enabled,
             )
         },
@@ -78,6 +95,7 @@ fun WithmoSlider(
             SliderDefaults.Track(
                 sliderState = it,
                 modifier = trackModifier,
+                colors = withmoSliderColor,
                 enabled = enabled,
             )
         },

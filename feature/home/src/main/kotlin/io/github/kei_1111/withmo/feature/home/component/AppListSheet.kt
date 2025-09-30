@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.ScaffoldDefaults.contentWindowInsets
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -63,42 +63,40 @@ internal fun AppListSheet(
 
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
+        modifier = modifier,
         shape = BottomSheetShape,
         sheetState = appListSheetState,
+        containerColor = WithmoTheme.colorScheme.surface,
         contentWindowInsets = { WindowInsets(bottom = 0.dp) },
         dragHandle = {},
     ) {
-        Surface(
-            modifier = modifier,
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()),
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            Column(
+            WithmoSearchTextField(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = WindowInsets.safeGestures.asPaddingValues().calculateTopPadding()),
-                verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                WithmoSearchTextField(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp),
-                    value = appSearchQuery,
-                    onValueChange = { appSearchQuery = it },
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                value = appSearchQuery,
+                onValueChange = { appSearchQuery = it },
+            )
+            if (searchedAppList.isNotEmpty()) {
+                AppList(
+                    appList = searchedAppList,
+                    userSettings = state.currentUserSettings,
+                    onAppClick = { onAction(HomeAction.OnAppClick(it)) },
+                    onAppLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
+                    modifier = Modifier.fillMaxSize(),
                 )
-                if (searchedAppList.isNotEmpty()) {
-                    AppList(
-                        appList = searchedAppList,
-                        userSettings = state.currentUserSettings,
-                        onAppClick = { onAction(HomeAction.OnAppClick(it)) },
-                        onAppLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                } else {
-                    CenteredMessage(
-                        message = "アプリが見つかりません",
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
+            } else {
+                CenteredMessage(
+                    message = "アプリが見つかりません",
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
         }
     }

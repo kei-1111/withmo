@@ -4,8 +4,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
+import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,6 +42,12 @@ fun WithmoSettingItemWithRadioButton(
             selected = selected,
             onClick = { if (clickBlocker.tryClick()) onClick() },
             enabled = enabled,
+            colors = RadioButtonDefaults.colors(
+                selectedColor = WithmoTheme.colorScheme.primary,
+                unselectedColor = WithmoTheme.colorScheme.onSurfaceVariant,
+                disabledSelectedColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                disabledUnselectedColor = WithmoTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
+            ),
         )
     }
 }
@@ -54,8 +60,8 @@ private fun WithmoSettingItemWithRadioButtonLightPreview() {
             item = {
                 Text(
                     text = "設定項目",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             },
             selected = true,
@@ -72,8 +78,8 @@ private fun WithmoSettingItemWithRadioButtonDarkPreview() {
             item = {
                 Text(
                     text = "設定項目",
-                    color = MaterialTheme.colorScheme.onSurface,
-                    style = MaterialTheme.typography.bodyMedium,
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
                 )
             },
             selected = true,

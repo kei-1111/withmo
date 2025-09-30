@@ -2,7 +2,6 @@ package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,8 +21,8 @@ fun CenteredMessage(
     ) {
         Text(
             text = message,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }

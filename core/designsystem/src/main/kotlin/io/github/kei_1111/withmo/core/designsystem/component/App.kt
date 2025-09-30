@@ -9,8 +9,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -67,10 +67,10 @@ fun App(
             Spacer(modifier = Modifier.weight(1f))
             Text(
                 text = appInfo.label,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = WithmoTheme.colorScheme.onSurface,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
-                style = MaterialTheme.typography.labelSmall,
+                style = WithmoTheme.typography.labelSmall,
             )
         }
     }
@@ -97,10 +97,11 @@ private fun AppIcon(
                         shape = appIconShape,
                     )
                     .background(
-                        color = MaterialTheme.colorScheme.surface,
+                        color = WithmoTheme.colorScheme.surface,
                         shape = appIconShape,
                     )
                     .safeClickable(
+                        indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),
@@ -132,6 +133,7 @@ private fun AppIcon(
                         shape = CircleShape,
                     )
                     .safeClickable(
+                        indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),
@@ -154,7 +156,7 @@ private fun Badge(
     Box(
         modifier = modifier
             .size(15.dp)
-            .background(MaterialTheme.colorScheme.primary, CircleShape),
+            .background(WithmoTheme.colorScheme.primary, CircleShape),
     )
 }
 

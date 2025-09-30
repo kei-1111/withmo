@@ -14,7 +14,6 @@ import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -49,8 +48,8 @@ internal fun SelectDisplayModelScreenContent(
         )
         Text(
             text = if (state.isDefaultModel) "デフォルトモデル" else state.modelFileName,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }
@@ -67,22 +66,23 @@ private fun SelectDisplayModelArea(
             .then(
                 if (state.modelFileThumbnail != null && !state.isDefaultModel) {
                     Modifier.border(
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium,
+                        color = WithmoTheme.colorScheme.primary,
+                        shape = WithmoTheme.shapes.medium,
                         width = 2.dp,
                     )
                 } else {
                     Modifier.dashedBorder(
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium,
+                        color = WithmoTheme.colorScheme.primary,
+                        shape = WithmoTheme.shapes.medium,
                         strokeWidth = 2.dp,
                         gapLength = 8.dp,
                     )
                 },
             )
-            .clip(MaterialTheme.shapes.medium)
+            .clip(WithmoTheme.shapes.medium)
             .safeClickable { onClick() },
-        shape = MaterialTheme.shapes.medium,
+        shape = WithmoTheme.shapes.medium,
+        color = WithmoTheme.colorScheme.surface,
     ) {
         if (state.modelFileThumbnail != null && !state.isDefaultModel) {
             Image(
@@ -101,13 +101,13 @@ private fun SelectDisplayModelArea(
                     modifier = Modifier
                         .border(
                             width = 2.dp,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = WithmoTheme.colorScheme.primary,
                             shape = CircleShape,
                         )
                         .size(25.dp),
                     colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.primary,
+                        containerColor = WithmoTheme.colorScheme.secondaryContainer,
+                        contentColor = WithmoTheme.colorScheme.primary,
                     ),
                 ) {
                     Icon(
@@ -120,13 +120,13 @@ private fun SelectDisplayModelArea(
                 ) {
                     Text(
                         text = "表示モデルの選択",
-                        color = MaterialTheme.colorScheme.primary,
-                        style = MaterialTheme.typography.bodyMedium,
+                        color = WithmoTheme.colorScheme.primary,
+                        style = WithmoTheme.typography.bodyMedium,
                     )
                     Text(
                         text = "VRMファイルを選択してください",
-                        color = MaterialTheme.colorScheme.onSurface,
-                        style = MaterialTheme.typography.labelMedium,
+                        color = WithmoTheme.colorScheme.onSurface,
+                        style = WithmoTheme.typography.labelMedium,
                     )
                 }
             }

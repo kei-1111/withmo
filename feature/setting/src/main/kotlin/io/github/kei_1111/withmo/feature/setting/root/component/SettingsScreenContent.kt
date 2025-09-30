@@ -25,9 +25,9 @@ import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Wallpaper
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.NonRestartableComposable
 import androidx.compose.ui.Alignment
@@ -76,16 +76,16 @@ private fun HomeAppSettings(
     ) {
         Text(
             text = "ホームアプリの設定",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelMedium,
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
+            shape = WithmoTheme.shapes.medium,
             color = if (isDefaultHomeApp) {
-                MaterialTheme.colorScheme.surfaceContainer
+                WithmoTheme.colorScheme.surfaceContainer
             } else {
-                MaterialTheme.colorScheme.errorContainer
+                WithmoTheme.colorScheme.errorContainer
             },
         ) {
             Column {
@@ -100,9 +100,9 @@ private fun HomeAppSettings(
                         onAction(SettingsAction.OnNavigateHomeAppSettingButtonClick)
                     },
                     itemColor = if (isDefaultHomeApp) {
-                        MaterialTheme.colorScheme.onSurface
+                        WithmoTheme.colorScheme.onSurface
                     } else {
-                        MaterialTheme.colorScheme.onErrorContainer
+                        WithmoTheme.colorScheme.onErrorContainer
                     },
                 )
             }
@@ -121,13 +121,13 @@ private fun HomeScreenSettings(
     ) {
         Text(
             text = "ホーム画面の設定",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelMedium,
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surfaceContainer,
         ) {
             Column {
                 SettingItem(
@@ -185,13 +185,13 @@ private fun NotificationSettings(
     ) {
         Text(
             text = "通知の設定",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelMedium,
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surfaceContainer,
         ) {
             Column {
                 SettingItem(
@@ -217,13 +217,13 @@ private fun WallpaperSettings(
     ) {
         Text(
             text = "壁紙の設定",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelMedium,
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surfaceContainer,
         ) {
             Column {
                 SettingItem(
@@ -249,13 +249,13 @@ private fun ThemeSettings(
     ) {
         Text(
             text = "テーマの設定",
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.labelMedium,
+            color = WithmoTheme.colorScheme.onSurface,
+            style = WithmoTheme.typography.labelMedium,
         )
         Surface(
             modifier = Modifier.fillMaxWidth(),
-            shape = MaterialTheme.shapes.medium,
-            color = MaterialTheme.colorScheme.surfaceContainer,
+            shape = WithmoTheme.shapes.medium,
+            color = WithmoTheme.colorScheme.surfaceContainer,
         ) {
             Column {
                 SettingItem(
@@ -284,12 +284,15 @@ private fun SettingItem(
     itemName: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    itemColor: Color = MaterialTheme.colorScheme.onSurface,
+    itemColor: Color = WithmoTheme.colorScheme.onSurface,
 ) {
     Row(
         modifier = modifier
             .height(56.dp)
-            .safeClickable { onClick() }
+            .safeClickable(
+                indication = ripple(),
+                onClick = onClick,
+            )
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -304,7 +307,7 @@ private fun SettingItem(
             text = itemName,
             modifier = Modifier.weight(1f),
             color = itemColor,
-            style = MaterialTheme.typography.bodyMedium,
+            style = WithmoTheme.typography.bodyMedium,
         )
         Icon(
             imageVector = Icons.Rounded.KeyboardArrowRight,

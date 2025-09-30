@@ -17,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Widgets
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
@@ -126,12 +125,12 @@ private fun AddPlaceableItemButton(
     WithmoIconButton(
         onClick = onClick,
         modifier = modifier.size(56.dp),
-        backgroundColor = MaterialTheme.colorScheme.secondaryContainer,
+        backgroundColor = WithmoTheme.colorScheme.secondaryContainer,
     ) {
         Icon(
             imageVector = Icons.Rounded.Widgets,
             contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
+            tint = WithmoTheme.colorScheme.primary,
         )
     }
 }
@@ -151,8 +150,8 @@ private fun CompleteEditButton(
     ) {
         Text(
             text = "編集完了",
-            color = MaterialTheme.colorScheme.primary,
-            style = MaterialTheme.typography.bodyMedium,
+            color = WithmoTheme.colorScheme.primary,
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }
