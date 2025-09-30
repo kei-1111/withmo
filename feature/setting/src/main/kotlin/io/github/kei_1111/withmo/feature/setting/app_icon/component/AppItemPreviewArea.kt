@@ -23,7 +23,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconShape
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.setting.R
-import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreenDimensions
 
 private const val PREVIEW_APP_ITEM_SIZE = 4
 
@@ -33,8 +32,7 @@ internal fun AppItemPreviewArea(
     modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier = modifier
-            .height(AppIconSettingsScreenDimensions.PreviewHeight),
+        modifier = modifier.height(200.dp),
         contentAlignment = Alignment.BottomCenter,
     ) {
         Row(
