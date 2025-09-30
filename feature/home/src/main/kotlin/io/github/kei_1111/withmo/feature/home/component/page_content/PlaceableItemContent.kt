@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Widgets
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
@@ -145,7 +145,7 @@ private fun CompleteEditButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    FilledTonalButton(
+    WithmoButton(
         onClick = onClick,
         modifier = modifier
             .height(56.dp)

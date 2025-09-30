@@ -34,6 +34,8 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults
+import androidx.compose.material3.TabRowDefaults.tabIndicatorOffset
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -110,6 +112,7 @@ internal fun PlaceableItemListSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = placeableItemListSheetState,
+        containerColor = WithmoTheme.colorScheme.surface,
         dragHandle = {},
         contentWindowInsets = { WindowInsets(bottom = 0) },
         modifier = modifier,
@@ -119,7 +122,14 @@ internal fun PlaceableItemListSheet(
         ) {
             TabRow(
                 selectedTabIndex = pagerState.currentPage,
+                containerColor = WithmoTheme.colorScheme.surface,
                 modifier = Modifier.fillMaxWidth(),
+                indicator = { tabPositions ->
+                    TabRowDefaults.SecondaryIndicator(
+                        modifier = Modifier.tabIndicatorOffset(tabPositions[pagerState.currentPage]),
+                        color = WithmoTheme.colorScheme.primary,
+                    )
+                },
             ) {
                 PlaceableItemTab.entries.forEachIndexed { index, tab ->
                     Tab(
