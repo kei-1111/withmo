@@ -31,7 +31,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
 import io.github.kei_1111.withmo.feature.home.HomeState
-import io.github.kei_1111.withmo.feature.home.component.page_content.PagerContent
 import kotlinx.collections.immutable.toPersistentList
 
 private const val BOTTOM_SHEET_SHOW_DRAG_HEIGHT = -50f

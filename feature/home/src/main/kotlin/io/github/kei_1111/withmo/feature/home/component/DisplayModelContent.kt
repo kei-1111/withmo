@@ -1,6 +1,6 @@
 @file:Suppress("TooManyFunctions")
 
-package io.github.kei_1111.withmo.feature.home.component.page_content
+package io.github.kei_1111.withmo.feature.home.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement

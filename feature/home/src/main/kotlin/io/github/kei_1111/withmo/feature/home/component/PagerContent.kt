@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.feature.home.component.page_content
+package io.github.kei_1111.withmo.feature.home.component
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
