@@ -5,11 +5,15 @@ package io.github.kei_1111.withmo.core.designsystem.component.theme
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.ColorScheme
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Shapes
+import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalCurrentTime
 import io.github.kei_1111.withmo.core.util.TimeUtils
@@ -304,6 +308,10 @@ private fun animatedColorScheme(
     )
 }
 
+internal val LocalColorScheme = staticCompositionLocalOf { lightScheme }
+internal val LocalTypography = staticCompositionLocalOf { Typography }
+internal val LocalShapes = staticCompositionLocalOf { Shapes }
+
 @Composable
 fun WithmoTheme(
     themeType: ThemeType,
@@ -325,10 +333,23 @@ fun WithmoTheme(
 
     val animatedColorScheme = animatedColorScheme(targetColorScheme)
 
-    MaterialTheme(
-        colorScheme = animatedColorScheme,
-        shapes = Shapes,
-        typography = Typography,
-        content = content,
-    )
+    CompositionLocalProvider(
+        LocalColorScheme provides animatedColorScheme,
+        LocalTypography provides Typography,
+        LocalShapes provides Shapes,
+    ) { content() }
+}
+
+object WithmoTheme {
+    val colorScheme: ColorScheme
+        @Composable @ReadOnlyComposable
+        get() = LocalColorScheme.current
+
+    val typography: Typography
+        @Composable @ReadOnlyComposable
+        get() = LocalTypography.current
+
+    val shapes: Shapes
+        @Composable @ReadOnlyComposable
+        get() = LocalShapes.current
 }
