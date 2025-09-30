@@ -3,6 +3,8 @@ package io.github.kei_1111.withmo.core.designsystem.component
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -31,7 +33,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
 @Composable
 fun App(
@@ -100,7 +101,8 @@ private fun AppIcon(
                         color = WithmoTheme.colorScheme.surface,
                         shape = appIconShape,
                     )
-                    .safeClickable(
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
@@ -132,7 +134,8 @@ private fun AppIcon(
                         color = Color.White,
                         shape = CircleShape,
                     )
-                    .safeClickable(
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
