@@ -228,8 +228,7 @@ private fun AppTabContent(
                     App(
                         appInfo = it,
                         isNotificationBadgeShown = notificationSettings.isNotificationBadgeEnabled,
-                        onClick = { onAction(HomeAction.OnAppClick(it)) },
-                        onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
+                        onClick = { onAction(HomeAction.OnPlaceableItemListSheetAppClick(it)) },
                         appIconShape = appIconSettings.appIconShape.toShape(
                             appIconSettings.roundedCornerPercent,
                         ),
