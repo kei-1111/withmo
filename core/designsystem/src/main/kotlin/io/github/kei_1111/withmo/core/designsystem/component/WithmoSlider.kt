@@ -27,10 +27,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
-private val SliderThumbSize = 20.dp
-private val SliderTrackHeight = 4.dp
-private val SliderShadowElevation = 1.dp
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WithmoSlider(
@@ -64,8 +60,8 @@ fun WithmoSlider(
         modifier = modifier
             .semantics { contentDescription = "Localized Description" }
             .requiredSizeIn(
-                minWidth = SliderThumbSize,
-                minHeight = SliderTrackHeight,
+                minWidth = 20.dp,
+                minHeight = 4.dp,
             ),
         enabled = enabled,
         valueRange = valueRange,
@@ -73,13 +69,17 @@ fun WithmoSlider(
         steps = steps,
         thumb = {
             val thumbModifier = Modifier
-                .size(SliderThumbSize)
-                .shadow(SliderShadowElevation, CircleShape, clip = false)
+                .size(20.dp)
+                .shadow(
+                    elevation = 1.dp,
+                    shape = CircleShape,
+                    clip = false,
+                )
                 .indication(
                     interactionSource = interactionSource,
                     indication = ripple(
                         bounded = false,
-                        radius = SliderThumbSize,
+                        radius = 20.dp,
                     ),
                 )
             SliderDefaults.Thumb(
@@ -90,8 +90,7 @@ fun WithmoSlider(
             )
         },
         track = {
-            val trackModifier = Modifier
-                .height(SliderTrackHeight)
+            val trackModifier = Modifier.height(4.dp)
             SliderDefaults.Track(
                 sliderState = it,
                 modifier = trackModifier,

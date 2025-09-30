@@ -25,9 +25,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 
-private val TopAppBarHeight = 64.dp
-private val RippleRadius = 24.dp
-
 @Composable
 fun WithmoTopAppBar(
     modifier: Modifier = Modifier,
@@ -40,7 +37,7 @@ fun WithmoTopAppBar(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(TopAppBarHeight + topPaddingValue),
+            .height(64.dp + topPaddingValue),
         color = WithmoTheme.colorScheme.surface,
         shadowElevation = 5.dp,
     ) {
@@ -59,7 +56,7 @@ fun WithmoTopAppBar(
                     modifier = Modifier.safeClickable(
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius,
+                            radius = 24.dp,
                         ),
                         onClick = navigateBack,
                     ),
@@ -73,7 +70,7 @@ fun WithmoTopAppBar(
                     modifier = Modifier.safeClickable(
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius,
+                            radius = 24.dp,
                         ),
                         onClick = navigateClose,
                     ),

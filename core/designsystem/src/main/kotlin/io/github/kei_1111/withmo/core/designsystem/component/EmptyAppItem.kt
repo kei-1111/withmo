@@ -15,8 +15,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
-private val BorderWidth = 1.dp
-
 @Composable
 fun EmptyAppItem(
     modifier: Modifier = Modifier,
@@ -28,8 +26,8 @@ fun EmptyAppItem(
         Box(
             modifier = Modifier
                 .border(
-                    BorderWidth,
-                    WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    width = 1.dp,
+                    color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
                     shape = WithmoTheme.shapes.medium,
                 )
                 .padding(4.dp),

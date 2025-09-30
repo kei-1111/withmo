@@ -53,8 +53,6 @@ fun FavoriteAppSelectorItem(
     }
 }
 
-private val BorderWidth = 1.dp
-
 @Composable
 fun getFavoriteAppSelectorItemModifier(
     isSelected: Boolean,
@@ -67,9 +65,9 @@ fun getFavoriteAppSelectorItemModifier(
             .clip(WithmoTheme.shapes.medium)
             .safeClickable { removeSelectedAppList() }
             .border(
-                BorderWidth,
-                WithmoTheme.colorScheme.primary,
-                WithmoTheme.shapes.medium,
+                width = 1.dp,
+                color = WithmoTheme.colorScheme.primary,
+                shape = WithmoTheme.shapes.medium,
             )
             .background(backgroundColor)
             .padding(4.dp)

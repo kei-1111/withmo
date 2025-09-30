@@ -32,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
-private val TextFieldHeight = 36.dp
-
 @Composable
 fun WithmoTextField(
     value: String,
@@ -97,7 +95,7 @@ fun WithmoSearchTextField(
     backgroundColor: Color = WithmoTheme.colorScheme.surfaceContainer,
 ) {
     Surface(
-        modifier = modifier.height(TextFieldHeight),
+        modifier = modifier.height(36.dp),
         color = backgroundColor,
         shape = WithmoTheme.shapes.large,
     ) {
@@ -136,7 +134,7 @@ private fun WithmoTextFieldLightPreview() {
             value = "",
             onValueChange = {},
             placeholder = "Search",
-            modifier = Modifier.height(TextFieldHeight),
+            modifier = Modifier.height(36.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),
@@ -152,7 +150,7 @@ private fun WithmoTextFieldDarkPreview() {
             value = "",
             onValueChange = {},
             placeholder = "Search",
-            modifier = Modifier.height(TextFieldHeight),
+            modifier = Modifier.height(36.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),

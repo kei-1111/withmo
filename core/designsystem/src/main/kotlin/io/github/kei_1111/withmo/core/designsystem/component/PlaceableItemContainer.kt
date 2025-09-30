@@ -40,8 +40,6 @@ import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.ktx.toPx
 import kotlin.math.roundToInt
 
-private val BorderWidth = 1.dp
-
 // startとtopにPaddingがついていると、そのPadding分初期位置がズレてめり込んでしまうため、Paddingのついていないようにする
 @Suppress("LongMethod", "ComposableParamOrder")
 @Composable
@@ -121,7 +119,7 @@ fun PlaceableItemContainer(
                         )
                     }
                     .border(
-                        width = BorderWidth,
+                        width = 1.dp,
                         color = WithmoTheme.colorScheme.primary,
                         shape = WithmoTheme.shapes.medium,
                     )
