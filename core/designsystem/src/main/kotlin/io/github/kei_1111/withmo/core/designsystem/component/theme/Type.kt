@@ -2,7 +2,6 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component.theme
 
-import androidx.compose.material3.Typography
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -22,28 +21,33 @@ val OpenSans = FontFamily(
     Font(R.font.open_sans_light, FontWeight.Light),
 )
 
-val Typography = Typography(
+data class WithmoTypography(
+    val displayMedium: TextStyle,
+    val titleLarge: TextStyle,
+    val bodyMedium: TextStyle,
+    val labelMedium: TextStyle,
+    val labelSmall: TextStyle,
+)
+
+val Typography = WithmoTypography(
     displayMedium = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.Black,
         fontSize = 42.sp,
         lineHeight = 52.sp,
     ),
-
     titleLarge = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
     ),
-
     bodyMedium = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
     ),
-
     labelMedium = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,
