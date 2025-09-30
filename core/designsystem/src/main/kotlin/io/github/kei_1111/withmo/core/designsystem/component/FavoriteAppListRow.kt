@@ -34,10 +34,7 @@ fun FavoriteAppListRow(
             FavoriteAppSelectorItem(
                 appInfo = it.info,
                 isSelected = true,
-                addSelectedAppList = { },
-                removeSelectedAppList = { removeSelectedAppList(it.info) },
                 onClick = { removeSelectedAppList(it.info) },
-                backgroundColor = WithmoTheme.colorScheme.surface,
                 modifier = Modifier.weight(1f),
                 appIconShape = appIconShape,
             )

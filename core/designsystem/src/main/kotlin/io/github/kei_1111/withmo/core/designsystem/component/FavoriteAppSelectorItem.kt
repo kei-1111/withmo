@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,56 +27,42 @@ import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 @Composable
 fun FavoriteAppSelectorItem(
     appInfo: AppInfo,
+    appIconShape: Shape,
     isSelected: Boolean,
-    addSelectedAppList: () -> Unit,
-    removeSelectedAppList: () -> Unit,
     onClick: () -> Unit,
-    backgroundColor: Color,
     modifier: Modifier = Modifier,
-    appIconShape: Shape = CircleShape,
 ) {
     Box(
-        modifier = modifier,
+        modifier = modifier
+            .clip(WithmoTheme.shapes.medium)
+            .then(
+                if (isSelected) {
+                    Modifier
+                        .border(
+                            width = 1.dp,
+                            color = WithmoTheme.colorScheme.primary,
+                            shape = WithmoTheme.shapes.medium,
+                        )
+                        .background(WithmoTheme.colorScheme.primaryContainer.copy(alpha = 0.38f))
+                } else {
+                    Modifier
+                },
+            ),
         contentAlignment = Alignment.Center,
     ) {
         App(
             appInfo = appInfo,
-            modifier = getFavoriteAppSelectorItemModifier(
-                isSelected = isSelected,
-                addSelectedAppList = addSelectedAppList,
-                removeSelectedAppList = removeSelectedAppList,
-                backgroundColor = backgroundColor,
-            ),
+            modifier = Modifier.padding(4.dp),
             appIconShape = appIconShape,
             isNotificationBadgeShown = false,
-            onClick = onClick,
         )
-    }
-}
-
-@Composable
-fun getFavoriteAppSelectorItemModifier(
-    isSelected: Boolean,
-    addSelectedAppList: () -> Unit,
-    removeSelectedAppList: () -> Unit,
-    backgroundColor: Color,
-): Modifier {
-    return if (isSelected) {
-        Modifier
-            .clip(WithmoTheme.shapes.medium)
-            .safeClickable { removeSelectedAppList() }
-            .border(
-                width = 1.dp,
-                color = WithmoTheme.colorScheme.primary,
-                shape = WithmoTheme.shapes.medium,
-            )
-            .background(backgroundColor)
-            .padding(4.dp)
-    } else {
-        Modifier
-            .clip(WithmoTheme.shapes.medium)
-            .safeClickable { addSelectedAppList() }
-            .padding(4.dp)
+        Surface(
+            modifier = Modifier
+                .matchParentSize()
+                .safeClickable { onClick() },
+            color = Color.Transparent,
+            shape = WithmoTheme.shapes.medium,
+        ) { /* クリックの処理を行うだけのComposableのため空 */ }
     }
 }
 
@@ -97,13 +84,9 @@ private fun FavoriteAppSelectorItemLightPreview() {
                 label = "withmo",
                 packageName = "com.example.app",
             ),
+            appIconShape = CircleShape,
             isSelected = false,
-            addSelectedAppList = { },
-            removeSelectedAppList = { },
             onClick = { },
-            backgroundColor = WithmoTheme.colorScheme.primaryContainer.copy(
-                alpha = 0.38f,
-            ),
         )
     }
 }
@@ -126,13 +109,9 @@ private fun FavoriteAppSelectorItemDarkPreview() {
                 label = "withmo",
                 packageName = "com.example.app",
             ),
+            appIconShape = CircleShape,
             isSelected = true,
-            addSelectedAppList = { },
-            removeSelectedAppList = { },
             onClick = { },
-            backgroundColor = WithmoTheme.colorScheme.primaryContainer.copy(
-                alpha = 0.38f,
-            ),
         )
     }
 }
