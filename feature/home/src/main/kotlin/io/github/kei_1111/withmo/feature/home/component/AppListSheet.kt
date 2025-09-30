@@ -98,6 +98,7 @@ internal fun AppListSheet(
                         App(
                             appInfo = it,
                             isNotificationBadgeShown = notificationSettings.isNotificationBadgeEnabled,
+                            modifier = Modifier.animateItem(),
                             onClick = { onAction(HomeAction.OnAppClick(it)) },
                             onLongClick = { onAction(HomeAction.OnAppLongClick(it)) },
                             appIconShape = appIconSettings.appIconShape.toShape(
