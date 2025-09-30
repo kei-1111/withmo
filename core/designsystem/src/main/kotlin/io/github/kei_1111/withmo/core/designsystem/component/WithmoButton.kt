@@ -28,7 +28,7 @@ fun WithmoButton(
     shape: Shape = ButtonDefaults.filledTonalShape,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = WithmoTheme.colorScheme.secondaryContainer,
-        contentColor = WithmoTheme.colorScheme.onSecondaryContainer,
+        contentColor = WithmoTheme.colorScheme.primary,
         disabledContainerColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
         disabledContentColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
     ),
@@ -74,34 +74,6 @@ fun WithmoSaveButton(
     ) {
         Text(
             text = "保存",
-//            color = if (enabled) {
-//                WithmoTheme.colorScheme.primary
-//            } else {
-//                WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-//            },
-            style = WithmoTheme.typography.bodyMedium,
-        )
-    }
-}
-
-@Composable
-fun WithmoNextButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    WithmoButton(
-        onClick = onClick,
-        modifier = modifier.height(56.dp),
-        enabled = enabled,
-    ) {
-        Text(
-            text = "次へ",
-            color = if (enabled) {
-                WithmoTheme.colorScheme.primary
-            } else {
-                WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-            },
             style = WithmoTheme.typography.bodyMedium,
         )
     }
@@ -143,28 +115,6 @@ private fun WithmoSaveButtonLightPreview() {
 private fun WithmoSaveButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSaveButton(
-            onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        WithmoNextButton(
-            onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        WithmoNextButton(
             onClick = {},
             enabled = true,
         )

@@ -22,8 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoOutlinedButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.onboarding.finish.component.FinishScreenContent
@@ -85,10 +85,18 @@ private fun FinishScreen(
                     .padding(16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
             ) {
-                WithmoBackButton(
+                WithmoOutlinedButton(
                     onClick = { onAction(FinishAction.OnBackButtonClick) },
-                    modifier = Modifier.weight(1f),
-                )
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(56.dp),
+                ) {
+                    Text(
+                        text = "戻る",
+                        color = WithmoTheme.colorScheme.onSurface,
+                        style = WithmoTheme.typography.bodyMedium,
+                    )
+                }
                 WithmoButton(
                     onClick = { onAction(FinishAction.OnFinishButtonClick) },
                     modifier = Modifier

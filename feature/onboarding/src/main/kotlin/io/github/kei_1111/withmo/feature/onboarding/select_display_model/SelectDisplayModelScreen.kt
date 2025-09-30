@@ -1,5 +1,6 @@
 package io.github.kei_1111.withmo.feature.onboarding.select_display_model
 
+import android.R.attr.onClick
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -28,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import io.github.kei_1111.withmo.core.designsystem.component.WithmoBackButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoOutlinedButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoTopAppBar
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -123,10 +124,18 @@ private fun SelectDisplayModelScreen(
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
-                        WithmoBackButton(
+                        WithmoOutlinedButton(
                             onClick = { onAction(SelectDisplayModelAction.OnBackButtonClick) },
-                            modifier = Modifier.weight(1f),
-                        )
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(56.dp),
+                        ) {
+                            Text(
+                                text = "戻る",
+                                color = WithmoTheme.colorScheme.onSurface,
+                                style = WithmoTheme.typography.bodyMedium,
+                            )
+                        }
                         WithmoButton(
                             onClick = { onAction(SelectDisplayModelAction.OnNextButtonClick) },
                             modifier = Modifier
