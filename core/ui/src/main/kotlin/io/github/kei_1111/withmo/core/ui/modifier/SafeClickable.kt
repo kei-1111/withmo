@@ -29,6 +29,6 @@ fun Modifier.safeClickable(
         enabled = enabled,
         onClickLabel = onClickLabel,
         role = role,
-        onClick = { if (blocker.tryClick()) { onClick() } },
+        onClick = { blocker.processClick(onClick) },
     )
 }

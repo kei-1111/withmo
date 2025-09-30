@@ -41,11 +41,7 @@ fun WithmoButton(
     val clickBlocker = LocalClickBlocker.current
 
     FilledTonalButton(
-        onClick = {
-            if (clickBlocker.tryClick()) {
-                onClick()
-            }
-        },
+        onClick = { clickBlocker.processClick(onClick) },
         modifier = modifier
             .then(
                 if (elevation != null) {

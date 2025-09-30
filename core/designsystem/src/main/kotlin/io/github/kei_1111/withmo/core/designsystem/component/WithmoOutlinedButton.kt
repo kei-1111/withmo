@@ -42,11 +42,7 @@ fun WithmoOutlinedButton(
     val clickBlocker = LocalClickBlocker.current
 
     OutlinedButton(
-        onClick = {
-            if (clickBlocker.tryClick()) {
-                onClick()
-            }
-        },
+        onClick = { clickBlocker.processClick(onClick) },
         modifier = modifier
             .then(
                 if (elevation != null) {

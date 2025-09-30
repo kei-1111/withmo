@@ -10,7 +10,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 
 @Composable
 fun ClickBlockerProvider(
-    delayMillis: Long = 200L,
+    delayMillis: Long = 500L,
     content: @Composable () -> Unit,
 ) {
     val blocker = remember(delayMillis) { ClickBlocker(delayMillis) }
@@ -19,17 +19,15 @@ fun ClickBlockerProvider(
     }
 }
 
-val LocalClickBlocker = staticCompositionLocalOf<ClickBlocker> { ClickBlocker(200L) }
+val LocalClickBlocker = staticCompositionLocalOf<ClickBlocker> { ClickBlocker(500L) }
 
 class ClickBlocker(private val delayMillis: Long) {
     private var lastClick = 0L
-    fun tryClick(): Boolean {
+    fun processClick(action: () -> Unit) {
         val now = SystemClock.uptimeMillis()
-        return if (now - lastClick >= delayMillis) {
+        if (now - lastClick >= delayMillis) {
             lastClick = now
-            true
-        } else {
-            false
+            action()
         }
     }
 }

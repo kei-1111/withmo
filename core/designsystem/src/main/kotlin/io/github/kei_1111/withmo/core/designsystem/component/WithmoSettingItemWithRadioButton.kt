@@ -40,7 +40,7 @@ fun WithmoSettingItemWithRadioButton(
         Spacer(modifier = Modifier.weight(1f))
         RadioButton(
             selected = selected,
-            onClick = { if (clickBlocker.tryClick()) onClick() },
+            onClick = { clickBlocker.processClick(onClick) },
             enabled = enabled,
             colors = RadioButtonDefaults.colors(
                 selectedColor = WithmoTheme.colorScheme.primary,
