@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -38,16 +36,10 @@ fun WithmoSettingItemWithRadioButton(
     ) {
         item()
         Spacer(modifier = Modifier.weight(1f))
-        RadioButton(
+        WithmoRadioButton(
             selected = selected,
             onClick = { clickBlocker.processClick(onClick) },
             enabled = enabled,
-            colors = RadioButtonDefaults.colors(
-                selectedColor = WithmoTheme.colorScheme.primary,
-                unselectedColor = WithmoTheme.colorScheme.onSurfaceVariant,
-                disabledSelectedColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-                disabledUnselectedColor = WithmoTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.38f),
-            ),
         )
     }
 }
