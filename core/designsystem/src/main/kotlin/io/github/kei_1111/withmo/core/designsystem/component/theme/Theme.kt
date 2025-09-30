@@ -6,7 +6,6 @@ import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.Shapes
-import androidx.compose.material3.Typography
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
@@ -345,7 +344,7 @@ object WithmoTheme {
         @Composable @ReadOnlyComposable
         get() = LocalColorScheme.current
 
-    val typography: Typography
+    val typography: WithmoTypography
         @Composable @ReadOnlyComposable
         get() = LocalTypography.current
 
