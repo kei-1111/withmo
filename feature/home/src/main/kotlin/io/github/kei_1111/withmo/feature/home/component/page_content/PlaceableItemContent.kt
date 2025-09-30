@@ -34,7 +34,6 @@ import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.feature.home.HomeAction
-import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 
 @Composable
@@ -47,6 +46,8 @@ internal fun PlaceableItemContent(
     val appHeight = 76.dp
     // RowAppList Composableの高さ
     val rowAppListHeight = appHeight + 4.dp * 2
+    // PageIndicator Composableの高さ
+    val pageIndicatorSpaceHeight = 24.dp
 
     val topPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateTopPadding()
     val bottomPaddingValue = WindowInsets.safeDrawing.asPaddingValues().calculateBottomPadding()
@@ -63,7 +64,7 @@ internal fun PlaceableItemContent(
                             startPadding = 16.dp,
                             endPadding = 16.dp,
                             topPadding = topPaddingValue,
-                            bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                            bottomPadding = bottomPaddingValue + rowAppListHeight + pageIndicatorSpaceHeight,
                             isEditMode = state.isEditMode,
                             onDeleteBadgeClick = { onAction(HomeAction.OnDeletePlaceableItemBadgeClick(placeableItem)) },
                             onResizeBadgeClick = { onAction(HomeAction.OnResizeWidgetBadgeClick(placeableItem)) },
@@ -79,7 +80,7 @@ internal fun PlaceableItemContent(
                             isNotificationBadgeShown =
                             state.currentUserSettings.notificationSettings.isNotificationBadgeEnabled,
                             topPadding = topPaddingValue,
-                            bottomPadding = bottomPaddingValue + rowAppListHeight + HomeScreenDimensions.PageIndicatorSpaceHeight,
+                            bottomPadding = bottomPaddingValue + rowAppListHeight + pageIndicatorSpaceHeight,
                             startPadding = 16.dp,
                             endPadding = 16.dp,
                             isEditMode = state.isEditMode,

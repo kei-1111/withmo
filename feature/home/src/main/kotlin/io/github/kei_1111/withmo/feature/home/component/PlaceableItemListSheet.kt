@@ -66,7 +66,6 @@ import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
 import io.github.kei_1111.withmo.feature.home.HomeAction
-import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -127,7 +126,7 @@ internal fun PlaceableItemListSheet(
                                 pagerState.animateScrollToPage(index)
                             }
                         },
-                        modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                        modifier = Modifier.height(60.dp),
                         text = {
                             Text(
                                 text = when (tab) {
@@ -371,8 +370,8 @@ private fun WidgetPreviewItem(
                 contentDescription = null,
                 modifier = Modifier
                     .sizeIn(
-                        maxWidth = HomeScreenDimensions.WidgetPreviewSize,
-                        maxHeight = HomeScreenDimensions.WidgetPreviewSize,
+                        maxWidth = 150.dp,
+                        maxHeight = 150.dp,
                     ),
             )
         } else {
@@ -382,8 +381,8 @@ private fun WidgetPreviewItem(
                     contentDescription = null,
                     modifier = Modifier
                         .sizeIn(
-                            maxWidth = HomeScreenDimensions.WidgetPreviewSize,
-                            maxHeight = HomeScreenDimensions.WidgetPreviewSize,
+                            maxWidth = 150.dp,
+                            maxHeight = 150.dp,
                         ),
                 )
             }
@@ -433,7 +432,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                 Tab(
                     selected = false,
                     onClick = {},
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    modifier = Modifier.height(60.dp),
                     text = {
                         Text(
                             text = "ウィジェット",
@@ -445,7 +444,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
                 Tab(
                     selected = true,
                     onClick = {},
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    modifier = Modifier.height(60.dp),
                     text = {
                         Text(
                             text = "アプリ",
@@ -501,7 +500,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                 Tab(
                     selected = false,
                     onClick = {},
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    modifier = Modifier.height(60.dp),
                     text = {
                         Text(
                             text = "ウィジェット",
@@ -513,7 +512,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
                 Tab(
                     selected = true,
                     onClick = {},
-                    modifier = Modifier.height(HomeScreenDimensions.PlaceableItemTabHeight),
+                    modifier = Modifier.height(60.dp),
                     text = {
                         Text(
                             text = "アプリ",

@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.feature.home.HomeAction
-import io.github.kei_1111.withmo.feature.home.HomeScreenDimensions
 import io.github.kei_1111.withmo.feature.home.HomeState
 import io.github.kei_1111.withmo.feature.home.PageContent
 
@@ -147,8 +146,7 @@ private fun PageIndicator(
     modifier: Modifier = Modifier,
 ) {
     Row(
-        modifier = modifier
-            .height(HomeScreenDimensions.PageIndicatorSpaceHeight),
+        modifier = modifier.height(24.dp),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -163,7 +161,7 @@ private fun PageIndicator(
                     .padding(horizontal = 16.dp)
                     .clip(CircleShape)
                     .background(color)
-                    .size(HomeScreenDimensions.PageIndicatorSize),
+                    .size(8.dp),
             )
         }
     }
