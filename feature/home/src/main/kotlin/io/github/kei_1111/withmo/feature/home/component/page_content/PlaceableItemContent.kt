@@ -124,13 +124,17 @@ private fun AddPlaceableItemButton(
 ) {
     WithmoIconButton(
         onClick = onClick,
-        modifier = modifier.size(56.dp),
-        backgroundColor = WithmoTheme.colorScheme.secondaryContainer,
+        modifier = modifier
+            .size(56.dp)
+            .withmoShadow(
+                shape = CircleShape,
+            ),
+        containerColor = WithmoTheme.colorScheme.secondaryContainer,
+        contentColor = WithmoTheme.colorScheme.primary,
     ) {
         Icon(
             imageVector = Icons.Rounded.Widgets,
             contentDescription = null,
-            tint = WithmoTheme.colorScheme.primary,
         )
     }
 }

@@ -6,12 +6,15 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Man
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -20,22 +23,23 @@ import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 fun WithmoIconButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = WithmoTheme.colorScheme.surface,
+    enabled: Boolean = true,
+    containerColor: Color = WithmoTheme.colorScheme.surface,
+    contentColor: Color = WithmoTheme.colorScheme.onSurface,
     content: @Composable () -> Unit,
 ) {
     Box(
         modifier = modifier
-            .withmoShadow(
-                shape = CircleShape,
-            )
-            .background(
-                color = backgroundColor,
-                shape = CircleShape,
-            )
-            .safeClickable { onClick() },
+            .clip(CircleShape)
+            .background(containerColor)
+            .safeClickable(
+                onClick = onClick,
+                enabled = enabled,
+                role = Role.Button,
+            ),
         contentAlignment = Alignment.Center,
     ) {
-        content()
+        CompositionLocalProvider(LocalContentColor provides contentColor, content = content)
     }
 }
 

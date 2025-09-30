@@ -17,8 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ZoomOutMap
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -194,19 +192,16 @@ private fun PlaceableItemBadge(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    IconButton(
+    WithmoIconButton(
         onClick = onClick,
-        modifier = modifier
-            .size(25.dp),
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = WithmoTheme.colorScheme.secondaryContainer,
-            contentColor = WithmoTheme.colorScheme.primary,
-        ),
+        modifier = modifier.size(24.dp),
+        containerColor = WithmoTheme.colorScheme.secondaryContainer,
+        contentColor = WithmoTheme.colorScheme.primary,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier.padding(4.dp),
+            modifier = Modifier.size(16.dp),
         )
     }
 }

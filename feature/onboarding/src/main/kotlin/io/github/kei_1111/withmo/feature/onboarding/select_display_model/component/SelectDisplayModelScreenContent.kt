@@ -3,8 +3,10 @@ package io.github.kei_1111.withmo.feature.onboarding.select_display_model.compon
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
@@ -12,8 +14,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -96,23 +96,25 @@ private fun SelectDisplayModelArea(
                 verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                IconButton(
-                    onClick = {},
+                Box(
                     modifier = Modifier
                         .border(
                             width = 2.dp,
                             color = WithmoTheme.colorScheme.primary,
                             shape = CircleShape,
                         )
-                        .size(25.dp),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = WithmoTheme.colorScheme.secondaryContainer,
-                        contentColor = WithmoTheme.colorScheme.primary,
-                    ),
+                        .background(
+                            color = WithmoTheme.colorScheme.secondaryContainer,
+                            shape = CircleShape,
+                        )
+                        .size(24.dp),
+                    contentAlignment = Alignment.Center,
                 ) {
                     Icon(
                         imageVector = Icons.Rounded.Add,
                         contentDescription = "Add",
+                        modifier = Modifier.size(16.dp),
+                        tint = WithmoTheme.colorScheme.primary,
                     )
                 }
                 Column(

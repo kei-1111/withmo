@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ChangeCircle
 import androidx.compose.material.icons.rounded.Close
@@ -64,13 +65,15 @@ internal fun DisplayModelContent(
                 onClick = { onAction(HomeAction.OnCloseScaleSliderButtonClick) },
                 modifier = Modifier
                     .align(Alignment.TopStart)
-                    .size(56.dp),
+                    .size(56.dp)
+                    .withmoShadow(
+                        shape = CircleShape,
+                    ),
             ) {
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = null,
                     modifier = Modifier.size(32.dp),
-                    tint = WithmoTheme.colorScheme.onSurface,
                 )
             }
             ScaleSlider(
@@ -180,7 +183,11 @@ private fun NavigateSettingsButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .size(56.dp)
+                .withmoShadow(
+                    shape = CircleShape,
+                ),
         ) {
             Image(
                 painter = painterResource(R.drawable.withmo_icon_wide),
@@ -203,7 +210,11 @@ private fun SetDefaultModelButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .size(56.dp)
+                .withmoShadow(
+                    shape = CircleShape,
+                ),
         ) {
             Image(
                 painter = painterResource(R.drawable.alicia_icon),
@@ -226,13 +237,16 @@ private fun OpenDocumentButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .size(56.dp)
+                .withmoShadow(
+                    shape = CircleShape,
+                ),
         ) {
             Icon(
                 imageVector = Icons.Rounded.ChangeCircle,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = WithmoTheme.colorScheme.onSurface,
             )
         }
     }
@@ -249,13 +263,16 @@ private fun ShowScaleSliderButton(
     ) {
         WithmoIconButton(
             onClick = onClick,
-            modifier = Modifier.size(56.dp),
+            modifier = Modifier
+                .size(56.dp)
+                .withmoShadow(
+                    shape = CircleShape,
+                ),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Man,
                 contentDescription = null,
                 modifier = Modifier.size(32.dp),
-                tint = WithmoTheme.colorScheme.onSurface,
             )
         }
     }
