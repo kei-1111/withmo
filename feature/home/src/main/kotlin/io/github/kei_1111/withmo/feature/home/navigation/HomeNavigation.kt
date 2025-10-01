@@ -9,6 +9,13 @@ import io.github.kei_1111.withmo.core.ui.navigation.Home
 import io.github.kei_1111.withmo.core.ui.navigation.OnboardingGraph
 import io.github.kei_1111.withmo.feature.home.screens.HomeScreen
 
+/**
+ * 明示的にHomeに遷移する場面は、Onboarding終了後のみである。
+ *
+ * その後は初期画面としてHomeが表示され、popBackStackで戻ることでの遷移しかないため、OnboardingGraphをpopUpToする処理をデフォルトにしている。
+ *
+ * OnboardingGraphをpopUpToにするのは、Onboarding終了後にまたOnboardingの画面に遷移させないようにするためである。
+ */
 fun NavHostController.navigateHome() = navigate(Home) {
     popUpTo(OnboardingGraph) {
         inclusive = true
