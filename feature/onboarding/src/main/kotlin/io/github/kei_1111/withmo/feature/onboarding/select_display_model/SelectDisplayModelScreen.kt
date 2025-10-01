@@ -1,6 +1,5 @@
 package io.github.kei_1111.withmo.feature.onboarding.select_display_model
 
-import android.R.attr.onClick
 import android.os.Build
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -41,7 +40,7 @@ import io.github.kei_1111.withmo.feature.onboarding.select_display_model.compone
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun SelectDisplayModelScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     navigateFinish: () -> Unit,
     viewModel: SelectDisplayModelViewModel = hiltViewModel(),
 ) {
@@ -54,7 +53,7 @@ fun SelectDisplayModelScreen(
         viewModel.onAction(SelectDisplayModelAction.OnOpenDocumentLauncherResult(uri))
     }
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
     val currentNavigateFinish by rememberUpdatedState(navigateFinish)
 
     BackHandler {
@@ -65,7 +64,7 @@ fun SelectDisplayModelScreen(
         viewModel.effect.collect { effect ->
             when (effect) {
                 is SelectDisplayModelEffect.OpenDocument -> openDocumentLauncher.launch(arrayOf("*/*"))
-                is SelectDisplayModelEffect.NavigateBack -> currentOnBackButtonClick()
+                is SelectDisplayModelEffect.NavigateBack -> currentNavigateBack()
                 is SelectDisplayModelEffect.NavigateFinish -> currentNavigateFinish()
                 is SelectDisplayModelEffect.ShowToast -> showToast(context, effect.message)
             }

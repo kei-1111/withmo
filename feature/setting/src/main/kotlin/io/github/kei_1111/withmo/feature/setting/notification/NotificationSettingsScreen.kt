@@ -37,14 +37,14 @@ import io.github.kei_1111.withmo.feature.setting.notification.component.Notifica
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
 fun NotificationSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: NotificationSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(NotificationSettingsAction.OnBackButtonClick)
@@ -63,7 +63,7 @@ fun NotificationSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is NotificationSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is NotificationSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is NotificationSettingsEffect.ShowToast -> showToast(context, effect.message)
             }

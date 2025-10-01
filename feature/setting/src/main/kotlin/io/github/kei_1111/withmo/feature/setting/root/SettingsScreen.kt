@@ -48,28 +48,28 @@ import io.github.kei_1111.withmo.feature.setting.root.component.SettingsScreenCo
 @Suppress("ModifierMissing", "CyclomaticComplexMethod")
 @Composable
 fun SettingsScreen(
-    onNavigateClockSettingsButtonClick: () -> Unit,
-    onNavigateAppIconSettingsButtonClick: () -> Unit,
-    onNavigateFavoriteAppSettingsButtonClick: () -> Unit,
-    onNavigateSideButtonSettingsButtonClick: () -> Unit,
-    onNavigateSortSettingsButtonClick: () -> Unit,
-    onNavigateNotificationSettingsButtonClick: () -> Unit,
-    onNavigateThemeSettingsButtonClick: () -> Unit,
-    onBackButtonClick: () -> Unit,
+    navigateClockSettings: () -> Unit,
+    navigateAppIconSettings: () -> Unit,
+    navigateFavoriteAppSettings: () -> Unit,
+    navigateSideButtonSettings: () -> Unit,
+    navigateSortSettings: () -> Unit,
+    navigateNotificationSettings: () -> Unit,
+    navigateThemeSettings: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val context = LocalContext.current
 
-    val currentOnNavigateClockSettingsButtonClick by rememberUpdatedState(onNavigateClockSettingsButtonClick)
-    val currentOnNavigateAppIconSettingsButtonClick by rememberUpdatedState(onNavigateAppIconSettingsButtonClick)
-    val currentOnNavigateFavoriteAppSettingsButtonClick by rememberUpdatedState(onNavigateFavoriteAppSettingsButtonClick)
-    val currentOnNavigateSideButtonSettingsButtonClick by rememberUpdatedState(onNavigateSideButtonSettingsButtonClick)
-    val currentOnNavigateSortSettingsButtonClick by rememberUpdatedState(onNavigateSortSettingsButtonClick)
-    val currentOnNavigateNotificationSettingsButtonClick by rememberUpdatedState(onNavigateNotificationSettingsButtonClick)
-    val currentOnNavigateThemeSettingsButtonClick by rememberUpdatedState(onNavigateThemeSettingsButtonClick)
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateClockSettings by rememberUpdatedState(navigateClockSettings)
+    val currentNavigateAppIconSettings by rememberUpdatedState(navigateAppIconSettings)
+    val currentNavigateFavoriteAppSettings by rememberUpdatedState(navigateFavoriteAppSettings)
+    val currentNavigateSideButtonSettings by rememberUpdatedState(navigateSideButtonSettings)
+    val currentNavigateSortSettings by rememberUpdatedState(navigateSortSettings)
+    val currentNavigateNotificationSettings by rememberUpdatedState(navigateNotificationSettings)
+    val currentNavigateThemeSettings by rememberUpdatedState(navigateThemeSettings)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -102,23 +102,23 @@ fun SettingsScreen(
             when (effect) {
                 is SettingsEffect.OpenHomeAppSettings -> context.startActivity(effect.intent)
 
-                is SettingsEffect.NavigateClockSettings -> currentOnNavigateClockSettingsButtonClick()
+                is SettingsEffect.NavigateClockSettings -> currentNavigateClockSettings()
 
-                is SettingsEffect.NavigateAppIconSettings -> currentOnNavigateAppIconSettingsButtonClick()
+                is SettingsEffect.NavigateAppIconSettings -> currentNavigateAppIconSettings()
 
-                is SettingsEffect.NavigateFavoriteAppSettings -> currentOnNavigateFavoriteAppSettingsButtonClick()
+                is SettingsEffect.NavigateFavoriteAppSettings -> currentNavigateFavoriteAppSettings()
 
-                is SettingsEffect.NavigateSideButtonSettings -> currentOnNavigateSideButtonSettingsButtonClick()
+                is SettingsEffect.NavigateSideButtonSettings -> currentNavigateSideButtonSettings()
 
-                is SettingsEffect.NavigateSortSettings -> currentOnNavigateSortSettingsButtonClick()
+                is SettingsEffect.NavigateSortSettings -> currentNavigateSortSettings()
 
-                is SettingsEffect.NavigateNotificationSettings -> currentOnNavigateNotificationSettingsButtonClick()
+                is SettingsEffect.NavigateNotificationSettings -> currentNavigateNotificationSettings()
 
                 is SettingsEffect.OpenWallpaperSettings -> context.startActivity(effect.intent)
 
-                is SettingsEffect.NavigateThemeSettings -> currentOnNavigateThemeSettingsButtonClick()
+                is SettingsEffect.NavigateThemeSettings -> currentNavigateThemeSettings()
 
-                is SettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is SettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is SettingsEffect.ShowToast -> showToast(context, effect.message)
 

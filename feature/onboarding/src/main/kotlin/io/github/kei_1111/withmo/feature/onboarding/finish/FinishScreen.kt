@@ -31,11 +31,11 @@ import io.github.kei_1111.withmo.feature.onboarding.finish.component.FinishScree
 @Suppress("ModifierMissing")
 @Composable
 fun FinishScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     navigateHome: () -> Unit,
     viewModel: FinishViewModel = hiltViewModel(),
 ) {
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
     val currentNavigateHome by rememberUpdatedState(navigateHome)
 
     BackHandler {
@@ -45,7 +45,7 @@ fun FinishScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is FinishEffect.NavigateBack -> currentOnBackButtonClick()
+                is FinishEffect.NavigateBack -> currentNavigateBack()
                 is FinishEffect.NavigateHome -> currentNavigateHome()
             }
         }

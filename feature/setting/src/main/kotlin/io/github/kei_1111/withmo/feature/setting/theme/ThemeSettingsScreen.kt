@@ -33,13 +33,13 @@ import io.github.kei_1111.withmo.feature.setting.theme.component.ThemeSettingsSc
 @Suppress("ModifierMissing")
 @Composable
 fun ThemeSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: ThemeSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(ThemeSettingsAction.OnBackButtonClick)
@@ -48,7 +48,7 @@ fun ThemeSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ThemeSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is ThemeSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is ThemeSettingsEffect.ShowToast -> showToast(context, effect.message)
             }

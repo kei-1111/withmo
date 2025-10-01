@@ -31,12 +31,12 @@ import io.github.kei_1111.withmo.feature.setting.favorite_app.component.Favorite
 @Suppress("ModifierMissing")
 @Composable
 fun FavoriteAppSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: FavoriteAppSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(FavoriteAppSettingsAction.OnBackButtonClick)
@@ -47,7 +47,7 @@ fun FavoriteAppSettingsScreen(
             when (effect) {
                 is FavoriteAppSettingsEffect.ShowToast -> showToast(context, effect.message)
 
-                is FavoriteAppSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is FavoriteAppSettingsEffect.NavigateBack -> currentNavigateBack()
             }
         }
     }

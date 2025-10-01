@@ -35,12 +35,12 @@ import io.github.kei_1111.withmo.feature.setting.app_icon.component.AppItemPrevi
 @Suppress("ModifierMissing")
 @Composable
 fun AppIconSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: AppIconSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(AppIconSettingsAction.OnBackButtonClick)
@@ -49,7 +49,7 @@ fun AppIconSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is AppIconSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is AppIconSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is AppIconSettingsEffect.ShowToast -> showToast(context, effect.message)
             }

@@ -33,12 +33,12 @@ import io.github.kei_1111.withmo.feature.setting.clock.component.ClockSettingsSc
 @Suppress("ModifierMissing")
 @Composable
 fun ClockSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: ClockSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(ClockSettingsAction.OnBackButtonClick)
@@ -47,7 +47,7 @@ fun ClockSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ClockSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is ClockSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is ClockSettingsEffect.ShowToast -> showToast(context, effect.message)
             }

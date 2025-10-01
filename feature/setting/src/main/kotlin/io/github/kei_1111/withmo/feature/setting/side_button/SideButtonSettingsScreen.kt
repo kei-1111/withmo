@@ -33,13 +33,13 @@ import io.github.kei_1111.withmo.feature.setting.side_button.component.SideButto
 @Suppress("ModifierMissing")
 @Composable
 fun SideButtonSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: SideButtonSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     BackHandler {
         viewModel.onAction(SideButtonSettingsAction.OnBackButtonClick)
@@ -48,7 +48,7 @@ fun SideButtonSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SideButtonSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is SideButtonSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is SideButtonSettingsEffect.ShowToast -> showToast(context, effect.message)
             }

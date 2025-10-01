@@ -36,7 +36,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
-    onNavigateSettingsButtonClick: () -> Unit,
+    navigateSettings: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -64,7 +64,7 @@ fun HomeScreen(
         viewModel.onAction(HomeAction.OnBindWidgetLauncherResult(result))
     }
 
-    val currentOnNavigateSettingsButtonClick by rememberUpdatedState(onNavigateSettingsButtonClick)
+    val currentNavigateSettings by rememberUpdatedState(navigateSettings)
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
@@ -77,7 +77,7 @@ fun HomeScreen(
 
                 is HomeEffect.LaunchApp -> {
                     if (effect.appInfo.packageName == context.packageName) {
-                        currentOnNavigateSettingsButtonClick()
+                        currentNavigateSettings()
                     } else {
                         effect.appInfo.launch(context)
                     }
@@ -102,7 +102,7 @@ fun HomeScreen(
 
                 is HomeEffect.HidePlaceableItemListSheet -> scope.launch { placeableItemListSheetState.hide() }
 
-                is HomeEffect.NavigateSettings -> currentOnNavigateSettingsButtonClick()
+                is HomeEffect.NavigateSettings -> currentNavigateSettings()
 
                 is HomeEffect.ShowToast -> showToast(context, effect.message)
             }

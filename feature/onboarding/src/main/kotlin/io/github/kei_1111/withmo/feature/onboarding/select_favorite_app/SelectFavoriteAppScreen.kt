@@ -33,13 +33,13 @@ import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.componen
 @Suppress("ModifierMissing")
 @Composable
 fun SelectFavoriteAppScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     navigateSelectDisplayModel: () -> Unit,
     viewModel: SelectFavoriteAppViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
     val currentNavigateSelectDisplayModel by rememberUpdatedState(navigateSelectDisplayModel)
 
     BackHandler {
@@ -49,7 +49,7 @@ fun SelectFavoriteAppScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SelectFavoriteAppEffect.NavigateBack -> currentOnBackButtonClick()
+                is SelectFavoriteAppEffect.NavigateBack -> currentNavigateBack()
                 is SelectFavoriteAppEffect.NavigateSelectDisplayModel -> currentNavigateSelectDisplayModel()
             }
         }

@@ -38,13 +38,13 @@ import io.github.kei_1111.withmo.feature.setting.sort.component.UsagePermissionD
 @Suppress("ModifierMissing")
 @Composable
 fun SortSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,
     viewModel: SortSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    val currentOnBackButtonClick by rememberUpdatedState(onBackButtonClick)
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     val usageStatsPermissionLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult(),
@@ -59,7 +59,7 @@ fun SortSettingsScreen(
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SortSettingsEffect.NavigateBack -> currentOnBackButtonClick()
+                is SortSettingsEffect.NavigateBack -> currentNavigateBack()
 
                 is SortSettingsEffect.ShowToast -> showToast(context, effect.message)
 
