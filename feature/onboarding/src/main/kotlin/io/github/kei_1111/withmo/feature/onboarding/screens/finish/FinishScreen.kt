@@ -30,7 +30,7 @@ import io.github.kei_1111.withmo.feature.onboarding.screens.finish.component.Fin
 
 @Suppress("ModifierMissing")
 @Composable
-fun FinishScreen(
+internal fun FinishScreen(
     navigateBack: () -> Unit,
     navigateHome: () -> Unit,
     viewModel: FinishViewModel = hiltViewModel(),

@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SideButtonSettingsViewModel @Inject constructor(
+internal class SideButtonSettingsViewModel @Inject constructor(
     getSideButtonSettingsUseCase: GetSideButtonSettingsUseCase,
     private val saveSideButtonSettingsUseCase: SaveSideButtonSettingsUseCase,
 ) : StatefulBaseViewModel<SideButtonSettingsViewModelState, SideButtonSettingsState, SideButtonSettingsAction, SideButtonSettingsEffect>() {

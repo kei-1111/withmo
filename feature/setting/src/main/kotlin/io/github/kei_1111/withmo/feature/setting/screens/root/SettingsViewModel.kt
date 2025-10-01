@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @Suppress("CyclomaticComplexMethod")
 @HiltViewModel
-class SettingsViewModel @Inject constructor(
+internal class SettingsViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
 ) : StatefulBaseViewModel<SettingsViewModelState, SettingsState, SettingsAction, SettingsEffect>() {
 

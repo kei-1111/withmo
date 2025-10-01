@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.side_button
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 
-data class SideButtonSettingsViewModelState(
+internal data class SideButtonSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val sideButtonSettings: SideButtonSettings = SideButtonSettings(),
     val initialSideButtonSettings: SideButtonSettings = SideButtonSettings(),

@@ -36,7 +36,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.notification.component.
 
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
-fun NotificationSettingsScreen(
+internal fun NotificationSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: NotificationSettingsViewModel = hiltViewModel(),
 ) {

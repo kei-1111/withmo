@@ -16,7 +16,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FavoriteAppSettingsViewModel @Inject constructor(
+internal class FavoriteAppSettingsViewModel @Inject constructor(
     getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,

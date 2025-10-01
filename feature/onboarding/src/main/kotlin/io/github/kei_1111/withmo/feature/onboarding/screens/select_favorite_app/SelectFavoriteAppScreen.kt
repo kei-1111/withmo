@@ -32,7 +32,7 @@ import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.
 
 @Suppress("ModifierMissing")
 @Composable
-fun SelectFavoriteAppScreen(
+internal fun SelectFavoriteAppScreen(
     navigateBack: () -> Unit,
     navigateSelectDisplayModel: () -> Unit,
     viewModel: SelectFavoriteAppViewModel = hiltViewModel(),

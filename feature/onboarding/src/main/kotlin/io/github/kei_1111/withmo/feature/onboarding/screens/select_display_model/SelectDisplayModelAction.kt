@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.onboarding.screens.select_display_mode
 import android.net.Uri
 import io.github.kei_1111.withmo.core.featurebase.Action
 
-sealed interface SelectDisplayModelAction : Action {
+internal sealed interface SelectDisplayModelAction : Action {
     data object OnSelectDisplayModelAreaClick : SelectDisplayModelAction
     data object OnBackButtonClick : SelectDisplayModelAction
     data object OnNextButtonClick : SelectDisplayModelAction

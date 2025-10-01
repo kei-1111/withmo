@@ -32,7 +32,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.clock.component.ClockSe
 
 @Suppress("ModifierMissing")
 @Composable
-fun ClockSettingsScreen(
+internal fun ClockSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: ClockSettingsViewModel = hiltViewModel(),
 ) {

@@ -2,7 +2,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.root
 
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 
-data class SettingsViewModelState(
+internal data class SettingsViewModelState(
     val statusType: StatusType = StatusType.STABLE,
     val isDefaultHomeApp: Boolean = true,
     val isNotificationPermissionDialogVisible: Boolean = false,

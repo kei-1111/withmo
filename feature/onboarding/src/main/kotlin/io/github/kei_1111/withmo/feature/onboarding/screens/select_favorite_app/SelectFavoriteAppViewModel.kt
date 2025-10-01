@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectFavoriteAppViewModel @Inject constructor(
+internal class SelectFavoriteAppViewModel @Inject constructor(
     getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     private val saveFavoriteAppsUseCase: SaveFavoriteAppsUseCase,
 ) : StatefulBaseViewModel<SelectFavoriteAppViewModelState, SelectFavoriteAppState, SelectFavoriteAppAction, SelectFavoriteAppEffect>() {

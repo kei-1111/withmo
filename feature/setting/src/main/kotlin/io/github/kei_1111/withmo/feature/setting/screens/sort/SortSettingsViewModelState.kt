@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.sort
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.SortSettings
 
-data class SortSettingsViewModelState(
+internal data class SortSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val sortSettings: SortSettings = SortSettings(),
     val initialSortSettings: SortSettings = SortSettings(),

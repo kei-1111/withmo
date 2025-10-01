@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.clock
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 
-data class ClockSettingsViewModelState(
+internal data class ClockSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val clockSettings: ClockSettings = ClockSettings(),
     val initialClockSettings: ClockSettings = ClockSettings(),

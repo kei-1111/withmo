@@ -4,7 +4,7 @@ import android.content.Intent
 import io.github.kei_1111.withmo.core.featurebase.Effect
 import io.github.kei_1111.withmo.core.model.AppInfo
 
-sealed interface HomeEffect : Effect {
+internal sealed interface HomeEffect : Effect {
     data object OpenDocument : HomeEffect
     data class ConfigureWidget(val intent: Intent) : HomeEffect
     data class BindWidget(val intent: Intent) : HomeEffect

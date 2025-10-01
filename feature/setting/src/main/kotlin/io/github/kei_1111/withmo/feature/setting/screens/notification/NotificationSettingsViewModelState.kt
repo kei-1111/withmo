@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.notification
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.NotificationSettings
 
-data class NotificationSettingsViewModelState(
+internal data class NotificationSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val notificationSettings: NotificationSettings = NotificationSettings(),
     val initialNotificationSettings: NotificationSettings = NotificationSettings(),

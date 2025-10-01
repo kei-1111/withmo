@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.favorite_app
 import io.github.kei_1111.withmo.core.featurebase.Action
 import io.github.kei_1111.withmo.core.model.AppInfo
 
-sealed interface FavoriteAppSettingsAction : Action {
+internal sealed interface FavoriteAppSettingsAction : Action {
     data class OnAllAppListAppClick(val appInfo: AppInfo) : FavoriteAppSettingsAction
     data class OnFavoriteAppListAppClick(val appInfo: AppInfo) : FavoriteAppSettingsAction
     data class OnAppSearchQueryChange(val query: String) : FavoriteAppSettingsAction

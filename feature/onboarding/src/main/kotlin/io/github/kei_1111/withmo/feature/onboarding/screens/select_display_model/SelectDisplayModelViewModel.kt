@@ -13,7 +13,7 @@ import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
-class SelectDisplayModelViewModel @Inject constructor(
+internal class SelectDisplayModelViewModel @Inject constructor(
     getModelFilePathUseCase: GetModelFilePathUseCase,
     private val saveModelFilePathUseCase: SaveModelFilePathUseCase,
     private val modelFileManager: ModelFileManager,

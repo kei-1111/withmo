@@ -30,7 +30,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.favorite_app.component.
 
 @Suppress("ModifierMissing")
 @Composable
-fun FavoriteAppSettingsScreen(
+internal fun FavoriteAppSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: FavoriteAppSettingsViewModel = hiltViewModel(),
 ) {

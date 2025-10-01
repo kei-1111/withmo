@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
 
-sealed interface HomeAction : Action {
+internal sealed interface HomeAction : Action {
     data class OnAppClick(val appInfo: AppInfo) : HomeAction
     data class OnAppLongClick(val appInfo: AppInfo) : HomeAction
     data object OnShowScaleSliderButtonClick : HomeAction

@@ -37,7 +37,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.sort.component.UsagePer
 
 @Suppress("ModifierMissing")
 @Composable
-fun SortSettingsScreen(
+internal fun SortSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: SortSettingsViewModel = hiltViewModel(),
 ) {

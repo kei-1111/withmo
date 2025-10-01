@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
 import io.github.kei_1111.withmo.core.util.FileUtils
 import java.io.File
 
-data class SelectDisplayModelViewModelState(
+internal data class SelectDisplayModelViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val isModelLoading: Boolean = false,
     val modelFilePath: ModelFilePath = ModelFilePath(null),

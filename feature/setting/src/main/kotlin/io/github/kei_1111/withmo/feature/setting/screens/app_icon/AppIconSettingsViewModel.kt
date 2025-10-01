@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class AppIconSettingsViewModel @Inject constructor(
+internal class AppIconSettingsViewModel @Inject constructor(
     getAppIconSettingsUseCase: GetAppIconSettingsUseCase,
     private val saveAppIconSettingsUseCase: SaveAppIconSettingsUseCase,
 ) : StatefulBaseViewModel<AppIconSettingsViewModelState, AppIconSettingsState, AppIconSettingsAction, AppIconSettingsEffect>() {

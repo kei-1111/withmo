@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.root
 import android.content.Intent
 import io.github.kei_1111.withmo.core.featurebase.Effect
 
-sealed interface SettingsEffect : Effect {
+internal sealed interface SettingsEffect : Effect {
     data class OpenHomeAppSettings(val intent: Intent) : SettingsEffect
     data object NavigateClockSettings : SettingsEffect
     data object NavigateAppIconSettings : SettingsEffect

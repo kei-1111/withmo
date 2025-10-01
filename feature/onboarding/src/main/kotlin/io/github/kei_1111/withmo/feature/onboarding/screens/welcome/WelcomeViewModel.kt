@@ -5,7 +5,7 @@ import io.github.kei_1111.withmo.core.featurebase.stateless.StatelessBaseViewMod
 import javax.inject.Inject
 
 @HiltViewModel
-class WelcomeViewModel @Inject constructor() : StatelessBaseViewModel<WelcomeAction, WelcomeEffect>() {
+internal class WelcomeViewModel @Inject constructor() : StatelessBaseViewModel<WelcomeAction, WelcomeEffect>() {
     override fun onAction(action: WelcomeAction) {
         when (action) {
             is WelcomeAction.OnNextButtonClick -> {

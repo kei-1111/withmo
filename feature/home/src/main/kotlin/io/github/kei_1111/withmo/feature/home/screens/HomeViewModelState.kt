@@ -9,7 +9,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class HomeViewModelState(
+internal data class HomeViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val isChangeModelScaleContentShown: Boolean = false,
     val isModelChangeWarningDialogShown: Boolean = false,

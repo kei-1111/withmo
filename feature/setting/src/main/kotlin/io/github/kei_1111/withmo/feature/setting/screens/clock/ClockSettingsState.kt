@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.clock
 import io.github.kei_1111.withmo.core.featurebase.stateful.State
 import io.github.kei_1111.withmo.core.model.user_settings.ClockSettings
 
-sealed interface ClockSettingsState : State {
+internal sealed interface ClockSettingsState : State {
     data object Idle : ClockSettingsState
 
     data object Loading : ClockSettingsState

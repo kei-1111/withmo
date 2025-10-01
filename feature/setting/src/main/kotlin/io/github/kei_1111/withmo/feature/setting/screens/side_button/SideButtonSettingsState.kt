@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.side_button
 import io.github.kei_1111.withmo.core.featurebase.stateful.State
 import io.github.kei_1111.withmo.core.model.user_settings.SideButtonSettings
 
-sealed interface SideButtonSettingsState : State {
+internal sealed interface SideButtonSettingsState : State {
     data object Idle : SideButtonSettingsState
 
     data object Loading : SideButtonSettingsState

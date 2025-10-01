@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class FinishViewModel @Inject constructor(
+internal class FinishViewModel @Inject constructor(
     private val markOnboardingShownUseCase: MarkOnboardingShownUseCase,
 ) : StatelessBaseViewModel<FinishAction, FinishEffect>() {
     override fun onAction(action: FinishAction) {

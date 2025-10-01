@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.theme
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeSettings
 
-data class ThemeSettingsViewModelState(
+internal data class ThemeSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val themeSettings: ThemeSettings = ThemeSettings(),
     val initialThemeSettings: ThemeSettings = ThemeSettings(),

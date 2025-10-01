@@ -32,7 +32,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.side_button.component.S
 
 @Suppress("ModifierMissing")
 @Composable
-fun SideButtonSettingsScreen(
+internal fun SideButtonSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: SideButtonSettingsViewModel = hiltViewModel(),
 ) {

@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SortSettingsViewModel @Inject constructor(
+internal class SortSettingsViewModel @Inject constructor(
     getSortSettingsUseCase: GetSortSettingsUseCase,
     private val saveSortSettingsUseCase: SaveSortSettingsUseCase,
     private val appManager: AppManager,

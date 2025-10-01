@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-sealed interface FavoriteAppSettingsState : State {
+internal sealed interface FavoriteAppSettingsState : State {
     data object Idle : FavoriteAppSettingsState
 
     data object Loading : FavoriteAppSettingsState

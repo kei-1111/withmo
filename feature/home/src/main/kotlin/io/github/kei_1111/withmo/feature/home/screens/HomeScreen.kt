@@ -35,7 +35,7 @@ import kotlinx.coroutines.launch
 @Suppress("ModifierMissing", "LongMethod", "CyclomaticComplexMethod")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(
+internal fun HomeScreen(
     navigateSettings: () -> Unit,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {

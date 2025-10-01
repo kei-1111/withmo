@@ -10,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ThemeSettingsViewModel @Inject constructor(
+internal class ThemeSettingsViewModel @Inject constructor(
     getThemeSettingsUseCase: GetThemeSettingsUseCase,
     private val saveThemeSettingsUseCase: SaveThemeSettingsUseCase,
 ) : StatefulBaseViewModel<ThemeSettingsViewModelState, ThemeSettingsState, ThemeSettingsAction, ThemeSettingsEffect>() {

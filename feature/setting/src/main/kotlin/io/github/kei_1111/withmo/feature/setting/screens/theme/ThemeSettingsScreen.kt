@@ -32,7 +32,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.theme.component.ThemeSe
 
 @Suppress("ModifierMissing")
 @Composable
-fun ThemeSettingsScreen(
+internal fun ThemeSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: ThemeSettingsViewModel = hiltViewModel(),
 ) {

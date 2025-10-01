@@ -5,7 +5,7 @@ import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class SelectFavoriteAppViewModelState(
+internal data class SelectFavoriteAppViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val appSearchQuery: String = "",
     val selectedAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),

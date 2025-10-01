@@ -8,7 +8,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.UserSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-sealed interface HomeState : State {
+internal sealed interface HomeState : State {
     data object Idle : HomeState
 
     data object Loading : HomeState

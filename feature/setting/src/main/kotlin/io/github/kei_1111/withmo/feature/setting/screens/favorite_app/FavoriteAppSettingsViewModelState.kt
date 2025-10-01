@@ -6,7 +6,7 @@ import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-data class FavoriteAppSettingsViewModelState(
+internal data class FavoriteAppSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val favoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),
     val initialFavoriteAppList: ImmutableList<FavoriteAppInfo> = persistentListOf(),

@@ -34,7 +34,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.app_icon.component.AppI
 
 @Suppress("ModifierMissing")
 @Composable
-fun AppIconSettingsScreen(
+internal fun AppIconSettingsScreen(
     navigateBack: () -> Unit,
     viewModel: AppIconSettingsViewModel = hiltViewModel(),
 ) {

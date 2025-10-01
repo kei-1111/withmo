@@ -26,7 +26,7 @@ import io.github.kei_1111.withmo.feature.onboarding.screens.welcome.component.We
 
 @Suppress("ModifierMissing")
 @Composable
-fun WelcomeScreen(
+internal fun WelcomeScreen(
     navigateSelectFavoriteApp: () -> Unit,
     viewModel: WelcomeViewModel = hiltViewModel(),
 ) {

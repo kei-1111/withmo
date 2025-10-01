@@ -47,7 +47,7 @@ import io.github.kei_1111.withmo.feature.setting.screens.root.component.Settings
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "CyclomaticComplexMethod")
 @Composable
-fun SettingsScreen(
+internal fun SettingsScreen(
     navigateClockSettings: () -> Unit,
     navigateAppIconSettings: () -> Unit,
     navigateFavoriteAppSettings: () -> Unit,

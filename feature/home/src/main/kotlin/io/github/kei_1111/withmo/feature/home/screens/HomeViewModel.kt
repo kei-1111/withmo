@@ -39,7 +39,7 @@ import javax.inject.Inject
 
 @Suppress("TooManyFunctions")
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+internal class HomeViewModel @Inject constructor(
     getUserSettingsUseCase: GetUserSettingsUseCase,
     getFavoriteAppsUseCase: GetFavoriteAppsUseCase,
     getPlacedItemsUseCase: GetPlacedItemsUseCase,

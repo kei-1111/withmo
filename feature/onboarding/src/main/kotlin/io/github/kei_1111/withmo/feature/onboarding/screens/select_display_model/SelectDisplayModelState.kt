@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.onboarding.screens.select_display_mode
 import android.graphics.Bitmap
 import io.github.kei_1111.withmo.core.featurebase.stateful.State
 
-sealed interface SelectDisplayModelState : State {
+internal sealed interface SelectDisplayModelState : State {
     data object Idle : SelectDisplayModelState
 
     data object Loading : SelectDisplayModelState

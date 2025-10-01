@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.app_icon
 import io.github.kei_1111.withmo.core.featurebase.stateful.ViewModelState
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 
-data class AppIconSettingsViewModelState(
+internal data class AppIconSettingsViewModelState(
     val statusType: StatusType = StatusType.IDLE,
     val appIconSettings: AppIconSettings = AppIconSettings(),
     val initialAppIconSettings: AppIconSettings = AppIconSettings(),

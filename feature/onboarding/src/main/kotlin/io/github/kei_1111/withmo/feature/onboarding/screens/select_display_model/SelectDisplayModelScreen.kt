@@ -39,7 +39,7 @@ import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing", "LongMethod")
 @Composable
-fun SelectDisplayModelScreen(
+internal fun SelectDisplayModelScreen(
     navigateBack: () -> Unit,
     navigateFinish: () -> Unit,
     viewModel: SelectDisplayModelViewModel = hiltViewModel(),

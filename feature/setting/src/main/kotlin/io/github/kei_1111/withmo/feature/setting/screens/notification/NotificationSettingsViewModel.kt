@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationSettingsViewModel @Inject constructor(
+internal class NotificationSettingsViewModel @Inject constructor(
     getNotificationSettingsUseCase: GetNotificationSettingsUseCase,
     private val saveNotificationSettingsUseCase: SaveNotificationSettingsUseCase,
     private val permissionChecker: PermissionChecker,

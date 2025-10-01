@@ -3,7 +3,7 @@ package io.github.kei_1111.withmo.feature.setting.screens.app_icon
 import io.github.kei_1111.withmo.core.featurebase.stateful.State
 import io.github.kei_1111.withmo.core.model.user_settings.AppIconSettings
 
-sealed interface AppIconSettingsState : State {
+internal sealed interface AppIconSettingsState : State {
     data object Idle : AppIconSettingsState
 
     data object Loading : AppIconSettingsState
