@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import io.github.kei_1111.withmo.core.ui.navigation.Home
 import io.github.kei_1111.withmo.core.ui.navigation.OnboardingGraph
-import io.github.kei_1111.withmo.feature.home.HomeScreen
+import io.github.kei_1111.withmo.feature.home.screens.HomeScreen
 
 fun NavHostController.navigateHome() = navigate(Home) {
     popUpTo(OnboardingGraph) {

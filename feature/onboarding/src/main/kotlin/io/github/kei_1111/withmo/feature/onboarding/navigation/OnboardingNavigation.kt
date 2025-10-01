@@ -16,10 +16,10 @@ import io.github.kei_1111.withmo.core.ui.navigation.Welcome
 import io.github.kei_1111.withmo.core.ui.navigation.checkScreen
 import io.github.kei_1111.withmo.core.ui.navigation.slideInHorizontallyFrom
 import io.github.kei_1111.withmo.core.ui.navigation.slideOutHorizontallyTo
-import io.github.kei_1111.withmo.feature.onboarding.finish.FinishScreen
-import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelScreen
-import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppScreen
-import io.github.kei_1111.withmo.feature.onboarding.welcome.WelcomeScreen
+import io.github.kei_1111.withmo.feature.onboarding.screens.finish.FinishScreen
+import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model.SelectDisplayModelScreen
+import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.SelectFavoriteAppScreen
+import io.github.kei_1111.withmo.feature.onboarding.screens.welcome.WelcomeScreen
 
 fun NavHostController.navigateSelectFavoriteApp() = navigate(SelectFavoriteApp)
 
