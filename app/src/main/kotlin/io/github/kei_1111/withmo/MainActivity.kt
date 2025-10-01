@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            viewModel.startScreen == null
+            viewModel.startDestination == null
         }
 
         super.onCreate(savedInstanceState)
@@ -159,9 +159,9 @@ class MainActivity : ComponentActivity() {
                             WithmoTheme(
                                 themeType = themeSettings.themeType,
                             ) {
-                                viewModel.startScreen?.let {
+                                viewModel.startDestination?.let {
                                     App(
-                                        startScreen = it,
+                                        startDestination = it,
                                     )
                                 }
                             }

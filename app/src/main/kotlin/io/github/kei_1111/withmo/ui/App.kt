@@ -18,14 +18,14 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.rememberNavController
 import io.github.kei_1111.withmo.core.common.unity.UnityManager
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.navigation.Screen
+import io.github.kei_1111.withmo.core.ui.navigation.NavigationRoute
 import io.github.kei_1111.withmo.navigation.WithmoNavHost
 
 @RequiresApi(Build.VERSION_CODES.R)
 @Suppress("ModifierMissing")
 @Composable
 fun App(
-    startScreen: Screen,
+    startDestination: NavigationRoute,
 ) {
     val navController = rememberNavController()
 
@@ -39,7 +39,7 @@ fun App(
 
         WithmoNavHost(
             navController = navController,
-            startDestination = startScreen,
+            startDestination = startDestination,
             modifier = Modifier.fillMaxSize(),
         )
     }
