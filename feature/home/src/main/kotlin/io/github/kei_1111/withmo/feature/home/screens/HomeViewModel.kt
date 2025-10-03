@@ -168,8 +168,8 @@ internal class HomeViewModel @Inject constructor(
                         _viewModelState.value.currentUserSettings.modelFilePath.path?.let { FileUtils.isDefaultModelFile(it) } ?: false
 
                     if (!isDefaultModelFile) {
-                        updateViewModelState { copy(isModelLoading = true) }
                         saveModelFilePathUseCase(ModelFilePath(defaultModelFilePath))
+                        updateViewModelState { copy(isModelLoading = true) }
                     }
                 }
             }
@@ -332,18 +332,16 @@ internal class HomeViewModel @Inject constructor(
                     if (action.uri == null) {
                         sendEffect(HomeEffect.ShowToast("ファイルが選択されませんでした"))
                     } else {
-                        updateViewModelState { copy(isModelLoading = true) }
                         modelFileManager.deleteCopiedCacheFiles()
                         val filePath = modelFileManager.copyVrmFileFromUri(action.uri)?.absolutePath
                         if (filePath == null) {
                             sendEffect(HomeEffect.ShowToast("ファイルの読み込みに失敗しました"))
-                            updateViewModelState { copy(isModelLoading = false) }
                         } else {
                             if (filePath == _viewModelState.value.currentUserSettings.modelFilePath.path) {
                                 sendEffect(HomeEffect.ShowToast("同じファイルが選択されています"))
-                                updateViewModelState { copy(isModelLoading = false) }
                             } else {
                                 saveModelFilePathUseCase(ModelFilePath(filePath))
+                                updateViewModelState { copy(isModelLoading = true) }
                             }
                         }
                     }
