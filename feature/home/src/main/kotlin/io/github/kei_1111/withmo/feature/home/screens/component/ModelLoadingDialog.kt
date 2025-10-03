@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoCircularProgressIndicator
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 
@@ -50,7 +50,7 @@ internal fun ModelLoadingDialog(
                     color = WithmoTheme.colorScheme.onSurface,
                     style = WithmoTheme.typography.bodyMedium,
                 )
-                CircularProgressIndicator()
+                WithmoCircularProgressIndicator()
             }
         }
     }
