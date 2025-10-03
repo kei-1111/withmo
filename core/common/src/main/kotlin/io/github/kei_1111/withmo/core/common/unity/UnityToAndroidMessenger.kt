@@ -12,3 +12,8 @@ object UnityToAndroidMessenger {
         receiver?.get()?.onMessageReceivedFromUnity(message)
     }
 }
+
+enum class UnityMessage(val message: String) {
+    LOADING_SUCCESS("LoadingSuccess"),
+    LOADING_FAILURE("LoadingFailure"),
+}

@@ -7,6 +7,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.common.unity.AndroidToUnityMessenger
+import io.github.kei_1111.withmo.core.common.unity.UnityMessage
 import io.github.kei_1111.withmo.core.common.unity.UnityMethod
 import io.github.kei_1111.withmo.core.common.unity.UnityObject
 import io.github.kei_1111.withmo.core.common.unity.UnityToAndroidMessenger
@@ -78,7 +79,7 @@ internal class HomeViewModel @Inject constructor(
 
     override fun onMessageReceivedFromUnity(message: String) {
         when (message) {
-            ModelLoadState.LoadingSuccess.name -> {
+            UnityMessage.LOADING_SUCCESS.message -> {
                 updateViewModelState { copy(isModelLoading = false) }
                 AndroidToUnityMessenger.sendMessage(
                     UnityObject.VRM_LOADER,
@@ -86,7 +87,7 @@ internal class HomeViewModel @Inject constructor(
                     _viewModelState.value.currentUserSettings.modelSettings.scale.toString(),
                 )
             }
-            ModelLoadState.LoadingFailure.name -> {
+            UnityMessage.LOADING_FAILURE.message -> {
                 updateViewModelState { copy(isModelLoading = false) }
             }
             else -> {
@@ -381,10 +382,4 @@ internal class HomeViewModel @Inject constructor(
 
         const val TAG = "HomeViewModel"
     }
-}
-
-// TODO: 今後Unityから受け取るメッセージをまとめるクラスを作る際にアッパースネークケースのenumに変更する
-enum class ModelLoadState {
-    LoadingSuccess,
-    LoadingFailure,
 }
