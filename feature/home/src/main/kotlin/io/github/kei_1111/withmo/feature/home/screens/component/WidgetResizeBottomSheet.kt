@@ -51,7 +51,6 @@ internal fun WidgetResizeBottomSheet(
     var widgetHeight by remember { mutableFloatStateOf(placedWidgetInfo.height.toFloat()) }
 
     ModalBottomSheet(
-        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
         onDismissRequest = {
             close(
                 placedWidgetInfo.copy(
@@ -60,6 +59,8 @@ internal fun WidgetResizeBottomSheet(
                 ),
             )
         },
+        sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true),
+        containerColor = WithmoTheme.colorScheme.surface,
     ) {
         Column(
             modifier = Modifier
