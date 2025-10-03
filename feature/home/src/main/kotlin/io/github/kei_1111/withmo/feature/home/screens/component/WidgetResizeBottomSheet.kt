@@ -81,7 +81,7 @@ internal fun WidgetResizeBottomSheet(
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = Color.Transparent,
-                ) { }
+                ) { /* Widgetをタップしたときに動作しないようにするためのSurfaceのため空 */ }
             }
             Column(
                 modifier = Modifier.padding(16.dp),
