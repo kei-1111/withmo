@@ -2,6 +2,7 @@
 
 package io.github.kei_1111.withmo.core.designsystem.component.theme
 
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.text.PlatformTextStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -21,41 +22,34 @@ val OpenSans = FontFamily(
     Font(R.font.open_sans_light, FontWeight.Light),
 )
 
+@Immutable
 data class WithmoTypography(
-    val displayMedium: TextStyle,
-    val titleLarge: TextStyle,
-    val bodyMedium: TextStyle,
-    val labelMedium: TextStyle,
-    val labelSmall: TextStyle,
-)
-
-val Typography = WithmoTypography(
-    displayMedium = TextStyle(
+    val displayMedium: TextStyle = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.Black,
         fontSize = 42.sp,
         lineHeight = 52.sp,
     ),
-    titleLarge = TextStyle(
+    val titleLarge: TextStyle = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,
         fontSize = 22.sp,
         lineHeight = 28.sp,
     ),
-    bodyMedium = TextStyle(
+    val bodyMedium: TextStyle = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.Medium,
         fontSize = 16.sp,
         lineHeight = 24.sp,
     ),
-    labelMedium = TextStyle(
+    val labelMedium: TextStyle = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,
         fontSize = 12.sp,
         letterSpacing = 0.5.sp,
         lineHeight = 16.sp,
     ),
-    labelSmall = TextStyle(
+    val labelSmall: TextStyle = TextStyle(
         fontFamily = NotoSansJp,
         fontWeight = FontWeight.SemiBold,
         fontSize = 10.sp,

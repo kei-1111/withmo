@@ -311,7 +311,7 @@ private fun animatedColorScheme(
 }
 
 internal val LocalColorScheme = staticCompositionLocalOf { lightScheme }
-internal val LocalTypography = staticCompositionLocalOf { Typography }
+internal val LocalTypography = staticCompositionLocalOf { WithmoTypography() }
 internal val LocalShapes = staticCompositionLocalOf { Shapes }
 internal val LocalShadows = staticCompositionLocalOf { WithmoShadows() }
 
@@ -340,7 +340,7 @@ fun WithmoTheme(
 
     CompositionLocalProvider(
         LocalColorScheme provides animatedColorScheme,
-        LocalTypography provides Typography,
+        LocalTypography provides WithmoTypography(),
         LocalShapes provides Shapes,
         LocalShadows provides WithmoShadows(),
         LocalRippleConfiguration provides rippleConfiguration,
