@@ -12,12 +12,13 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
@@ -42,7 +43,11 @@ fun WithmoButton(
         modifier = modifier
             .then(
                 if (elevation != null) {
-                    Modifier.withmoShadow(radius = elevation)
+                    Modifier
+                        .dropShadow(
+                            shape = shape,
+                            shadow = WithmoTheme.shadows.medium,
+                        )
                 } else {
                     Modifier
                 },
@@ -78,7 +83,11 @@ fun WithmoOutlinedButton(
         modifier = modifier
             .then(
                 if (elevation != null) {
-                    Modifier.withmoShadow(radius = elevation)
+                    Modifier
+                        .dropShadow(
+                            shape = shape,
+                            shadow = Shadow(radius = elevation),
+                        )
                 } else {
                     Modifier
                 },

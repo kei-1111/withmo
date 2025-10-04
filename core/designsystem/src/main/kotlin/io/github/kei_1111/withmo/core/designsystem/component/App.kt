@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -28,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
@@ -94,9 +95,11 @@ private fun AppIcon(
             Box(
                 modifier = modifier
                     .size(56.dp)
-                    .withmoShadow(
+                    .dropShadow(
                         shape = appIconShape,
+                        shadow = WithmoTheme.shadows.medium,
                     )
+                    .clip(appIconShape)
                     .background(
                         color = WithmoTheme.colorScheme.surface,
                         shape = appIconShape,
@@ -127,9 +130,11 @@ private fun AppIcon(
             Box(
                 modifier = modifier
                     .size(56.dp)
-                    .withmoShadow(
-                        shape = CircleShape,
+                    .dropShadow(
+                        shape = appIconShape,
+                        shadow = WithmoTheme.shadows.medium,
                     )
+                    .clip(appIconShape)
                     .background(
                         color = Color.White,
                         shape = CircleShape,

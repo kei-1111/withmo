@@ -25,6 +25,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoClock
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoVerticalSlider
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.toDateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -66,8 +66,9 @@ internal fun DisplayModelContent(
                 modifier = Modifier
                     .align(Alignment.TopStart)
                     .size(56.dp)
-                    .withmoShadow(
+                    .dropShadow(
                         shape = CircleShape,
+                        shadow = WithmoTheme.shadows.medium,
                     ),
             ) {
                 Icon(
@@ -138,8 +139,9 @@ private fun ScaleSlider(
 ) {
     Surface(
         modifier = modifier
-            .withmoShadow(
+            .dropShadow(
                 shape = WithmoTheme.shapes.medium,
+                shadow = WithmoTheme.shadows.medium,
             ),
         shape = WithmoTheme.shapes.medium,
         color = WithmoTheme.colorScheme.surface,
@@ -185,8 +187,9 @@ private fun NavigateSettingsButton(
             onClick = onClick,
             modifier = Modifier
                 .size(56.dp)
-                .withmoShadow(
+                .dropShadow(
                     shape = CircleShape,
+                    shadow = WithmoTheme.shadows.medium,
                 ),
         ) {
             Image(
@@ -212,8 +215,9 @@ private fun SetDefaultModelButton(
             onClick = onClick,
             modifier = Modifier
                 .size(56.dp)
-                .withmoShadow(
+                .dropShadow(
                     shape = CircleShape,
+                    shadow = WithmoTheme.shadows.medium,
                 ),
         ) {
             Image(
@@ -239,8 +243,9 @@ private fun OpenDocumentButton(
             onClick = onClick,
             modifier = Modifier
                 .size(56.dp)
-                .withmoShadow(
+                .dropShadow(
                     shape = CircleShape,
+                    shadow = WithmoTheme.shadows.medium,
                 ),
         ) {
             Icon(
@@ -265,8 +270,9 @@ private fun ShowScaleSliderButton(
             onClick = onClick,
             modifier = Modifier
                 .size(56.dp)
-                .withmoShadow(
+                .dropShadow(
                     shape = CircleShape,
+                    shadow = WithmoTheme.shadows.medium,
                 ),
         ) {
             Icon(

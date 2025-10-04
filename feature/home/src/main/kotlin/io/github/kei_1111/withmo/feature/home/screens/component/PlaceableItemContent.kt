@@ -21,13 +21,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.key
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedApp
 import io.github.kei_1111.withmo.core.designsystem.component.PlacedWidget
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoButton
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoIconButton
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.PlacedAppInfo
 import io.github.kei_1111.withmo.core.model.PlacedWidgetInfo
@@ -127,8 +127,9 @@ private fun AddPlaceableItemButton(
         onClick = onClick,
         modifier = modifier
             .size(56.dp)
-            .withmoShadow(
+            .dropShadow(
                 shape = CircleShape,
+                shadow = WithmoTheme.shadows.medium,
             ),
         containerColor = WithmoTheme.colorScheme.secondaryContainer,
         contentColor = WithmoTheme.colorScheme.primary,
@@ -147,11 +148,8 @@ private fun CompleteEditButton(
 ) {
     WithmoButton(
         onClick = onClick,
-        modifier = modifier
-            .height(56.dp)
-            .withmoShadow(
-                shape = CircleShape,
-            ),
+        modifier = modifier.height(56.dp),
+        elevation = 4.dp,
     ) {
         Text(
             text = "編集完了",
