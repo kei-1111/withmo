@@ -23,7 +23,7 @@
 - `core:data` - Roomデータベース、DataStoreリポジトリ、各種マネージャー
 - `core:domain` - ユースケース、リポジトリインターフェース、ビジネスロジック
 - `core:designsystem` - Composeコンポーネント、テーマ、Material 3デザインシステム
-- `core:featurebase` - MVI基底クラス（State、Action、Effect、BaseViewModel）
+- `core:featurebase` - MVI基底クラス（ViewModelState、State、Action、Effect、BaseViewModel）
 - `core:model` - ドメインモデルとユーザー設定データクラス
 - `core:service` - バックグラウンドサービス（UnityWallpaperService、NotificationListener）
 - `core:ui` - 共有UIユーティリティ、プロバイダー、モディファイア
@@ -40,7 +40,7 @@
 
 **主要コンポーネント:**
 - **Action**: ユーザー操作をViewModelに伝達するためのアクション
-- **State**: UIに公開される画面描画用の状態
+- **State**: UIに公開される画面描画用の状態（StatefulBaseViewModelのみ）
 - **ViewModelState**: ViewModelの内部状態（StatefulBaseViewModelのみ）
 - **Effect**: ナビゲーションやトーストなど、一度だけ実行される副作用
 
@@ -55,8 +55,8 @@ abstract class StatefulBaseViewModel<VS : ViewModelState<S>, S : State, A : Acti
     protected val _effect = Channel<E>(Channel.BUFFERED)
     val effect: Flow<E> = _effect.receiveAsFlow()
 
-    abstract fun createInitialViewModelState(): VS
-    abstract fun createInitialState(): S
+    protected abstract fun createInitialViewModelState(): VS
+    protected abstract fun createInitialState(): S
     abstract fun onAction(action: A)
 
     protected fun updateViewModelState(update: VS.() -> VS)
@@ -161,15 +161,17 @@ class WelcomeViewModel @Inject constructor() :
 // 1. public Screen（ViewModelを受け取る）
 @Composable
 fun ClockSettingsScreen(
-    onBackButtonClick: () -> Unit,
+    navigateBack: () -> Unit,  // navigate[Destination]形式
     viewModel: ClockSettingsViewModel = hiltViewModel(),
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val currentNavigateBack by rememberUpdatedState(navigateBack)
 
     LaunchedEffect(viewModel) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is ClockSettingsEffect.NavigateBack -> onBackButtonClick()
+                is ClockSettingsEffect.NavigateBack -> currentNavigateBack()
                 is ClockSettingsEffect.ShowToast -> showToast(context, effect.message)
             }
         }
@@ -291,6 +293,52 @@ updateViewModelState {
 }
 ```
 
+### ナビゲーション
+
+**Navigation Compose 2.8+** による型安全なナビゲーション実装：
+
+**ルート定義** (`core:ui/navigation/NavigationRoute.kt`):
+- インターフェース階層: `NavigationRoute` → `Graph`/`Screen`
+- `@Serializable` data objectによる型安全なルート
+- すべてのルート定義を単一ファイルに集約
+
+**実装パターン**:
+```kotlin
+// 1. ルート定義
+@Serializable
+data object ClockSettings : Screen
+
+// 2. NavController拡張関数（feature内のnavigationパッケージ）
+fun NavHostController.navigateClockSettings() = navigate(ClockSettings)
+
+// 3. NavGraphBuilder拡張関数でグラフ構築
+fun NavGraphBuilder.settingsGraph(
+    navigateBack: () -> Unit,
+    navigateClockSettings: () -> Unit,
+) {
+    navigation<SettingsGraph>(startDestination = Settings) {
+        composable<ClockSettings> {
+            ClockSettingsScreen(navigateBack = navigateBack)
+        }
+    }
+}
+
+// 4. NavHostで統合（app/navigation/WithmoNavHost.kt）
+NavHost(...) {
+    settingsGraph(
+        navigateBack = navController::popBackStack,
+        navigateClockSettings = navController::navigateClockSettings,
+    )
+}
+```
+
+**規約**:
+- 各featureモジュールに`navigation`パッケージを作成
+- 拡張関数命名: `navigate[ScreenName]`形式
+- グラフ関数命名: `[graphName]Graph`形式
+- 戻る処理: `navController::popBackStack`を使用
+- アニメーション: NavHostレベルで統一定義
+
 ### Unity as a Library統合
 
 デュアルサーフェスレンダリングに対応した高度なUnity統合機能：
@@ -336,7 +384,6 @@ updateViewModelState {
 - テーマシステムから時間ベースのコマンドをUnityに送信して視覚変化を制御
 
 ### 重要な制約事項
-- **Unity Libraryは含まれません**: unityLibraryはファイルサイズのためgitから除外されています
 - **VRMファイルサポート**: 対応する3Dモデル形式はVRMのみです
 - **NDK ABIs**: armeabi-v7aとarm64-v8aのみに対応しています
 
@@ -344,7 +391,6 @@ updateViewModelState {
 - 時間による背景変化機能を持つMaterial 3テーマ
 - 包括的なローカライゼーション対応の日本語ファーストUI
 - KDocドキュメンテーション付きのカスタムComposeコンポーネント
-- 統一されたスペーシング管理用のPaddingsオブジェクト（Tiny=2dp〜ExtraLarge=25dp）
 
 ### コードスタイル・規約
 
@@ -420,7 +466,6 @@ updateViewModelState {
 - **ユニットテスト**: Repository、UseCaseの主要ロジックをカバー
 - **モックライブラリ**: MockKを使用したモック作成とスタブ化
 - **テストフレームワーク**: JUnit、Kotlinx Coroutines Test、Turbineを使用
-- **最小限のテストカバレッジ**: テスト追加時は重要なUnity統合ポイントを重視する
 - **CI/CD**: GitHub Actionsによる自動テスト実行とコード品質チェック
 
 ## Git・GitHub運用規則
