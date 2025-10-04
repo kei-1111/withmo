@@ -71,11 +71,11 @@ internal fun AppListSheet(
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
         modifier = modifier,
-        shape = BottomSheetShape,
         sheetState = appListSheetState,
+        shape = BottomSheetShape,
         containerColor = WithmoTheme.colorScheme.surface,
         contentWindowInsets = { WindowInsets(bottom = 0.dp) },
-        dragHandle = {},
+        dragHandle = null,
     ) {
         Column(
             modifier = Modifier
