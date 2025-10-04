@@ -313,6 +313,7 @@ private fun animatedColorScheme(
 internal val LocalColorScheme = staticCompositionLocalOf { lightScheme }
 internal val LocalTypography = staticCompositionLocalOf { Typography }
 internal val LocalShapes = staticCompositionLocalOf { Shapes }
+internal val LocalShadows = staticCompositionLocalOf { WithmoShadows() }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -341,6 +342,7 @@ fun WithmoTheme(
         LocalColorScheme provides animatedColorScheme,
         LocalTypography provides Typography,
         LocalShapes provides Shapes,
+        LocalShadows provides WithmoShadows(),
         LocalRippleConfiguration provides rippleConfiguration,
     ) { content() }
 }
@@ -357,4 +359,8 @@ object WithmoTheme {
     val shapes: Shapes
         @Composable @ReadOnlyComposable
         get() = LocalShapes.current
+
+    val shadows: WithmoShadows
+        @Composable @ReadOnlyComposable
+        get() = LocalShadows.current
 }
