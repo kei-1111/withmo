@@ -23,7 +23,6 @@ import androidx.compose.material.icons.rounded.RadioButtonChecked
 import androidx.compose.material.icons.rounded.Star
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material.icons.rounded.Wallpaper
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoHorizontalDivider
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -275,7 +275,7 @@ private fun ThemeSettings(
 private fun SettingItemDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(modifier = modifier.padding(start = 48.dp))
+    WithmoHorizontalDivider(modifier = modifier.padding(start = 48.dp))
 }
 
 @Composable

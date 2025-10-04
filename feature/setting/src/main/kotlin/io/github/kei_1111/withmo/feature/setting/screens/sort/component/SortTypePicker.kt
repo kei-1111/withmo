@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoHorizontalDivider
 import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.SortType
@@ -75,7 +75,7 @@ internal fun SortTypePicker(
 private fun SortTypePickerDivider(
     modifier: Modifier = Modifier,
 ) {
-    HorizontalDivider(modifier = modifier.padding(start = 16.dp))
+    WithmoHorizontalDivider(modifier = modifier.padding(start = 16.dp))
 }
 
 @Composable
