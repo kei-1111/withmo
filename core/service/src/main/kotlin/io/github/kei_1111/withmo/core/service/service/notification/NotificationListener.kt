@@ -86,7 +86,7 @@ class NotificationListener : NotificationListenerService() {
             result
                 .onSuccess { notificationSettings ->
                     if (notificationSettings.isNotificationAnimationEnabled) {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.Notification, UnityMethod.ShowObject, "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.NOTIFICATION, UnityMethod.SHOW_OBJECT, "")
                     }
 
                     if (notificationSettings.isNotificationBadgeEnabled) {

@@ -16,6 +16,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.TransformOrigin
+import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.semantics.contentDescription
@@ -25,10 +26,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-
-private val SliderThumbSize = 20.dp
-private val SliderTrackHeight = 4.dp
-private val SliderShadowElevation = 1.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,42 +39,62 @@ fun WithmoSlider(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
 
+    val withmoSliderColor = SliderDefaults.colors(
+        thumbColor = WithmoTheme.colorScheme.primary,
+        activeTrackColor = WithmoTheme.colorScheme.primary,
+        activeTickColor = WithmoTheme.colorScheme.secondaryContainer,
+        inactiveTrackColor = WithmoTheme.colorScheme.secondaryContainer,
+        inactiveTickColor = WithmoTheme.colorScheme.primary,
+        disabledThumbColor = WithmoTheme.colorScheme.onSurface
+            .copy(alpha = 0.38f)
+            .compositeOver(WithmoTheme.colorScheme.surface),
+        disabledActiveTrackColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+        disabledActiveTickColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledInactiveTrackColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledInactiveTickColor = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    )
+
     Slider(
         value = value,
         onValueChange = onValueChange,
-        enabled = enabled,
-        valueRange = valueRange,
-        interactionSource = interactionSource,
         modifier = modifier
             .semantics { contentDescription = "Localized Description" }
             .requiredSizeIn(
-                minWidth = SliderThumbSize,
-                minHeight = SliderTrackHeight,
+                minWidth = 20.dp,
+                minHeight = 4.dp,
             ),
+        enabled = enabled,
+        valueRange = valueRange,
+        interactionSource = interactionSource,
         steps = steps,
         thumb = {
             val thumbModifier = Modifier
-                .size(SliderThumbSize)
-                .shadow(SliderShadowElevation, CircleShape, clip = false)
+                .size(20.dp)
+                .shadow(
+                    elevation = 1.dp,
+                    shape = CircleShape,
+                    clip = false,
+                )
                 .indication(
                     interactionSource = interactionSource,
                     indication = ripple(
                         bounded = false,
-                        radius = SliderThumbSize,
+                        radius = 20.dp,
                     ),
                 )
             SliderDefaults.Thumb(
                 interactionSource = interactionSource,
                 modifier = thumbModifier,
+                colors = withmoSliderColor,
                 enabled = enabled,
             )
         },
         track = {
-            val trackModifier = Modifier
-                .height(SliderTrackHeight)
+            val trackModifier = Modifier.height(4.dp)
             SliderDefaults.Track(
                 sliderState = it,
                 modifier = trackModifier,
+                colors = withmoSliderColor,
                 enabled = enabled,
             )
         },

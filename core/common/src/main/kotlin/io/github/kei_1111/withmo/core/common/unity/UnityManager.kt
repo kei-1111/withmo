@@ -19,7 +19,7 @@ object UnityManager {
 
     private val mainHandler = Handler(Looper.getMainLooper())
 
-    private const val MainDisplayIndex = 0
+    private const val MAIN_DISPLAY_INDEX = 0
 
     @Volatile
     private var currentUnitySurface: UnitySurface? = null
@@ -33,22 +33,22 @@ object UnityManager {
     }
 
     fun resumeForActivity() = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Activity) player.resume()
+        if (currentUnitySurface == UnitySurface.ACTIVITY) player.resume()
     }
     fun resumeForWallpaper() = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Wallpaper) player.resume()
+        if (currentUnitySurface == UnitySurface.WALLPAPER) player.resume()
     }
     fun pauseForActivity() = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Activity) player.pause()
+        if (currentUnitySurface == UnitySurface.ACTIVITY) player.pause()
     }
     fun pauseForWallpaper() = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Wallpaper) player.pause()
+        if (currentUnitySurface == UnitySurface.WALLPAPER) player.pause()
     }
     fun focusGainedForActivity(gained: Boolean) = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Activity) player.windowFocusChanged(gained)
+        if (currentUnitySurface == UnitySurface.ACTIVITY) player.windowFocusChanged(gained)
     }
     fun focusGainedForWallpaper(gained: Boolean) = mainHandler.post {
-        if (currentUnitySurface == UnitySurface.Wallpaper) player.windowFocusChanged(gained)
+        if (currentUnitySurface == UnitySurface.WALLPAPER) player.windowFocusChanged(gained)
     }
 
     /**
@@ -56,12 +56,12 @@ object UnityManager {
      * アタッチの際には、デタッチしてからアタッチする。
      */
     fun attachSurfaceForWallpaper(surface: Surface) {
-        if (currentUnitySurface == UnitySurface.Activity || currentUnitySurface == null) {
+        if (currentUnitySurface == UnitySurface.ACTIVITY || currentUnitySurface == null) {
             // → Activity Surface だったものを detach
-            player.displayChanged(MainDisplayIndex, null)
-            currentUnitySurface = UnitySurface.Wallpaper
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
+            currentUnitySurface = UnitySurface.WALLPAPER
             // Wallpaper Surface にアタッチ
-            player.displayChanged(MainDisplayIndex, surface)
+            player.displayChanged(MAIN_DISPLAY_INDEX, surface)
         }
     }
 
@@ -70,12 +70,12 @@ object UnityManager {
      * アタッチの際には、デタッチしてからアタッチする。
      */
     fun attachSurfaceForActivity(surface: Surface) {
-        if (currentUnitySurface == UnitySurface.Wallpaper || currentUnitySurface == null) {
+        if (currentUnitySurface == UnitySurface.WALLPAPER || currentUnitySurface == null) {
             // → Wallpaper Surface だったものを detach
-            player.displayChanged(MainDisplayIndex, null)
-            currentUnitySurface = UnitySurface.Activity
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
+            currentUnitySurface = UnitySurface.ACTIVITY
             // Activity Surface にアタッチ
-            player.displayChanged(MainDisplayIndex, surface)
+            player.displayChanged(MAIN_DISPLAY_INDEX, surface)
         }
     }
 
@@ -83,8 +83,8 @@ object UnityManager {
      * WallpaperにアタッチされているSurfaceを取り外すときのみ使う
      */
     fun detachSurfaceForWallpaper() {
-        if (currentUnitySurface == UnitySurface.Wallpaper) {
-            player.displayChanged(MainDisplayIndex, null)
+        if (currentUnitySurface == UnitySurface.WALLPAPER) {
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = null // 壁紙モードをやめる
         }
     }
@@ -93,14 +93,14 @@ object UnityManager {
      * ActivityにアタッチされているSurfaceを取り外すときのみ使う
      */
     fun detachSurfaceForActivity() {
-        if (currentUnitySurface == UnitySurface.Activity) {
-            player.displayChanged(MainDisplayIndex, null)
+        if (currentUnitySurface == UnitySurface.ACTIVITY) {
+            player.displayChanged(MAIN_DISPLAY_INDEX, null)
             currentUnitySurface = null // Activityモードをやめる
         }
     }
 }
 
 enum class UnitySurface {
-    Wallpaper,
-    Activity,
+    WALLPAPER,
+    ACTIVITY,
 }

@@ -15,7 +15,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,13 +30,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.IconSizes
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-
-private val TextFieldHeight = 36.dp
 
 @Composable
 fun WithmoTextField(
@@ -56,9 +49,9 @@ fun WithmoTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     onTextLayout: (TextLayoutResult) -> Unit = {},
     interactionSource: MutableInteractionSource? = null,
-    cursorBrush: Brush = SolidColor(MaterialTheme.colorScheme.onSurface),
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
-    placeholderColor: Color = MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled),
+    cursorBrush: Brush = SolidColor(WithmoTheme.colorScheme.onSurface),
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
+    placeholderColor: Color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
 ) {
     BasicTextField(
         value = value,
@@ -99,30 +92,30 @@ fun WithmoSearchTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = MaterialTheme.colorScheme.surfaceContainer,
+    backgroundColor: Color = WithmoTheme.colorScheme.surfaceContainer,
 ) {
     Surface(
-        modifier = modifier.height(TextFieldHeight),
+        modifier = modifier.height(36.dp),
         color = backgroundColor,
-        shape = MaterialTheme.shapes.large,
+        shape = WithmoTheme.shapes.large,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = Paddings.Medium),
+                .padding(horizontal = 16.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Icon(
                 imageVector = Icons.Rounded.Search,
                 contentDescription = "Search",
-                modifier = Modifier.size(IconSizes.Medium),
-                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.size(24.dp),
+                tint = WithmoTheme.colorScheme.onSurface,
             )
             WithmoTextField(
                 value = value,
                 onValueChange = onValueChange,
-                modifier = Modifier.weight(Weights.Medium),
+                modifier = Modifier.weight(1f),
                 placeholder = "検索",
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(
@@ -141,7 +134,7 @@ private fun WithmoTextFieldLightPreview() {
             value = "",
             onValueChange = {},
             placeholder = "Search",
-            modifier = Modifier.height(TextFieldHeight),
+            modifier = Modifier.height(36.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),
@@ -157,7 +150,7 @@ private fun WithmoTextFieldDarkPreview() {
             value = "",
             onValueChange = {},
             placeholder = "Search",
-            modifier = Modifier.height(TextFieldHeight),
+            modifier = Modifier.height(36.dp),
             singleLine = true,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
             keyboardActions = KeyboardActions(onSearch = { /* Handle search action */ }),

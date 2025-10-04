@@ -4,7 +4,7 @@ import java.io.File
 
 object FileUtils {
 
-    private const val DefaultModelFileName = "alicia_solid.vrm"
+    private const val DEFAULT_MODEL_FILE_NAME = "alicia_solid.vrm"
 
     fun fileExists(path: String): Boolean {
         val file = File(path)
@@ -13,6 +13,6 @@ object FileUtils {
 
     fun isDefaultModelFile(filePath: String): Boolean {
         val file = File(filePath)
-        return file.name == DefaultModelFileName
+        return file.name == DEFAULT_MODEL_FILE_NAME
     }
 }

@@ -23,17 +23,17 @@ data object TimeUtils {
     private var hasSentNightMessage = false
 
     private fun sendMorningMessage() {
-        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeDay, "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_DAY, "")
         hasSentMorningMessage = true
     }
 
     private fun sendEveningMessage() {
-        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeEvening, "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_EVENING, "")
         hasSentEveningMessage = true
     }
 
     private fun sendNightMessage() {
-        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeNight, "")
+        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_NIGHT, "")
         hasSentNightMessage = true
     }
 
@@ -71,21 +71,21 @@ data object TimeUtils {
             ThemeType.TIME_BASED -> {
                 when {
                     isMorning(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeDay, "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_DAY, "")
                     }
                     isEvening(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeEvening, "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_EVENING, "")
                     }
                     isNight(currentTime) -> {
-                        AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.ChangeNight, "")
+                        AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.CHANGE_NIGHT, "")
                     }
                 }
             }
             ThemeType.LIGHT -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetDayFixedMode, "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.SET_DAY_FIXED_MODE, "")
             }
             ThemeType.DARK -> {
-                AndroidToUnityMessenger.sendMessage(UnityObject.SkyBlend, UnityMethod.SetNightFixedMode, "")
+                AndroidToUnityMessenger.sendMessage(UnityObject.SKY_BLEND, UnityMethod.SET_NIGHT_FIXED_MODE, "")
             }
         }
     }

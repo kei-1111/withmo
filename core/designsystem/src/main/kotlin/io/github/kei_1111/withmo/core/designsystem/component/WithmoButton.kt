@@ -8,16 +8,18 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.dropShadow
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.shadow.Shadow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Alphas
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
 
@@ -27,7 +29,7 @@ fun WithmoButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.filledTonalShape,
-    colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(),
+    colors: ButtonColors = WithmoButtonDefaults.buttonColors(),
     elevation: Dp? = null,
     border: BorderStroke? = null,
     contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
@@ -37,15 +39,15 @@ fun WithmoButton(
     val clickBlocker = LocalClickBlocker.current
 
     FilledTonalButton(
-        onClick = {
-            if (clickBlocker.tryClick()) {
-                onClick()
-            }
-        },
+        onClick = { clickBlocker.processClick(onClick) },
         modifier = modifier
             .then(
                 if (elevation != null) {
-                    Modifier.withmoShadow(radius = elevation)
+                    Modifier
+                        .dropShadow(
+                            shape = shape,
+                            shadow = WithmoTheme.shadows.medium,
+                        )
                 } else {
                     Modifier
                 },
@@ -62,6 +64,74 @@ fun WithmoButton(
 }
 
 @Composable
+fun WithmoOutlinedButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = ButtonDefaults.outlinedShape,
+    colors: ButtonColors = WithmoButtonDefaults.outlinedButtonColors(),
+    elevation: Dp? = null,
+    border: BorderStroke? = ButtonDefaults.outlinedButtonBorder(enabled),
+    contentPadding: PaddingValues = ButtonDefaults.ContentPadding,
+    interactionSource: MutableInteractionSource? = null,
+    content: @Composable RowScope.() -> Unit,
+) {
+    val clickBlocker = LocalClickBlocker.current
+
+    OutlinedButton(
+        onClick = { clickBlocker.processClick(onClick) },
+        modifier = modifier
+            .then(
+                if (elevation != null) {
+                    Modifier
+                        .dropShadow(
+                            shape = shape,
+                            shadow = Shadow(radius = elevation),
+                        )
+                } else {
+                    Modifier
+                },
+            ),
+        enabled = enabled,
+        shape = shape,
+        colors = colors,
+        border = border,
+        contentPadding = contentPadding,
+        interactionSource = interactionSource,
+    ) {
+        content()
+    }
+}
+
+object WithmoButtonDefaults {
+    @Composable
+    fun buttonColors(
+        containerColor: Color = WithmoTheme.colorScheme.secondaryContainer,
+        contentColor: Color = WithmoTheme.colorScheme.primary,
+        disabledContainerColor: Color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.12f),
+        disabledContentColor: Color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    ): ButtonColors = ButtonDefaults.filledTonalButtonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+    )
+
+    @Composable
+    fun outlinedButtonColors(
+        containerColor: Color = Color.Transparent,
+        contentColor: Color = WithmoTheme.colorScheme.primary,
+        disabledContainerColor: Color = Color.Transparent,
+        disabledContentColor: Color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+    ): ButtonColors = ButtonDefaults.outlinedButtonColors(
+        containerColor = containerColor,
+        contentColor = contentColor,
+        disabledContainerColor = disabledContainerColor,
+        disabledContentColor = disabledContentColor,
+    )
+}
+
+@Composable
 fun WithmoSaveButton(
     onClick: () -> Unit,
     enabled: Boolean,
@@ -69,39 +139,12 @@ fun WithmoSaveButton(
 ) {
     WithmoButton(
         onClick = onClick,
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
+        modifier = modifier.height(56.dp),
         enabled = enabled,
     ) {
-        BodyMediumText(
+        Text(
             text = "保存",
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-            },
-        )
-    }
-}
-
-@Composable
-fun WithmoNextButton(
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-    enabled: Boolean = true,
-) {
-    WithmoButton(
-        onClick = onClick,
-        modifier = modifier.height(CommonDimensions.SettingItemHeight),
-        enabled = enabled,
-    ) {
-        BodyMediumText(
-            text = "次へ",
-            color = if (enabled) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.onSurface.copy(alpha = Alphas.Disabled)
-            },
+            style = WithmoTheme.typography.bodyMedium,
         )
     }
 }
@@ -128,6 +171,26 @@ private fun WithmoButtonDarkPreview() {
 
 @Preview
 @Composable
+private fun WithmoOutlinedButtonLightPreview() {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
+        WithmoOutlinedButton(
+            onClick = {},
+        ) {}
+    }
+}
+
+@Preview
+@Composable
+private fun WithmoOutlinedButtonDarkPreview() {
+    WithmoTheme(themeType = ThemeType.DARK) {
+        WithmoOutlinedButton(
+            onClick = {},
+        ) {}
+    }
+}
+
+@Preview
+@Composable
 private fun WithmoSaveButtonLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSaveButton(
@@ -142,28 +205,6 @@ private fun WithmoSaveButtonLightPreview() {
 private fun WithmoSaveButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSaveButton(
-            onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonLightPreview() {
-    WithmoTheme(themeType = ThemeType.LIGHT) {
-        WithmoNextButton(
-            onClick = {},
-            enabled = true,
-        )
-    }
-}
-
-@Preview
-@Composable
-private fun WithmoNextButtonDarkPreview() {
-    WithmoTheme(themeType = ThemeType.DARK) {
-        WithmoNextButton(
             onClick = {},
             enabled = true,
         )

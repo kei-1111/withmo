@@ -17,9 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.ZoomOutMap
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -38,14 +35,10 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.PlaceableItem
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.util.ktx.toPx
 import kotlin.math.roundToInt
-
-private val BorderWidth = 1.dp
 
 // startとtopにPaddingがついていると、そのPadding分初期位置がズレてめり込んでしまうため、Paddingのついていないようにする
 @Suppress("LongMethod", "ComposableParamOrder")
@@ -126,9 +119,9 @@ fun PlaceableItemContainer(
                         )
                     }
                     .border(
-                        width = BorderWidth,
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium,
+                        width = 1.dp,
+                        color = WithmoTheme.colorScheme.primary,
+                        shape = WithmoTheme.shapes.medium,
                     )
             } else {
                 Modifier
@@ -143,12 +136,11 @@ fun PlaceableItemContainer(
         if (isEditMode) {
             Surface(
                 modifier = Modifier.fillMaxSize(),
-                shape = MaterialTheme.shapes.medium,
+                shape = WithmoTheme.shapes.medium,
                 color = Color.Transparent,
             ) {
                 Box(
-                    modifier = Modifier
-                        .padding(Paddings.ExtraSmall),
+                    modifier = Modifier.padding(4.dp),
                 ) {
                     DeleteBadge(
                         onClick = onDeleteBadgeClick,
@@ -198,20 +190,16 @@ private fun PlaceableItemBadge(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    IconButton(
+    WithmoIconButton(
         onClick = onClick,
-        modifier = modifier
-            .size(BadgeSizes.Large),
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.secondaryContainer,
-            contentColor = MaterialTheme.colorScheme.primary,
-        ),
+        modifier = modifier.size(24.dp),
+        containerColor = WithmoTheme.colorScheme.secondaryContainer,
+        contentColor = WithmoTheme.colorScheme.primary,
     ) {
         Icon(
             imageVector = icon,
             contentDescription = null,
-            modifier = Modifier
-                .padding(Paddings.ExtraSmall),
+            modifier = Modifier.size(16.dp),
         )
     }
 }

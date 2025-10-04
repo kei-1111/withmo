@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +18,6 @@ import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextExtr
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextLargeSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextMediumSize
 import io.github.kei_1111.withmo.core.designsystem.component.theme.clockTextSmallSize
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
 import io.github.kei_1111.withmo.core.model.DateTimeInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ClockType
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
@@ -51,7 +49,7 @@ fun WithmoClock(
 private fun ClockTopDate(
     dateTimeInfo: DateTimeInfo,
     modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
 ) {
     val dateOffset = 4.dp
     val hourMinuteOffsetY = -4.dp
@@ -62,7 +60,7 @@ private fun ClockTopDate(
     ) {
         Row(
             modifier = Modifier.offset(y = dateOffset),
-            horizontalArrangement = Arrangement.spacedBy(Paddings.ExtraSmall),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             Text(
                 text = dateTimeInfo.year,
@@ -106,9 +104,9 @@ private fun ClockTopDate(
 private fun ClockHorizontalDate(
     dateTimeInfo: DateTimeInfo,
     modifier: Modifier = Modifier,
-    textColor: Color = MaterialTheme.colorScheme.onSurface,
+    textColor: Color = WithmoTheme.colorScheme.onSurface,
 ) {
-    val yearOffsetY = 5.dp
+    val yearOffsetY = 4.dp
     val monthOffsetY = 4.dp
     val dayOffsetY = -4.dp
     val dayOfWeekOffsetY = 5.dp
@@ -138,7 +136,7 @@ private fun ClockHorizontalDate(
                     modifier = Modifier.offset(y = dayOffsetY),
                 )
             }
-            Spacer(modifier = Modifier.width(Paddings.ExtraSmall))
+            Spacer(modifier = Modifier.width(4.dp))
             Column {
                 Text(
                     text = dateTimeInfo.dayOfWeek,
@@ -175,7 +173,7 @@ private fun WithmoClockTopDateLightPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -193,7 +191,7 @@ private fun WithmoClockTopDateDarkPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -211,7 +209,7 @@ private fun WithmoClockHorizontalDateLightPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),
@@ -229,7 +227,7 @@ private fun WithmoClockHorizontalDateDarkPreview() {
                 year = "2002",
                 month = "11",
                 day = "11",
-                dayOfWeek = "月",
+                dayOfWeek = "MON",
                 hour = "12",
                 minute = "34",
             ),

@@ -1,16 +1,16 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.RadioButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.LocalClickBlocker
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
@@ -20,7 +20,7 @@ import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 // RadioButtonを使うときは他の項目もあるときのため、Composable側でSurfaceを使わず、親側でSurfaceを使う
 @Composable
 fun WithmoSettingItemWithRadioButton(
-    item: @Composable () -> Unit,
+    item: @Composable RowScope.() -> Unit,
     selected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -31,14 +31,14 @@ fun WithmoSettingItemWithRadioButton(
     Row(
         modifier = modifier
             .safeClickable { onClick() }
-            .padding(horizontal = Paddings.Medium),
+            .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         item()
-        Spacer(modifier = Modifier.weight(Weights.Medium))
-        RadioButton(
+        Spacer(modifier = Modifier.weight(1f))
+        WithmoRadioButton(
             selected = selected,
-            onClick = { if (clickBlocker.tryClick()) onClick() },
+            onClick = { clickBlocker.processClick(onClick) },
             enabled = enabled,
         )
     }
@@ -50,7 +50,11 @@ private fun WithmoSettingItemWithRadioButtonLightPreview() {
     WithmoTheme(themeType = ThemeType.LIGHT) {
         WithmoSettingItemWithRadioButton(
             item = {
-                BodyMediumText(text = "設定項目")
+                Text(
+                    text = "設定項目",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
+                )
             },
             selected = true,
             onClick = { },
@@ -64,7 +68,11 @@ private fun WithmoSettingItemWithRadioButtonDarkPreview() {
     WithmoTheme(themeType = ThemeType.DARK) {
         WithmoSettingItemWithRadioButton(
             item = {
-                BodyMediumText(text = "設定項目")
+                Text(
+                    text = "設定項目",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
+                )
             },
             selected = true,
             onClick = { },

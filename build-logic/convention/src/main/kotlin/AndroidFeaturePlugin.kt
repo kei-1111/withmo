@@ -25,6 +25,7 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 implementation(libs.library("androidx.hilt.navigation.compose"))
                 implementation(libs.library("androidx.material.icons.extended"))
                 implementation(libs.library("androidx.material3"))
+                implementation(libs.library("androidx.navigation.compose"))
                 implementation(libs.library("kotlinx.collections.immutable"))
             }
         }

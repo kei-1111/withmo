@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.kei_1111.withmo.core.domain.usecase.GetOnboardingStatusUseCase
-import io.github.kei_1111.withmo.navigation.Screen
+import io.github.kei_1111.withmo.core.ui.navigation.Home
+import io.github.kei_1111.withmo.core.ui.navigation.NavigationRoute
+import io.github.kei_1111.withmo.core.ui.navigation.OnboardingGraph
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,20 +17,20 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val getOnboardingStatusUseCase: GetOnboardingStatusUseCase,
 ) : ViewModel() {
-    var startScreen by mutableStateOf<Screen?>(null)
+    var startDestination by mutableStateOf<NavigationRoute?>(null)
         private set
 
     init {
-        loadStartScreen()
+        loadStartDestination()
     }
 
-    private fun loadStartScreen() {
+    private fun loadStartDestination() {
         viewModelScope.launch {
             val isOnboardingShown = getOnboardingStatusUseCase()
-            startScreen = if (isOnboardingShown) {
-                Screen.Home
+            startDestination = if (isOnboardingShown) {
+                Home
             } else {
-                Screen.Welcome
+                OnboardingGraph
             }
         }
     }

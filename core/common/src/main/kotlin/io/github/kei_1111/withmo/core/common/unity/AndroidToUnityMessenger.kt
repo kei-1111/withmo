@@ -13,33 +13,33 @@ object AndroidToUnityMessenger {
 }
 
 enum class UnityObject(val unityName: String) {
-    SkyBlend("SkyBlend"),
+    SKY_BLEND("SkyBlend"),
 
-    VRMloader("VRMloader"),
+    VRM_LOADER("VRMloader"),
 
-    IKAnimationController("IKAnimationController"),
+    IK_ANIMATION_CONTROLLER("IKAnimationController"),
 
-    VRMAnimationController("VRMAnimationController"),
+    VRM_ANIMATION_CONTROLLER("VRMAnimationController"),
 
-    Notification("Notification"),
+    NOTIFICATION("Notification"),
 }
 
 enum class UnityMethod(val unityName: String) {
-    ChangeDay("ChangeDay"),
-    ChangeEvening("ChangeEvening"),
-    ChangeNight("ChangeNight"),
-    SetDayFixedMode("SetDayFixedMode"),
-    SetNightFixedMode("SetNightFixedMode"),
+    CHANGE_DAY("ChangeDay"),
+    CHANGE_EVENING("ChangeEvening"),
+    CHANGE_NIGHT("ChangeNight"),
+    SET_DAY_FIXED_MODE("SetDayFixedMode"),
+    SET_NIGHT_FIXED_MODE("SetNightFixedMode"),
 
-    LoadVRM("LoadVRM"),
+    LOAD_VRM("LoadVRM"),
 
-    ShowObject("ShowObject"),
+    SHOW_OBJECT("ShowObject"),
 
-    TriggerExitScreenAnimation("TriggerExitScreenAnimation"),
-    TriggerEnterScreenAnimation("TriggerEnterScreenAnimation"),
-    MoveLookat("MoveLookat"),
+    TRIGGER_EXIT_SCREEN_ANIMATION("TriggerExitScreenAnimation"),
+    TRIGGER_ENTER_SCREEN_ANIMATION("TriggerEnterScreenAnimation"),
+    MOVE_LOOKAT("MoveLookat"),
 
-    TriggerTouchAnimation("TriggerTouchAnimation"),
+    TRIGGER_TOUCH_ANIMATION("TriggerTouchAnimation"),
 
-    AdjustScale("AdjustScale"),
+    ADJUST_SCALE("AdjustScale"),
 }

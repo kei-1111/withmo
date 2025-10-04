@@ -1,48 +1,34 @@
 package io.github.kei_1111.withmo.navigation
 
-import androidx.compose.animation.AnimatedContentTransitionScope
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavBackStackEntry
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
-import io.github.kei_1111.withmo.feature.home.HomeScreen
-import io.github.kei_1111.withmo.feature.onboarding.finish.FinishScreen
-import io.github.kei_1111.withmo.feature.onboarding.select_display_model.SelectDisplayModelScreen
-import io.github.kei_1111.withmo.feature.onboarding.select_favorite_app.SelectFavoriteAppScreen
-import io.github.kei_1111.withmo.feature.onboarding.welcome.WelcomeScreen
-import io.github.kei_1111.withmo.feature.setting.app_icon.AppIconSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.clock.ClockSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.favorite_app.FavoriteAppSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.notification.NotificationSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.root.SettingsScreen
-import io.github.kei_1111.withmo.feature.setting.side_button.SideButtonSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.sort.SortSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.theme.ThemeSettingsScreen
+import io.github.kei_1111.withmo.core.ui.navigation.NavigationRoute
+import io.github.kei_1111.withmo.feature.home.navigation.homeGraph
+import io.github.kei_1111.withmo.feature.home.navigation.navigateHome
+import io.github.kei_1111.withmo.feature.onboarding.navigation.navigateFinish
+import io.github.kei_1111.withmo.feature.onboarding.navigation.navigateSelectDisplayModel
+import io.github.kei_1111.withmo.feature.onboarding.navigation.navigateSelectFavoriteApp
+import io.github.kei_1111.withmo.feature.onboarding.navigation.onboardingGraph
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateAppIconSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateClockSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateFavoriteAppSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateNotificationSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateSideButtonSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateSortSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.navigateThemeSettings
+import io.github.kei_1111.withmo.feature.setting.navigation.settingsGraph
 
-@Suppress("LongMethod")
 @Composable
 fun WithmoNavHost(
     navController: NavHostController,
-    startDestination: Screen,
+    startDestination: NavigationRoute,
     modifier: Modifier = Modifier,
 ) {
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
-    currentDestination?.hierarchy?.any { it.route == Screen.ThemeSettings::class.qualifiedName }
-
     NavHost(
         navController = navController,
         startDestination = startDestination,
@@ -50,118 +36,27 @@ fun WithmoNavHost(
         enterTransition = { slideInHorizontally { it } },
         exitTransition = { slideOutHorizontally { it } },
     ) {
-        composable<Screen.Welcome>(
-            enterTransition = { EnterTransition.None },
-            exitTransition = { ExitTransition.None },
-        ) {
-            WelcomeScreen(
-                navigateSelectFavoriteApp = { navController.navigate(Screen.SelectFavoriteApp) },
-            )
-        }
-        composable<Screen.SelectFavoriteApp>(
-            enterTransition = { slideInHorizontallyFrom(Screen.Welcome) },
-            exitTransition = { slideOutHorizontallyTo(Screen.Welcome) },
-        ) {
-            SelectFavoriteAppScreen(
-                onBackButtonClick = { navController.popBackStack() },
-                navigateSelectDisplayModel = { navController.navigate(Screen.SelectDisplayModel) },
-            )
-        }
-        composable<Screen.SelectDisplayModel>(
-            enterTransition = { slideInHorizontallyFrom(Screen.SelectFavoriteApp) },
-            exitTransition = { slideOutHorizontallyTo(Screen.SelectFavoriteApp) },
-        ) {
-            SelectDisplayModelScreen(
-                onBackButtonClick = { navController.popBackStack() },
-                navigateFinish = { navController.navigate(Screen.Finish) },
-            )
-        }
-        composable<Screen.Finish>(
-            enterTransition = { slideInHorizontallyFrom(Screen.SelectDisplayModel) },
-            exitTransition = {
-                if (targetState.checkScreen(Screen.Home)) {
-                    slideOutVertically { it }
-                } else {
-                    slideOutHorizontallyTo(Screen.SelectDisplayModel)
-                }
-            },
-        ) {
-            FinishScreen(
-                onBackButtonClick = { navController.popBackStack() },
-                navigateHome = { navController.navigate(Screen.Home) },
-            )
-        }
-        composable<Screen.Home>(
-            enterTransition = { fadeIn() },
-            exitTransition = { fadeOut() },
-        ) {
-            HomeScreen(
-                onNavigateSettingsButtonClick = { navController.navigate(Screen.Settings) },
-            )
-        }
-        composable<Screen.Settings>(
-            enterTransition = { slideInVerticallyFrom(Screen.Home) },
-            exitTransition = { slideOutVerticallyTo(Screen.Home) },
-        ) {
-            SettingsScreen(
-                onNavigateClockSettingsButtonClick = { navController.navigate(Screen.ClockSettings) },
-                onNavigateAppIconSettingsButtonClick = { navController.navigate(Screen.AppIconSettings) },
-                onNavigateFavoriteAppSettingsButtonClick = { navController.navigate(Screen.FavoriteAppSettings) },
-                onNavigateSideButtonSettingsButtonClick = { navController.navigate(Screen.SideButtonSettings) },
-                onNavigateSortSettingsButtonClick = { navController.navigate(Screen.SortSettings) },
-                onNavigateNotificationSettingsButtonClick = { navController.navigate(Screen.NotificationSettings) },
-                onNavigateThemeSettingsButtonClick = { navController.navigate(Screen.ThemeSettings) },
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.ClockSettings> {
-            ClockSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.AppIconSettings> {
-            AppIconSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.FavoriteAppSettings> {
-            FavoriteAppSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.SideButtonSettings> {
-            SideButtonSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.SortSettings> {
-            SortSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.NotificationSettings> {
-            NotificationSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
-        composable<Screen.ThemeSettings> {
-            ThemeSettingsScreen(
-                onBackButtonClick = { navController.popBackStack() },
-            )
-        }
+        onboardingGraph(
+            navigateBack = navController::popBackStack,
+            navigateSelectFavoriteApp = navController::navigateSelectFavoriteApp,
+            navigateSelectDisplayModel = navController::navigateSelectDisplayModel,
+            navigateFinish = navController::navigateFinish,
+            navigateHome = navController::navigateHome,
+        )
+
+        homeGraph(
+            navigateSettings = navController::navigateSettings,
+        )
+
+        settingsGraph(
+            navigateBack = navController::popBackStack,
+            navigateClockSettings = navController::navigateClockSettings,
+            navigateAppIconSettings = navController::navigateAppIconSettings,
+            navigateFavoriteAppSettings = navController::navigateFavoriteAppSettings,
+            navigateSideButtonSettings = navController::navigateSideButtonSettings,
+            navigateSortSettings = navController::navigateSortSettings,
+            navigateNotificationSettings = navController::navigateNotificationSettings,
+            navigateThemeSettings = navController::navigateThemeSettings,
+        )
     }
 }
-
-fun NavBackStackEntry.checkScreen(screen: Screen): Boolean = destination.route == screen::class.qualifiedName
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInHorizontallyFrom(from: Screen): EnterTransition =
-    if (initialState.checkScreen(from)) slideInHorizontally { it } else EnterTransition.None
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutHorizontallyTo(to: Screen): ExitTransition =
-    if (targetState.checkScreen(to)) slideOutHorizontally { it } else ExitTransition.None
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideInVerticallyFrom(from: Screen): EnterTransition =
-    if (initialState.checkScreen(from)) slideInVertically { it } else EnterTransition.None
-
-fun AnimatedContentTransitionScope<NavBackStackEntry>.slideOutVerticallyTo(to: Screen): ExitTransition =
-    if (targetState.checkScreen(to)) slideOutVertically { it } else ExitTransition.None

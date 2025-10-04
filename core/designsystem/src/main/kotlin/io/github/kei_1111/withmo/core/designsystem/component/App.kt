@@ -3,17 +3,22 @@ package io.github.kei_1111.withmo.core.designsystem.component
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.dropShadow
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -21,21 +26,14 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.accompanist.drawablepainter.rememberDrawablePainter
 import io.github.kei_1111.withmo.core.designsystem.R
-import io.github.kei_1111.withmo.core.designsystem.component.modifier.withmoShadow
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.BadgeSizes
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
-
-private const val AppItemLabelMaxLines = 1
 
 @Composable
 fun App(
@@ -47,11 +45,8 @@ fun App(
     appIconShape: Shape = CircleShape,
     isAppNameShown: Boolean = true,
 ) {
-    val appIconSize = CommonDimensions.AppIconSize
-
     Column(
-        modifier = modifier
-            .size(appIconSize + Paddings.Large),
+        modifier = modifier.size(76.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
     ) {
@@ -71,17 +66,19 @@ fun App(
             }
         }
         if (isAppNameShown) {
-            Spacer(modifier = Modifier.weight(Weights.Medium))
-            LabelSmallText(
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
                 text = appInfo.label,
+                color = WithmoTheme.colorScheme.onSurface,
                 overflow = TextOverflow.Ellipsis,
-                maxLines = AppItemLabelMaxLines,
+                maxLines = 1,
+                style = WithmoTheme.typography.labelSmall,
             )
         }
     }
 }
 
-private const val AdaptiveIconScale = 1.5f
+private const val ADAPTIVE_ICON_SCALE = 1.5f
 
 @Suppress("LongMethod")
 @Composable
@@ -97,15 +94,19 @@ private fun AppIcon(
         is Drawable -> {
             Box(
                 modifier = modifier
-                    .size(CommonDimensions.AppIconSize)
-                    .withmoShadow(
+                    .size(56.dp)
+                    .dropShadow(
                         shape = appIconShape,
+                        shadow = WithmoTheme.shadows.medium,
                     )
+                    .clip(appIconShape)
                     .background(
-                        color = MaterialTheme.colorScheme.surface,
+                        color = WithmoTheme.colorScheme.surface,
                         shape = appIconShape,
                     )
-                    .safeClickable(
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),
@@ -114,13 +115,13 @@ private fun AppIcon(
                     painter = rememberDrawablePainter(drawable = appIcon.backgroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.FillBounds,
-                    modifier = Modifier.scale(AdaptiveIconScale),
+                    modifier = Modifier.scale(ADAPTIVE_ICON_SCALE),
                 )
                 Image(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.scale(AdaptiveIconScale),
+                    modifier = Modifier.scale(ADAPTIVE_ICON_SCALE),
                 )
             }
         }
@@ -128,15 +129,19 @@ private fun AppIcon(
         else -> {
             Box(
                 modifier = modifier
-                    .size(CommonDimensions.AppIconSize)
-                    .withmoShadow(
-                        shape = CircleShape,
+                    .size(56.dp)
+                    .dropShadow(
+                        shape = appIconShape,
+                        shadow = WithmoTheme.shadows.medium,
                     )
+                    .clip(appIconShape)
                     .background(
                         color = Color.White,
                         shape = CircleShape,
                     )
-                    .safeClickable(
+                    .combinedClickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = ripple(),
                         onClick = onClick,
                         onLongClick = onLongClick,
                     ),
@@ -145,7 +150,7 @@ private fun AppIcon(
                     painter = rememberDrawablePainter(drawable = appIcon.foregroundIcon),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.size(CommonDimensions.AppIconSize),
+                    modifier = Modifier.size(56.dp),
                 )
             }
         }
@@ -158,8 +163,8 @@ private fun Badge(
 ) {
     Box(
         modifier = modifier
-            .size(BadgeSizes.Medium)
-            .background(MaterialTheme.colorScheme.primary, CircleShape),
+            .size(15.dp)
+            .background(WithmoTheme.colorScheme.primary, CircleShape),
     )
 }
 

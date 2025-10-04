@@ -107,7 +107,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         splashScreen.setKeepOnScreenCondition {
-            viewModel.startScreen == null
+            viewModel.startDestination == null
         }
 
         super.onCreate(savedInstanceState)
@@ -159,9 +159,9 @@ class MainActivity : ComponentActivity() {
                             WithmoTheme(
                                 themeType = themeSettings.themeType,
                             ) {
-                                viewModel.startScreen?.let {
+                                viewModel.startDestination?.let {
                                     App(
-                                        startScreen = it,
+                                        startDestination = it,
                                     )
                                 }
                             }
@@ -214,16 +214,16 @@ class MainActivity : ComponentActivity() {
                     .onSuccess { modelFilePath ->
                         val path = modelFilePath.path
                         if (path != null && FileUtils.fileExists(path)) {
-                            AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, path)
+                            AndroidToUnityMessenger.sendMessage(UnityObject.VRM_LOADER, UnityMethod.LOAD_VRM, path)
                         } else {
                             defaultModelFilePath?.let {
-                                AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
+                                AndroidToUnityMessenger.sendMessage(UnityObject.VRM_LOADER, UnityMethod.LOAD_VRM, defaultModelFilePath)
                             }
                         }
                     }
                     .onFailure {
                         defaultModelFilePath?.let {
-                            AndroidToUnityMessenger.sendMessage(UnityObject.VRMloader, UnityMethod.LoadVRM, defaultModelFilePath)
+                            AndroidToUnityMessenger.sendMessage(UnityObject.VRM_LOADER, UnityMethod.LOAD_VRM, defaultModelFilePath)
                         }
                     }
             }

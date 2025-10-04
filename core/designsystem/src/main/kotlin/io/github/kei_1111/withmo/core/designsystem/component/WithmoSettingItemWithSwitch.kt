@@ -4,21 +4,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.CommonDimensions
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Weights
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
-
-private const val SwitchScale = 0.75f
 
 @Composable
 fun WithmoSettingItemWithSwitch(
@@ -28,25 +22,25 @@ fun WithmoSettingItemWithSwitch(
     modifier: Modifier = Modifier,
 ) {
     Surface(
-        modifier = modifier
-            .height(CommonDimensions.SettingItemHeight),
-        color = MaterialTheme.colorScheme.surfaceContainer,
-        shape = MaterialTheme.shapes.medium,
+        modifier = modifier.height(56.dp),
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
     ) {
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(Paddings.Medium),
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            BodyMediumText(
+            Text(
                 text = title,
-                modifier = Modifier.weight(Weights.Medium),
+                modifier = Modifier.weight(1f),
+                color = WithmoTheme.colorScheme.onSurface,
+                style = WithmoTheme.typography.bodyMedium,
             )
-            Switch(
+            WithmoSwitch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
-                modifier = Modifier.scale(SwitchScale),
             )
         }
     }
@@ -60,7 +54,6 @@ private fun WithmoSettingItemWithSwitchLightPreview() {
             title = "設定項目",
             checked = false,
             onCheckedChange = {},
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }
@@ -73,7 +66,6 @@ private fun WithmoSettingItemWithSwitchDarkPreview() {
             title = "設定項目",
             checked = true,
             onCheckedChange = {},
-            modifier = Modifier.padding(Paddings.Medium),
         )
     }
 }

@@ -6,7 +6,7 @@
       "Bash(./gradlew:*)",
       "Bash(gh issue view:*)",
       "Bash(gh pr view:*)",
-      "mcp__serena__find_file"
+      "mcp__serena"
     ],
     "deny": [
       "Bash(curl:*)"

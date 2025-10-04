@@ -1,8 +1,0 @@
-package io.github.kei_1111.withmo.feature.onboarding.select_favorite_app
-
-import io.github.kei_1111.withmo.core.featurebase.Effect
-
-sealed interface SelectFavoriteAppEffect : Effect {
-    data object NavigateBack : SelectFavoriteAppEffect
-    data object NavigateSelectDisplayModel : SelectFavoriteAppEffect
-}

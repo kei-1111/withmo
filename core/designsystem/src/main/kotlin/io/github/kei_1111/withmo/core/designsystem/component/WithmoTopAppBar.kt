@@ -1,6 +1,6 @@
 package io.github.kei_1111.withmo.core.designsystem.component
 
-import androidx.compose.foundation.interaction.MutableInteractionSource
+import android.R.attr.onClick
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
@@ -13,23 +13,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBackIosNew
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.material3.ripple
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.Paddings
-import io.github.kei_1111.withmo.core.designsystem.component.theme.dimensions.ShadowElevations
 import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
-
-private val TopAppBarHeight = 64.dp
-private val RippleRadius = 24.dp
 
 @Composable
 fun WithmoTopAppBar(
@@ -43,42 +37,43 @@ fun WithmoTopAppBar(
     Surface(
         modifier = modifier
             .fillMaxWidth()
-            .height(TopAppBarHeight + topPaddingValue),
-        shadowElevation = ShadowElevations.Medium,
+            .height(64.dp + topPaddingValue),
+        color = WithmoTheme.colorScheme.surface,
+        shadowElevation = 5.dp,
     ) {
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = topPaddingValue)
-                .padding(horizontal = Paddings.Medium),
+                .padding(horizontal = 16.dp),
             contentAlignment = Alignment.CenterStart,
         ) {
             navigateBack?.let {
                 Icon(
                     imageVector = Icons.Rounded.ArrowBackIosNew,
                     contentDescription = "Back",
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = WithmoTheme.colorScheme.onSurface,
                     modifier = Modifier.safeClickable(
-                        interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius,
+                            radius = 24.dp,
                         ),
-                    ) { navigateBack() },
+                        onClick = navigateBack,
+                    ),
                 )
             }
             navigateClose?.let {
                 Icon(
                     imageVector = Icons.Rounded.Close,
                     contentDescription = "Close",
-                    tint = MaterialTheme.colorScheme.onSurface,
+                    tint = WithmoTheme.colorScheme.onSurface,
                     modifier = Modifier.safeClickable(
-                        interactionSource = remember { MutableInteractionSource() },
                         indication = ripple(
                             bounded = false,
-                            radius = RippleRadius,
+                            radius = 24.dp,
                         ),
-                    ) { navigateClose() },
+                        onClick = navigateClose,
+                    ),
                 )
             }
             Box(
@@ -98,7 +93,11 @@ private fun WithmoTopAppBarLightPreview() {
         WithmoTopAppBar(
             navigateBack = {},
             content = {
-                TitleLargeText("Withmo Top App Bar")
+                Text(
+                    text = "Withmo Top App Bar",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.titleLarge,
+                )
             },
         )
     }
@@ -111,7 +110,11 @@ private fun WithmoTopAppBarDarkPreview() {
         WithmoTopAppBar(
             navigateBack = {},
             content = {
-                TitleLargeText("Withmo Top App Bar")
+                Text(
+                    text = "Withmo Top App Bar",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.titleLarge,
+                )
             },
         )
     }

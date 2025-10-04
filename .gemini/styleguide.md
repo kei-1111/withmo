@@ -54,22 +54,43 @@
 
 #### パッケージ構造
 ```
-feature/[featurename]/
-├── [機能名]Screen.kt
-├── [機能名]ViewModel.kt
-├── [機能名]ViewModelState.kt (StatefulBaseViewModelのみ)
-├── [機能名]State.kt (StatefulBaseViewModelのみ)
-├── [機能名]Action.kt
-├── [機能名]Effect.kt
-├── [機能名]ScreenDimensions.kt (必要に応じて)
+feature/[featurename]/src/main/kotlin/.../screens/[screen_name]/
+├── [ScreenName]Screen.kt
+├── [ScreenName]ViewModel.kt
+├── [ScreenName]ViewModelState.kt (StatefulBaseViewModelのみ)
+├── [ScreenName]State.kt (StatefulBaseViewModelのみ)
+├── [ScreenName]Action.kt
+├── [ScreenName]Effect.kt
 └── component/
-    ├── [ComponentName].kt
-    └── contents/ (サブコンポーネント)
+    ├── [ScreenName]ScreenContent.kt
+    └── [ComponentName].kt (その他のコンポーネント)
+```
+
+**実際のパッケージ例:**
+```
+feature/setting/src/main/kotlin/.../screens/clock/
+├── ClockSettingsScreen.kt
+├── ClockSettingsViewModel.kt
+├── ClockSettingsViewModelState.kt
+├── ClockSettingsState.kt
+├── ClockSettingsAction.kt
+├── ClockSettingsEffect.kt
+└── component/
+    ├── ClockSettingsScreenContent.kt
+    └── ClockTypePicker.kt
+
+feature/onboarding/src/main/kotlin/.../screens/welcome/
+├── WelcomeScreen.kt
+├── WelcomeViewModel.kt
+├── WelcomeAction.kt (StatelessBaseViewModelのため)
+├── WelcomeEffect.kt (ViewModelState/Stateファイルなし)
+└── component/
+    └── WelcomeScreenContent.kt
 ```
 
 #### MVIアーキテクチャの命名規則（docs/FEATURE_ARCHITECTURE.mdより）
 
-**Action**: `On + 対象 + 過去形`
+**Action**: `On + 対象 + 動作`
 ```kotlin
 // 例
 OnOpenDocumentLauncherResult
@@ -140,12 +161,6 @@ private fun ComponentNameDarkPreview() {
     }
 }
 ```
-
-#### PreviewEnvironment
-各モジュールに専用のPreviewEnvironmentを配置：
-- `:feature:home` → `HomeLightPreviewEnvironment` / `HomeDarkPreviewEnvironment`
-- `:feature:setting` → `SettingLightPreviewEnvironment` / `SettingDarkPreviewEnvironment`
-- `:core:designsystem` → `DesignSystemLightPreviewEnvironment` / `DesignSystemDarkPreviewEnvironment`
 
 ### 3. MVI パターン
 
@@ -258,7 +273,126 @@ WithmoApp (最上位)
 └── Primitive (基本UI要素)
 ```
 
-### 5. 依存性注入（Hilt）
+### 5. ナビゲーション
+
+#### Navigation Compose
+- **Type-safe Navigation**: `@Serializable` data objectによる型安全なルート定義
+- **Graph構造**: 関連画面をまとめたNavigation Graph
+- **拡張関数**: NavHostControllerの拡張関数による画面遷移
+
+#### ルート定義（:core:ui/navigation/NavigationRoute.kt）
+```kotlin
+interface NavigationRoute
+
+interface Graph : NavigationRoute
+
+interface Screen : NavigationRoute
+
+@Serializable
+data object Home : Screen
+
+@Serializable
+data object OnboardingGraph : Graph
+
+@Serializable
+data object Settings : Screen
+```
+
+#### ナビゲーション実装パターン
+
+**1. 各featureモジュールでnavigationパッケージを作成**
+```
+feature/[featurename]/src/main/kotlin/.../navigation/
+└── [FeatureName]Navigation.kt
+```
+
+**2. NavHostController拡張関数の定義**
+```kotlin
+// 画面遷移用の拡張関数
+fun NavHostController.navigateSettings() = navigate(Settings)
+
+fun NavHostController.navigateClockSettings() = navigate(ClockSettings)
+
+// バックスタック制御を含む遷移
+fun NavHostController.navigateHome() = navigate(Home) {
+    popUpTo(OnboardingGraph) {
+        inclusive = true
+    }
+}
+```
+
+**3. NavGraphBuilder拡張関数でグラフを構築**
+```kotlin
+fun NavGraphBuilder.settingsGraph(
+    navigateBack: () -> Unit,
+    navigateClockSettings: () -> Unit,
+    navigateAppIconSettings: () -> Unit,
+    // その他のナビゲーション関数
+) {
+    navigation<SettingsGraph>(
+        startDestination = Settings,
+    ) {
+        composable<Settings> {
+            SettingsScreen(
+                navigateBack = navigateBack,
+                navigateClockSettings = navigateClockSettings,
+                navigateAppIconSettings = navigateAppIconSettings,
+            )
+        }
+
+        composable<ClockSettings> {
+            ClockSettingsScreen(
+                navigateBack = navigateBack,
+            )
+        }
+        // 他の画面定義
+    }
+}
+```
+
+**4. NavHostの構成（:app/navigation/WithmoNavHost.kt）**
+```kotlin
+@Composable
+fun WithmoNavHost(
+    navController: NavHostController,
+    startDestination: NavigationRoute,
+    modifier: Modifier = Modifier,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = startDestination,
+        modifier = modifier,
+        enterTransition = { slideInHorizontally { it } },
+        exitTransition = { slideOutHorizontally { it } },
+    ) {
+        onboardingGraph(
+            navigateBack = navController::popBackStack,
+            navigateSelectFavoriteApp = navController::navigateSelectFavoriteApp,
+            navigateHome = navController::navigateHome,
+        )
+
+        homeGraph(
+            navigateSettings = navController::navigateSettings,
+        )
+
+        settingsGraph(
+            navigateBack = navController::popBackStack,
+            navigateClockSettings = navController::navigateClockSettings,
+            // 他のナビゲーション関数
+        )
+    }
+}
+```
+
+#### ナビゲーション規約
+- **ルート定義**: `:core:ui`モジュールの`NavigationRoute.kt`に集約
+- **拡張関数**: 各featureモジュールの`navigation`パッケージに配置
+- **関数命名**: `navigate[ScreenName]`形式（例：`navigateSettings`）
+- **戻る処理**: `navController::popBackStack`を使用
+- **グラフ関数**: `[graphName]Graph`形式（例：`settingsGraph`）
+- **アニメーション**: NavHostレベルで統一的に定義
+
+### 6. 依存性注入（Hilt）
 
 #### Module配置
 ```
