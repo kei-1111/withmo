@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -18,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,6 +40,10 @@ import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.screens.HomeAction
 import io.github.kei_1111.withmo.feature.home.screens.HomeState
 import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
+
+private const val SHEET_GESTURE_DELAY_MILLIS = 100L
 
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,6 +71,22 @@ internal fun AppListSheet(
             ).toPersistentList()
         }
     }
+    val listState = rememberLazyGridState()
+    val sheetGesturesEnabled by produceState(false, listState) {
+        snapshotFlow {
+            listState.firstVisibleItemIndex == 0 && listState.firstVisibleItemScrollOffset == 0
+        }
+            .distinctUntilChanged()
+            .collect { isAtTop ->
+                value = if (isAtTop) {
+                    delay(SHEET_GESTURE_DELAY_MILLIS)
+                    true
+                } else {
+                    false
+                }
+            }
+    }
+
     val notificationSettings = state.currentUserSettings.notificationSettings
     val appIconSettings = state.currentUserSettings.appIconSettings
     val sideButtonSettings = state.currentUserSettings.sideButtonSettings
@@ -72,6 +95,7 @@ internal fun AppListSheet(
         onDismissRequest = { onAction(HomeAction.OnAppListSheetSwipeDown) },
         modifier = modifier,
         sheetState = appListSheetState,
+        sheetGesturesEnabled = sheetGesturesEnabled,
         shape = BottomSheetShape,
         containerColor = WithmoTheme.colorScheme.surface,
         contentWindowInsets = { WindowInsets(bottom = 0.dp) },
@@ -106,6 +130,7 @@ internal fun AppListSheet(
                         )
                     },
                     modifier = Modifier.fillMaxSize(),
+                    lazyGridState = listState,
                     contentPadding = PaddingValues(
                         top = 4.dp,
                         bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
