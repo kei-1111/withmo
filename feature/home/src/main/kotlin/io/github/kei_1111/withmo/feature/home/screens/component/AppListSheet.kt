@@ -38,12 +38,11 @@ import io.github.kei_1111.withmo.core.model.user_settings.sortAppList
 import io.github.kei_1111.withmo.core.model.user_settings.toShape
 import io.github.kei_1111.withmo.core.ui.LocalAppList
 import io.github.kei_1111.withmo.feature.home.screens.HomeAction
+import io.github.kei_1111.withmo.feature.home.screens.HomeConstants
 import io.github.kei_1111.withmo.feature.home.screens.HomeState
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
-
-private const val SHEET_GESTURE_DELAY_MILLIS = 100L
 
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,7 +78,7 @@ internal fun AppListSheet(
             .distinctUntilChanged()
             .collect { isAtTop ->
                 value = if (isAtTop) {
-                    delay(SHEET_GESTURE_DELAY_MILLIS)
+                    delay(HomeConstants.SHEET_GESTURE_DELAY_MILLIS)
                     true
                 } else {
                     false

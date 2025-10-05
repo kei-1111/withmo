@@ -78,6 +78,7 @@ import io.github.kei_1111.withmo.core.ui.LocalAppWidgetManager
 import io.github.kei_1111.withmo.core.ui.modifier.safeClickable
 import io.github.kei_1111.withmo.core.util.WidgetUtils
 import io.github.kei_1111.withmo.feature.home.screens.HomeAction
+import io.github.kei_1111.withmo.feature.home.screens.HomeConstants
 import io.github.kei_1111.withmo.feature.home.screens.HomeState
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
@@ -86,8 +87,6 @@ import kotlinx.collections.immutable.toPersistentMap
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-
-private const val SHEET_GESTURE_DELAY_MILLIS = 100L
 
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -143,7 +142,7 @@ internal fun PlaceableItemListSheet(
             .distinctUntilChanged()
             .collect { isAtTop ->
                 value = if (isAtTop) {
-                    delay(SHEET_GESTURE_DELAY_MILLIS)
+                    delay(HomeConstants.SHEET_GESTURE_DELAY_MILLIS)
                     true
                 } else {
                     false
