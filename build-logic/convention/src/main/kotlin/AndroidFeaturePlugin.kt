@@ -1,6 +1,7 @@
 import io.github.kei_1111.withmo.implementation
 import io.github.kei_1111.withmo.library
 import io.github.kei_1111.withmo.libs
+import io.github.kei_1111.withmo.testImplementation
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.apply
@@ -27,6 +28,11 @@ class AndroidFeaturePlugin : Plugin<Project> {
                 implementation(libs.library("androidx.material3"))
                 implementation(libs.library("androidx.navigation.compose"))
                 implementation(libs.library("kotlinx.collections.immutable"))
+
+                testImplementation(libs.library("junit"))
+                testImplementation(libs.library("kotlinx.coroutines.test"))
+                testImplementation(libs.library("mockk"))
+                testImplementation(libs.library("turbine"))
             }
         }
     }
