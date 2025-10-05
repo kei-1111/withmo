@@ -153,13 +153,13 @@ internal fun PlaceableItemListSheet(
 
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
-        shape = BottomSheetShape,
+        modifier = modifier,
         sheetState = placeableItemListSheetState,
         sheetGesturesEnabled = sheetGesturesEnabled,
+        shape = BottomSheetShape,
         containerColor = WithmoTheme.colorScheme.surface,
-        dragHandle = {},
+        dragHandle = null,
         contentWindowInsets = { WindowInsets(bottom = 0) },
-        modifier = modifier,
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
