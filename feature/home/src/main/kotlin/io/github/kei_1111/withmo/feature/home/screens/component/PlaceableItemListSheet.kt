@@ -23,6 +23,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
@@ -41,9 +45,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -77,7 +83,11 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.ImmutableMap
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.collections.immutable.toPersistentMap
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+
+private const val SHEET_GESTURE_DELAY_MILLIS = 100L
 
 @Suppress("LongMethod")
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -109,10 +119,43 @@ internal fun PlaceableItemListSheet(
     val pagerState = rememberPagerState(pageCount = { PlaceableItemTab.entries.size })
     val coroutineScope = rememberCoroutineScope()
 
+    val widgetListState = rememberLazyListState()
+    val appGridState = rememberLazyGridState()
+
+    val sheetGesturesEnabled by produceState(false, pagerState) {
+        snapshotFlow {
+            if (pagerState.isScrollInProgress) {
+                true
+            } else {
+                when (pagerState.currentPage) {
+                    PlaceableItemTab.WIDGET.ordinal -> {
+                        widgetListState.firstVisibleItemIndex == 0 &&
+                            widgetListState.firstVisibleItemScrollOffset == 0
+                    }
+                    PlaceableItemTab.APP.ordinal -> {
+                        appGridState.firstVisibleItemIndex == 0 &&
+                            appGridState.firstVisibleItemScrollOffset == 0
+                    }
+                    else -> true
+                }
+            }
+        }
+            .distinctUntilChanged()
+            .collect { isAtTop ->
+                value = if (isAtTop) {
+                    delay(SHEET_GESTURE_DELAY_MILLIS)
+                    true
+                } else {
+                    false
+                }
+            }
+    }
+
     ModalBottomSheet(
         onDismissRequest = { onAction(HomeAction.OnPlaceableItemListSheetSwipeDown) },
         shape = BottomSheetShape,
         sheetState = placeableItemListSheetState,
+        sheetGesturesEnabled = sheetGesturesEnabled,
         containerColor = WithmoTheme.colorScheme.surface,
         dragHandle = {},
         contentWindowInsets = { WindowInsets(bottom = 0) },
@@ -162,6 +205,7 @@ internal fun PlaceableItemListSheet(
                 when (PlaceableItemTab.entries[page]) {
                     PlaceableItemTab.WIDGET -> {
                         WidgetTabContent(
+                            listState = widgetListState,
                             onAction = onAction,
                             modifier = Modifier.fillMaxSize(),
                         )
@@ -169,6 +213,7 @@ internal fun PlaceableItemListSheet(
 
                     PlaceableItemTab.APP -> {
                         AppTabContent(
+                            gridState = appGridState,
                             appSearchQuery = appSearchQuery,
                             onAppSearchQueryChange = { appSearchQuery = it },
                             searchedAppList = searchedAppList,
@@ -191,6 +236,7 @@ enum class PlaceableItemTab {
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 private fun WidgetTabContent(
+    listState: LazyListState,
     onAction: (HomeAction) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -200,6 +246,7 @@ private fun WidgetTabContent(
     }
 
     WidgetList(
+        listState = listState,
         groupedWidgetInfoMaps = groupedWidgetInfoMaps,
         selectWidget = { onAction(HomeAction.OnPlaceableItemListSheetWidgetClick(it)) },
         modifier = modifier,
@@ -209,6 +256,7 @@ private fun WidgetTabContent(
 @Suppress("LongMethod")
 @Composable
 private fun AppTabContent(
+    gridState: LazyGridState,
     appSearchQuery: String,
     onAppSearchQueryChange: (String) -> Unit,
     searchedAppList: ImmutableList<AppInfo>,
@@ -246,6 +294,7 @@ private fun AppTabContent(
                     )
                 },
                 modifier = Modifier.fillMaxSize(),
+                lazyGridState = gridState,
                 contentPadding = PaddingValues(
                     top = 4.dp,
                     bottom = 16.dp + WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding(),
@@ -264,6 +313,7 @@ private fun AppTabContent(
 @RequiresApi(Build.VERSION_CODES.S)
 @Composable
 private fun WidgetList(
+    listState: LazyListState,
     groupedWidgetInfoMaps: ImmutableMap<String, List<AppWidgetProviderInfo>>,
     selectWidget: (AppWidgetProviderInfo) -> Unit,
     modifier: Modifier = Modifier,
@@ -271,6 +321,7 @@ private fun WidgetList(
     val nestedScrollConnection = rememberNestedScrollInteropConnection()
 
     LazyColumn(
+        state = listState,
         modifier = modifier.nestedScroll(nestedScrollConnection),
         verticalArrangement = Arrangement.spacedBy(16.dp),
         contentPadding = PaddingValues(
@@ -486,6 +537,7 @@ private fun PlaceableItemListSheetAppTabLightPreview() {
             }
 
             AppTabContent(
+                gridState = rememberLazyGridState(),
                 appSearchQuery = "",
                 onAppSearchQueryChange = {},
                 searchedAppList = List(20) {
@@ -554,6 +606,7 @@ private fun PlaceableItemListSheetAppTabDarkPreview() {
             }
 
             AppTabContent(
+                gridState = rememberLazyGridState(),
                 appSearchQuery = "",
                 onAppSearchQueryChange = {},
                 searchedAppList = List(20) {
@@ -589,6 +642,7 @@ private fun AppTabContentLightPreview() {
         }
 
         AppTabContent(
+            gridState = rememberLazyGridState(),
             appSearchQuery = "",
             onAppSearchQueryChange = {},
             searchedAppList = List(15) {
@@ -622,6 +676,7 @@ private fun AppTabContentDarkPreview() {
         }
 
         AppTabContent(
+            gridState = rememberLazyGridState(),
             appSearchQuery = "",
             onAppSearchQueryChange = {},
             searchedAppList = List(15) {
