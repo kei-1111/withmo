@@ -15,17 +15,25 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.io.File
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SelectDisplayModelViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
     private lateinit var getModelFilePathUseCase: GetModelFilePathUseCase
     private lateinit var saveModelFilePathUseCase: SaveModelFilePathUseCase
     private lateinit var modelFileManager: ModelFileManager
@@ -33,9 +41,15 @@ class SelectDisplayModelViewModelTest {
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(testDispatcher)
         getModelFilePathUseCase = mockk()
         saveModelFilePathUseCase = mockk()
         modelFileManager = mockk()
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -55,7 +69,8 @@ class SelectDisplayModelViewModelTest {
         )
 
         viewModel.state.test {
-            skipItems(1) // Skip initial idle state
+            assertEquals(SelectDisplayModelState.Idle, awaitItem())
+
             val state = awaitItem()
             assertTrue(state is SelectDisplayModelState.Stable)
         }
@@ -93,17 +108,21 @@ class SelectDisplayModelViewModelTest {
             modelFileManager,
         )
 
-        // Wait for initial state to be loaded
-        delay(100)
+        viewModel.state.test {
+            assertEquals(SelectDisplayModelState.Idle, awaitItem())
+            awaitItem()
 
-        viewModel.effect.test {
-            viewModel.onAction(SelectDisplayModelAction.OnBackButtonClick)
+            viewModel.effect.test {
+                viewModel.onAction(SelectDisplayModelAction.OnBackButtonClick)
 
-            val effect = awaitItem()
-            assertEquals(SelectDisplayModelEffect.NavigateBack, effect)
+                val effect = awaitItem()
+                assertEquals(SelectDisplayModelEffect.NavigateBack, effect)
+
+                advanceUntilIdle()
+
+                coVerify { saveModelFilePathUseCase(modelFilePath) }
+            }
         }
-
-        coVerify { saveModelFilePathUseCase(modelFilePath) }
     }
 
     @Test
@@ -120,17 +139,21 @@ class SelectDisplayModelViewModelTest {
             modelFileManager,
         )
 
-        // Wait for initial state to be loaded
-        delay(100)
+        viewModel.state.test {
+            assertEquals(SelectDisplayModelState.Idle, awaitItem())
+            awaitItem()
 
-        viewModel.effect.test {
-            viewModel.onAction(SelectDisplayModelAction.OnNextButtonClick)
+            viewModel.effect.test {
+                viewModel.onAction(SelectDisplayModelAction.OnNextButtonClick)
 
-            val effect = awaitItem()
-            assertEquals(SelectDisplayModelEffect.NavigateFinish, effect)
+                val effect = awaitItem()
+                assertEquals(SelectDisplayModelEffect.NavigateFinish, effect)
+
+                advanceUntilIdle()
+
+                coVerify { saveModelFilePathUseCase(modelFilePath) }
+            }
         }
-
-        coVerify { saveModelFilePathUseCase(modelFilePath) }
     }
 
     @Test
@@ -170,6 +193,8 @@ class SelectDisplayModelViewModelTest {
         )
 
         viewModel.onAction(SelectDisplayModelAction.OnOpenDocumentLauncherResult(uri))
+
+        advanceUntilIdle()
 
         coVerify { modelFileManager.copyVrmFileFromUri(uri) }
     }
@@ -217,9 +242,11 @@ class SelectDisplayModelViewModelTest {
 
             val effect = awaitItem()
             assertEquals(SelectDisplayModelEffect.NavigateFinish, effect)
-        }
 
-        coVerify { modelFileManager.copyVrmFileFromAssets() }
-        coVerify { saveModelFilePathUseCase(ModelFilePath(defaultPath)) }
+            advanceUntilIdle()
+
+            coVerify { modelFileManager.copyVrmFileFromAssets() }
+            coVerify { saveModelFilePathUseCase(ModelFilePath(defaultPath)) }
+        }
     }
 }

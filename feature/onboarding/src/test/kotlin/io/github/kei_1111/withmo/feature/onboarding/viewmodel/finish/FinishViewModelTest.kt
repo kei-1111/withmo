@@ -8,20 +8,35 @@ import io.github.kei_1111.withmo.feature.onboarding.screens.finish.FinishViewMod
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class FinishViewModelTest {
 
+    private val testDispatcher = StandardTestDispatcher()
     private lateinit var markOnboardingShownUseCase: MarkOnboardingShownUseCase
     private lateinit var viewModel: FinishViewModel
 
     @Before
     fun setUp() {
+        Dispatchers.setMain(testDispatcher)
         markOnboardingShownUseCase = mockk()
         viewModel = FinishViewModel(markOnboardingShownUseCase)
+    }
+
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
     }
 
     @Test
@@ -43,8 +58,10 @@ class FinishViewModelTest {
 
             val effect = awaitItem()
             assertEquals(FinishEffect.NavigateHome, effect)
-        }
 
-        coVerify(exactly = 1) { markOnboardingShownUseCase() }
+            advanceUntilIdle()
+
+            coVerify(exactly = 1) { markOnboardingShownUseCase() }
+        }
     }
 }
