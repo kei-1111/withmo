@@ -1,9 +1,6 @@
-package io.github.kei_1111.withmo.feature.onboarding.viewmodel.welcome
+package io.github.kei_1111.withmo.feature.onboarding.screens.welcome
 
 import app.cash.turbine.test
-import io.github.kei_1111.withmo.feature.onboarding.screens.welcome.WelcomeAction
-import io.github.kei_1111.withmo.feature.onboarding.screens.welcome.WelcomeEffect
-import io.github.kei_1111.withmo.feature.onboarding.screens.welcome.WelcomeViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher

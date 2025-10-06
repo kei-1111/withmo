@@ -1,10 +1,7 @@
-package io.github.kei_1111.withmo.feature.onboarding.viewmodel.finish
+package io.github.kei_1111.withmo.feature.onboarding.screens.finish
 
 import app.cash.turbine.test
 import io.github.kei_1111.withmo.core.domain.usecase.MarkOnboardingShownUseCase
-import io.github.kei_1111.withmo.feature.onboarding.screens.finish.FinishAction
-import io.github.kei_1111.withmo.feature.onboarding.screens.finish.FinishEffect
-import io.github.kei_1111.withmo.feature.onboarding.screens.finish.FinishViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

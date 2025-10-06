@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.feature.onboarding.viewmodel.select_favorite_app
+package io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app
 
 import android.graphics.drawable.Drawable
 import app.cash.turbine.test
@@ -7,10 +7,6 @@ import io.github.kei_1111.withmo.core.domain.usecase.SaveFavoriteAppsUseCase
 import io.github.kei_1111.withmo.core.model.AppIcon
 import io.github.kei_1111.withmo.core.model.AppInfo
 import io.github.kei_1111.withmo.core.model.FavoriteAppInfo
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.SelectFavoriteAppAction
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.SelectFavoriteAppEffect
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.SelectFavoriteAppState
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_favorite_app.SelectFavoriteAppViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

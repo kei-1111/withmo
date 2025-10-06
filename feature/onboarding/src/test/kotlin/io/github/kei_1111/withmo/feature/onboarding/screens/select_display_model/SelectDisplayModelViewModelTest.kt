@@ -1,4 +1,4 @@
-package io.github.kei_1111.withmo.feature.onboarding.viewmodel.select_display_model
+package io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model
 
 import android.graphics.Bitmap
 import android.net.Uri
@@ -7,10 +7,6 @@ import io.github.kei_1111.withmo.core.domain.manager.ModelFileManager
 import io.github.kei_1111.withmo.core.domain.usecase.GetModelFilePathUseCase
 import io.github.kei_1111.withmo.core.domain.usecase.SaveModelFilePathUseCase
 import io.github.kei_1111.withmo.core.model.user_settings.ModelFilePath
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model.SelectDisplayModelAction
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model.SelectDisplayModelEffect
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model.SelectDisplayModelState
-import io.github.kei_1111.withmo.feature.onboarding.screens.select_display_model.SelectDisplayModelViewModel
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
