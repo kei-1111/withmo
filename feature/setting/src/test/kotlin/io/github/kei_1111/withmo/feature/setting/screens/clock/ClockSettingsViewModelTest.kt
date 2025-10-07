@@ -153,12 +153,12 @@ class ClockSettingsViewModelTest {
         viewModel.effect.test {
             viewModel.onAction(ClockSettingsAction.OnSaveButtonClick)
 
-            val navigateEffect = awaitItem()
-            assertEquals(ClockSettingsEffect.NavigateBack, navigateEffect)
-
             val toastEffect = awaitItem()
             assertTrue(toastEffect is ClockSettingsEffect.ShowToast)
             assertEquals("保存しました", (toastEffect as ClockSettingsEffect.ShowToast).message)
+
+            val navigateEffect = awaitItem()
+            assertEquals(ClockSettingsEffect.NavigateBack, navigateEffect)
 
             advanceUntilIdle()
 

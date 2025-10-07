@@ -66,8 +66,8 @@ internal class ClockSettingsViewModel @Inject constructor(
                 viewModelScope.launch {
                     try {
                         saveClockSettingsUseCase(_viewModelState.value.clockSettings)
-                        sendEffect(ClockSettingsEffect.NavigateBack)
                         sendEffect(ClockSettingsEffect.ShowToast("保存しました"))
+                        sendEffect(ClockSettingsEffect.NavigateBack)
                     } catch (e: Exception) {
                         Log.e(TAG, "Failed to save clock settings", e)
                         sendEffect(ClockSettingsEffect.ShowToast("保存に失敗しました"))
