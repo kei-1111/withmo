@@ -26,6 +26,9 @@ jobs:
       - name: Run Repository tests
         run: ./gradlew :core:data:test
 
+      - name: Run ViewModel tests
+        run: ./gradlew :feature:home:test :feature:onboarding:test :feature:setting:test
+
       - name: Run detekt
         run: ./gradlew detekt
 
