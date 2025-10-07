@@ -14,6 +14,9 @@ fun DependencyHandler.implementation(dependencyNotation: Any): Dependency? =
 fun DependencyHandler.debugImplementation(dependencyNotation: Any): Dependency? =
     add("debugImplementation", dependencyNotation)
 
+fun DependencyHandler.testImplementation(dependencyNotation: Any): Dependency? =
+    add("testImplementation", dependencyNotation)
+
 fun DependencyHandler.detektPlugins(dependencyNotation: Any): Dependency? =
     add("detektPlugins", dependencyNotation)
 

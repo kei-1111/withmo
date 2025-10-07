@@ -463,10 +463,25 @@ NavHost(...) {
 ```
 
 ### テスト戦略
-- **ユニットテスト**: Repository、UseCaseの主要ロジックをカバー
-- **モックライブラリ**: MockKを使用したモック作成とスタブ化
-- **テストフレームワーク**: JUnit、Kotlinx Coroutines Test、Turbineを使用
-- **CI/CD**: GitHub Actionsによる自動テスト実行とコード品質チェック
+
+**テスト範囲:**
+- **ViewModel層**: 全フィーチャーモジュールのViewModelをテスト（StatefulBaseViewModel、StatelessBaseViewModelの両方）
+- **UseCase層**: ビジネスロジックとデータ変換のテスト
+- **Repository層**: DataStoreやRoomとのデータ取得・保存のテスト
+
+**使用ライブラリ:**
+- **JUnit**: テストフレームワーク
+- **MockK**: Kotlinに特化したモックライブラリ
+- **Turbine**: FlowとStateFlowのテスト用ライブラリ
+- **kotlinx-coroutines-test**: コルーチンのテスト用ライブラリ（StandardTestDispatcher、UnconfinedTestDispatcher）
+
+**テストガイド:**
+詳細なテスト作成ガイドラインは `docs/TESTING_GUIDE.md` を参照してください：
+- ViewModelテストの2つのパターン（Stateful/Stateless）
+- Loading状態の有無の判断基準（単一Flow vs combine）
+- State/Action/Effectの検証方法
+- 高度なモックパターン（SystemClock、object、value class）
+- よくあるエラーと対処法
 
 ## Git・GitHub運用規則
 詳細な運用規則は `docs/GIT_GITHUB_CONVENTIONS.md` を参照してください。

@@ -16,14 +16,14 @@ import io.github.kei_1111.withmo.core.ui.navigation.SortSettings
 import io.github.kei_1111.withmo.core.ui.navigation.ThemeSettings
 import io.github.kei_1111.withmo.core.ui.navigation.slideInVerticallyFrom
 import io.github.kei_1111.withmo.core.ui.navigation.slideOutVerticallyTo
-import io.github.kei_1111.withmo.feature.setting.screens.app_icon.AppIconSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.clock.ClockSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.favorite_app.FavoriteAppSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.notification.NotificationSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.root.SettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.side_button.SideButtonSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.sort.SortSettingsScreen
-import io.github.kei_1111.withmo.feature.setting.screens.theme.ThemeSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.app_icon.AppIconSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.clock.ClockSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.favorite_app.FavoriteAppSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.notification.NotificationSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.root.SettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.side_button.SideButtonSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.sort.SortSettingsScreen
+import io.github.kei_1111.withmo.feature.setting.screen.theme.ThemeSettingsScreen
 
 fun NavHostController.navigateSettings() = navigate(SettingsGraph)
 
