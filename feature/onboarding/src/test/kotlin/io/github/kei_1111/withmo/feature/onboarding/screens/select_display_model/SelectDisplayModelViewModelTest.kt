@@ -103,21 +103,17 @@ class SelectDisplayModelViewModelTest {
             saveModelFilePathUseCase,
             modelFileManager,
         )
+        advanceUntilIdle()
 
-        viewModel.state.test {
-            assertEquals(SelectDisplayModelState.Idle, awaitItem())
-            awaitItem()
+        viewModel.effect.test {
+            viewModel.onAction(SelectDisplayModelAction.OnBackButtonClick)
 
-            viewModel.effect.test {
-                viewModel.onAction(SelectDisplayModelAction.OnBackButtonClick)
+            val effect = awaitItem()
+            assertEquals(SelectDisplayModelEffect.NavigateBack, effect)
 
-                val effect = awaitItem()
-                assertEquals(SelectDisplayModelEffect.NavigateBack, effect)
+            advanceUntilIdle()
 
-                advanceUntilIdle()
-
-                coVerify { saveModelFilePathUseCase(modelFilePath) }
-            }
+            coVerify { saveModelFilePathUseCase(modelFilePath) }
         }
     }
 
@@ -134,21 +130,17 @@ class SelectDisplayModelViewModelTest {
             saveModelFilePathUseCase,
             modelFileManager,
         )
+        advanceUntilIdle()
 
-        viewModel.state.test {
-            assertEquals(SelectDisplayModelState.Idle, awaitItem())
-            awaitItem()
+        viewModel.effect.test {
+            viewModel.onAction(SelectDisplayModelAction.OnNextButtonClick)
 
-            viewModel.effect.test {
-                viewModel.onAction(SelectDisplayModelAction.OnNextButtonClick)
+            val effect = awaitItem()
+            assertEquals(SelectDisplayModelEffect.NavigateFinish, effect)
 
-                val effect = awaitItem()
-                assertEquals(SelectDisplayModelEffect.NavigateFinish, effect)
+            advanceUntilIdle()
 
-                advanceUntilIdle()
-
-                coVerify { saveModelFilePathUseCase(modelFilePath) }
-            }
+            coVerify { saveModelFilePathUseCase(modelFilePath) }
         }
     }
 

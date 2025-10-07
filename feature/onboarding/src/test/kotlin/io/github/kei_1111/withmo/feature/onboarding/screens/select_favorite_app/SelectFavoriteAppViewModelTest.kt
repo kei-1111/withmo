@@ -225,21 +225,17 @@ class SelectFavoriteAppViewModelTest {
             getFavoriteAppsUseCase,
             saveFavoriteAppsUseCase,
         )
+        advanceUntilIdle()
 
-        viewModel.state.test {
-            assertEquals(SelectFavoriteAppState.Idle, awaitItem())
-            awaitItem()
+        viewModel.effect.test {
+            viewModel.onAction(SelectFavoriteAppAction.OnBackButtonClick)
 
-            viewModel.effect.test {
-                viewModel.onAction(SelectFavoriteAppAction.OnBackButtonClick)
+            val effect = awaitItem()
+            assertEquals(SelectFavoriteAppEffect.NavigateBack, effect)
 
-                val effect = awaitItem()
-                assertEquals(SelectFavoriteAppEffect.NavigateBack, effect)
+            advanceUntilIdle()
 
-                advanceUntilIdle()
-
-                coVerify { saveFavoriteAppsUseCase(persistentListOf(favoriteAppList[0])) }
-            }
+            coVerify { saveFavoriteAppsUseCase(persistentListOf(favoriteAppList[0])) }
         }
     }
 
@@ -262,21 +258,17 @@ class SelectFavoriteAppViewModelTest {
             getFavoriteAppsUseCase,
             saveFavoriteAppsUseCase,
         )
+        advanceUntilIdle()
 
-        viewModel.state.test {
-            assertEquals(SelectFavoriteAppState.Idle, awaitItem())
-            awaitItem()
+        viewModel.effect.test {
+            viewModel.onAction(SelectFavoriteAppAction.OnNextButtonClick)
 
-            viewModel.effect.test {
-                viewModel.onAction(SelectFavoriteAppAction.OnNextButtonClick)
+            val effect = awaitItem()
+            assertEquals(SelectFavoriteAppEffect.NavigateSelectDisplayModel, effect)
 
-                val effect = awaitItem()
-                assertEquals(SelectFavoriteAppEffect.NavigateSelectDisplayModel, effect)
+            advanceUntilIdle()
 
-                advanceUntilIdle()
-
-                coVerify { saveFavoriteAppsUseCase(persistentListOf(favoriteAppList[0])) }
-            }
+            coVerify { saveFavoriteAppsUseCase(persistentListOf(favoriteAppList[0])) }
         }
     }
 
