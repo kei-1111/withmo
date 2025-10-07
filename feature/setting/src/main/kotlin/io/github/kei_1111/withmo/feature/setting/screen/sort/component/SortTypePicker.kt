@@ -1,0 +1,156 @@
+package io.github.kei_1111.withmo.feature.setting.screen.sort.component
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.NonRestartableComposable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoHorizontalDivider
+import io.github.kei_1111.withmo.core.designsystem.component.WithmoSettingItemWithRadioButton
+import io.github.kei_1111.withmo.core.designsystem.component.theme.WithmoTheme
+import io.github.kei_1111.withmo.core.model.user_settings.SortType
+import io.github.kei_1111.withmo.core.model.user_settings.ThemeType
+import io.github.kei_1111.withmo.feature.setting.screen.sort.SortSettingsAction
+
+@Composable
+internal fun SortTypePicker(
+    selectedSortType: SortType,
+    onAction: (SortSettingsAction) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Surface(
+        modifier = modifier,
+        color = WithmoTheme.colorScheme.surfaceContainer,
+        shape = WithmoTheme.shapes.medium,
+    ) {
+        Column {
+            Box(
+                modifier = Modifier
+                    .height(56.dp)
+                    .padding(horizontal = 16.dp),
+                contentAlignment = Alignment.CenterStart,
+            ) {
+                Text(
+                    text = "並び順",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
+                )
+            }
+            WithmoSettingItemWithRadioButton(
+                item = {
+                    SortTypePickerItem(
+                        sortType = SortType.ALPHABETICAL,
+                    )
+                },
+                selected = SortType.ALPHABETICAL == selectedSortType,
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.ALPHABETICAL)) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+            SortTypePickerDivider()
+            WithmoSettingItemWithRadioButton(
+                item = {
+                    SortTypePickerItem(
+                        sortType = SortType.USE_COUNT,
+                    )
+                },
+                selected = SortType.USE_COUNT == selectedSortType,
+                onClick = { onAction(SortSettingsAction.OnSortTypeRadioButtonClick(SortType.USE_COUNT)) },
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@NonRestartableComposable
+@Composable
+private fun SortTypePickerDivider(
+    modifier: Modifier = Modifier,
+) {
+    WithmoHorizontalDivider(modifier = modifier.padding(start = 16.dp))
+}
+
+@Composable
+private fun SortTypePickerItem(
+    sortType: SortType,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier.height(56.dp),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        when (sortType) {
+            SortType.ALPHABETICAL -> {
+                Text(
+                    text = "アルファベット順",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
+                )
+            }
+            SortType.USE_COUNT -> {
+                Text(
+                    text = "使用回数順",
+                    color = WithmoTheme.colorScheme.onSurface,
+                    style = WithmoTheme.typography.bodyMedium,
+                )
+                Text(
+                    text = "端末に保存されているアプリの使用回数で並び替え",
+                    color = WithmoTheme.colorScheme.onSurface.copy(alpha = 0.38f),
+                    style = WithmoTheme.typography.labelMedium,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+@Preview
+private fun SortTypePickerLightPreview() {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
+        SortTypePicker(
+            selectedSortType = SortType.ALPHABETICAL,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun SortTypePickerDarkPreview() {
+    WithmoTheme(themeType = ThemeType.DARK) {
+        SortTypePicker(
+            selectedSortType = SortType.USE_COUNT,
+            onAction = {},
+            modifier = Modifier.fillMaxWidth(),
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun SortTypePickerItemLightPreview() {
+    WithmoTheme(themeType = ThemeType.LIGHT) {
+        SortTypePickerItem(
+            sortType = SortType.ALPHABETICAL,
+        )
+    }
+}
+
+@Composable
+@Preview
+private fun SortTypePickerItemDarkPreview() {
+    WithmoTheme(themeType = ThemeType.DARK) {
+        SortTypePickerItem(
+            sortType = SortType.USE_COUNT,
+        )
+    }
+}

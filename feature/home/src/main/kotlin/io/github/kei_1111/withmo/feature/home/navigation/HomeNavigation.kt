@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import io.github.kei_1111.withmo.core.ui.navigation.Home
 import io.github.kei_1111.withmo.core.ui.navigation.OnboardingGraph
-import io.github.kei_1111.withmo.feature.home.screens.HomeScreen
+import io.github.kei_1111.withmo.feature.home.screen.HomeScreen
 
 /**
  * 明示的にHomeに遷移する場面は、Onboarding終了後のみである。
